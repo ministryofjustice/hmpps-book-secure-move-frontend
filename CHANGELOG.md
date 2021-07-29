@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.84.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.83.0...v2.84.0) (2021-07-29)
+
+
+### Features
+
+* Add side panel to display personal details ([7462327](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/74623278f4c337bf68bf33fde569a40b606d4e59))
+* Reduce PNC validation to Sentry warnings only ([ccb4e17](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ccb4e173123c06cd79435a711a6aee3f5d99da1c))
+* Validate Police National Computer number ([8c43669](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8c436691f43f4e4d1a8d748006d6326da1557638))
+
+
+### Bug Fixes
+
+* Don't remove navigation and organisation banner from filter view ([6a2ac75](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6a2ac75d54194758bf170ef8a5ea094ef21c471d))
+* Prevent new move page erroring without a person ([16cc9b0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/16cc9b0d87e34ebbc26a05ce51715e1fb5cae248))
+* Support prison recall moves that also have a destination ([d1bf678](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d1bf678f87df52c7bcc7f2204ca6e80deae649da))
+
 ## [2.83.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.82.0...v2.83.0) (2021-07-27)
 
 
