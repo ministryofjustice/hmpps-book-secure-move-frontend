@@ -1,4 +1,5 @@
 const image = require('./image')
+const moves = require('./moves')
 const personalDetails = require('./personal-details')
 
-module.exports = { image, personalDetails }
+module.exports = { image, moves, personalDetails }
