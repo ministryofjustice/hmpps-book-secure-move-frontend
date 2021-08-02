@@ -44,7 +44,7 @@ module.exports = fallbackImage => {
       }
     } catch (error) {
       const imagePath = nunjucksGlobals.getAssetPath(fallbackImage)
-      res.redirect(imagePath)
+      res.set('Cache-control', 'max-age=3600').redirect(imagePath)
     }
   }
 }
