@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block contentMain %}
-  {{ tabs(urls, 'timeline') }}
+  {{ renderTabs(urls, 'timeline') }}
+
   {% if timeline.items.length %}
     {{ appTimeline(timeline) }}
   {% else %}
