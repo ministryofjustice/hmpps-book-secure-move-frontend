@@ -6,7 +6,7 @@ module.exports = (req, res) => {
   )
 
   res
-    .breadcrumb({ text: req.t('person::personal_details.heading') })
+    .breadcrumb({ text: req.t('person::tabs.personal_details') })
     .render('person/views/personal-details', {
       personalDetailsSummary,
     })

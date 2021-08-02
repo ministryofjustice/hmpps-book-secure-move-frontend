@@ -12,5 +12,12 @@
   {{ appIdentityBar(identityBar) }}
 {% endblock %}
 
+{% block contentMain %}
+  {% include 'includes/tabs.njk' %}
+
+  {% block tabContent %}
+  {% endblock %}
+{% endblock %}
+
 {% block contentSidebar %}
 {% endblock %}

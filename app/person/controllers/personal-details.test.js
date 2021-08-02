@@ -31,7 +31,7 @@ describe('Person app', function () {
       it('should set breadcrumb', function () {
         expect(req.t).to.be.called
         expect(res.breadcrumb).to.be.calledOnceWithExactly({
-          text: 'person::personal_details.heading',
+          text: 'person::tabs.personal_details',
         })
       })
 
