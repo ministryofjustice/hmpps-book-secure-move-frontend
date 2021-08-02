@@ -29,19 +29,7 @@
       {% block contentMain %}
 
         {% block tabsList %}
-          {% if tabs %}
-            <div class="govuk-tabs">
-              <ul class="govuk-tabs__list">
-                {% for item in tabs %}
-                  <li class="govuk-tabs__list-item {{- ' govuk-tabs__list-item--selected' if item.isActive }}">
-                    <a class="govuk-tabs__tab" href="{{ item.url }}">
-                      {{ t(item.text) }}
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          {% endif %}
+          {% include 'includes/tabs.njk' %}
         {% endblock %}
 
         {% block tabContent %}
