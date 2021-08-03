@@ -1,16 +1,16 @@
-module.exports = {
-  setPerson: async (req, res, next) => {
-    const personId = req.params.personId
+async function setPerson(req, res, next) {
+  const personId = req.params.personId
 
-    if (!personId) {
-      return next()
-    }
+  if (!personId) {
+    return next()
+  }
 
-    try {
-      req.person = await req.services.person.getById(personId)
-      next()
-    } catch (error) {
-      next(error)
-    }
-  },
+  try {
+    req.person = await req.services.person.getById(personId)
+    next()
+  } catch (error) {
+    next(error)
+  }
 }
+
+module.exports = { setPerson }
