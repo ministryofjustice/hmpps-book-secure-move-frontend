@@ -13,4 +13,17 @@ async function setPerson(req, res, next) {
   }
 }
 
-module.exports = { setPerson }
+function setBreadcrumb(req, res, next) {
+  const { _fullname: name } = req.person || {}
+
+  if (name) {
+    res.breadcrumb({
+      text: name,
+      href: req.baseUrl,
+    })
+  }
+
+  next()
+}
+
+module.exports = { setPerson, setBreadcrumb }

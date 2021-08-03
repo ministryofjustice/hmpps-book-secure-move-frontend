@@ -5,12 +5,14 @@ const breadcrumbs = require('../../common/middleware/breadcrumbs')
 const { PLACEHOLDER_IMAGES } = require('../../config')
 
 const { image, personalDetails } = require('./controllers')
-const { setPerson } = require('./middleware')
+const { setPerson, setBreadcrumb } = require('./middleware')
+
+router.get('/', (req, res) => res.redirect(`${req.baseUrl}/personal-details`))
+router.get('/image', image(PLACEHOLDER_IMAGES.PERSON))
 
 router.use(breadcrumbs.setHome())
 
-router.get('/', setPerson, personalDetails)
-router.get('/image', image(PLACEHOLDER_IMAGES.PERSON))
+router.get('/personal-details', setPerson, setBreadcrumb, personalDetails)
 
 module.exports = {
   router,

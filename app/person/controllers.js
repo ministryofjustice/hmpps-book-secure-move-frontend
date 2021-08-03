@@ -42,9 +42,7 @@ function personalDetails(req, res) {
   }
 
   res
-    .breadcrumb({
-      text: fullname,
-    })
+    .breadcrumb({ text: req.t('person::personal_details.heading') })
     .render('person/views/personal-details', {
       fullname,
       identityBar,
