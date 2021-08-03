@@ -1,3 +1,4 @@
+const faker = require('faker')
 const { pick } = require('lodash')
 
 const filters = require('../../common/controllers/filters')
@@ -43,6 +44,20 @@ module.exports = {
           results = await req.services.move.search({
             reference,
           })
+
+          // const person = results[0].profile.person
+
+          // await req.services.person.update({
+          //   ...person,
+          //   prison_number: 'G5299UN',
+          // })
+          // await req.services.person.getByIdentifiers({
+          //   prison_number: 'G5299UN',
+          // })
+          // await req.services.person.update({
+          //   ...person,
+          //   prison_number: faker.fake('{{helpers.replaceSymbols("?####??")}}'),
+          // })
         } else if (searchType === 'person') {
           results = await req.services.person
             .getByIdentifiers(
