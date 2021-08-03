@@ -124,7 +124,7 @@ describe('Person app', function () {
       })
     })
 
-    describe('#renderPerson()', function () {
+    describe('#personalDetails()', function () {
       let req, res
 
       beforeEach(function () {
@@ -138,7 +138,7 @@ describe('Person app', function () {
           render: sinon.stub(),
         }
 
-        controllers.renderPerson(req, res)
+        controllers.personalDetails(req, res)
       })
 
       it('should set breadcrumb', function () {
@@ -148,7 +148,7 @@ describe('Person app', function () {
       })
 
       it('should render correct template', function () {
-        expect(res.render.args[0][0]).to.equal('person/views/render-person')
+        expect(res.render.args[0][0]).to.equal('person/views/personal-details')
       })
 
       describe('locals', function () {

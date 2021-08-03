@@ -24,7 +24,7 @@ function image(fallbackImage) {
   }
 }
 
-function renderPerson(req, res) {
+function personalDetails(req, res) {
   const fullname = req.person._fullname
   const personalDetailsSummary = presenters.personToSummaryListComponent(
     req.person
@@ -45,11 +45,11 @@ function renderPerson(req, res) {
     .breadcrumb({
       text: fullname,
     })
-    .render('person/views/render-person', {
+    .render('person/views/personal-details', {
       fullname,
       identityBar,
       personalDetailsSummary,
     })
 }
 
-module.exports = { image, renderPerson }
+module.exports = { image, personalDetails }
