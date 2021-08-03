@@ -1,4 +1,4 @@
-const middleware = require('./middleware')
+const setPerson = require('./set-person')
 
 const personStub = { id: '12345', foo: 'bar' }
 const mockPersonId = 'f6e1f57c-7d07-41d2-afee-1662f5103e2d'
@@ -24,7 +24,7 @@ describe('Person app', function () {
 
       context('when no person ID exists', function () {
         beforeEach(async function () {
-          await middleware.setPerson(req, res, nextSpy)
+          await setPerson(req, res, nextSpy)
         })
 
         it('should call next with no argument', function () {
@@ -44,7 +44,7 @@ describe('Person app', function () {
         context('when API call returns succesfully', function () {
           beforeEach(async function () {
             req.params.personId = mockPersonId
-            await middleware.setPerson(req, res, nextSpy)
+            await setPerson(req, res, nextSpy)
           })
 
           it('should call API with ID', function () {
@@ -63,7 +63,7 @@ describe('Person app', function () {
 
         context('when API call returns an error', function () {
           beforeEach(async function () {
-            await middleware.setPerson(
+            await setPerson(
               {
                 params: {
                   personId: mockPersonId,
@@ -86,49 +86,6 @@ describe('Person app', function () {
           it('should send error to next function', function () {
             expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
           })
-        })
-      })
-    })
-
-    describe('#setBreadcrumb()', function () {
-      let req, res, nextSpy
-
-      beforeEach(function () {
-        req = { baseUrl: '/base-url' }
-        res = { breadcrumb: sinon.spy() }
-        nextSpy = sinon.spy()
-      })
-
-      context('when req has a person', function () {
-        beforeEach(function () {
-          req.person = { _fullname: 'DOE, JOHN' }
-          middleware.setBreadcrumb(req, res, nextSpy)
-        })
-
-        it('should set breadcrumb', function () {
-          expect(res.breadcrumb).to.calledOnceWithExactly({
-            text: 'DOE, JOHN',
-            href: '/base-url',
-          })
-        })
-
-        it('should call next', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
-      })
-
-      context('when req does not have a person', function () {
-        beforeEach(function () {
-          req.person = null
-          middleware.setBreadcrumb(req, res, nextSpy)
-        })
-
-        it('should not set breadcrumb', function () {
-          expect(res.breadcrumb).not.to.be.called
-        })
-
-        it('should call next', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
     })
