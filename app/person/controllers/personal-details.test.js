@@ -47,32 +47,7 @@ describe('Person app', function () {
         })
 
         it('should pass correct keys', function () {
-          expect(locals).to.have.all.keys([
-            'fullname',
-            'identityBar',
-            'personalDetailsSummary',
-          ])
-        })
-
-        it('should set fullname', function () {
-          expect(locals.fullname).to.equal('DOE, JOHN')
-        })
-
-        it('should set identityBar', function () {
-          expect(locals.identityBar).to.deep.equal({
-            classes: 'sticky',
-            caption: {
-              text: 'person::page_caption',
-            },
-            heading: {
-              html: 'person::page_heading',
-            },
-          })
-
-          expect(req.t).to.have.been.calledWithExactly('person::page_caption')
-          expect(req.t).to.have.been.calledWithExactly('person::page_heading', {
-            name: 'DOE, JOHN',
-          })
+          expect(locals).to.have.all.keys(['personalDetailsSummary'])
         })
 
         it('should set personal details summary', function () {
