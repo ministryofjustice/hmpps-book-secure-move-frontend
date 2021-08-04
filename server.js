@@ -267,7 +267,23 @@ if (config.ENABLE_DEVELOPMENT_TOOLS) {
   app.use(setDevelopmentTools)
 }
 
+app.get('/null-property-error-before', (req, res) => {
+  const nullValue = null
+  // eslint-disable-next-line no-unused-vars
+  const property = nullValue.missingProperty
+
+  res.send('Error debug')
+})
+
 app.use(router)
+
+app.get('/null-property-error', (req, res) => {
+  const anotherNullValue = null
+  // eslint-disable-next-line no-unused-vars
+  const property = anotherNullValue.anotherMissingProperty
+
+  res.send('Error debug')
+})
 
 // error handling
 app.use(Sentry.Handlers.errorHandler())
