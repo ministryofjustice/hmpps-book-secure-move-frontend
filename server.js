@@ -81,7 +81,7 @@ if (config.SENTRY.DSN) {
             }),
           ]
         : [],
-    // Half of all requests will be used for performance sampling
+    // Quarter of all requests will be used for performance sampling
     tracesSampler: samplingContext => {
       const transactionName =
         samplingContext &&
@@ -94,7 +94,7 @@ if (config.SENTRY.DSN) {
         return 0
       } else {
         // Default sample rate
-        return 0.5
+        return 0.25
       }
     },
   })
