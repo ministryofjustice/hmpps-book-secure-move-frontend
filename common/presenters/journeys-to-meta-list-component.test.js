@@ -21,7 +21,7 @@ describe('Presenters', function () {
         },
         vehicle: {
           id: '1234',
-          title: 'JM18 AHI',
+          registration: 'JM18 AHI',
         },
       },
       {
@@ -38,7 +38,7 @@ describe('Presenters', function () {
         },
         vehicle: {
           id: '1AG',
-          title: 'XK21 HUA',
+          registration: 'XK21 HUA',
         },
       },
       {
@@ -53,6 +53,7 @@ describe('Presenters', function () {
           id: 'ABADCAFE',
           title: 'HMP Pentonville',
         },
+        vehicle: null,
       },
       {
         state: 'completed',
@@ -65,10 +66,6 @@ describe('Presenters', function () {
         to_location: {
           id: 'LLEEEEDS',
           title: 'HMP Leeds',
-        },
-        vehicle: {
-          id: '555',
-          title: 'UH22 KAN',
         },
       },
     ]
@@ -141,6 +138,45 @@ describe('Presenters', function () {
                 },
               },
             ],
+          })
+        })
+
+        it('should pass correct information to translation', function () {
+          mockJourneys.forEach((journey, index) => {
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::map.labels.route.heading'
+            )
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::map.labels.route.text',
+              {
+                from: journey.from_location.title,
+                to: journey.to_location.title,
+              }
+            )
+
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::map.labels.vehicle.heading'
+            )
+
+            if (journey.vehicle) {
+              expect(i18n.t).to.be.calledWithExactly(
+                'moves::map.labels.vehicle.text',
+                {
+                  context: '',
+                  registration: journey.vehicle.registration,
+                  id: journey.vehicle.id,
+                }
+              )
+            } else {
+              expect(i18n.t).to.be.calledWithExactly(
+                'moves::map.labels.vehicle.text',
+                {
+                  context: 'unknown',
+                  registration: undefined,
+                  id: undefined,
+                }
+              )
+            }
           })
         })
       })
