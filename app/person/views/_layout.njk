@@ -1,0 +1,16 @@
+{% extends "layouts/two-column.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Person profile'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ getPageTitle() | join(' – ') if getPageTitle }}
+{% endblock %}
+
+{% block contentHeader %}
+  {{ appIdentityBar(identityBar) }}
+{% endblock %}
+
+{% block contentSidebar %}
+{% endblock %}

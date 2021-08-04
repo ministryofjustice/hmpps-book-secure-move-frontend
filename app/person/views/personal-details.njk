@@ -1,16 +1,4 @@
-{% extends "layouts/two-column.njk" %}
-
-{% block customGtagConfig %}
-  gtag('set', {'page_title': 'Person profile'});
-{% endblock %}
-
-{% block pageTitle %}
-  {{ getPageTitle() | join(' – ') if getPageTitle }}
-{% endblock %}
-
-{% block contentHeader %}
-  {{ appIdentityBar(identityBar) }}
-{% endblock %}
+{% extends "./_layout.njk" %}
 
 {% block contentMain %}
   <h2 class="govuk-heading-m">
@@ -18,7 +6,4 @@
   </h2>
 
   {{ govukSummaryList(personalDetailsSummary) }}
-{% endblock %}
-
-{% block contentSidebar %}
 {% endblock %}
