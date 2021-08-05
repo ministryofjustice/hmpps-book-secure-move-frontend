@@ -123,6 +123,7 @@ module.exports = {
   },
   ASSETS_HOST: process.env.ASSETS_HOST || '',
   SENTRY: {
+    DEBUG: /true/i.test(process.env.SENTRY_DEBUG),
     DSN: process.env.SENTRY_DSN,
     ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || 'production',
     RELEASE: process.env.APP_GIT_COMMIT,
