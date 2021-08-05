@@ -67,6 +67,7 @@ app.use(setTransactionId)
 
 if (config.SENTRY.DSN) {
   Sentry.init({
+    debug: config.SENTRY.DEBUG,
     dsn: config.SENTRY.DSN,
     environment: config.SENTRY.ENVIRONMENT,
     release: config.SENTRY.RELEASE,
