@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.85.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.85.3...v2.85.4) (2021-08-05)
+
+
+### Bug Fixes
+
+* Prevent journeys without a vehicle throwing an error ([a5fac7a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a5fac7a8cf51c9d476289855444043fdba0f5403))
+
 ### [2.85.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.85.2...v2.85.3) (2021-08-05)
 
 ### [2.85.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.85.1...v2.85.2) (2021-08-05)
