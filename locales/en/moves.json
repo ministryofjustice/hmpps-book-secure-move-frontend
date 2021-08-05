@@ -263,7 +263,8 @@
       },
       "vehicle": {
         "heading": "Vehicle",
-        "text": "{{registration}} ({{id}})"
+        "text": "{{registration}} ({{id}})",
+        "text_unknown": "Unknown"
       }
     },
     "journey_overview": "Journeys for {{name}}",

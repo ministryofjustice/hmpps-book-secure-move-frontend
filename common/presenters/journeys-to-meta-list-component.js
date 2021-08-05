@@ -6,7 +6,7 @@ function _mapJourney({
   state,
   from_location: fromLocation,
   to_location: toLocation,
-  vehicle = {},
+  vehicle,
 } = {}) {
   const rows = [
     {
@@ -28,8 +28,9 @@ function _mapJourney({
       },
       value: {
         html: i18n.t('moves::map.labels.vehicle.text', {
-          registration: vehicle.registration,
-          id: vehicle.id,
+          context: vehicle ? '' : 'unknown',
+          registration: vehicle?.registration,
+          id: vehicle?.id,
         }),
       },
     },
