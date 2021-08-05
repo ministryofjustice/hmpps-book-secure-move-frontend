@@ -97,7 +97,7 @@ if (config.SENTRY.DSN) {
     Sentry.Handlers.requestHandler({
       // Ensure we don't include `data` to avoid sending any PPI
       request: ['cookies', 'headers', 'method', 'query_string', 'url'],
-      user: ['id', 'username', 'permissions', 'locations'],
+      user: ['id', 'username', 'permissions'],
     })
   )
   app.use(sentryRequestId)
