@@ -31,7 +31,7 @@ describe('Move view app', function () {
 
         it('should set breadcrumb', function () {
           expect(res.breadcrumb).to.calledOnceWithExactly({
-            text: 'ABCDEF (DOE, JOHN)',
+            text: 'DOE, JOHN (ABCDEF)',
             href: '/base-url',
           })
         })

@@ -168,57 +168,6 @@ describe('Move middleware', function () {
         })
       })
     })
-
-    context('when moveIdWithEvents exists', function () {
-      context('when API call returns succesfully', function () {
-        beforeEach(async function () {
-          req.params.moveIdWithEvents = mockMoveId
-          await middleware.setMoveWithEvents(req, res, nextSpy)
-        })
-
-        it('should call API with move ID', function () {
-          expect(moveService.getByIdWithEvents).to.be.calledWith(mockMoveId)
-        })
-
-        it('should populate timeline events', function () {
-          expect(populateResources).to.be.calledWith(moveEvents, req)
-        })
-
-        it('should set response data to request object', function () {
-          expect(req).to.have.property('move')
-          expect(req.move).to.equal(moveWithEventsStub)
-        })
-
-        it('should call next with no argument', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
-      })
-
-      context('when API call returns an error', function () {
-        beforeEach(async function () {
-          await middleware.setMoveWithEvents(
-            {
-              params: {
-                moveIdWithEvents: mockMoveId,
-              },
-              services: {
-                move: { getByIdWithEvents: sinon.stub().throws(errorStub) },
-              },
-            },
-            res,
-            nextSpy
-          )
-        })
-
-        it('should not set response data to request object', function () {
-          expect(req).not.to.have.property('move')
-        })
-
-        it('should send error to next function', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
-        })
-      })
-    })
   })
 
   describe('#setPersonEscortRecord()', function () {
