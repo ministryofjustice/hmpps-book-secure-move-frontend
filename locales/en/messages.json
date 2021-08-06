@@ -63,5 +63,13 @@
   },
   "external_data": {
     "nomis":"This number was originally from NOMIS"
+  },
+  "preview_new_feature": {
+    "heading":"We are testing a new design of this page",
+    "content":"<p>We would like your help to test a new design of this page and help us improve it.</p>",
+    "actions": {
+      "yes": "Preview the new design",
+      "no": "Continue to use the current design"
+    }
   }
 }

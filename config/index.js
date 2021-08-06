@@ -284,6 +284,12 @@ module.exports = {
   FEATURE_FLAGS: {
     GOT: /true/i.test(process.env.FEATURE_FLAG_GOT),
   },
+  COOKIES: {
+    MOVE_DESIGN_PREVIEW: {
+      name: userId => `move-design-preview.${userId}`,
+      maxAge: 365 * 24 * 60 * 60 * 1000, // one year from opt-in,
+    },
+  },
   FRAMEWORKS: {
     CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
     FLAG_SETTINGS: {
