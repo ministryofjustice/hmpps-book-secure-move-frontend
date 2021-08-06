@@ -34,29 +34,20 @@ const {
 router.use(newApp.mountpath, newApp.router)
 router.use(viewApp.mountpath, viewApp.router)
 
-router.get(
-  `/:moveIdWithEvents(${uuidRegex})/timeline`,
-  protectRoute('move:view'),
-  setMoveWithEvents,
-  setPersonEscortRecord,
-  setYouthRiskAssessment,
-  timeline
-)
-
-router.use(
-  `/:moveId(${uuidRegex})`,
-  setMove,
-  setPersonEscortRecord,
-  setYouthRiskAssessment,
-  moveRouter
-)
+router.use(`/:moveId(${uuidRegex})`, moveRouter)
+// For all non-timeline routes use standard move middleware
+moveRouter.use(/\/((?!timeline).)*/, setMove)
+// For all timeline route use move events middleware
+moveRouter.use('/timeline', setMoveWithEvents)
+moveRouter.use(setPersonEscortRecord)
+moveRouter.use(setYouthRiskAssessment)
 
 if (ENABLE_DEVELOPMENT_TOOLS) {
   moveRouter.use(setDevelopmentTools)
 }
 
 moveRouter.get('/', protectRoute('move:view'), view)
-
+moveRouter.get('/timeline', protectRoute('move:view'), timeline)
 moveRouter.get(
   '/confirmation',
   protectRoute(['move:create', 'move:review']),
