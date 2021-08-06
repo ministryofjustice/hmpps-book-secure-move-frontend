@@ -57,5 +57,6 @@
   "add_item": "Add {{name}}",
   "add_item_with_items": "Add another {{name}}",
   "remove_item": "Remove <span class=\"govuk-visually-hidden\">{{name}} {{index}}</span>",
-  "save_and_calculate": "Save and calculate"
+  "save_and_calculate": "Save and calculate",
+  "view_old_move_design": "Use the old design of this page"
 }

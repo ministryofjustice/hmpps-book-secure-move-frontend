@@ -73,6 +73,7 @@
 | Name                                    | Description                                                                  | Default |
 | :-------------------------------------- | :--------------------------------------------------------------------------- | :------ |
 | FEATURE_FLAG_GOT | This will enable Got as the request library for the API instead of axios. | false |
+| FEATURE_FLAG_MOVE_PREVIEW | This will enable the banner to allow users to preview the new move design | false |
 
 ## Development specific
 

@@ -27,7 +27,7 @@ describe('Move view app', function () {
         beforeEach(function () {
           req.move._canCancel = true
 
-          middleware(req, res, nextSpy)
+          middleware()(req, res, nextSpy)
         })
 
         it('should add cancel action to locals', function () {
@@ -43,7 +43,7 @@ describe('Move view app', function () {
         beforeEach(function () {
           req.move._canCancel = false
 
-          middleware(req, res, nextSpy)
+          middleware()(req, res, nextSpy)
         })
 
         it('should not add cancel actions', function () {
@@ -59,7 +59,7 @@ describe('Move view app', function () {
         beforeEach(function () {
           req.canAccess.withArgs('move:view:journeys').returns(true)
 
-          middleware(req, res, nextSpy)
+          middleware()(req, res, nextSpy)
         })
 
         it('should add cancel action to locals', function () {
@@ -74,7 +74,7 @@ describe('Move view app', function () {
         beforeEach(function () {
           req.canAccess.withArgs('move:view:journeys').returns(false)
 
-          middleware(req, res, nextSpy)
+          middleware()(req, res, nextSpy)
         })
 
         it('should not add cancel actions', function () {
@@ -85,8 +85,34 @@ describe('Move view app', function () {
         })
       })
 
+      context('with preview prefix argument', function () {
+        beforeEach(function () {
+          middleware({ previewPrefix: '/preview-path' })(req, res, nextSpy)
+        })
+
+        it('should add opt out action to locals with prefix', function () {
+          expect(res.locals.actions).to.deep.include({
+            text: 'actions::view_old_move_design',
+            url: '/move/preview-path/opt-out?move_id=12345',
+          })
+        })
+      })
+
+      context('without preview prefix argument', function () {
+        beforeEach(function () {
+          middleware()(req, res, nextSpy)
+        })
+
+        it('should add opt out action to locals without prefix', function () {
+          expect(res.locals.actions).to.deep.include({
+            text: 'actions::view_old_move_design',
+            url: '/move/opt-out?move_id=12345',
+          })
+        })
+      })
+
       it('should call next', function () {
-        middleware(req, res, nextSpy)
+        middleware()(req, res, nextSpy)
 
         expect(nextSpy).to.be.calledOnceWithExactly()
       })

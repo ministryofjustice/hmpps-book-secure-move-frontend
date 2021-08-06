@@ -1,5 +1,16 @@
-const proxyquire = require('proxyquire')
+const proxyquire = require('proxyquire').noCallThru()
 
+const config = {
+  COOKIES: {
+    MOVE_DESIGN_PREVIEW: {
+      name: userId => `cookie__${userId}`,
+      maxAge: 3600,
+    },
+  },
+}
+const viewConstants = {
+  PREVIEW_PREFIX: '/preview-prefix',
+}
 const populateResources = sinon.stub()
 
 const middleware = proxyquire('./middleware', {
@@ -11,6 +22,8 @@ const middleware = proxyquire('./middleware', {
       completeAssessment: '/assessment-path',
     },
   },
+  '../../config': config,
+  './app/view/constants': viewConstants,
 })
 
 const moveStub = { foo: 'bar' }
@@ -26,6 +39,87 @@ const mockMoveId = '6904dea1-017f-48d8-a5ad-2723dee9d146'
 const errorStub = new Error('Problem')
 
 describe('Move middleware', function () {
+  describe('#checkPreviewChoice()', function () {
+    let req, res, nextSpy
+
+    beforeEach(function () {
+      req = {
+        cookies: {},
+        params: {
+          moveId: 'AAAA-BBBB-1111',
+        },
+        user: {
+          userId: 'user_1',
+        },
+      }
+      res = {
+        redirect: sinon.spy(),
+      }
+      nextSpy = sinon.spy()
+    })
+
+    context('when cookie does not exist', function () {
+      beforeEach(function () {
+        middleware.checkPreviewChoice(req, res, nextSpy)
+      })
+
+      it('should not redirect', function () {
+        expect(res.redirect).not.to.be.called
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+
+      it('should not set hide banner property', function () {
+        expect(req).not.to.have.property('hidePreviewOptInBanner')
+      })
+    })
+
+    context('when cookie exists', function () {
+      context('with a value of `1`', function () {
+        beforeEach(function () {
+          req.path = '/timeline'
+          req.cookies.cookie__user_1 = '1'
+          middleware.checkPreviewChoice(req, res, nextSpy)
+        })
+
+        it('should redirect to preview move URL', function () {
+          expect(res.redirect).to.be.calledOnceWithExactly(
+            `/move${viewConstants.PREVIEW_PREFIX}/${req.params.moveId}${req.path}`
+          )
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).not.to.be.called
+        })
+
+        it('should not set hide banner property', function () {
+          expect(req).not.to.have.property('hidePreviewOptInBanner')
+        })
+      })
+
+      context('with a value of `0`', function () {
+        beforeEach(function () {
+          req.cookies.cookie__user_1 = '0'
+          middleware.checkPreviewChoice(req, res, nextSpy)
+        })
+
+        it('should not redirect', function () {
+          expect(res.redirect).not.to.be.called
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+
+        it('should set hide banner property', function () {
+          expect(req.hidePreviewOptInBanner).to.be.true
+        })
+      })
+    })
+  })
+
   describe('#setMove()', function () {
     let req, res, nextSpy, moveService
 
