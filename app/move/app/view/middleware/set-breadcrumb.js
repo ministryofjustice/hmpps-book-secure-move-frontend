@@ -4,7 +4,7 @@ function setBreadcrumb(req, res, next) {
 
   if (reference) {
     res.breadcrumb({
-      text: `${reference}${name ? ` (${name})` : ''}`,
+      text: name ? `${name} (${reference})` : reference,
       href: req.baseUrl,
     })
   }
