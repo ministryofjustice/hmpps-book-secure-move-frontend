@@ -88,6 +88,7 @@ describe('Move helpers', function () {
       req = {
         t: sinon.stub().returnsArg(0),
         canAccess,
+        hidePreviewOptInBanner: true,
         session: {
           user: {
             permissions: userPermissions,
@@ -107,6 +108,11 @@ describe('Move helpers', function () {
           expect(params).to.have.property('move')
           expect(params.move).to.deep.equal(mockMove)
         })
+      })
+
+      it('should set the hidePreviewOptInBanner param', function () {
+        expect(params).to.have.property('hidePreviewOptInBanner')
+        expect(params.hidePreviewOptInBanner).to.be.true
       })
 
       describe('move summary', function () {
@@ -310,6 +316,7 @@ describe('Move helpers', function () {
           'additionalInfoSummary',
           'assessments',
           'courtHearings',
+          'hidePreviewOptInBanner',
           'messageBanner',
           'messageContent',
           'messageTitle',
@@ -342,6 +349,7 @@ describe('Move helpers', function () {
           'additionalInfoSummary',
           'assessments',
           'courtHearings',
+          'hidePreviewOptInBanner',
           'messageBanner',
           'messageContent',
           'messageTitle',

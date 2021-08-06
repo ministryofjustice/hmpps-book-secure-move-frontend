@@ -13,7 +13,7 @@ const getUpdateUrls = require('./get-update-urls')
 const mapUpdateLink = require('./map-update-link')
 
 function getLocals(req) {
-  const { move, canAccess } = req
+  const { move, canAccess, hidePreviewOptInBanner } = req
   const profile = move.profile || {}
   const { person } = profile
 
@@ -57,6 +57,7 @@ function getLocals(req) {
 
   const locals = {
     move,
+    hidePreviewOptInBanner,
     additionalInfoSummary,
     ...assessments,
     courtHearings,
