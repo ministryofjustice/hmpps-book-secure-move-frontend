@@ -1,5 +1,6 @@
 const { mapValues } = require('lodash')
 
+const { FEATURE_FLAGS } = require('../../../config')
 const presenters = require('../../presenters')
 
 const getAssessments = require('./get-assessments')
@@ -57,7 +58,8 @@ function getLocals(req) {
 
   const locals = {
     move,
-    hidePreviewOptInBanner,
+    hidePreviewOptInBanner:
+      !FEATURE_FLAGS.MOVE_PREVIEW || hidePreviewOptInBanner,
     additionalInfoSummary,
     ...assessments,
     courtHearings,
