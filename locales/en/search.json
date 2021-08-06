@@ -1,10 +1,12 @@
 {
   "form": {
     "page_title": "Search",
-    "heading": "Search"
+    "label": "Find a move or person",
+    "hint": "You can search by move reference, PNC number or prison number"
   },
   "results": {
     "page_title": "Search results",
-    "heading": "Search results"
+    "heading": "{{count}} result for {{-term}}",
+    "heading_plural": "{{count}} results for {{-term}}"
   }
 }

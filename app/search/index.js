@@ -1,17 +1,20 @@
 // NPM dependencies
 const router = require('express').Router()
 
-const setRequestFilters = require('../../common/middleware/set-request-filters')
+// const setRequestFilters = require('../../common/middleware/set-request-filters')
 
 // Local dependencies
 const { renderSearchForm, renderSearchResults } = require('./controllers')
 const fields = require('./fields')
+const { processSearchTerm, processSearchResults } = require('./middleware')
 
 // Define routes
 router.get('/', renderSearchForm(fields))
 router.get(
   '/results',
-  setRequestFilters(fields, '/search'),
+  processSearchTerm,
+  processSearchResults,
+  // setRequestFilters(fields, '/search'),
   renderSearchResults
 )
 

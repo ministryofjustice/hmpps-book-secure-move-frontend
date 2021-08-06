@@ -1,53 +1,71 @@
-const { get } = require('lodash')
+const presenters = require('../../common/presenters')
+const validators = require('../move/validators')
 
-const { decodeAccessToken } = require('../../common/lib/access-token')
-const { loadUser } = require('../../common/lib/user')
+function processSearchTerm(req, res, next) {
+  const query = req.query.q
+  let queryType
 
-function processAuthResponse() {
-  return async function middleware(req, res, next) {
-    const accessToken = get(req.session, 'grant.response.access_token')
+  if (validators.moveReference(query)) {
+    queryType = 'move_reference'
+  } else if (validators.policeNationalComputerNumber(query)) {
+    queryType = 'police_national_computer'
+  } else if (validators.prisonNumber(query)) {
+    queryType = 'prison_number'
+  }
 
-    if (!accessToken) {
-      const error = new Error('Could not authenticate user')
-      error.statusCode = 403
-      return next(error)
+  req.searchQuery = {
+    type: queryType,
+    value: query,
+  }
+
+  next()
+}
+
+async function processSearchResults(req, res, next) {
+  try {
+    const { searchQuery = {} } = req
+
+    if (!searchQuery.type) {
+      return next()
     }
 
-    try {
-      const decodedAccessToken = decodeAccessToken(accessToken)
-      const previousSession = { ...req.session }
+    let results
+    let resultsPresenter
 
-      const user = await loadUser(accessToken)
-
-      req.session.regenerate(error => {
-        if (error) {
-          return next(error)
-        }
-
-        req.session.authExpiry = decodedAccessToken.exp
-        req.session.user = user
-
-        // copy any previous session properties ignoring grant or any that already exist
-        Object.keys(previousSession).forEach(key => {
-          if (req.session[key]) {
-            return
-          }
-
-          if (key === 'grant') {
-            return
-          }
-
-          req.session[key] = previousSession[key]
+    switch (searchQuery.type) {
+      case 'move_reference':
+        results = await req.services.move.search({
+          reference: searchQuery.value.toUpperCase(),
         })
-
-        next()
-      })
-    } catch (error) {
-      next(error)
+        resultsPresenter = 'movesToSearchResultsTable'
+        break
+      case 'police_national_computer':
+        results = await req.services.person.getByIdentifiers({
+          police_national_computer: searchQuery.value,
+        })
+        resultsPresenter = 'peopleToSearchResultsTable'
+        break
+      case 'prison_number':
+        results = await req.services.person.getByIdentifiers({
+          prison_number: searchQuery.value,
+        })
+        resultsPresenter = 'peopleToSearchResultsTable'
+        break
     }
+
+    req.searchResults = results
+
+    if (resultsPresenter) {
+      req.searchResultsAsTable = presenters[resultsPresenter]()(results)
+    }
+
+    next()
+  } catch (error) {
+    next(error)
   }
 }
 
 module.exports = {
-  processAuthResponse,
+  processSearchTerm,
+  processSearchResults,
 }

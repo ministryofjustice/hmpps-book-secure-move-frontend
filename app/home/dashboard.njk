@@ -4,35 +4,45 @@
   {{ t(pageTitle) }} – {{ super() }}
 {% endblock %}
 
-{% block content %}
-  <header>
-    <h1 class="govuk-heading-xl">
-      {{ t(pageTitle) }}
-    </h1>
-  </header>
+{% block main %}
+  <main class="govuk-main-wrapper" id="main-content" role="main">
+    <header class="govuk-width-container">
+      <h1 class="govuk-heading-xl">
+        {{ t(pageTitle) }}
+      </h1>
+    </header>
 
-  <div class="govuk-grid-row">
-    {% for key, section in sections %}
-      {% if canAccess(section.permission) %}
-        <section class="govuk-grid-column-one-half govuk-!-margin-bottom-6">
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
-            {{ t(section.heading) }}
+    <div style="background: #e0eef8;" class="govuk-!-padding-top-5 govuk-!-padding-bottom-5 govuk-!-margin-bottom-6">
+      <div class="govuk-width-container">
+        {% include "includes/search-form.njk" %}
+      </div>
+    </div>
 
-            <span class="govuk-!-display-block">
-            {% if section.period === 'week' %}
-              {{ currentWeek | formatDateRangeWithRelativeWeek }}
-            {% else %}
-              {{ today | formatDateWithRelativeDay }}
-            {% endif %}
-            </span>
-          </h2>
+    <div class="govuk-width-container">
+      <div class="govuk-grid-row">
+        {% for key, section in sections %}
+          {% if canAccess(section.permission) %}
+            <section class="govuk-grid-column-one-half govuk-!-margin-bottom-6">
+              <h2 class="govuk-heading-m govuk-!-margin-bottom-1">
+                {{ t(section.heading) }}
 
-          {{ appFilter({
-            items: section.filter,
-            classes: "app-filter--stacked"
-          }) }}
-        </section>
-      {% endif %}
-    {% endfor %}
-  </div>
+                <span class="govuk-!-display-block">
+                {% if section.period === 'week' %}
+                  {{ currentWeek | formatDateRangeWithRelativeWeek }}
+                {% else %}
+                  {{ today | formatDateWithRelativeDay }}
+                {% endif %}
+                </span>
+              </h2>
+
+              {{ appFilter({
+                items: section.filter,
+                classes: "app-filter--stacked"
+              }) }}
+            </section>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </main>
 {% endblock %}

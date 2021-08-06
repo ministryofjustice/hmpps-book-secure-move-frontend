@@ -1,9 +1,9 @@
-const faker = require('faker')
-const { pick } = require('lodash')
+// const faker = require('faker')
+// const { pick } = require('lodash')
 
 const filters = require('../../common/controllers/filters')
 const fieldHelpers = require('../../common/helpers/field')
-const presenters = require('../../common/presenters')
+// const presenters = require('../../common/presenters')
 
 module.exports = {
   renderSearchForm: fields => {
@@ -26,65 +26,77 @@ module.exports = {
       })
     }
   },
-  renderSearchResults: async (req, res, next) => {
-    try {
-      const { reference, search_type: searchType } = req.query
-      const requiedFilterKeys = [
-        'reference',
-        'police_national_computer',
-        'prison_number',
-      ]
-      const meetsRequiredFilter = Object.keys(req.query).some(key =>
-        requiedFilterKeys.includes(key)
-      )
-      let results = []
+  renderSearchResults: (req, res, next) => {
+    const {
+      searchQuery = {},
+      searchResults: results = [],
+      searchResultsAsTable: resultsAsTable = [],
+    } = req
 
-      if (meetsRequiredFilter) {
-        if (searchType === 'move') {
-          results = await req.services.move.search({
-            reference,
-          })
+    return res.render('search/views/search-results', {
+      results,
+      resultsAsTable,
+      searchTerm: searchQuery.value,
+    })
 
-          // const person = results[0].profile.person
+    // try {
+    //   const { reference, search_type: searchType } = req.query
+    //   const requiedFilterKeys = [
+    //     'reference',
+    //     'police_national_computer',
+    //     'prison_number',
+    //   ]
+    //   const meetsRequiredFilter = Object.keys(req.query).some(key =>
+    //     requiedFilterKeys.includes(key)
+    //   )
+    //   let results = []
 
-          // await req.services.person.update({
-          //   ...person,
-          //   prison_number: 'G5299UN',
-          // })
-          // await req.services.person.getByIdentifiers({
-          //   prison_number: 'G5299UN',
-          // })
-          // await req.services.person.update({
-          //   ...person,
-          //   prison_number: faker.fake('{{helpers.replaceSymbols("?####??")}}'),
-          // })
-        } else if (searchType === 'person') {
-          results = await req.services.person
-            .getByIdentifiers(
-              pick(req.query, ['police_national_computer', 'prison_number'])
-            )
-            .then(data => {
-              return data.map(person => {
-                return {
-                  profile: {
-                    person,
-                  },
-                }
-              })
-            })
-        }
-      }
+    //   if (meetsRequiredFilter) {
+    //     if (searchType === 'move') {
+    //       results = await req.services.move.search({
+    //         reference,
+    //       })
 
-      const resultsAsTable = presenters.singleRequestsToTableComponent({
-        query: req.query,
-      })(results)
+    //       // const person = results[0].profile.person
 
-      res.render('search/views/search-results', {
-        results,
-        resultsAsTable,
-      })
-    } catch (error) {
-      next(error)
-    }
+    //       // await req.services.person.update({
+    //       //   ...person,
+    //       //   prison_number: 'G5299UN',
+    //       // })
+    //       // await req.services.person.getByIdentifiers({
+    //       //   prison_number: 'G5299UN',
+    //       // })
+    //       // await req.services.person.update({
+    //       //   ...person,
+    //       //   prison_number: faker.fake('{{helpers.replaceSymbols("?####??")}}'),
+    //       // })
+    //     } else if (searchType === 'person') {
+    //       results = await req.services.person
+    //         .getByIdentifiers(
+    //           pick(req.query, ['police_national_computer', 'prison_number'])
+    //         )
+    //         .then(data => {
+    //           return data.map(person => {
+    //             return {
+    //               profile: {
+    //                 person,
+    //               },
+    //             }
+    //           })
+    //         })
+    //     }
+    //   }
+
+    //   const resultsAsTable = presenters.singleRequestsToTableComponent({
+    //     query: req.query,
+    //   })(results)
+
+    //   res.render('search/views/search-results', {
+    //     results,
+    //     resultsAsTable,
+    //   })
+    // } catch (error) {
+    //   next(error)
+    // }
   },
 }

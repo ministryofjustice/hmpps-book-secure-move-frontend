@@ -51,6 +51,12 @@ module.exports = {
       (Controller.validators.date(value) && isAfter(test, comparator))
     )
   },
+  moveReference(value) {
+    return (
+      value === '' ||
+      Controller.validators.regex(value, /^[A-Za-z]{3}[1-9]{4}[A-Za-z]{1}$/i)
+    )
+  },
   prisonNumber(value) {
     return (
       value === '' ||

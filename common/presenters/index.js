@@ -26,7 +26,9 @@ const moveToTimelineComponent = require('./move-to-timeline-component')
 const moveTypesToFilterComponent = require('./move-type-for-filter')
 const movesByLocation = require('./moves-by-location')
 const movesByVehicle = require('./moves-by-vehicle')
+const movesToSearchResultsTable = require('./moves-to-search-results-table-component')
 const movesToTableComponent = require('./moves-to-table-component')
+const peopleToSearchResultsTable = require('./people-to-search-results-table-component')
 const personToMetaListComponent = require('./person-to-meta-list-component')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
 const populationToGrid = require('./population-to-grid')
@@ -56,6 +58,7 @@ module.exports = {
   frameworkToTaskListComponent,
   movesByLocation,
   movesByVehicle,
+  movesToSearchResultsTable,
   movesToTableComponent,
   moveToAdditionalInfoListComponent,
   moveToCardComponent,
@@ -65,6 +68,7 @@ module.exports = {
   moveToSummaryListComponent,
   moveToTimelineComponent,
   moveTypesToFilterComponent,
+  peopleToSearchResultsTable,
   personToMetaListComponent,
   personToSummaryListComponent,
   populationToGrid,

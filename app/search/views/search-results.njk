@@ -9,11 +9,19 @@
 {% block content %}
   <header class="govuk-!-margin-bottom-8">
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
-      {{ t("search::results.heading") }}
+      {{ t("search::results.heading", {
+        count: results.length,
+        term: searchTerm
+      }) }}
     </h1>
   </header>
 
+  <div class="govuk-!-margin-bottom-6">
+    {% include "includes/search-form.njk" %}
+  </div>
+
   {# {{results|dump(1)}} #}
+  {# {{resultsAsTable|dump(1)}} #}
   {# {{requestFilters|dump(1)}} #}
 
   {% if resultsAsTable.rows.length %}
@@ -30,6 +38,6 @@
     }) }}
   {% endif %}
 
-  <a href="{{ requestFilters.links.editFilters }}">Search again</a>
+  {# <a href="{{ requestFilters.links.editFilters }}">Search again</a> #}
 
 {% endblock %}

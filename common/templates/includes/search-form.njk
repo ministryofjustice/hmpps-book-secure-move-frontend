@@ -1,0 +1,27 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="moj-search">
+      <form action="/search/results" method="get">
+        {{ govukInput({
+          classes: 'moj-search__input',
+          label: {
+            classes: 'moj-search__label govuk-label--m',
+            text: t("search::form.label")
+          },
+          hint: {
+            text: t("search::form.hint")
+          },
+          id: "q",
+          name: "q",
+          type: "search",
+          value: searchTerm
+        }) }}
+
+        {{ govukButton({
+          classes: "moj-search__button",
+          text: t("actions::search")
+        }) }}
+      </form>
+    </div>
+  </div>
+</div>
