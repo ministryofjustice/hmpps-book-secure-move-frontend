@@ -26,6 +26,7 @@ const {
   view,
 } = require('./controllers')
 const {
+  checkPreviewChoice,
   setMove,
   setMoveWithEvents,
   setPersonEscortRecord,
@@ -46,6 +47,8 @@ router.get('/preview/opt-in', previewOptIn)
 router.get('/preview/opt-out', previewOptOut)
 
 router.use(`/:moveId(${uuidRegex})`, moveRouter)
+
+moveRouter.use(['/', '/timeline', '/journeys'], checkPreviewChoice)
 // For all non-timeline routes use standard move middleware
 moveRouter.use(/\/((?!timeline).)*/, setMove)
 // For all timeline route use move events middleware

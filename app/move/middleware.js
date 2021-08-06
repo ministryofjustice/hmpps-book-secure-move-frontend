@@ -3,8 +3,23 @@ const {
   routes: toolsRoutes,
 } = require('../../app/tools')
 const populateResources = require('../../common/lib/populate-resources')
+const { COOKIES } = require('../../config')
+
+const { PREVIEW_PREFIX } = require('./app/view/constants')
 
 module.exports = {
+  checkPreviewChoice(req, res, next) {
+    const moveId = req.params.moveId
+    const cookieName = COOKIES.MOVE_DESIGN_PREVIEW.name(req.user.userId)
+    const cookie = req.cookies[cookieName]
+
+    if (cookie === '1') {
+      return res.redirect(`/move${PREVIEW_PREFIX}/${moveId}${req.path}`)
+    }
+
+    next()
+  },
+
   setMove: async (req, res, next) => {
     const moveId = req.params.moveId
 
