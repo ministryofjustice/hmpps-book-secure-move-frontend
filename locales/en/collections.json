@@ -70,6 +70,14 @@
     "progress_status_complete": "Filled",
     "progress_status_by_added": "{{count}} added",
     "progress_status_by_remaining": "{{count}} remaining",
-    "progress_status_cancelled": "Cancelled"
+    "progress_status_cancelled": "Cancelled",
+    "move_status": "Status",
+    "move_status_proposed": "Proposed",
+    "move_status_requested": "Requested",
+    "move_status_booked": "Booked",
+    "move_status_in_transit": "In transet",
+    "move_status_completed": "Completed",
+    "move_status_cancelled": "Cancelled",
+    "reference": "Reference"
   }
 }

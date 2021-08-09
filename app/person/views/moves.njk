@@ -2,8 +2,6 @@
 
 {% block tabContent %}
   <h2 class="govuk-heading-m">
-    {{ t("person::personal_details.heading") }}
+    {{ govukTable(resultsAsTable) }}
   </h2>
-
-  {{ govukSummaryList(personalDetailsSummary) }}
 {% endblock %}

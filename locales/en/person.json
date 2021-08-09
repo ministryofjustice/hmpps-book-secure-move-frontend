@@ -4,5 +4,12 @@
   "personal_details": {
     "heading": "Personal details"
   },
-  "summary_panel_heading":"Personal details"
+  "moves": {
+    "heading": "Moves"
+  },
+  "summary_panel_heading":"Personal details",
+  "tabs": {
+    "personal_details": "Personal details",
+    "moves": "Moves"
+  }
 }
