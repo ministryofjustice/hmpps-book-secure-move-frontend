@@ -1,7 +1,8 @@
 const proxyquire = require('proxyquire')
 
 const userServicesStub = {
-  getLocations: () => Promise.resolve(['location']),
+  getLocations: () =>
+    Promise.resolve([{ title: 'location2' }, { title: 'location1' }]),
   getFullname: () => Promise.resolve('Mr Benn'),
   getSupplierId: () => Promise.resolve('undefined'),
 }
@@ -59,8 +60,11 @@ describe('User', function () {
       expect(user.permissions).to.deep.equal(['permission'])
     })
 
-    it('sets the locations', function () {
-      expect(user.locations).to.deep.equal(['location'])
+    it('sorts and sets the locations', function () {
+      expect(user.locations).to.deep.equal([
+        { title: 'location1' },
+        { title: 'location2' },
+      ])
     })
   })
 })

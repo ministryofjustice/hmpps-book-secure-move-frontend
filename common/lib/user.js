@@ -32,6 +32,7 @@ async function loadUser(accessToken) {
   const permissions = rolesToPermissions(authorities)
 
   const locations = await getLocations(accessToken, supplierId, permissions)
+  locations.sort((a, b) => a.title.localeCompare(b.title))
 
   return {
     userId,
