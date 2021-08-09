@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.86.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.85.4...v2.86.0) (2021-08-09)
+
+
+### Features
+
+* Add banner to opt-in to preview new move design ([9de3bfc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9de3bfcdb7f18708b8fc7379f9cd4370f44ea933))
+* Sort locations alphabetically ([5be5f60](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5be5f60c17565e44a828849782e1070a831f77b1))
+
+
+### Bug Fixes
+
+* **move design:** Update the breadcrumb to match the heading ([74540d6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/74540d68caf0f5918812fe5a45d803f864f29153))
+
 ### [2.85.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.85.3...v2.85.4) (2021-08-05)
 
 
