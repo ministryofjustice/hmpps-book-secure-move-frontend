@@ -51,7 +51,7 @@
   },
   "JourneyChangeVehicle": {
     "heading": "Vehicle changed",
-    "description": "$t(events::person) moved from {{previous_vehicle_reg}} to {{journey.vehicle.registration}}"
+    "description": "$t(events::person) moved from {{previous_vehicle_reg}} to {{vehicle_reg}}"
   },
   "JourneyComplete": {
     "heading": "Journey completed",
