@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.87.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.86.0...v2.87.0) (2021-08-10)
+
+
+### Features
+
+* Add a middleware for person moves ([6060fc9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6060fc9f42c252f1211ac711102b92389b1ef530))
+* Add a view for person moves ([c7b6275](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c7b6275a418ed56d0a6420eb1fc53b1570cba9f1))
+* Add presenter for rendering moves in a table ([1d0e2df](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1d0e2dfb2a7fe47dc2f15e86cb0fa2fcd3b68cb5))
+* Add tabs to person app ([5391f7c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5391f7cc99d6af0892e120bb8e644cb328014222))
+
+
+### Bug Fixes
+
+* Display correct vehicle registration in events ([ba3d0fb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ba3d0fb12c7bc604da72e7e29908365032df2a39))
+
 ## [2.86.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.85.4...v2.86.0) (2021-08-09)
 
 
