@@ -28,13 +28,6 @@ describe('Person app', function () {
         personalDetails(req, res)
       })
 
-      it('should set breadcrumb', function () {
-        expect(req.t).to.be.called
-        expect(res.breadcrumb).to.be.calledOnceWithExactly({
-          text: 'person::tabs.personal_details',
-        })
-      })
-
       it('should render correct template', function () {
         expect(res.render.args[0][0]).to.equal('person/views/personal-details')
       })

@@ -17,13 +17,6 @@ describe('Move view app', function () {
         controller(req, res)
       })
 
-      it('should set breadcrumb', function () {
-        expect(req.t).to.be.calledOnce
-        expect(res.breadcrumb).to.be.calledOnceWithExactly({
-          text: 'moves::tabs.warnings',
-        })
-      })
-
       it('should pass correct locals', function () {
         expect(res.render.args[0][1]).to.deep.equal({})
       })

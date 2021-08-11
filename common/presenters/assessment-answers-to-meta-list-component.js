@@ -10,7 +10,7 @@ function generateDateHtmlString({
 }) {
   if (startDate) {
     return `
-      <div class="app-secondary-text-colour govuk-!-margin-top-2 govuk-!-font-size-14">
+      <div class="app-secondary-text-colour govuk-!-margin-top-1 govuk-!-font-size-14">
         ${i18n.t(startDateKey, {
           context: codeType,
         })} ${filters.formatDateWithDay(startDate)}
