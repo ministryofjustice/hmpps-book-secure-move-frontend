@@ -18,9 +18,7 @@ function renderTimeline(req, res) {
     timeline,
   }
 
-  res
-    .breadcrumb({ text: req.t('moves::tabs.timeline') })
-    .render('move/app/view/views/timeline', locals)
+  res.render('move/app/view/views/timeline', locals)
 }
 
 module.exports = renderTimeline

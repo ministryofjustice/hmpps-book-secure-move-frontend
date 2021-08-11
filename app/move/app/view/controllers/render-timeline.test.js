@@ -33,13 +33,6 @@ describe('Move view app', function () {
           ).to.be.calledOnceWithExactly(req.move)
         })
 
-        it('should set breadcrumb', function () {
-          expect(req.t).to.be.calledOnce
-          expect(res.breadcrumb).to.be.calledOnceWithExactly({
-            text: 'moves::tabs.timeline',
-          })
-        })
-
         it('should pass correct locals', function () {
           expect(res.render.args[0][1]).to.deep.equal({
             timeline: req.move,
