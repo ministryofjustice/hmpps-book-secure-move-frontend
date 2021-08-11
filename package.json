@@ -231,7 +231,7 @@
     "testcafe": "1.9.4",
     "testcafe-browser-provider-browserstack": "1.13.1",
     "testcafe-reporter-xunit": "2.1.0",
-    "timezone-mock": "1.2.0",
+    "timezone-mock": "1.2.1",
     "webpack": "5.50.0",
     "webpack-assets-manifest": "5.0.6",
     "webpack-cli": "4.6.0",
