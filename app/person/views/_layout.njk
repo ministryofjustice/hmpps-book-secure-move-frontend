@@ -1,4 +1,4 @@
-{% extends "layouts/two-column.njk" %}
+{% extends "layouts/base.njk" %}
 
 {% block customGtagConfig %}
   gtag('set', {'page_title': 'Person profile'});
@@ -8,16 +8,15 @@
   {{ getPageTitle() | join(' – ') if getPageTitle }}
 {% endblock %}
 
-{% block contentHeader %}
-  {{ appIdentityBar(identityBar) }}
-{% endblock %}
+{% block content %}
+  {% block contentHeader %}
+    {{ appIdentityBar(identityBar) }}
+  {% endblock %}
 
-{% block contentMain %}
   {% include 'includes/tabs.njk' %}
 
-  {% block tabContent %}
-  {% endblock %}
-{% endblock %}
-
-{% block contentSidebar %}
+  <div class="govuk-!-margin-bottom-6">
+    {% block tabContent %}
+    {% endblock %}
+  </div>
 {% endblock %}
