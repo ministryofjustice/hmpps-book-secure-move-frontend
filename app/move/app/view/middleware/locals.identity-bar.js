@@ -30,6 +30,7 @@ function localsIdentityCard(req, res, next) {
   }
 
   res.locals.identityBar = identityBar
+  res.locals.move = move
 
   next()
 }

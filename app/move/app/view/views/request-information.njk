@@ -1,0 +1,76 @@
+{% extends "./_layout.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Booking information – Assessments – Move details'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ getPageTitle() | join(' – ') if getPageTitle }}
+{% endblock %}
+
+{% macro renderAssessmentComponent(assessment) %}
+  {% if assessment.isCompleted == false %}
+    {{ govukInsetText({
+      classes: "govuk-inset-text--compact govuk-!-margin-0",
+      text: t("assessment::section_incomplete")
+    }) }}
+  {% elif assessment.count > 0 %}
+    {% if assessment.panels %}
+      {% for panel in assessment.panels %}
+        {{ appPanel(panel) }}
+      {% endfor %}
+    {% else %}
+      {{ govukSummaryList(assessment) }}
+    {% endif %}
+	@@ -37,54 +37,51 @@
+  {% endif %}
+{% endmacro %}
+
+{% macro section(heading) %}
+  <section class="app-!-position-relative govuk-!-margin-top-7">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-padding-bottom-3 govuk-!-padding-right-8 app-border-bottom-1">
+      {{ heading }}
+    </h2>
+
+    {{ caller() if caller else content }}
+  </section>
+{% endmacro %}
+
+{% macro updateLink(link) %}
+  {% if link.href %}
+    <p class="govuk-!-font-size-16 app-!-position-top-right">
+      <a href="{{ link.href }}" class="govuk-link" {%- for attribute, value in link.attributes %} {{attribute}}="{{value}}"{% endfor %}>
+        {{ link.html | safe }}
+      </a>
+    </p>
+  {% endif %}
+{% endmacro %}
+
+{% block contentHeader %}{% endblock %}
+{% block actionsPanel %}{% endblock %}
+
+{% block contentMain %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      Booking information
+    </h1>
+  </header>
+
+  {% call section("Move details") %}
+    {{ govukSummaryList(moveSummary) }}
+  {% endcall %}
+
+  {% for assessment in assessments %}
+    {% set assessmentHeading = t('assessment::heading.text', {
+      context: assessment.key
+    }) %}
+
+    {% call section(assessmentHeading) %}
+      {{ renderAssessmentComponent(assessment) }}
+
+      {% if isEditable %}
+        {{ updateLink(updateLinks[assessment.key]) }}
+      {% endif %}
+    {% endcall %}
+  {% endfor %}
+{% endblock %}

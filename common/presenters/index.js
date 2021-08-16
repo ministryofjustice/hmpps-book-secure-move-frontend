@@ -23,6 +23,7 @@ const moveToIdentityBarActions = require('./move-to-identity-bar-actions')
 const moveToImportantEventsTagListComponent = require('./move-to-important-events-tag-list-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const moveToSummaryListComponent = require('./move-to-summary-list-component')
+const moveToTaskListComponent = require('./move-to-task-list-component')
 const moveToTimelineComponent = require('./move-to-timeline-component')
 const moveTypesToFilterComponent = require('./move-type-for-filter')
 const movesByLocation = require('./moves-by-location')
@@ -66,6 +67,7 @@ module.exports = {
   moveToMessageBannerComponent,
   moveToMetaListComponent,
   moveToSummaryListComponent,
+  moveToTaskListComponent,
   moveToTimelineComponent,
   moveTypesToFilterComponent,
   personToMetaListComponent,
