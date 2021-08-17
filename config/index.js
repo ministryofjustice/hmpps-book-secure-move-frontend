@@ -187,15 +187,15 @@ module.exports = {
     risk: {
       frameworksSection: 'risk-information',
       tagClass: 'app-tag--destructive',
-      sortOrder: 1,
+      sortOrder: 2,
     },
     health: {
       frameworksSection: 'health-information',
       tagClass: '',
-      sortOrder: 2,
+      sortOrder: 3,
     },
     court: {
-      sortOrder: 3,
+      sortOrder: 1,
     },
   },
   LOCATIONS_BATCH_SIZE: process.env.LOCATIONS_BATCH_SIZE || 40,
