@@ -22,6 +22,7 @@ const {
   localsMoveDetails,
   localsPersonSummary,
   localsTabs,
+  localsUrls,
   localsWarnings,
   setBreadcrumb,
 } = require('./middleware')
@@ -39,6 +40,7 @@ router.use(breadcrumbs.setHome())
 router.use(setPersonEscortRecord)
 router.use(setYouthRiskAssessment)
 router.use(setBreadcrumb)
+router.use(localsUrls)
 router.use(localsActions({ previewPrefix: PREVIEW_PREFIX }))
 router.use(localsIdentityBar)
 router.use(localsMoveDetails)
