@@ -29,7 +29,7 @@
       {% endif %}
 
       {% for key, step in summarySteps %}
-        <section class="app-!-position-relative govuk-!-margin-bottom-8">
+        <section class="app-!-position-relative{% if not loop.last %} govuk-!-margin-bottom-8{% endif %}">
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-padding-bottom-1 govuk-!-padding-right-8 app-border-bottom-1">
             {{ step.pageTitle }}
           </h2>
@@ -48,6 +48,8 @@
           {{ govukSummaryList(step.summaryListComponent) }}
         </section>
       {% endfor %}
+
+      {{ appPagination(sectionPagination) }}
     </div>
 
     <div class="govuk-grid-column-one-third">
@@ -59,9 +61,11 @@
   </div>
 
   {% if moveId %}
-    {{ govukBackLink({
-      text: t("actions::back_to_move"),
-      href: "/move/" + moveId
-    }) }}
+    <p class="govuk-!-margin-top-6 govuk-!-margin-bottom-0">
+      {{ govukBackLink({
+        text: t("actions::back_to_move"),
+        href: "/move/" + moveId
+      }) }}
+    </p>
   {% endif %}
 {% endblock %}

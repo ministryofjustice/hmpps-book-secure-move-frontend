@@ -2,6 +2,7 @@ const proxyquire = require('proxyquire')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
+const i18n = require('../../../config/i18n')
 
 const setMoveWithSummary = sinon.stub()
 
@@ -22,6 +23,7 @@ describe('Framework controllers', function () {
         sinon.stub(controller, 'setMoveId')
         sinon.stub(controller, 'setEditableStatus')
         sinon.stub(controller, 'seti18nContext')
+        sinon.stub(controller, 'setPagination')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
@@ -56,6 +58,12 @@ describe('Framework controllers', function () {
         )
       })
 
+      it('should call set pagination', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          controller.setPagination
+        )
+      })
+
       it('should call set move with summary', function () {
         expect(controller.use).to.have.been.calledWithExactly(
           setMoveWithSummary
@@ -63,7 +71,7 @@ describe('Framework controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(5)
+        expect(controller.use).to.be.callCount(6)
       })
     })
 
@@ -108,6 +116,126 @@ describe('Framework controllers', function () {
         })
 
         it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+    })
+
+    describe('#setPagination', function () {
+      let mockReq, mockRes, nextSpy
+      const mockSections = {
+        'health-information': {
+          key: 'health-information',
+          name: 'Health information',
+          order: 2,
+        },
+        'offence-information': {
+          key: 'offence-information',
+          name: 'Offence information',
+          order: 4,
+        },
+        'property-information': {
+          key: 'property-information',
+          name: 'Property information',
+          order: 3,
+        },
+        'risk-information': {
+          key: 'risk-information',
+          name: 'Risk information',
+          order: 1,
+        },
+      }
+
+      beforeEach(function () {
+        sinon.stub(i18n, 't').returnsArg(0)
+        nextSpy = sinon.spy()
+        mockReq = {
+          assessment: {
+            _framework: {
+              sections: mockSections,
+            },
+          },
+          baseUrl: '/move/person-escort-record',
+          frameworkSection: {},
+        }
+        mockRes = {
+          locals: {},
+        }
+      })
+
+      context('when current section is first section', function () {
+        beforeEach(function () {
+          mockReq.frameworkSection.key = 'risk-information'
+          mockReq.baseUrl = `/move/person-escort-record/${mockReq.frameworkSection.key}`
+
+          controller.setPagination(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set pagination with only next', function () {
+          expect(mockRes.locals.sectionPagination).to.deep.equal({
+            classes: 'app-pagination--split govuk-!-margin-top-6',
+            next: {
+              href: '/move/person-escort-record/health-information',
+              label: 'Health information',
+              text: 'pagination.next_section',
+            },
+          })
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when current section is middle section', function () {
+        beforeEach(function () {
+          mockReq.frameworkSection.key = 'property-information'
+          mockReq.baseUrl = `/move/person-escort-record/${mockReq.frameworkSection.key}`
+
+          controller.setPagination(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set pagination with both next and previous', function () {
+          expect(mockRes.locals.sectionPagination).to.deep.equal({
+            classes: 'app-pagination--split govuk-!-margin-top-6',
+            next: {
+              href: '/move/person-escort-record/offence-information',
+              label: 'Offence information',
+              text: 'pagination.next_section',
+            },
+            previous: {
+              href: '/move/person-escort-record/health-information',
+              label: 'Health information',
+              text: 'pagination.previous_section',
+            },
+          })
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when current section is last section', function () {
+        beforeEach(function () {
+          mockReq.frameworkSection.key = 'offence-information'
+          mockReq.baseUrl = `/move/person-escort-record/${mockReq.frameworkSection.key}`
+
+          controller.setPagination(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set pagination with only previous', function () {
+          expect(mockRes.locals.sectionPagination).to.deep.equal({
+            classes: 'app-pagination--split govuk-!-margin-top-6',
+            previous: {
+              href: '/move/person-escort-record/property-information',
+              label: 'Property information',
+              text: 'pagination.previous_section',
+            },
+          })
+        })
+
+        it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
