@@ -7,7 +7,7 @@
 {% macro renderAssessmentComponent(assessment) %}
   {% if assessment.isCompleted == false %}
     {{ govukInsetText({
-      classes: "govuk-inset-text--compact govuk-!-margin-0",
+      classes: "govuk-!-font-size-16 govuk-!-margin-0",
       text: t("assessment::section_incomplete")
     }) }}
   {% elif assessment.count > 0 %}
@@ -23,47 +23,64 @@
       classes: "app-message--muted govuk-!-margin-top-2",
       allowDismiss: false,
       content: {
+        classes: "govuk-!-font-size-16",
         html: t('assessment::no_items.text', {
           context: assessment.context or assessment.key,
-          name: assessment.name,
+          name: assessment.name | lower,
           url: assessment.url
         })
       }
     }) }}
   {% endif %}
+
+  {% if (assessment.url and assessment.isCompleted) %}
+    <p class="govuk-!-font-size-16 govuk-!-margin-top-2">
+      <a href="{{ assessment.url }}">
+        {{ t("assessment::view_framework_section", {
+          name: assessment.name | lower
+        }) }}
+      </a>
+    </p>
+  {% endif %}
 {% endmacro %}
 
 {% block tabContent %}
+  {% if warnings.sections %}
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+      {{ t("assessment::overview") }}
+    </h2>
 
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-    {{ t("assessment::overview") }}
-  </h2>
+    <div data-tag-list-source="person-escort-record">
+      {% for tag in warnings.tagList %}
+        {{ appTag(tag) }}
+      {% else %}
+        {{ govukInsetText({
+          classes: "govuk-!-font-size-16 govuk-!-margin-top-0",
+          text: t("assessment::incomplete_overview")
+        }) }}
+      {% endfor %}
+    </div>
 
-  <div data-tag-list-source="person-escort-record">
-    {% for tag in warnings.tagList %}
-      {{ appTag(tag) }}
-    {% else %}
-      {{ govukInsetText({
-        classes: "govuk-inset-text--compact govuk-!-margin-0",
-        text: t("assessment::incomplete")
-      }) }}
-    {% endfor %}
-  </div>
+    {% if warnings.sections | length %}
 
-  {% if warnings.sections | length %}
+      {% for section in warnings.sections %}
+        <section class="app-!-position-relative govuk-!-margin-top-7">
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+            {{ section.name or t('assessment::heading.text', {
+              context: section.key
+            }) }}
+          </h2>
 
-    {% for section in warnings.sections %}
-      <section class="app-!-position-relative govuk-!-margin-top-7">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-          {{ section.name or t('assessment::heading.text', {
-            context: section.key
-          }) }}
-        </h2>
+          {{ renderAssessmentComponent(section) }}
+        </section>
+      {% endfor %}
 
-        {{ renderAssessmentComponent(section) }}
-      </section>
-    {% endfor %}
-
+    {% endif %}
+  {% else %}
+    {{ govukInsetText({
+      classes: "govuk-!-font-size-16",
+      text: t("assessment::incomplete")
+    }) }}
   {% endif %}
 
 {% endblock %}

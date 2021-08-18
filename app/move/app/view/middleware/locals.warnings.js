@@ -9,35 +9,14 @@ function setWarnings(req, res, next) {
     return next()
   }
 
-  const assessmentAnswers = profile.assessment_answers || []
+  let tagList
   const personEscortRecord = profile.person_escort_record
-  const youthRiskAssessment = profile.youth_risk_assessment
-  const requiresYouthRiskAssessment = profile.requires_youth_risk_assessment
-
-  const assessment = presenters
-    .assessmentAnswersByCategory(assessmentAnswers)
-    .filter(category => category.key !== 'court')
-    .map(presenters.assessmentCategoryToPanelComponent)
-
-  const youthAssessmentSections = map(
-    youthRiskAssessment?._framework?.sections,
-    presenters.frameworkSectionToPanelList({
-      baseUrl: `/move/${moveId}/youth-risk-assessment`,
-    })
-  )
   const perAssessmentSections = map(
     personEscortRecord?._framework?.sections,
     presenters.frameworkSectionToPanelList({
       baseUrl: `/move/${moveId}/person-escort-record`,
     })
   )
-
-  const assessmentSections =
-    !isEmpty(personEscortRecord) || !requiresYouthRiskAssessment
-      ? sortBy(perAssessmentSections, 'order')
-      : sortBy(youthAssessmentSections, 'order')
-
-  let tagList
   const personEscortRecordIsCompleted =
     !isEmpty(personEscortRecord) &&
     !['not_started', 'in_progress'].includes(personEscortRecord.status)
@@ -51,10 +30,9 @@ function setWarnings(req, res, next) {
   }
 
   res.locals.warnings = {
-    sections:
-      !isEmpty(assessmentSections) || requiresYouthRiskAssessment
-        ? assessmentSections
-        : assessment,
+    sections: personEscortRecord
+      ? sortBy(perAssessmentSections, 'order')
+      : undefined,
     tagList,
   }
 

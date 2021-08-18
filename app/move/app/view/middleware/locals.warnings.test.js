@@ -54,7 +54,7 @@ describe('Move view app', function () {
 
           it('should call frameworkSectionToPanelList presenter for each section', function () {
             expect(frameworkSectionStub.callCount).to.equal(2)
-            expect(presenters.frameworkSectionToPanelList).to.be.calledTwice
+            expect(presenters.frameworkSectionToPanelList).to.be.calledOnce
             expect(presenters.frameworkSectionToPanelList).to.be.calledWith({
               baseUrl: `/move/${req.move.id}/person-escort-record`,
             })
@@ -69,117 +69,16 @@ describe('Move view app', function () {
           })
         })
 
-        context('with Youth Risk Assessment', function () {
+        context('without Person Escort Record', function () {
           beforeEach(function () {
-            req.move.profile.requires_youth_risk_assessment = true
-            req.move.profile.youth_risk_assessment = {
-              _framework: {
-                sections: [
-                  { name: 'fizz', order: 2 },
-                  { name: 'buzz', order: 1 },
-                ],
-              },
-              id: 'yra_12345',
-            }
+            req.move.profile.person_escort_record = null
+            middleware(req, res, nextSpy)
           })
 
-          context('with Person Escort Record', function () {
-            beforeEach(function () {
-              req.move.profile.person_escort_record = {
-                _framework: {
-                  sections: [
-                    { name: 'foo', order: 2 },
-                    { name: 'bar', order: 1 },
-                  ],
-                },
-                id: 'per_12345',
-              }
-              middleware(req, res, nextSpy)
-            })
-
-            it('should call frameworkSectionToPanelList presenter for each section', function () {
-              expect(frameworkSectionStub.callCount).to.equal(4)
-              expect(presenters.frameworkSectionToPanelList).to.be.calledTwice
-              expect(presenters.frameworkSectionToPanelList).to.be.calledWith({
-                baseUrl: `/move/${req.move.id}/person-escort-record`,
-              })
-            })
-
-            it('should set sections variable to PER sections correctly ordered', function () {
-              expect(res.locals.warnings).to.have.property('sections')
-              expect(res.locals.warnings.sections).to.deep.equal([
-                { name: 'bar', order: 1 },
-                { name: 'foo', order: 2 },
-              ])
-            })
+          it('should set sections variable to undefined', function () {
+            expect(res.locals.warnings).to.have.property('sections')
+            expect(res.locals.warnings.sections).to.be.undefined
           })
-
-          context('without Person Escort Record', function () {
-            beforeEach(function () {
-              middleware(req, res, nextSpy)
-            })
-
-            it('should call frameworkSectionToPanelList presenter for each section', function () {
-              expect(frameworkSectionStub.callCount).to.equal(2)
-              expect(presenters.frameworkSectionToPanelList).to.be.calledTwice
-              expect(presenters.frameworkSectionToPanelList).to.be.calledWith({
-                baseUrl: `/move/${req.move.id}/person-escort-record`,
-              })
-              expect(presenters.frameworkSectionToPanelList).to.be.calledWith({
-                baseUrl: `/move/${req.move.id}/youth-risk-assessment`,
-              })
-            })
-
-            it('should set sections variable to YRA sections correctly ordered', function () {
-              expect(res.locals.warnings).to.have.property('sections')
-              expect(res.locals.warnings.sections).to.deep.equal([
-                { name: 'buzz', order: 1 },
-                { name: 'fizz', order: 2 },
-              ])
-            })
-          })
-        })
-
-        context('with assessment answers', function () {
-          beforeEach(function () {
-            req.move.profile.assessment_answers = [
-              { name: 'buzz', order: 3, key: 'risk' },
-              { name: 'fizz', order: 7, key: 'health' },
-              { name: 'foo', order: 2, key: 'risk' },
-              { name: 'bar', order: 1, key: 'court' },
-            ]
-          })
-
-          context('when move requires youth risk assessment', function () {
-            beforeEach(function () {
-              req.move.profile.requires_youth_risk_assessment = true
-              middleware(req, res, nextSpy)
-            })
-
-            it('should set sections variable to empty array', function () {
-              expect(res.locals.warnings).to.have.property('sections')
-              expect(res.locals.warnings.sections).to.deep.equal([])
-            })
-          })
-
-          context(
-            'when move does not require youth risk assessment',
-            function () {
-              beforeEach(function () {
-                req.move.profile.requires_youth_risk_assessment = false
-                middleware(req, res, nextSpy)
-              })
-
-              it('should set sections variable to assessment answers', function () {
-                expect(res.locals.warnings).to.have.property('sections')
-                expect(res.locals.warnings.sections).to.deep.equal([
-                  { name: 'buzz', order: 3, key: 'risk' },
-                  { name: 'fizz', order: 7, key: 'health' },
-                  { name: 'foo', order: 2, key: 'risk' },
-                ])
-              })
-            }
-          )
         })
       })
 
