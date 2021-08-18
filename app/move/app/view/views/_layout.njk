@@ -53,6 +53,12 @@
           </h3>
 
           {{ appMetaList(moveDetails) }}
+
+          <p class="govuk-!-margin-top-3 govuk-!-margin-bottom-0 govuk-!-font-size-16">
+            <a href="{{ urls.move.details }}#tabs">
+              {{ t("actions::change_move_details") }}
+            </a>
+          </p>
         {% endcall %}
 
         {% if actions | length %}
