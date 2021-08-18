@@ -1,4 +1,8 @@
 params:
+  - name: isFocusable
+    type: boolean
+    required: false
+    description: Determines whether the panel will have a tabindex to allow it to be focused. Defaults to `false`.
   - name: classes
     type: string
     required: false

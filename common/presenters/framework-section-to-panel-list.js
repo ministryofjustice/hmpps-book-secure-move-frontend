@@ -54,6 +54,7 @@ function frameworkSectionToPanelList({ baseUrl = '' } = {}) {
 
       return {
         tag,
+        isFocusable: true,
         attributes: { id: kebabCase(tag.text) },
         html: componentService.getComponent('appMetaList', metaList),
       }

@@ -9,6 +9,10 @@ $_border-width: 2px;
   & + & {
     margin-top: govuk-spacing(2);
   }
+
+  &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+  }
 }
 
 // If panel contains a tag component, style based on this parent
