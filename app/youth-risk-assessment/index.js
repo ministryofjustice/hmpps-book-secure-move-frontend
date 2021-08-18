@@ -7,6 +7,7 @@ const {
 } = require('../../common/controllers/framework')
 const { uuidRegex } = require('../../common/helpers/url')
 const { defineFormWizard } = require('../../common/lib/framework-form-wizard')
+const breadcrumbs = require('../../common/middleware/breadcrumbs')
 const {
   setAssessment,
   setBreadcrumbs,
@@ -29,6 +30,7 @@ router.use(protectRoute('youth_risk_assessment:view'))
 // router.use(setPersonEscortRecord)
 router.use(setRecord('youthRiskAssessment', 'youthRiskAssessment', 'getById'))
 router.use(setAssessment('youthRiskAssessment'))
+router.use(breadcrumbs.setHome())
 router.use(setBreadcrumbs)
 
 // Define sub-apps

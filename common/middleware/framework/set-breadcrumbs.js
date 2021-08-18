@@ -3,14 +3,13 @@ const { snakeCase } = require('lodash')
 function setBreadcrumbs(req, res, next) {
   const { assessment = {}, move } = req
   const moveId = move?.id || assessment?.move?.id
+  const moveReference = move?.reference || assessment?.move?.reference
   const profile = move?.profile || assessment?.profile
   const frameworkName = assessment.framework.name
 
   res
     .breadcrumb({
-      text: req.t('moves::detail.page_title', {
-        name: profile.person._fullname,
-      }),
+      text: `${profile.person._fullname} (${moveReference})`,
       href: `/move/${moveId}`,
     })
     .breadcrumb({
