@@ -5,8 +5,8 @@ function setTabs(req, res, next) {
       url: `${req.baseUrl}/warnings`,
     },
     {
-      text: 'moves::tabs.assessments',
-      url: `${req.baseUrl}/assessments`,
+      text: 'moves::tabs.details',
+      url: `${req.baseUrl}/details`,
     },
     {
       text: 'moves::tabs.timeline',

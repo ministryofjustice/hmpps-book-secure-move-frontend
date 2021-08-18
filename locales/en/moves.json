@@ -194,7 +194,7 @@
   "tabs": {
     "view": "Record",
     "warnings": "Warnings",
-    "assessments": "Assessments",
+    "details": "Details",
     "timeline": "History of events"
   },
   "update_link": {

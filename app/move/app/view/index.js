@@ -12,7 +12,7 @@ const {
 
 const { PREVIEW_PREFIX } = require('./constants')
 const {
-  renderAssessments,
+  renderDetails,
   renderTimeline,
   renderWarnings,
 } = require('./controllers')
@@ -47,7 +47,7 @@ router.use(localsTabs)
 
 // Define routes
 router.get('/warnings', localsWarnings, renderWarnings)
-router.get('/assessments', renderAssessments)
+router.get('/details', renderDetails)
 router.get('/timeline', renderTimeline)
 
 // Export

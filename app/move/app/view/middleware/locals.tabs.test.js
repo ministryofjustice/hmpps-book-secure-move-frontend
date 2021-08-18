@@ -28,8 +28,8 @@ describe('Move view app', function () {
                 isActive: false,
               },
               {
-                text: 'moves::tabs.assessments',
-                url: '/base-url/assessments',
+                text: 'moves::tabs.details',
+                url: '/base-url/details',
                 isActive: false,
               },
               {
@@ -55,8 +55,8 @@ describe('Move view app', function () {
                 isActive: true,
               },
               {
-                text: 'moves::tabs.assessments',
-                url: '/base-url/assessments',
+                text: 'moves::tabs.details',
+                url: '/base-url/details',
                 isActive: false,
               },
               {
