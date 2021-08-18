@@ -10,3 +10,7 @@ img {
   display: inline-block;
   max-width: 100%;
 }
+
+[id] {
+  scroll-margin-top: 100px; // Approximate height of sticky navigation.
+}
