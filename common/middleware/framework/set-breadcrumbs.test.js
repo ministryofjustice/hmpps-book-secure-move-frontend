@@ -1,7 +1,7 @@
 const middleware = require('./set-breadcrumbs')
 
 describe('Framework middleware', function () {
-  describe('#setBreacrumbs', function () {
+  describe('#setBreadcrumbs', function () {
     let mockReq, mockRes, nextSpy
 
     beforeEach(function () {
@@ -24,6 +24,7 @@ describe('Framework middleware', function () {
         }
         mockReq.move = {
           id: '__move_12345__',
+          reference: 'PFX7536F',
           profile: {
             person: {
               _fullname: 'DOE, JOHN',
@@ -35,7 +36,7 @@ describe('Framework middleware', function () {
 
       it('should set move breadcrumb item', function () {
         expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
-          text: 'moves::detail.page_title',
+          text: 'DOE, JOHN (PFX7536F)',
           href: '/move/__move_12345__',
         })
       })
@@ -48,12 +49,6 @@ describe('Framework middleware', function () {
       })
 
       it('should translate correctly', function () {
-        expect(mockReq.t).to.have.been.calledWithExactly(
-          'moves::detail.page_title',
-          {
-            name: 'DOE, JOHN',
-          }
-        )
         expect(mockReq.t).to.have.been.calledWithExactly(
           'assessment::page_title',
           {
@@ -81,6 +76,7 @@ describe('Framework middleware', function () {
           },
           move: {
             id: '__move_12345__',
+            reference: 'PFX7536F',
           },
         }
         middleware(mockReq, mockRes, nextSpy)
@@ -88,7 +84,7 @@ describe('Framework middleware', function () {
 
       it('should set move breadcrumb item', function () {
         expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
-          text: 'moves::detail.page_title',
+          text: 'DOE, JOHN (PFX7536F)',
           href: '/move/__move_12345__',
         })
       })
@@ -101,12 +97,6 @@ describe('Framework middleware', function () {
       })
 
       it('should translate correctly', function () {
-        expect(mockReq.t).to.have.been.calledWithExactly(
-          'moves::detail.page_title',
-          {
-            name: 'DOE, JOHN',
-          }
-        )
         expect(mockReq.t).to.have.been.calledWithExactly(
           'assessment::page_title',
           {

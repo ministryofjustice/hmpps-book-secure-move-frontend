@@ -61,6 +61,8 @@
   "pagination": {
     "page_of": "{{current}} of {{total}}",
     "previous_page": "Previous page",
-    "next_page": "Next page"
+    "previous_section": "Previous section",
+    "next_page": "Next page",
+    "next_section": "Next section"
   }
 }

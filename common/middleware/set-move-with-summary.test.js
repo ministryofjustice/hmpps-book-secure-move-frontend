@@ -10,24 +10,47 @@ describe('#setMoveSummary', function () {
       .stub(moveHelpers, 'getMoveWithSummary')
       .returns({ moveSummary: '__move-summary__' })
     nextSpy = sinon.spy()
-    mockReq = {
-      move: { id: '__move__' },
-    }
+    mockReq = {}
     mockRes = {
-      locals: {},
+      locals: {
+        foo: 'bar',
+      },
     }
-    setMoveWithSummary(mockReq, mockRes, nextSpy)
   })
 
-  it('should get the move summary', function () {
-    expect(moveHelpers.getMoveWithSummary).to.be.calledOnceWithExactly({
-      id: '__move__',
+  context('with move', function () {
+    beforeEach(function () {
+      mockReq.move = { id: '__move__' }
+      setMoveWithSummary(mockReq, mockRes, nextSpy)
+    })
+
+    it('should get the move summary', function () {
+      expect(moveHelpers.getMoveWithSummary).to.be.calledOnceWithExactly({
+        id: '__move__',
+      })
+    })
+
+    it('should set the move summary', function () {
+      expect(mockRes.locals).to.deep.equal({
+        foo: 'bar',
+        moveSummary: '__move-summary__',
+      })
     })
   })
 
-  it('should set the move summary', function () {
-    expect(mockRes.locals).to.deep.equal({
-      moveSummary: '__move-summary__',
+  context('without move', function () {
+    beforeEach(function () {
+      setMoveWithSummary(mockReq, mockRes, nextSpy)
+    })
+
+    it('should not get the move summary', function () {
+      expect(moveHelpers.getMoveWithSummary).not.to.be.called
+    })
+
+    it('should not set the move summary', function () {
+      expect(mockRes.locals).to.deep.equal({
+        foo: 'bar',
+      })
     })
   })
 })
