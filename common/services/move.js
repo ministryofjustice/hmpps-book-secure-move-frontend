@@ -308,6 +308,8 @@ class MoveService extends BaseService {
       ...this.defaultInclude(),
       'timeline_events',
       'timeline_events.eventable',
+      'journeys.to_location',
+      'journeys.from_location',
     ]
 
     return this._getById(id, { include })
