@@ -15,7 +15,10 @@ function setActions({ previewPrefix = '' } = {}) {
         url: move._canCancel ? `/move/${move.id}/cancel` : undefined,
       },
       {
-        text: 'actions::view_old_move_design',
+        text: 'messages::preview_new_feature.actions.return',
+        itemClasses:
+          'app-border-top-1 govuk-!-padding-top-4 govuk-!-margin-top-4',
+        classes: 'govuk-button govuk-button--secondary',
         url: `/move${previewPrefix}/opt-out?move_id=${move.id}`,
       },
     ]

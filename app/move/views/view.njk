@@ -19,13 +19,14 @@
           html: t("messages::preview_new_feature.content"),
           actions: [
             {
+              href: "/move/preview/opt-in?move_id=" + move.id,
               text: t("messages::preview_new_feature.actions.yes"),
-              type: "button",
-              href: "/move/preview/opt-in?move_id=" + move.id
+              type: "button"
             },
             {
+              href: "/move/preview/opt-out?move_id=" + move.id,
               text: t("messages::preview_new_feature.actions.no"),
-              href: "/move/preview/opt-out?move_id=" + move.id
+              type: "button"
             }
           ]
         }
