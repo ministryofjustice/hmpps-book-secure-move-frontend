@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.88.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.87.0...v2.88.0) (2021-08-19)
+
+
+### Features
+
+* **PER:** Add pagination to section overview page ([759c456](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/759c45662a7beb1ce13f253bfe4063ca753120be))
+
+
+### Bug Fixes
+
+* Don't call move summary helper if move does not exist ([5b9a723](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5b9a7233bd75fb08ad3d16eafed29e0aac8b3f35))
+* Include journey information in move events ([19fe96d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/19fe96d175a956d551930563ed74362ae913fb47))
+
 ## [2.87.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.86.0...v2.87.0) (2021-08-10)
 
 
