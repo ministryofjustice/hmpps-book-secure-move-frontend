@@ -65,11 +65,11 @@
     "nomis":"This number was originally from NOMIS"
   },
   "preview_new_feature": {
-    "heading":"We are testing a new design of this page",
-    "content":"<p>We would like your help to test a new design of this page and help us improve it.</p>",
+    "heading":"There is a new version of this page",
+    "content":"<p>Use the new version and help us improve it with your feedback. You will be able to return to the current version at any time.</p>",
     "actions": {
-      "yes": "Preview the new design",
-      "no": "Continue to use the current design"
+      "yes": "Try the new version",
+      "no": "Keep the current version"
     }
   }
 }
