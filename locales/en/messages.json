@@ -69,7 +69,8 @@
     "content":"<p>Use the new version and help us improve it with your feedback. You will be able to return to the current version at any time.</p>",
     "actions": {
       "yes": "Try the new version",
-      "no": "Keep the current version"
+      "no": "Keep the current version",
+      "return": "Return to the old version"
     }
   }
 }

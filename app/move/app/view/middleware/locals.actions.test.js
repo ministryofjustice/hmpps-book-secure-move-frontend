@@ -92,7 +92,10 @@ describe('Move view app', function () {
 
         it('should add opt out action to locals with prefix', function () {
           expect(res.locals.actions).to.deep.include({
-            text: 'actions::view_old_move_design',
+            text: 'messages::preview_new_feature.actions.return',
+            itemClasses:
+              'app-border-top-1 govuk-!-padding-top-4 govuk-!-margin-top-4',
+            classes: 'govuk-button govuk-button--secondary',
             url: '/move/preview-path/opt-out?move_id=12345',
           })
         })
@@ -105,7 +108,10 @@ describe('Move view app', function () {
 
         it('should add opt out action to locals without prefix', function () {
           expect(res.locals.actions).to.deep.include({
-            text: 'actions::view_old_move_design',
+            text: 'messages::preview_new_feature.actions.return',
+            itemClasses:
+              'app-border-top-1 govuk-!-padding-top-4 govuk-!-margin-top-4',
+            classes: 'govuk-button govuk-button--secondary',
             url: '/move/opt-out?move_id=12345',
           })
         })
