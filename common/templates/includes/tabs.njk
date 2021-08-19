@@ -1,10 +1,10 @@
 {# Expects a variable named `tabs` as a list of objects with fields `url`, `text` and `isActive`. #}
 
 {% if tabs %}
-  <div class="govuk-tabs">
+  <div class="govuk-tabs" id="tabs">
     <ul class="govuk-tabs__list">
       {% for item in tabs %}
-        <li class="govuk-tabs__list-item {{- ' govuk-tabs__list-item--selected' if item.isActive }}">
+        <li class="govuk-tabs__list-item {{- ' govuk-tabs__list-item--selected' if item.isActive }}" id="tab-{{ t(item.text) | kebabcase }}">
           <a class="govuk-tabs__tab" href="{{ item.url }}">
             {{ t(item.text) }}
           </a>

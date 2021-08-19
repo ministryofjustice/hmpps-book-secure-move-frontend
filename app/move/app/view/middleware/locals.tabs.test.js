@@ -7,11 +7,18 @@ describe('Move view app', function () {
 
       beforeEach(function () {
         req = {
-          baseUrl: '/base-url',
           originalUrl: '/',
         }
         res = {
-          locals: {},
+          locals: {
+            urls: {
+              move: {
+                warnings: '/base-url/warnings',
+                details: '/base-url/details',
+                timeline: '/base-url/timeline',
+              },
+            },
+          },
         }
         nextSpy = sinon.spy()
       })
@@ -21,6 +28,7 @@ describe('Move view app', function () {
           middleware(req, res, nextSpy)
 
           expect(res.locals).to.deep.equal({
+            urls: res.locals.urls,
             tabs: [
               {
                 text: 'moves::tabs.warnings',
@@ -28,8 +36,8 @@ describe('Move view app', function () {
                 isActive: false,
               },
               {
-                text: 'moves::tabs.assessments',
-                url: '/base-url/assessments',
+                text: 'moves::tabs.details',
+                url: '/base-url/details',
                 isActive: false,
               },
               {
@@ -48,6 +56,7 @@ describe('Move view app', function () {
           middleware(req, res, nextSpy)
 
           expect(res.locals).to.deep.equal({
+            urls: res.locals.urls,
             tabs: [
               {
                 text: 'moves::tabs.warnings',
@@ -55,8 +64,8 @@ describe('Move view app', function () {
                 isActive: true,
               },
               {
-                text: 'moves::tabs.assessments',
-                url: '/base-url/assessments',
+                text: 'moves::tabs.details',
+                url: '/base-url/details',
                 isActive: false,
               },
               {

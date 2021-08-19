@@ -1,8 +1,8 @@
-const controller = require('./render-assessments')
+const controller = require('./render-details')
 
 describe('Move view app', function () {
   describe('Controllers', function () {
-    describe('#renderAssessments()', function () {
+    describe('#renderDetails()', function () {
       let req, res
 
       beforeEach(function () {
@@ -22,9 +22,7 @@ describe('Move view app', function () {
       })
 
       it('should render a template', function () {
-        expect(res.render.args[0][0]).to.equal(
-          'move/app/view/views/assessments'
-        )
+        expect(res.render.args[0][0]).to.equal('move/app/view/views/details')
       })
     })
   })

@@ -12,7 +12,7 @@ const {
 
 const { PREVIEW_PREFIX } = require('./constants')
 const {
-  renderAssessments,
+  renderDetails,
   renderTimeline,
   renderWarnings,
 } = require('./controllers')
@@ -22,6 +22,7 @@ const {
   localsMoveDetails,
   localsPersonSummary,
   localsTabs,
+  localsUrls,
   localsWarnings,
   setBreadcrumb,
 } = require('./middleware')
@@ -39,6 +40,7 @@ router.use(breadcrumbs.setHome())
 router.use(setPersonEscortRecord)
 router.use(setYouthRiskAssessment)
 router.use(setBreadcrumb)
+router.use(localsUrls)
 router.use(localsActions({ previewPrefix: PREVIEW_PREFIX }))
 router.use(localsIdentityBar)
 router.use(localsMoveDetails)
@@ -47,7 +49,7 @@ router.use(localsTabs)
 
 // Define routes
 router.get('/warnings', localsWarnings, renderWarnings)
-router.get('/assessments', renderAssessments)
+router.get('/details', renderDetails)
 router.get('/timeline', renderTimeline)
 
 // Export

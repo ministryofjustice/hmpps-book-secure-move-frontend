@@ -1,9 +1,6 @@
-const moveHelpers = require('../../../../../common/helpers/move')
 const presenters = require('../../../../../common/presenters')
 
 const middleware = require('./locals.move-details')
-
-const mockUpdateUrls = { stepOne: '/', stepTwo: '/two' }
 
 describe('Move view app', function () {
   describe('Middleware', function () {
@@ -23,17 +20,9 @@ describe('Move view app', function () {
         }
         nextSpy = sinon.spy()
 
-        sinon.stub(moveHelpers, 'getUpdateUrls').returns(mockUpdateUrls)
         sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
 
         middleware(req, res, nextSpy)
-      })
-
-      it('should call helper', function () {
-        expect(moveHelpers.getUpdateUrls).to.be.calledOnceWithExactly(
-          req.move,
-          req.canAccess
-        )
       })
 
       it('should call presenter', function () {
@@ -41,7 +30,6 @@ describe('Move view app', function () {
           req.move,
           {
             showPerson: false,
-            updateUrls: mockUpdateUrls,
           }
         )
       })

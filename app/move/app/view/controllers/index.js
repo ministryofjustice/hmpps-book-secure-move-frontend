@@ -1,9 +1,9 @@
-const renderAssessments = require('./render-assessments')
+const renderDetails = require('./render-details')
 const renderTimeline = require('./render-timeline')
 const renderWarnings = require('./render-warnings')
 
 module.exports = {
-  renderAssessments,
+  renderDetails,
   renderTimeline,
   renderWarnings,
 }

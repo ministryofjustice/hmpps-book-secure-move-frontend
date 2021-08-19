@@ -1,16 +1,17 @@
 function setTabs(req, res, next) {
+  const urls = res.locals.urls
   const tabs = [
     {
       text: 'moves::tabs.warnings',
-      url: `${req.baseUrl}/warnings`,
+      url: urls.move.warnings,
     },
     {
-      text: 'moves::tabs.assessments',
-      url: `${req.baseUrl}/assessments`,
+      text: 'moves::tabs.details',
+      url: urls.move.details,
     },
     {
       text: 'moves::tabs.timeline',
-      url: `${req.baseUrl}/timeline`,
+      url: urls.move.timeline,
     },
   ]
 
