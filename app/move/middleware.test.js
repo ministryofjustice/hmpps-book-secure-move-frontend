@@ -41,6 +41,10 @@ const errorStub = new Error('Problem')
 describe('Move middleware', function () {
   describe('#checkPreviewChoice()', function () {
     let req, res, nextSpy
+    const mockPathMap = {
+      '/': '/',
+      '/path-to-redirect': '/new-redirect-path',
+    }
 
     beforeEach(function () {
       req = {
@@ -60,7 +64,7 @@ describe('Move middleware', function () {
 
     context('when cookie does not exist', function () {
       beforeEach(function () {
-        middleware.checkPreviewChoice(req, res, nextSpy)
+        middleware.checkPreviewChoice()(req, res, nextSpy)
       })
 
       it('should not redirect', function () {
@@ -79,30 +83,56 @@ describe('Move middleware', function () {
     context('when cookie exists', function () {
       context('with a value of `1`', function () {
         beforeEach(function () {
-          req.path = '/timeline'
           req.cookies.cookie__user_1 = '1'
-          middleware.checkPreviewChoice(req, res, nextSpy)
         })
 
-        it('should redirect to preview move URL', function () {
-          expect(res.redirect).to.be.calledOnceWithExactly(
-            `/move${viewConstants.PREVIEW_PREFIX}/${req.params.moveId}${req.path}`
-          )
+        context('with a path that should be redirect', function () {
+          beforeEach(function () {
+            req.path = '/path-to-redirect'
+            middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
+          })
+
+          it('should redirect to preview move URL', function () {
+            expect(res.redirect).to.be.calledOnceWithExactly(
+              `/move${viewConstants.PREVIEW_PREFIX}/${req.params.moveId}${
+                mockPathMap[req.path]
+              }`
+            )
+          })
+
+          it('should not call next', function () {
+            expect(nextSpy).not.to.be.called
+          })
+
+          it('should not set hide banner property', function () {
+            expect(req).not.to.have.property('hidePreviewOptInBanner')
+          })
         })
 
-        it('should not call next', function () {
-          expect(nextSpy).not.to.be.called
-        })
+        context('with a path that should not be redirect', function () {
+          beforeEach(function () {
+            req.path = '/path-to-ignore'
+            middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
+          })
 
-        it('should not set hide banner property', function () {
-          expect(req).not.to.have.property('hidePreviewOptInBanner')
+          it('should not redirect', function () {
+            expect(res.redirect).not.to.be.called
+          })
+
+          it('should call next', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+
+          it('should not set hide banner property', function () {
+            expect(req).not.to.have.property('hidePreviewOptInBanner')
+          })
         })
       })
 
       context('with a value of `0`', function () {
         beforeEach(function () {
           req.cookies.cookie__user_1 = '0'
-          middleware.checkPreviewChoice(req, res, nextSpy)
+          middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
         })
 
         it('should not redirect', function () {
