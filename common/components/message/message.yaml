@@ -29,6 +29,10 @@ params:
   required: false
   description: Content to use below the heading.
   params:
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the content element.
   - name: text
     type: string
     required: true

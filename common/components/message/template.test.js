@@ -159,6 +159,25 @@ describe('Message component', function () {
       })
     })
 
+    context('with content classes', function () {
+      it('should render class attribute', function () {
+        const $ = renderComponentHtmlToCheerio('message', {
+          content: {
+            classes: 'an-example-class',
+            html: 'A message with <strong>bold text</strong>',
+          },
+        })
+
+        const $component = $('.app-message')
+        expect($component.html()).to.contain(
+          'A message with <strong>bold text</strong>'
+        )
+        expect(
+          $('.app-message__content').hasClass('an-example-class')
+        ).to.be.true
+      })
+    })
+
     context('when dismiss is prevented', function () {
       it('should not render dismissable attribute', function () {
         const $ = renderComponentHtmlToCheerio(
