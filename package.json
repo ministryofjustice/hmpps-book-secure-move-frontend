@@ -213,7 +213,7 @@
     "mocha": "9.0.3",
     "mocha-junit-reporter": "2.0.0",
     "mock-fs": "5.0.0",
-    "nock": "13.1.1",
+    "nock": "13.1.2",
     "node-sass": "6.0.1",
     "nodemon": "2.0.12",
     "npm-check-updates": "11.8.3",
