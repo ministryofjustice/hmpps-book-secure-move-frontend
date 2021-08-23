@@ -23,7 +23,7 @@ const {
   previewOptIn,
   previewOptOut,
   timeline,
-  view,
+  // view,
 } = require('./controllers')
 const {
   checkPreviewChoice,
@@ -63,7 +63,9 @@ if (ENABLE_DEVELOPMENT_TOOLS) {
   moveRouter.use(setDevelopmentTools)
 }
 
-moveRouter.get('/', protectRoute('move:view'), view)
+moveRouter.get('/', protectRoute('move:view'), (req, res) =>
+  res.redirect(`/move/preview/${req.move.id}`)
+)
 moveRouter.get('/timeline', protectRoute('move:view'), timeline)
 moveRouter.get(
   '/confirmation',
