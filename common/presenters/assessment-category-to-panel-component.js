@@ -14,11 +14,12 @@ function assessmentCategoryToPanelListComponent(category) {
       attributes: {
         id: kebabCase(title),
       },
-      tag: {
-        text: title,
-        classes: tagClass,
-      },
       html: componentService.getComponent('appMetaList', metaList),
+      isFocusable: true,
+      tag: {
+        classes: tagClass,
+        text: title,
+      },
     }
   })
 

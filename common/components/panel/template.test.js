@@ -27,6 +27,10 @@ describe('Panel component', function () {
     it('should not render tag component', function () {
       expect($component.find('.app-tag').length).to.equal(0)
     })
+
+    it('should not render tabindex', function () {
+      expect($component.attr('tabindex')).not.to.exist
+    })
   })
 
   context('with classes param', function () {
@@ -37,6 +41,17 @@ describe('Panel component', function () {
 
       const $component = $('.app-panel')
       expect($component.hasClass('app-panel--inactive')).to.be.true
+    })
+  })
+
+  context('with focusable option', function () {
+    it('should render add tabindex', function () {
+      const $ = renderComponentHtmlToCheerio('panel', {
+        isFocusable: true,
+      })
+
+      const $component = $('.app-panel')
+      expect($component.attr('tabindex')).to.equal('-1')
     })
   })
 

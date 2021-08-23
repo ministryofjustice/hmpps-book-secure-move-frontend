@@ -111,6 +111,7 @@ describe('Presenters', function () {
               classes: mockAssessmentCategory.tagClass,
             },
             html: 'appMetaList',
+            isFocusable: true,
           },
           {
             attributes: {
@@ -121,6 +122,7 @@ describe('Presenters', function () {
               classes: mockAssessmentCategory.tagClass,
             },
             html: 'appMetaList',
+            isFocusable: true,
           },
           {
             attributes: {
@@ -131,6 +133,7 @@ describe('Presenters', function () {
               classes: mockAssessmentCategory.tagClass,
             },
             html: 'appMetaList',
+            isFocusable: true,
           },
         ])
       })

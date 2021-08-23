@@ -155,6 +155,7 @@ const expectedOutput = {
         id: 'concealed-items',
       },
       html: 'appMetaList',
+      isFocusable: true,
     },
     {
       tag: {
@@ -167,6 +168,7 @@ const expectedOutput = {
         id: 'escape',
       },
       html: 'appMetaList',
+      isFocusable: true,
     },
     {
       tag: {
@@ -179,6 +181,7 @@ const expectedOutput = {
         id: 'hold-separately',
       },
       html: 'appMetaList',
+      isFocusable: true,
     },
   ],
 }
