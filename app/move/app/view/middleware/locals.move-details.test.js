@@ -27,10 +27,7 @@ describe('Move view app', function () {
 
       it('should call presenter', function () {
         expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly(
-          req.move,
-          {
-            showPerson: false,
-          }
+          req.move
         )
       })
 

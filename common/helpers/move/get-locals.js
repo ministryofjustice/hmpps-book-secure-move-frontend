@@ -47,7 +47,6 @@ function getLocals(req) {
 
   const updateLinks = mapValues(updateUrls, mapUpdateLink)
   const moveSummary = presenters.moveToMetaListComponent(move, {
-    showPerson: false,
     updateUrls,
   })
 

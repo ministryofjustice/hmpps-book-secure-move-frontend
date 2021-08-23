@@ -129,7 +129,6 @@ describe('Move helpers', function () {
             mockMove,
             {
               updateUrls: mockUpdateUrls,
-              showPerson: false,
             }
           )
         })

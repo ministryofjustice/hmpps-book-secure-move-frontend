@@ -14,14 +14,10 @@ const mapUpdateLink = require('../helpers/move/map-update-link')
  *
  * @param {Object} [options] - config options for the presenter
  * @param {Object} [options.updateUrls={}] - object containing URLs for each edit step
- * @param {boolean} [options.showPerson=true] - Whether to include the person in the list of items
  *
  * @returns {Object} - a move formatted as a `appMetaList` component
  */
-function moveToMetaListComponent(
-  move,
-  { updateUrls = {}, showPerson = true } = {}
-) {
+function moveToMetaListComponent(move, { updateUrls = {} } = {}) {
   const {
     _vehicleRegistration,
     date,
@@ -34,7 +30,6 @@ function moveToMetaListComponent(
     prison_transfer_reason: prisonTransferReason,
     move_agreed: moveAgreed,
     move_agreed_by: moveAgreedBy,
-    profile,
     reference,
     status,
   } = move || {}
@@ -89,15 +84,6 @@ function moveToMetaListComponent(
       },
       value: {
         text: reference,
-      },
-    },
-    {
-      key: {
-        text: i18n.t('person_noun'),
-      },
-      value: {
-        text:
-          showPerson && profile?.person ? profile.person._fullname : undefined,
       },
     },
     {

@@ -64,7 +64,7 @@ describe('Presenters', function () {
 
         it('should contain correct number of items', function () {
           expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(7)
+          expect(transformedResponse.items.length).to.equal(6)
         })
 
         it('should contain correct key ordering', function () {
@@ -74,7 +74,6 @@ describe('Presenters', function () {
           expect(keys).deep.equal([
             'status',
             'reference',
-            'person_noun',
             'fields::from_location.short_label',
             'fields::move_type.short_label',
             'fields::date_type.label',
@@ -89,7 +88,6 @@ describe('Presenters', function () {
           expect(values).deep.equal([
             'mojBadge',
             'ABC12345',
-            'BLOGGS, JOE',
             'HMP Leeds',
             'Barrow in Furness County Court',
             '2019-06-09',
@@ -106,7 +104,6 @@ describe('Presenters', function () {
             undefined,
             undefined,
             undefined,
-            undefined,
           ])
         })
 
@@ -115,7 +112,7 @@ describe('Presenters', function () {
         })
 
         it('should translate correct number of times', function () {
-          expect(i18n.t).to.be.callCount(14)
+          expect(i18n.t).to.be.callCount(13)
         })
       })
 
@@ -126,51 +123,6 @@ describe('Presenters', function () {
             text: 'statuses::booked',
           }
         )
-      })
-    })
-
-    context('with person hidden', function () {
-      let transformedResponse
-
-      beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove, {
-          showPerson: false,
-        })
-      })
-
-      describe('response', function () {
-        it('should contain correct number of items', function () {
-          expect(transformedResponse).to.have.property('items')
-          expect(transformedResponse.items.length).to.equal(6)
-        })
-
-        it('should not contain person key', function () {
-          const keys = transformedResponse.items.map(
-            item => item.key.text || item.key.html
-          )
-          expect(keys).deep.equal([
-            'status',
-            'reference',
-            'fields::from_location.short_label',
-            'fields::move_type.short_label',
-            'fields::date_type.label',
-            'collections::vehicle_registration',
-          ])
-        })
-
-        it('should not contain person value', function () {
-          const values = transformedResponse.items.map(
-            item => item.value.text || item.value.html
-          )
-          expect(values).deep.equal([
-            'mojBadge',
-            'ABC12345',
-            'HMP Leeds',
-            'Barrow in Furness County Court',
-            '2019-06-09',
-            'GG01 AJY',
-          ])
-        })
       })
     })
 
@@ -333,13 +285,12 @@ describe('Presenters', function () {
 
       it('should contain correct number of items', function () {
         expect(transformedResponse).to.have.property('items')
-        expect(transformedResponse.items.length).to.equal(7)
+        expect(transformedResponse.items.length).to.equal(6)
       })
 
       it('should contain correct actions', function () {
         const actions = transformedResponse.items.map(item => item.action)
         expect(actions).deep.equal([
-          undefined,
           undefined,
           undefined,
           undefined,
@@ -522,7 +473,7 @@ describe('Presenters', function () {
 
     context('with agreement status', function () {
       let transformedResponse
-      const keyIndex = 6
+      const keyIndex = 5
 
       context('with `true` value', function () {
         context('without name', function () {
@@ -666,48 +617,6 @@ describe('Presenters', function () {
               name: 'Jon Doe',
             }
           )
-        })
-      })
-
-      context('without profile', function () {
-        beforeEach(function () {
-          delete mockMove.profile
-          transformedResponse = moveToMetaListComponent(mockMove)
-        })
-
-        it('should not contain person key', function () {
-          const keys = transformedResponse.items.map(
-            item => item.key.text || item.key.html
-          )
-          expect(keys).not.to.include('person_noun')
-        })
-      })
-
-      context('without person', function () {
-        beforeEach(function () {
-          mockMove.profile = {}
-          transformedResponse = moveToMetaListComponent(mockMove)
-        })
-
-        it('should not contain person key', function () {
-          const keys = transformedResponse.items.map(
-            item => item.key.text || item.key.html
-          )
-          expect(keys).not.to.include('person_noun')
-        })
-      })
-
-      context('with null profile', function () {
-        beforeEach(function () {
-          mockMove.profile = null
-          transformedResponse = moveToMetaListComponent(mockMove)
-        })
-
-        it('should not contain person key', function () {
-          const keys = transformedResponse.items.map(
-            item => item.key.text || item.key.html
-          )
-          expect(keys).not.to.include('person_noun')
         })
       })
     })
