@@ -28,7 +28,7 @@
     "text_health_nomis": "There is no health information",
     "text_court": "No information for the court",
     "text_release_status": "There is no active release status information",
-    "text_framework": "No {{name}} warnings. View <a href=\"{{url}}\">all answers</a>."
+    "text_framework": "No {{name}} warnings"
   },
   "retrieved_from_nomis": {
     "details": {
@@ -53,9 +53,11 @@
       }
     }
   },
+  "view_framework_section": "View all {{name}}",
   "view_previous_assessment": "View information provided when move was requested",
   "view_previous_assessment_framework": "View information provided in youth risk assessment",
   "incomplete": "Warnings will display once a Person Escort Record has been completed",
+  "incomplete_overview": "This will display once a Person Escort Record has been completed",
   "section_incomplete": "Warnings will display once this section has been completed",
   "prefilled_banner": {
     "title": "Some answers on this page need to be reviewed. They are from the last $t({{context}}) confirmed on {{date}}."

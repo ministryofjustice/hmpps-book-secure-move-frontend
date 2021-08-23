@@ -48,7 +48,7 @@ router.get('/preview/opt-out', previewOptOut)
 
 router.use(`/:moveId(${uuidRegex})`, moveRouter)
 
-moveRouter.use(['/', '/timeline', '/journeys'], checkPreviewChoice)
+moveRouter.use(checkPreviewChoice({ '/': '/', '/timeline': '/timeline' }))
 // For all non-timeline routes use standard move middleware
 moveRouter.use(/\/((?!timeline).)*/, setMove)
 // For all timeline route use move events middleware

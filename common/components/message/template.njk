@@ -18,7 +18,7 @@
   {% endif %}
 
   {% if params.content.html or params.content.text %}
-    <div class="app-message__content">
+    <div class="app-message__content{% if params.content.classes %} {{ params.content.classes }}{% endif %}">
       {{ params.content.html | safe if params.content.html else params.content.text }}
     </div>
   {% endif %}
