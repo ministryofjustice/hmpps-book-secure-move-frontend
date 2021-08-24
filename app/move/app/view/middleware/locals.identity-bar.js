@@ -1,13 +1,15 @@
+const presenters = require('../../../../../common/presenters')
 const filters = require('../../../../../config/nunjucks/filters')
 
 function localsIdentityCard(req, res, next) {
-  const { move } = req
+  const { canAccess, move } = req
 
   if (!move) {
     return next()
   }
 
   const identityBar = {
+    actions: presenters.moveToIdentityBarActions(move, { canAccess }),
     classes: 'sticky',
     caption: {
       text: req.t('moves::detail.page_caption'),

@@ -19,6 +19,7 @@ const frameworkToTaskListComponent = require('./framework-to-task-list-component
 const moveToMessageBannerComponent = require('./message-banner/move-to-message-banner-component')
 const moveToAdditionalInfoListComponent = require('./move-to-additional-info-list-component')
 const moveToCardComponent = require('./move-to-card-component')
+const moveToIdentityBarActions = require('./move-to-identity-bar-actions')
 const moveToImportantEventsTagListComponent = require('./move-to-important-events-tag-list-component')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const moveToSummaryListComponent = require('./move-to-summary-list-component')
@@ -59,6 +60,7 @@ module.exports = {
   movesToTableComponent,
   moveToAdditionalInfoListComponent,
   moveToCardComponent,
+  moveToIdentityBarActions,
   moveToImportantEventsTagListComponent,
   moveToMessageBannerComponent,
   moveToMetaListComponent,
