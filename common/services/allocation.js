@@ -45,7 +45,7 @@ class AllocationService extends BaseService {
     return function transformAllocation(result) {
       // TODO: Remove when individual allocations return meta.moves info
       // TODO: see moves filtering below too
-      if (!result.meta?.moves && result.moves.length) {
+      if (!result.meta?.moves && result.moves?.length) {
         set(result, 'meta.moves.total', result.moves.length)
 
         if (result.status !== 'cancelled') {
