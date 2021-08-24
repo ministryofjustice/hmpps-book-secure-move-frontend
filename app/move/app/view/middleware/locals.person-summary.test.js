@@ -14,6 +14,8 @@ describe('Move view app', function () {
             id: '__move1__',
             profile: {
               person: {
+                _fullname: 'DOE, JOHN',
+                _image_url: '/person/image/__profile12345__',
                 id: '__profile12345__',
                 foo: 'bar',
               },
@@ -43,10 +45,13 @@ describe('Move view app', function () {
 
         it('should set locals correctly', function () {
           expect(res.locals).to.be.deep.equal({
-            personSummary: mockMetaListComponent,
-            person: {
-              id: '__profile12345__',
-              foo: 'bar',
+            personSummary: {
+              metaList: mockMetaListComponent,
+              image: {
+                url: '/person/image/__profile12345__',
+                alt: 'DOE, JOHN',
+              },
+              profileLink: '/person/__profile12345__',
             },
           })
         })

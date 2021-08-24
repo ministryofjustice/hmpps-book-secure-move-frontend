@@ -7,10 +7,17 @@ function localsMoveDetails(req, res, next) {
     return next()
   }
 
-  const personSummary = presenters.personToMetaListComponent(profile.person)
+  const person = profile.person
+  const metaList = presenters.personToMetaListComponent(person)
 
-  res.locals.personSummary = personSummary
-  res.locals.person = profile.person
+  res.locals.personSummary = {
+    metaList,
+    image: {
+      url: person._image_url,
+      alt: person._fullname,
+    },
+    profileLink: `/person/${person.id}`,
+  }
 
   next()
 }
