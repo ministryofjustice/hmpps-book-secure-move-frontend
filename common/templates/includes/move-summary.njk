@@ -1,11 +1,13 @@
-{% if moveSummary %}
-  <div class="sticky-sidebar">
-    <div class="sticky-sidebar__inner">
-      <h3 class="govuk-heading-s app-border-top-2 app-border--blue govuk-!-padding-top-3 govuk-!-margin-bottom-2">
-        {{ t("moves::move_details") }}
-      </h3>
+<section class="app-border-top-2 app-border--blue govuk-!-padding-top-3 govuk-!-margin-bottom-7">
+  {% include "includes/person-summary.njk" %}
+</section>
 
-      {{ appMetaList(moveSummary) }}
-    </div>
-  </div>
+{% if moveSummary %}
+  <section class="app-border-top-1 govuk-!-padding-top-3" data-move-summary>
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+      {{ t("moves::move_details") }}
+    </h3>
+
+    {{ appMetaList(moveSummary) }}
+  </section>
 {% endif %}

@@ -38,6 +38,7 @@ describe('Person Escort Record controllers', function () {
         sinon.stub(ConfirmAssessmentController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setBreadcrumb')
+        sinon.stub(controller, 'setMoveId')
 
         controller.middlewareLocals()
       })
@@ -53,8 +54,14 @@ describe('Person Escort Record controllers', function () {
         )
       })
 
+      it('should call set move ID', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          controller.setMoveId
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(1)
+        expect(controller.use.callCount).to.equal(2)
       })
     })
 
@@ -157,6 +164,32 @@ describe('Person Escort Record controllers', function () {
           text: 'Step title',
           href: '',
         })
+      })
+
+      it('should call next without error', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    describe('#setMoveId', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = {
+          move: {
+            id: '12345',
+          },
+        }
+        mockRes = {
+          locals: {},
+        }
+        controller.setMoveId(mockReq, mockRes, nextSpy)
+      })
+
+      it('should set move ID', function () {
+        expect(mockRes.locals).to.have.property('moveId')
+        expect(mockRes.locals.moveId).to.equal('12345')
       })
 
       it('should call next without error', function () {

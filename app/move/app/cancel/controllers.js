@@ -1,21 +1,12 @@
 const { pick } = require('lodash')
 
 const FormWizardController = require('../../../../common/controllers/form-wizard')
-const presenters = require('../../../../common/presenters')
+const middleware = require('../../../../common/middleware')
 
 class CancelController extends FormWizardController {
   middlewareLocals() {
     super.middlewareLocals()
-    this.use(this.setAdditionalInfo)
-  }
-
-  setAdditionalInfo(req, res, next) {
-    const { move } = req
-    res.locals.moveSummary = presenters.moveToMetaListComponent(move)
-    res.locals.person = move.profile.person || {}
-    res.locals.move = move
-
-    next()
+    this.use(middleware.setMoveSummary)
   }
 
   middlewareChecks() {

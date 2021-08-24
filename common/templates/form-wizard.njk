@@ -112,18 +112,8 @@
 
 {% block contentSidebar %}
   {% if not options.hideSidebar %}
-    <div class="sticky-sidebar">
-      <div class="sticky-sidebar__inner">
-        {% block summaryPanelContent %}
-          {% if moveSummary %}
-            <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
-              {{ t("moves::move_details") }}
-            </h3>
-
-            {{ appMetaList(moveSummary) }}
-          {% endif %}
-        {% endblock %}
-      </div>
-    </div>
+    {% block summaryPanelContent %}
+      {% include "includes/move-summary.njk" %}
+    {% endblock %}
   {% endif %}
 {% endblock %}

@@ -1,5 +1,5 @@
 const FormWizardController = require('../../../../common/controllers/form-wizard')
-const presenters = require('../../../../common/presenters')
+const middleware = require('../../../../common/middleware')
 
 const { CancelController } = require('./controllers')
 
@@ -54,7 +54,7 @@ describe('Move controllers', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
-        sinon.stub(controller, 'setAdditionalInfo')
+        sinon.stub(middleware, 'setMoveSummary')
 
         controller.middlewareLocals()
       })
@@ -64,9 +64,9 @@ describe('Move controllers', function () {
           .calledOnce
       })
 
-      it('should call setAdditionalInfo middleware', function () {
+      it('should call setMoveSummary middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
-          controller.setAdditionalInfo
+          middleware.setMoveSummary
         )
       })
 
@@ -129,48 +129,6 @@ describe('Move controllers', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
-      })
-    })
-
-    describe('setAdditionalInfo', function () {
-      let req, res, next
-
-      beforeEach(function () {
-        req = {
-          move: { id: 123, profile: { person: { name: 'John Doe' } } },
-        }
-        res = {
-          locals: {},
-        }
-        sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
-        next = sinon.stub()
-        controller.setAdditionalInfo(req, res, next)
-      })
-
-      it('passes the move to moveToMetaListComponent', function () {
-        expect(
-          presenters.moveToMetaListComponent
-        ).to.have.been.calledWithExactly({
-          id: 123,
-          profile: { person: { name: 'John Doe' } },
-        })
-      })
-
-      it('sets moveSummary on the locals', function () {
-        expect(res.locals.moveSummary).to.exist
-        expect(res.locals.moveSummary).to.deep.equal({
-          id: 123,
-          profile: { person: { name: 'John Doe' } },
-        })
-      })
-
-      it('sets person on the locals', function () {
-        expect(res.locals.person).to.exist
-        expect(res.locals.person).to.deep.equal({ name: 'John Doe' })
-      })
-
-      it('calls next', function () {
-        expect(next).to.have.been.calledWithExactly()
       })
     })
 

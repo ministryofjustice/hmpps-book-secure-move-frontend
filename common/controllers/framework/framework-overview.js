@@ -16,7 +16,7 @@ function frameworkOverview(req, res) {
   const i18nContext = snakeCase(assessment.framework?.name || '')
 
   res.render('framework-overview', {
-    ...moveHelpers.getMoveWithSummary(move),
+    ...moveHelpers.getMoveSummary(move),
     i18nContext,
     moveId,
     taskList,

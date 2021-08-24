@@ -2,7 +2,7 @@ const { differenceInCalendarDays, parseISO } = require('date-fns')
 const { get, pick, set } = require('lodash')
 
 const FormWizardController = require('../../../../common/controllers/form-wizard')
-const presenters = require('../../../../common/presenters')
+const middleware = require('../../../../common/middleware')
 const filters = require('../../../../config/nunjucks/filters')
 
 class ReviewController extends FormWizardController {
@@ -14,7 +14,8 @@ class ReviewController extends FormWizardController {
 
   middlewareLocals() {
     super.middlewareLocals()
-    this.use(this.setMoveSummary)
+    this.use(middleware.setMoveSummary)
+    this.use(this.setReviewLocals)
   }
 
   middlewareChecks() {
@@ -76,12 +77,10 @@ class ReviewController extends FormWizardController {
     next()
   }
 
-  setMoveSummary(req, res, next) {
+  setReviewLocals(req, res, next) {
     const { move } = req
 
     res.locals.move = move
-    res.locals.person = move.profile.person
-    res.locals.moveSummary = presenters.moveToMetaListComponent(move)
 
     next()
   }

@@ -10,14 +10,14 @@
   </h2>
 
   <div class="markdown govuk-!-margin-bottom-6">
-    {% markdown %}{{ t("assessment::handover.before_handover.content", { per_href: "/move/" + move.id + "/person-escort-record" }) | safe }}{% endmarkdown %}
+    {% markdown %}{{ t("assessment::handover.before_handover.content", { per_href: "/move/" + moveId + "/person-escort-record" }) | safe }}{% endmarkdown %}
   </div>
 
   {{ callAsMacro(options.fields.confirm_handover.component)(options.fields.confirm_handover) }}
 
   {{ govukInsetText({
     html: t("assessment::handover.not_fit_to_travel", {
-      cancel_href: "/move/" + move.id + "/cancel"
+      cancel_href: "/move/" + moveId + "/cancel"
     })
   }) }}
 

@@ -1,5 +1,5 @@
 const FormWizardController = require('../../../../common/controllers/form-wizard')
-const presenters = require('../../../../common/presenters')
+const middleware = require('../../../../common/middleware')
 
 class UnassignController extends FormWizardController {
   middlewareChecks() {
@@ -42,8 +42,8 @@ class UnassignController extends FormWizardController {
 
   middlewareLocals() {
     super.middlewareLocals()
+    this.use(middleware.setMoveSummary)
     this.use(this.setMoveRelationships)
-    this.use(this.setMoveSummary)
   }
 
   setMoveRelationships(req, res, next) {
@@ -52,15 +52,6 @@ class UnassignController extends FormWizardController {
     res.locals.person = profile.person
     res.locals.allocation = allocation
 
-    next()
-  }
-
-  setMoveSummary(req, res, next) {
-    const sessionData = req.sessionModel.toJSON()
-    res.locals.moveSummary = presenters.moveToMetaListComponent({
-      ...req.move,
-      ...sessionData,
-    })
     next()
   }
 

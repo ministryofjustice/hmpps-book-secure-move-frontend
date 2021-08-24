@@ -2,7 +2,7 @@ const { addDays, format } = require('date-fns')
 const { cloneDeep } = require('lodash')
 
 const FormWizardController = require('../../../../common/controllers/form-wizard')
-const presenters = require('../../../../common/presenters')
+const middleware = require('../../../../common/middleware')
 const filters = require('../../../../config/nunjucks/filters')
 
 const { ReviewController } = require('./controllers')
@@ -53,7 +53,8 @@ describe('Move controllers', function () {
       beforeEach(function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
-        sinon.stub(controller, 'setMoveSummary')
+        sinon.stub(middleware, 'setMoveSummary')
+        sinon.stub(controller, 'setReviewLocals')
 
         controller.middlewareLocals()
       })
@@ -65,12 +66,18 @@ describe('Move controllers', function () {
 
       it('should call setMoveSummary middleware', function () {
         expect(controller.use.firstCall).to.have.been.calledWith(
-          controller.setMoveSummary
+          middleware.setMoveSummary
+        )
+      })
+
+      it('should call setReviewLocals middleware', function () {
+        expect(controller.use.secondCall).to.have.been.calledWith(
+          controller.setReviewLocals
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(1)
+        expect(controller.use.callCount).to.equal(2)
       })
     })
 
@@ -419,21 +426,14 @@ describe('Move controllers', function () {
       })
     })
 
-    describe('#setMoveSummary()', function () {
+    describe('#setReviewLocals()', function () {
       let mockReq, mockRes, nextSpy
 
       beforeEach(function () {
-        sinon
-          .stub(presenters, 'moveToMetaListComponent')
-          .returns('__moveToMetaListComponent__')
         nextSpy = sinon.spy()
         mockReq = {
           move: {
-            profile: {
-              person: {
-                id: '1',
-              },
-            },
+            id: '1',
             foo: 'bar',
           },
         }
@@ -441,36 +441,14 @@ describe('Move controllers', function () {
           locals: {},
         }
 
-        controller.setMoveSummary(mockReq, mockRes, nextSpy)
-      })
-
-      it('should call presenter', function () {
-        expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly(
-          mockRes.locals.move
-        )
-      })
-
-      it('should set person object on locals', function () {
-        expect(mockRes.locals.person).to.deep.equal({
-          id: '1',
-        })
+        controller.setReviewLocals(mockReq, mockRes, nextSpy)
       })
 
       it('should set move on locals', function () {
         expect(mockRes.locals.move).to.deep.equal({
-          profile: {
-            person: {
-              id: '1',
-            },
-          },
+          id: '1',
           foo: 'bar',
         })
-      })
-
-      it('should set move summary on locals', function () {
-        expect(mockRes.locals.moveSummary).to.equal(
-          '__moveToMetaListComponent__'
-        )
       })
 
       it('should call next', function () {

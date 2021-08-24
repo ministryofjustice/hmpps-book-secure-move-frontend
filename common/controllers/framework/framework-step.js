@@ -2,7 +2,7 @@ const { isEmpty, fromPairs, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 const frameworksHelpers = require('../../helpers/frameworks')
-const setMoveWithSummary = require('../../middleware/set-move-with-summary')
+const setMoveSummary = require('../../middleware/set-move-summary')
 const FormWizardController = require('../form-wizard')
 
 class FrameworkStepController extends FormWizardController {
@@ -76,7 +76,7 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setPrefillBanner)
     this.use(this.seti18nContext)
     this.use(this.setBreadcrumb)
-    this.use(setMoveWithSummary)
+    this.use(setMoveSummary)
   }
 
   seti18nContext(req, res, next) {

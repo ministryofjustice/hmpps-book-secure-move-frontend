@@ -1,6 +1,5 @@
 const { get, isEqual, keys, pick } = require('lodash')
 
-const presenters = require('../../../../../common/presenters')
 const filters = require('../../../../../config/nunjucks/filters')
 const CreateBaseController = require('../../new/controllers/base')
 
@@ -36,15 +35,6 @@ class UpdateBaseController extends CreateBaseController {
   getBaseUrl(req) {
     const moveId = req.getMoveId()
     return `/move/${moveId}`
-  }
-
-  setMoveSummary(req, res, next) {
-    const sessionData = req.sessionModel.toJSON()
-    res.locals.moveSummary = presenters.moveToMetaListComponent({
-      ...req.move,
-      ...sessionData,
-    })
-    next()
   }
 
   setCancelUrl(req, res, next) {

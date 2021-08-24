@@ -2,7 +2,7 @@ const Sentry = require('@sentry/node')
 const { forEach, omitBy, pickBy } = require('lodash')
 
 const FormWizardController = require('../../../../../common/controllers/form-wizard')
-const presenters = require('../../../../../common/presenters')
+const middleware = require('../../../../../common/middleware')
 const filters = require('../../../../../config/nunjucks/filters')
 
 class CreateBaseController extends FormWizardController {
@@ -22,7 +22,7 @@ class CreateBaseController extends FormWizardController {
     super.middlewareLocals()
     this.use(this.setButtonText)
     this.use(this.setCancelUrl)
-    this.use(this.setMoveSummary)
+    this.use(middleware.setMoveSummaryWithSessionData)
     this.use(this.setJourneyTimer)
   }
 
@@ -144,19 +144,6 @@ class CreateBaseController extends FormWizardController {
       error.code = 'DISABLED_LOCATION'
       return next(error)
     }
-
-    next()
-  }
-
-  setMoveSummary(req, res, next) {
-    const currentLocation = req.session.currentLocation
-    const move = req.sessionModel.toJSON()
-    const moveSummary = presenters.moveToMetaListComponent({
-      ...move,
-      from_location: currentLocation,
-    })
-
-    res.locals.moveSummary = moveSummary
 
     next()
   }

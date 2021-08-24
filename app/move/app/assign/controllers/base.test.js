@@ -1,4 +1,3 @@
-const presenters = require('../../../../../common/presenters')
 const CreateBaseController = require('../../new/controllers/base')
 
 const BaseProto = CreateBaseController.prototype
@@ -30,55 +29,6 @@ describe('Assign controllers', function () {
         expect(controller.setButtonText).to.exist.and.equal(
           BaseProto.setButtonText
         )
-      })
-    })
-
-    describe('#setMoveSummary()', function () {
-      let req, res, next
-
-      beforeEach(function () {
-        next = sinon.stub()
-        sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
-        req = {
-          move: {
-            to_location: 'b',
-            other_prop: 'c',
-            profile: null,
-          },
-          sessionModel: {
-            toJSON: sinon.stub().returns({
-              profile: {
-                id: '12345',
-              },
-            }),
-          },
-        }
-        res = {
-          locals: {},
-        }
-        controller.setMoveSummary(req, res, next)
-      })
-
-      it('creates moveSummary on the locals', function () {
-        expect(res.locals.moveSummary).to.exist
-        expect(res.locals.moveSummary).to.deep.equal({
-          to_location: 'b',
-          other_prop: 'c',
-          profile: {
-            id: '12345',
-          },
-        })
-      })
-
-      it('invokes moveToMetaListComponent with move', function () {
-        expect(
-          presenters.moveToMetaListComponent
-        ).to.have.been.calledWithExactly({
-          ...req.move,
-          profile: {
-            id: '12345',
-          },
-        })
       })
     })
 

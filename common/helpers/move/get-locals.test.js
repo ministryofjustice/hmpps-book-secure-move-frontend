@@ -4,14 +4,10 @@ const personToSummaryListComponent = sinon.stub().returnsArg(0)
 const moveToAdditionalInfoListComponent = sinon
   .stub()
   .returns('__moveToAdditionalInfoListComponent__')
-const moveToMetaListComponent = sinon
-  .stub()
-  .returns('__moveToMetaListComponent__')
 
 const presenters = {
   personToSummaryListComponent,
   moveToAdditionalInfoListComponent,
-  moveToMetaListComponent,
 }
 
 const mockUpdateUrls = {
@@ -26,6 +22,9 @@ const getMessage = sinon.stub().returns({
   messageContent: '__message-content__',
 })
 const getMessageBanner = sinon.stub().returns({ content: '__message-banner__' })
+const getMoveSummary = sinon
+  .stub()
+  .returns({ moveSummary: '__moveToMetaListComponent__' })
 const getPerDetails = sinon.stub().returns({ perDetails: '__per-details__' })
 const getTabsUrls = sinon.stub().returns('__tabs-urls__')
 const getTagLists = sinon.stub().returns({ tagLists: '__tag-lists__' })
@@ -41,6 +40,7 @@ const pathStubs = {
   './get-court-hearings': getCourtHearings,
   './get-message': getMessage,
   './get-message-banner': getMessageBanner,
+  './get-move-summary': getMoveSummary,
   './get-per-details': getPerDetails,
   './get-tabs-urls': getTabsUrls,
   './get-tag-lists': getTagLists,
@@ -84,6 +84,7 @@ describe('Move helpers', function () {
       getCourtHearings.resetHistory()
       getMessage.resetHistory()
       getMessageBanner.resetHistory()
+      getMoveSummary.resetHistory()
       getPerDetails.resetHistory()
       getTagLists.resetHistory()
       getTabsUrls.resetHistory()
@@ -91,7 +92,6 @@ describe('Move helpers', function () {
       mapUpdateLink.resetHistory()
       personToSummaryListComponent.resetHistory()
       moveToAdditionalInfoListComponent.resetHistory()
-      moveToMetaListComponent.resetHistory()
       canAccess = sinon.stub().returns(true)
 
       req = {
@@ -125,13 +125,9 @@ describe('Move helpers', function () {
 
       describe('move summary', function () {
         it('should get the move summary', function () {
-          expect(moveToMetaListComponent).to.be.calledOnceWithExactly(
-            mockMove,
-            {
-              updateUrls: mockUpdateUrls,
-              showPerson: false,
-            }
-          )
+          expect(getMoveSummary).to.be.calledOnceWithExactly(mockMove, {
+            updateUrls: mockUpdateUrls,
+          })
         })
 
         it('should set the move summary param', function () {

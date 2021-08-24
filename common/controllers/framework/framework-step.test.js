@@ -4,10 +4,10 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
 
-const setMoveWithSummary = sinon.stub()
+const setMoveSummary = sinon.stub()
 
 const Controller = proxyquire('./framework-step', {
-  '../../middleware/set-move-with-summary': setMoveWithSummary,
+  '../../middleware/set-move-summary': setMoveSummary,
 })
 
 const controller = new Controller({ route: '/' })
@@ -127,9 +127,7 @@ describe('Framework controllers', function () {
       })
 
       it('should call set move summary', function () {
-        expect(controller.use).to.have.been.calledWithExactly(
-          setMoveWithSummary
-        )
+        expect(controller.use).to.have.been.calledWithExactly(setMoveSummary)
       })
 
       it('should call correct number of middleware', function () {
