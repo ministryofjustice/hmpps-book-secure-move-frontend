@@ -20,7 +20,7 @@ describe('Framework controllers', function () {
         .stub(presenters, 'frameworkToTaskListComponent')
         .returns('_taskListCmpt_')
       sinon
-        .stub(moveHelpers, 'getMoveWithSummary')
+        .stub(moveHelpers, 'getMoveSummary')
         .returns({ move: '__move__', moveSummary: '__move-summary__' })
 
       mockReq = {
@@ -41,7 +41,7 @@ describe('Framework controllers', function () {
 
         expect(mockRes.render.calledOnce).to.be.true
         expect(template).to.equal('framework-overview')
-        expect(moveHelpers.getMoveWithSummary).to.be.calledOnceWithExactly(
+        expect(moveHelpers.getMoveSummary).to.be.calledOnceWithExactly(
           undefined
         )
       })
@@ -196,7 +196,7 @@ describe('Framework controllers', function () {
         })
 
         it('should get the move summary', function () {
-          expect(moveHelpers.getMoveWithSummary).to.be.calledOnceWithExactly({
+          expect(moveHelpers.getMoveSummary).to.be.calledOnceWithExactly({
             id: '12345',
             profile: {
               person: {

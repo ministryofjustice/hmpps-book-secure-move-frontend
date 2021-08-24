@@ -1,7 +1,7 @@
 const { filter, findIndex, snakeCase, sortBy } = require('lodash')
 
 const i18n = require('../../../config/i18n')
-const setMoveWithSummary = require('../../middleware/set-move-with-summary')
+const setMoveSummary = require('../../middleware/set-move-summary')
 const presenters = require('../../presenters')
 const FormWizardController = require('../form-wizard')
 
@@ -13,7 +13,7 @@ class FrameworkSectionController extends FormWizardController {
     this.use(this.setEditableStatus)
     this.use(this.seti18nContext)
     this.use(this.setPagination)
-    this.use(setMoveWithSummary)
+    this.use(setMoveSummary)
   }
 
   seti18nContext(req, res, next) {

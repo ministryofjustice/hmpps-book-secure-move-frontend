@@ -1,11 +1,11 @@
 const { get } = require('lodash')
 
-const setMoveWithSummary = require('../../middleware/set-move-with-summary')
+const setMoveSummary = require('../../middleware/set-move-summary')
 const FormWizardController = require('../form-wizard')
 
 class ConfirmAssessmentController extends FormWizardController {
   middlewareLocals() {
-    this.use(setMoveWithSummary)
+    this.use(setMoveSummary)
     super.middlewareLocals()
   }
 

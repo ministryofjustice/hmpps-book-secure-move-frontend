@@ -1,14 +1,17 @@
 const moveToMetaListComponent = require('../../presenters/move-to-meta-list-component')
 
-function getMoveWithSummary(move) {
+function getMoveSummary(move) {
+  if (!move) {
+    return {}
+  }
+
   const moveSummary = moveToMetaListComponent(move)
 
   const locals = {
-    move,
     moveSummary,
   }
 
   return locals
 }
 
-module.exports = getMoveWithSummary
+module.exports = getMoveSummary

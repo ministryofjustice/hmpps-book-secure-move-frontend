@@ -10,7 +10,13 @@ class HandoverController extends ConfirmAssessmentController {
 
   middlewareLocals() {
     super.middlewareLocals()
+    this.use(this.setMoveId)
     this.use(this.setBreadcrumb)
+  }
+
+  setMoveId(req, res, next) {
+    res.locals.moveId = req.move.id
+    next()
   }
 
   setBreadcrumb(req, res, next) {

@@ -2,10 +2,10 @@ const proxyquire = require('proxyquire')
 
 const FormWizardController = require('../form-wizard')
 
-const setMoveWithSummary = sinon.stub()
+const setMoveSummary = sinon.stub()
 
 const ConfirmAssessmentController = proxyquire('./confirm-assessment', {
-  '../../middleware/set-move-with-summary': setMoveWithSummary,
+  '../../middleware/set-move-summary': setMoveSummary,
 })
 
 const controller = new ConfirmAssessmentController({ route: '/' })
@@ -27,9 +27,7 @@ describe('Framework controllers', function () {
       })
 
       it('should call set move with summary', function () {
-        expect(controller.use).to.have.been.calledWithExactly(
-          setMoveWithSummary
-        )
+        expect(controller.use).to.have.been.calledWithExactly(setMoveSummary)
       })
 
       it('should call correct number of middleware', function () {
