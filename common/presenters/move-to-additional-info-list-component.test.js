@@ -34,6 +34,9 @@ describe('Presenters', function () {
       it('should return empty rows', function () {
         expect(transformedResponse).to.deep.equal({
           classes: 'govuk-!-font-size-16',
+          count: 0,
+          heading: 'moves::detail.additional_information.heading',
+          key: undefined,
           rows: [],
         })
       })
@@ -73,6 +76,23 @@ describe('Presenters', function () {
             expect(row).to.have.all.keys(['key', 'value'])
           })
         })
+
+        it('should contain key', function () {
+          expect(transformedResponse).to.have.property('key')
+          expect(transformedResponse.key).to.equal('court_appearance')
+        })
+
+        it('should contain count', function () {
+          expect(transformedResponse).to.have.property('count')
+          expect(transformedResponse.count).to.equal(2)
+        })
+
+        it('should contain heading', function () {
+          expect(transformedResponse).to.have.property('heading')
+          expect(transformedResponse.heading).to.equal(
+            'moves::detail.additional_information.heading'
+          )
+        })
       })
 
       describe('translations', function () {
@@ -82,6 +102,15 @@ describe('Presenters', function () {
               context: 'court_appearance',
             })
           })
+        })
+
+        it('should translate heading', function () {
+          expect(i18n.t).to.be.calledWithExactly(
+            'moves::detail.additional_information.heading',
+            {
+              context: 'court_appearance',
+            }
+          )
         })
       })
 

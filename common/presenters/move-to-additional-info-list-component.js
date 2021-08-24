@@ -27,11 +27,16 @@ function moveToAdditionalInfoListComponent({
         html: additionalInformation,
       },
     },
-  ]
+  ].filter(row => row.value.text || row.value.html)
 
   return {
     classes: 'govuk-!-font-size-16',
-    rows: rows.filter(row => row.value.text || row.value.html),
+    count: rows.length,
+    key: moveType,
+    heading: i18n.t('moves::detail.additional_information.heading', {
+      context: moveType,
+    }),
+    rows,
   }
 }
 
