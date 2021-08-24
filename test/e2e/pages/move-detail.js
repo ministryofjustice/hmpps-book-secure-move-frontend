@@ -20,7 +20,7 @@ class MoveDetailPage extends Page {
       personalDetails: Selector('#main-content h2')
         .withText('Personal details')
         .sibling('dl'),
-      moveDetails: Selector('.sticky-sidebar .app-meta-list'),
+      moveDetails: Selector('[data-move-summary] .app-meta-list'),
       courtInformationHeading: Selector('#main-content h2').withText(
         'Information for the court'
       ),
