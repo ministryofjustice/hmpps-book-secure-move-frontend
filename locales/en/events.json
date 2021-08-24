@@ -226,11 +226,11 @@
     "description": "Move has been rejected by $t(events::select_agency)",
     "select_rebook": "$t(events::MoveReject.rebook, {\"context\": \"{{rebook}}\"})",
     "rebook": "",
-    "rebook_true": "<br>This move will be rebooked in 7 days",
-    "rebook_false": "<br>This move may be rebooked in 7 days if still required",
+    "rebook_true": "This move will be rebooked in 7 days",
+    "rebook_false": "This move may be rebooked in 7 days if still required",
     "select_cancellation_reason_comment": "$t(events::MoveReject.cancellation_reason_comment, {\"context\": \"{{cancellation_reason_comment, exists}}\"})",
     "cancellation_reason_comment": "",
-    "cancellation_reason_comment_true": "<br>Additional information — {{cancellation_reason_comment}}"
+    "cancellation_reason_comment_true": "Additional information — {{cancellation_reason_comment}}"
   },
   "MoveRequested": {
     "statusChange": true,

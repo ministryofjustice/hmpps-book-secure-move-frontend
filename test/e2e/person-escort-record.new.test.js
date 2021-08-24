@@ -111,12 +111,12 @@ test('Start new Record', async t => {
     )
     .expect(moveDetailPage.nodes.instructionBanner.innerText)
     .contains(
-      `${handoverDetails.handoverDispatchingOfficer} (${handoverDetails.handoverDispatchingOfficerId})`,
+      handoverDetails.handoverDispatchingOfficer,
       'Should contain dispatching officer'
     )
     .expect(moveDetailPage.nodes.instructionBanner.innerText)
     .contains(
-      `${handoverDetails.handoverReceivingOfficer} (${handoverDetails.handoverReceivingOfficerId})`,
+      handoverDetails.handoverReceivingOfficer,
       'Should contain receiving officer'
     )
     .expect(moveDetailPage.nodes.instructionBanner.innerText)
