@@ -2,7 +2,7 @@ const Sentry = require('@sentry/node')
 const FormController = require('hmpo-form-wizard').Controller
 
 const FormWizardController = require('../../../../../common/controllers/form-wizard')
-const presenters = require('../../../../../common/presenters')
+const middleware = require('../../../../../common/middleware')
 const personService = {
   getCategory: sinon.stub(),
 }
@@ -227,6 +227,7 @@ describe('Move controllers', function () {
       beforeEach(function () {
         sinon.stub(FormController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
+        sinon.stub(middleware, 'setMoveSummaryWithSessionData')
 
         controller.middlewareLocals()
       })
@@ -250,7 +251,7 @@ describe('Move controllers', function () {
 
       it('should call set move summary method', function () {
         expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
-          controller.setMoveSummary
+          middleware.setMoveSummaryWithSessionData
         )
       })
 
@@ -770,70 +771,6 @@ describe('Move controllers', function () {
         it('req.getPersonId should return person id', function () {
           expect(req.getPersonId()).to.equal('#personId')
         })
-      })
-    })
-
-    describe('#setMoveSummary()', function () {
-      let req, res, nextSpy
-      const mockSessionModel = {
-        date: '2019-06-09',
-        time_due: '2000-01-01T14:00:00Z',
-        to_location: {
-          title: 'Mock to location',
-        },
-        additional_information: 'Additional information',
-        person: {
-          first_names: 'Mr',
-          _fullname: 'Benn, Mr',
-          last_name: 'Benn',
-        },
-      }
-
-      beforeEach(function () {
-        sinon.stub(presenters, 'moveToMetaListComponent').returnsArg(0)
-        nextSpy = sinon.spy()
-        req = {
-          sessionModel: {
-            toJSON: sinon.stub().returns(mockSessionModel),
-          },
-          session: {
-            currentLocation: {
-              title: 'Mock current location',
-            },
-          },
-        }
-        res = {
-          locals: {
-            existing_key: 'foo',
-          },
-        }
-
-        controller.setMoveSummary(req, res, nextSpy)
-      })
-
-      it('should call presenter correctly', function () {
-        expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly({
-          ...mockSessionModel,
-          from_location: {
-            title: 'Mock current location',
-          },
-        })
-      })
-
-      it('should set locals as expected', function () {
-        expect(res.locals).to.deep.equal({
-          existing_key: 'foo',
-          moveSummary: {
-            ...mockSessionModel,
-            from_location: {
-              title: 'Mock current location',
-            },
-          },
-        })
-      })
-
-      it('should call next without error', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 

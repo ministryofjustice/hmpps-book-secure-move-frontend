@@ -7,6 +7,7 @@ const getAssessments = require('./get-assessments')
 const getCourtHearings = require('./get-court-hearings')
 const getMessage = require('./get-message')
 const getMessageBanner = require('./get-message-banner')
+const getMoveSummary = require('./get-move-summary')
 const getPerDetails = require('./get-per-details')
 const getTabsUrls = require('./get-tabs-urls')
 const getTagLists = require('./get-tag-lists')
@@ -32,6 +33,9 @@ function getLocals(req) {
   const personalDetailsSummary = presenters.personToSummaryListComponent(
     personWithProfileCategory
   )
+  // move, canAccess
+  const messageBanner = getMessageBanner(move, canAccess)
+  const updateUrls = getUpdateUrls(move, canAccess)
   // move
   const additionalInfoSummary =
     presenters.moveToAdditionalInfoListComponent(move)
@@ -41,14 +45,11 @@ function getLocals(req) {
   const assessments = getAssessments(move)
   const tabsUrls = getTabsUrls(move)
   const perDetails = getPerDetails(move)
-  // move, canAccess
-  const messageBanner = getMessageBanner(move, canAccess)
-  const updateUrls = getUpdateUrls(move, canAccess)
-
-  const updateLinks = mapValues(updateUrls, mapUpdateLink)
-  const moveSummary = presenters.moveToMetaListComponent(move, {
+  const moveSummary = getMoveSummary(move, {
     updateUrls,
   })
+
+  const updateLinks = mapValues(updateUrls, mapUpdateLink)
 
   const urls = {
     tabs: tabsUrls,
@@ -64,7 +65,7 @@ function getLocals(req) {
     courtHearings,
     ...message,
     messageBanner,
-    moveSummary,
+    ...moveSummary,
     ...perDetails,
     personalDetailsSummary,
     ...tagLists,

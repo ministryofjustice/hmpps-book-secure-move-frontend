@@ -1,4 +1,3 @@
-const presenters = require('../../../../../common/presenters')
 const CreateBaseController = require('../../new/controllers/base')
 
 class AssignBaseController extends CreateBaseController {
@@ -29,15 +28,6 @@ class AssignBaseController extends CreateBaseController {
   setCancelUrl(req, res, next) {
     const allocationId = req.move.allocation.id
     res.locals.cancelUrl = `/allocation/${allocationId}`
-    next()
-  }
-
-  setMoveSummary(req, res, next) {
-    const sessionData = req.sessionModel.toJSON()
-    res.locals.moveSummary = presenters.moveToMetaListComponent({
-      ...req.move,
-      ...sessionData,
-    })
     next()
   }
 
