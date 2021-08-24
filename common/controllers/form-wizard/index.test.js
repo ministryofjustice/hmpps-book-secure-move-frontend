@@ -20,6 +20,79 @@ describe('Form wizard', function () {
     controller = new Controller({ route: '/' })
   })
 
+  describe('#middlewareActions()', function () {
+    beforeEach(function () {
+      sinon.stub(FormController.prototype, 'middlewareActions')
+      sinon.stub(controller, 'use')
+      sinon.stub(controller, 'setReturnUrl')
+
+      controller.middlewareActions()
+    })
+
+    it('should call parent method', function () {
+      expect(FormController.prototype.middlewareActions).to.have.been.calledOnce
+    })
+
+    it('should set initial values', function () {
+      expect(controller.use).to.have.been.calledWithExactly(
+        controller.setReturnUrl
+      )
+    })
+
+    it('should call correct number of middleware', function () {
+      expect(controller.use).to.be.callCount(1)
+    })
+  })
+
+  describe('#setReturnUrl()', function () {
+    let req
+    let nextSpy
+
+    beforeEach(function () {
+      req = {
+        query: {},
+        sessionModel: {
+          set: sinon.stub(),
+        },
+      }
+      nextSpy = sinon.stub()
+    })
+
+    context('with returnUrl query param', function () {
+      beforeEach(function () {
+        req.query.returnUrl =
+          '/move/f4bb4e50-59ce-4cd4-ba57-99f543206c4c/person-escort-record'
+
+        controller.setReturnUrl(req, {}, nextSpy)
+      })
+
+      it('shoud update the session model', function () {
+        expect(req.sessionModel.set).to.be.calledOnceWithExactly(
+          'returnUrl',
+          '/move/f4bb4e50-59ce-4cd4-ba57-99f543206c4c/person-escort-record'
+        )
+      })
+
+      it('shoud call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('without returnUrl query param', function () {
+      beforeEach(function () {
+        controller.setReturnUrl(req, {}, nextSpy)
+      })
+
+      it('shoud not update the session model', function () {
+        expect(req.sessionModel.set).not.to.be.called
+      })
+
+      it('shoud call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+  })
+
   describe('#middlewareSetup()', function () {
     beforeEach(function () {
       sinon.stub(FormController.prototype, 'middlewareSetup')

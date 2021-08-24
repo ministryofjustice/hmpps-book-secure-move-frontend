@@ -15,6 +15,21 @@ class BaseController extends Controller {
     this.use(this.setFieldContext)
   }
 
+  middlewareActions() {
+    super.middlewareActions()
+    this.use(this.setReturnUrl)
+  }
+
+  setReturnUrl(req, res, next) {
+    const { returnUrl } = req.query
+
+    if (returnUrl) {
+      req.sessionModel.set('returnUrl', returnUrl)
+    }
+
+    next()
+  }
+
   setInitialValues(req, res, next) {
     next()
   }
