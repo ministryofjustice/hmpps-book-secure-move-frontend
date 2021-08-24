@@ -145,6 +145,9 @@
       "agreed": "Agreed with receiving location",
       "agreed_with_name": "Agreed by {{name}}",
       "not_agreed": "Not agreed with receiving location"
+    },
+    "single_request": {
+      "heading": "Transfer information"
     }
   },
   "cancel": {

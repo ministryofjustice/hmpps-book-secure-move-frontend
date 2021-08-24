@@ -5,6 +5,7 @@
   "section_overview": "{{section}} overview",
   "locked": "A $t({{context}}) cannot be updated once it has been confirmed or once the move has started.",
   "locked_person_escort_record": "A $t({{context}}) cannot be updated once handover has been recorded or once the move has started.",
+  "locked_request_information": "You cannot update this information once a $t(person_escort_record) has been started.",
   "statuses": {
     "not_started": "Not started",
     "in_progress": "In progress",
@@ -55,6 +56,7 @@
   },
   "view_framework_section": "View all {{name}}",
   "view_previous_assessment": "View information provided when move was requested",
+  "view_previous_assessment_risk_and_health": "View risk and health information provided when move was requested",
   "view_previous_assessment_framework": "View information provided in youth risk assessment",
   "incomplete": "Warnings will display once a Person Escort Record has been completed",
   "incomplete_overview": "This will display once a Person Escort Record has been completed",

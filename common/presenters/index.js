@@ -32,6 +32,7 @@ const personToMetaListComponent = require('./person-to-meta-list-component')
 const personToSummaryListComponent = require('./person-to-summary-list-component')
 const populationToGrid = require('./population-to-grid')
 const profileToCardComponent = require('./profile-to-card-component')
+const singleRequestToSummaryListComponent = require('./single-request-to-summary-list-component')
 const singleRequestsToTableComponent = require('./single-requests-to-table-component')
 const tablePresenters = require('./table')
 const timetableToTableComponent = require('./timetable-to-table-component')
@@ -71,6 +72,7 @@ module.exports = {
   personToSummaryListComponent,
   populationToGrid,
   profileToCardComponent,
+  singleRequestToSummaryListComponent,
   singleRequestsToTableComponent,
   tablePresenters,
   timetableToTableComponent,
