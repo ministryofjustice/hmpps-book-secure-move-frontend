@@ -262,6 +262,16 @@ describe('Framework controllers', function () {
 
       beforeEach(function () {
         req = {
+          assessment: {
+            framework: {
+              name: 'person-escort-record',
+            },
+            profile: {
+              person: {
+                _fullname: 'DOE, JANE',
+              },
+            },
+          },
           move: {
             id: mockMoveId,
           },
@@ -271,26 +281,102 @@ describe('Framework controllers', function () {
           journeyModel: {
             reset: sinon.stub(),
           },
+          t: sinon.stub().returnsArg(0),
+          flash: sinon.stub(),
         }
         res = {
           redirect: sinon.stub(),
         }
-
-        controller.successHandler(req, res)
       })
 
-      it('should reset the journey', function () {
-        expect(req.journeyModel.reset).to.have.been.calledOnceWithExactly()
+      describe('basic function', function () {
+        beforeEach(function () {
+          controller.successHandler(req, res)
+        })
+
+        it('should reset the journey', function () {
+          expect(req.journeyModel.reset).to.have.been.calledOnceWithExactly()
+        })
+
+        it('should reset the session', function () {
+          expect(req.sessionModel.reset).to.have.been.calledOnceWithExactly()
+        })
       })
 
-      it('should reset the session', function () {
-        expect(req.sessionModel.reset).to.have.been.calledOnceWithExactly()
+      context('with `req.move`', function () {
+        beforeEach(function () {
+          controller.successHandler(req, res)
+        })
+
+        it('should set flash message', function () {
+          expect(req.flash).to.have.been.calledOnceWithExactly('success', {
+            title: 'messages::assessment_confirmed.heading',
+            content: 'messages::assessment_confirmed.content',
+          })
+        })
+
+        it('should translate flash message', function () {
+          expect(req.t).to.have.been.calledWithExactly(
+            'messages::assessment_confirmed.heading',
+            {
+              context: 'person_escort_record',
+            }
+          )
+
+          expect(req.t).to.have.been.calledWithExactly(
+            'messages::assessment_confirmed.content',
+            {
+              context: 'person_escort_record',
+              name: 'DOE, JANE',
+              timelineUrl: `/move/${mockMoveId}/timeline`,
+            }
+          )
+        })
+
+        it('should redirect correctly', function () {
+          expect(res.redirect).to.have.been.calledOnceWithExactly(
+            `/move/${mockMoveId}`
+          )
+        })
       })
 
-      it('should redirect correctly', function () {
-        expect(res.redirect).to.have.been.calledOnceWithExactly(
-          `/move/${mockMoveId}`
-        )
+      context('with `req.assessment.move`', function () {
+        beforeEach(function () {
+          delete req.move
+          req.assessment.move = {
+            id: '12345',
+          }
+          controller.successHandler(req, res)
+        })
+
+        it('should set flash message', function () {
+          expect(req.flash).to.have.been.calledOnceWithExactly('success', {
+            title: 'messages::assessment_confirmed.heading',
+            content: 'messages::assessment_confirmed.content',
+          })
+        })
+
+        it('should translate flash message', function () {
+          expect(req.t).to.have.been.calledWithExactly(
+            'messages::assessment_confirmed.heading',
+            {
+              context: 'person_escort_record',
+            }
+          )
+
+          expect(req.t).to.have.been.calledWithExactly(
+            'messages::assessment_confirmed.content',
+            {
+              context: 'person_escort_record',
+              name: 'DOE, JANE',
+              timelineUrl: '/move/12345/timeline',
+            }
+          )
+        })
+
+        it('should redirect correctly', function () {
+          expect(res.redirect).to.have.been.calledOnceWithExactly('/move/12345')
+        })
       })
     })
   })
