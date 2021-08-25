@@ -30,6 +30,7 @@ const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
 const ensureSelectedLocation = require('./common/middleware/ensure-selected-location')
 const errorHandlers = require('./common/middleware/errors')
 const locals = require('./common/middleware/locals')
+const localsFeedbackUrl = require('./common/middleware/locals.feedback-url')
 const { setCanAccess } = require('./common/middleware/permissions')
 const processOriginalRequestBody = require('./common/middleware/process-original-request-body')
 const sentryEnrichScope = require('./common/middleware/sentry-enrich-scope')
@@ -177,6 +178,7 @@ app.use(sentryEnrichScope)
 app.use(flash())
 app.use(breadcrumbs.init())
 app.use(locals)
+app.use(localsFeedbackUrl)
 app.use(
   grant({
     defaults: {
