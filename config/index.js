@@ -74,8 +74,6 @@ module.exports = {
     CACHE_MAX_AGE:
       process.env.STATIC_ASSETS_CACHE_MAX_AGE || (IS_PRODUCTION ? '1w' : false),
   },
-  PERSON_ESCORT_RECORD_FEEDBACK_URL:
-    process.env.PERSON_ESCORT_RECORD_FEEDBACK_URL,
   FEEDBACK_URL: process.env.FEEDBACK_URL,
   SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
   APP_VERSION,
