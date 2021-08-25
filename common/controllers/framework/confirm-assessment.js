@@ -1,4 +1,4 @@
-const { get } = require('lodash')
+const { get, snakeCase } = require('lodash')
 
 const setMoveSummary = require('../../middleware/set-move-summary')
 const FormWizardController = require('../form-wizard')
@@ -54,10 +54,23 @@ class ConfirmAssessmentController extends FormWizardController {
   }
 
   successHandler(req, res) {
+    const context = snakeCase(req.assessment.framework.name)
+    const moveId = req.move?.id || req.assessment?.move?.id
+    const name = req.assessment?.profile?.person?._fullname
+
     req.journeyModel.reset()
     req.sessionModel.reset()
 
-    res.redirect(`/move/${req.move.id}`)
+    req.flash('success', {
+      title: req.t('messages::assessment_confirmed.heading', { context }),
+      content: req.t('messages::assessment_confirmed.content', {
+        context,
+        name,
+        timelineUrl: `/move/${moveId}/timeline`,
+      }),
+    })
+
+    res.redirect(`/move/${moveId}`)
   }
 }
 
