@@ -5,8 +5,6 @@ const {
   ASSETS_HOST,
   AUTH_BASE_URL,
   ENABLE_COMPONENTS_LIBRARY,
-  FEEDBACK_URL,
-  PERSON_ESCORT_RECORD_FEEDBACK_URL,
   SUPPORT_EMAIL,
 } = require('../')
 const { mountpath: componentsUrl } = require('../../app/components')
@@ -38,9 +36,7 @@ try {
 module.exports = {
   GA_ID: ANALYTICS?.GA_ID,
   FOOTER_ITEMS: footerItems.filter(item => item.href),
-  PERSON_ESCORT_RECORD_FEEDBACK_URL,
   SUPPORT_EMAIL,
-  FEEDBACK_URL,
   AUTH_BASE_URL,
   t: (...args) => i18n.t(...args),
   callAsMacro(name) {
