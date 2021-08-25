@@ -202,7 +202,7 @@
     "finepack": "2.10.11",
     "git-authors-cli": "1.0.35",
     "glob": "7.1.7",
-    "husky": "7.0.1",
+    "husky": "7.0.2",
     "image-minimizer-webpack-plugin": "2.2.0",
     "imagemin-gifsicle": "7.0.0",
     "imagemin-jpegtran": "7.0.0",
