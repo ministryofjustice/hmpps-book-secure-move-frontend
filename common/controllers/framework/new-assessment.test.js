@@ -85,6 +85,7 @@ describe('Framework controllers', function () {
             id: mockMoveId,
           },
           sessionModel: {
+            get: sinon.stub(),
             reset: sinon.stub(),
           },
           journeyModel: {
@@ -94,22 +95,50 @@ describe('Framework controllers', function () {
         res = {
           redirect: sinon.stub(),
         }
-
-        controller.successHandler(req, res)
       })
 
-      it('should reset the journey', function () {
-        expect(req.journeyModel.reset).to.have.been.calledOnceWithExactly()
+      describe('basis functions', function () {
+        beforeEach(function () {
+          controller.successHandler(req, res)
+        })
+
+        it('should reset the journey', function () {
+          expect(req.journeyModel.reset).to.have.been.calledOnceWithExactly()
+        })
+
+        it('should reset the session', function () {
+          expect(req.sessionModel.reset).to.have.been.calledOnceWithExactly()
+        })
       })
 
-      it('should reset the session', function () {
-        expect(req.sessionModel.reset).to.have.been.calledOnceWithExactly()
+      context('with return URL', function () {
+        beforeEach(function () {
+          req.sessionModel.get
+            .withArgs('returnUrl')
+            .returns('/return-url-from-session')
+
+          controller.successHandler(req, res)
+        })
+
+        it('should redirect to return URL', function () {
+          expect(res.redirect).to.have.been.calledOnceWithExactly(
+            '/return-url-from-session'
+          )
+        })
       })
 
-      it('should redirect correctly', function () {
-        expect(res.redirect).to.have.been.calledOnceWithExactly(
-          `/move/${mockMoveId}`
-        )
+      context('without return URL', function () {
+        beforeEach(function () {
+          req.sessionModel.get.withArgs('returnUrl').returns(undefined)
+
+          controller.successHandler(req, res)
+        })
+
+        it('should redirect to move', function () {
+          expect(res.redirect).to.have.been.calledOnceWithExactly(
+            `/move/${req.move.id}`
+          )
+        })
       })
     })
   })

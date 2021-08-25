@@ -18,10 +18,13 @@ class NewAssessmentController extends FormWizardController {
   }
 
   successHandler(req, res) {
+    const returnUrl = req.sessionModel.get('returnUrl')
+    const url = returnUrl || `/move/${req.move.id}`
+
     req.journeyModel.reset()
     req.sessionModel.reset()
 
-    res.redirect(`/move/${req.move.id}`)
+    res.redirect(url)
   }
 }
 

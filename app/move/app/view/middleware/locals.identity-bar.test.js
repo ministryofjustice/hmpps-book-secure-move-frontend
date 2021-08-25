@@ -1,3 +1,4 @@
+const presenters = require('../../../../../common/presenters')
 const filters = require('../../../../../config/nunjucks/filters')
 
 const middleware = require('./locals.identity-bar')
@@ -9,6 +10,7 @@ describe('Move view app', function () {
 
       beforeEach(function () {
         req = {
+          canAccess: sinon.stub(),
           t: sinon.stub().returnsArg(0),
         }
         res = {
@@ -16,6 +18,9 @@ describe('Move view app', function () {
         }
         nextSpy = sinon.spy()
 
+        sinon
+          .stub(presenters, 'moveToIdentityBarActions')
+          .returns('_moveToIdentityBarActions_')
         sinon.stub(filters, 'formatDate').returnsArg(0)
       })
 
@@ -74,8 +79,15 @@ describe('Move view app', function () {
           expect(filters.formatDate).to.be.calledWithExactly('2020-10-07')
         })
 
+        it('should call actions presenter', function () {
+          expect(
+            presenters.moveToIdentityBarActions
+          ).to.be.calledOnceWithExactly(req.move, { canAccess: req.canAccess })
+        })
+
         it('should set identity bar on locals', function () {
           expect(res.locals.identityBar).to.be.deep.equal({
+            actions: '_moveToIdentityBarActions_',
             classes: 'sticky',
             caption: {
               text: 'moves::detail.page_caption',
