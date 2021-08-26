@@ -153,7 +153,7 @@ describe('Presenters', function () {
               output = presenter(mockMove, { canAccess: canAccessStub })
             })
 
-            it('should return confirm action', function () {
+            it('should return confirm and print action', function () {
               expect(output).to.deep.equal([
                 {
                   html: {
@@ -163,6 +163,9 @@ describe('Presenters', function () {
                       text: 'actions::provide_confirmation',
                     },
                   },
+                },
+                {
+                  html: '<a href="/move/12345/youth-risk-assessment/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>',
                 },
               ])
             })
@@ -174,7 +177,7 @@ describe('Presenters', function () {
               output = presenter(mockMove, { canAccess: canAccessStub })
             })
 
-            it('should return confirm action', function () {
+            it('should return confirm and print actions', function () {
               expect(output).to.deep.equal([
                 {
                   html: {
@@ -184,6 +187,9 @@ describe('Presenters', function () {
                       text: 'actions::provide_confirmation',
                     },
                   },
+                },
+                {
+                  html: '<a href="/move/12345/youth-risk-assessment/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>',
                 },
               ])
             })
@@ -365,7 +371,7 @@ describe('Presenters', function () {
               output = presenter(mockMove, { canAccess: canAccessStub })
             })
 
-            it('should return confirm action', function () {
+            it('should return confirm and print actions', function () {
               expect(output).to.deep.equal([
                 {
                   html: {
@@ -375,6 +381,9 @@ describe('Presenters', function () {
                       text: 'actions::provide_confirmation',
                     },
                   },
+                },
+                {
+                  html: '<a href="/move/12345/person-escort-record/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>',
                 },
               ])
             })
@@ -386,7 +395,7 @@ describe('Presenters', function () {
               output = presenter(mockMove, { canAccess: canAccessStub })
             })
 
-            it('should return confirm action', function () {
+            it('should return confirm and print actions', function () {
               expect(output).to.deep.equal([
                 {
                   html: {
@@ -396,6 +405,9 @@ describe('Presenters', function () {
                       text: 'actions::provide_confirmation',
                     },
                   },
+                },
+                {
+                  html: '<a href="/move/12345/person-escort-record/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>',
                 },
               ])
             })
@@ -423,8 +435,12 @@ describe('Presenters', function () {
             output = presenter(mockMove, { canAccess: canAccessStub })
           })
 
-          it('should not return any actions', function () {
-            expect(output).to.deep.equal([])
+          it('should not return print action', function () {
+            expect(output).to.deep.equal([
+              {
+                html: '<a href="/move/12345/person-escort-record/print" class="app-icon app-icon--print">\n          actions::print_assessment\n        </a>',
+              },
+            ])
           })
         })
       })
