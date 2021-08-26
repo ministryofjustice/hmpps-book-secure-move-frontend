@@ -14,16 +14,19 @@ function setActions({ previewPrefix = '' } = {}) {
         classes: 'app-link--destructive',
         url: move._canCancel ? `/move/${move.id}/cancel` : undefined,
       },
-      {
-        text: 'messages::preview_new_feature.actions.return',
-        itemClasses:
-          'app-border-top-1 govuk-!-padding-top-4 govuk-!-margin-top-4',
-        classes: 'govuk-button govuk-button--secondary',
-        url: `/move${previewPrefix}/opt-out?move_id=${move.id}`,
-      },
-    ]
+    ].filter(action => action.url)
 
-    res.locals.actions = actions.filter(item => item.url)
+    actions.push({
+      text: 'messages::preview_new_feature.actions.return',
+      itemClasses:
+        actions.length !== 0
+          ? 'app-border-top-1 govuk-!-padding-top-4 govuk-!-margin-top-4'
+          : undefined,
+      classes: 'govuk-button govuk-button--secondary',
+      url: `/move${previewPrefix}/opt-out?move_id=${move.id}`,
+    })
+
+    res.locals.actions = actions
 
     next()
   }
