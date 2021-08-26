@@ -69,6 +69,7 @@
 
   @include govuk-media-query($from: tablet) {
     float: left;
+    max-width: 75%;
   }
 }
 
