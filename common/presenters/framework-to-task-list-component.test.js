@@ -174,7 +174,7 @@ describe('Presenters', function () {
           })
 
           it('should return href', function () {
-            expect(output.items[2].href).to.equal('not-started-section')
+            expect(output.items[2].href).to.equal('not-started-section/start')
           })
 
           it('should translate status', function () {
@@ -218,35 +218,6 @@ describe('Presenters', function () {
       describe('items', function () {
         it('should return href with base url', function () {
           expect(output.items[0].href).to.equal('/base-url/incomplete-section')
-        })
-      })
-    })
-
-    context('with deep link option', function () {
-      const mockProgress = [
-        {
-          key: 'incomplete-section',
-          status: 'in_progress',
-        },
-      ]
-      const mockSections = {
-        'incomplete-section': {
-          name: 'Incomplete section',
-          key: 'incomplete-section',
-        },
-      }
-
-      beforeEach(function () {
-        output = presenter({
-          deepLinkToFirstStep: true,
-          sectionProgress: mockProgress,
-          frameworkSections: mockSections,
-        })
-      })
-
-      describe('items', function () {
-        it('should return href with base url', function () {
-          expect(output.items[0].href).to.equal('incomplete-section/start')
         })
       })
     })
