@@ -22,7 +22,7 @@ function setActions({ previewPrefix = '' } = {}) {
         actions.length !== 0
           ? 'app-border-top-1 govuk-!-padding-top-4 govuk-!-margin-top-4'
           : undefined,
-      classes: 'govuk-button govuk-button--secondary',
+      classes: 'govuk-button govuk-button--secondary govuk-!-margin-top-4',
       url: `/move${previewPrefix}/opt-out?move_id=${move.id}`,
     })
 
