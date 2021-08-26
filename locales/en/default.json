@@ -8,6 +8,8 @@
   "time": "Time",
   "type": "Type",
   "or": "or",
+  "warnings": "{{count}}",
+  "warnings_plural": "{{count}}",
   "not_provided": "Not provided",
   "none_provided": "None provided",
   "status": "Status",

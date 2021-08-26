@@ -69,6 +69,12 @@
             {{ section.name or t('assessment::heading.text', {
               context: section.key
             }) }}
+
+            {# {% if section.isCompleted %}
+              <span class="govuk-!-font-size-19">
+                ({{ t("warnings", { count: section.count }) }})
+              </span>
+            {% endif %} #}
           </h2>
 
           {{ renderAssessmentComponent(section) }}

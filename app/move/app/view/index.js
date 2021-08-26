@@ -50,10 +50,11 @@ router.use(localsIdentityBar)
 router.use(localsMessageBanner)
 router.use(localsMoveDetails)
 router.use(localsPersonSummary)
+router.use(localsWarnings)
 router.use(localsTabs)
 
 // Define routes
-router.get('/warnings', localsWarnings, renderWarnings)
+router.get('/warnings', renderWarnings)
 router.get('/details', renderDetails)
 router.get('/assessments', renderAssessments)
 router.get('/assessments/personal-details', renderPersonalDetails)
