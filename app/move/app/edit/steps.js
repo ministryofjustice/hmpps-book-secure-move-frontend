@@ -74,6 +74,28 @@ const updateSteps = [
     },
   },
   {
+    key: 'prison_recall',
+    permission: 'move:update',
+    steps: {
+      '/move-details': {
+        ...createSteps['/move-details'],
+        ...updateStepPropOverrides,
+        controller: MoveDetails,
+      },
+    },
+  },
+  {
+    key: 'video_remand',
+    permission: 'move:update',
+    steps: {
+      '/move-details': {
+        ...createSteps['/move-details'],
+        ...updateStepPropOverrides,
+        controller: MoveDetails,
+      },
+    },
+  },
+  {
     key: 'risk',
     permission: 'move:update',
     steps: {

@@ -8,7 +8,7 @@ const moveToSummaryListComponent = require('./move-to-additional-info-list-compo
 const mockMove = {
   time_due: '2000-01-01T14:00:00Z',
   additional_information: 'Some more info',
-  move_type: 'court_appearance',
+  move_type: 'hospital',
 }
 
 describe('Presenters', function () {
@@ -31,14 +31,8 @@ describe('Presenters', function () {
         transformedResponse = moveToSummaryListComponent()
       })
 
-      it('should return empty rows', function () {
-        expect(transformedResponse).to.deep.equal({
-          classes: 'govuk-!-font-size-16',
-          count: 0,
-          heading: 'moves::detail.additional_information.heading',
-          key: undefined,
-          rows: [],
-        })
+      it('should return undefined', function () {
+        expect(transformedResponse).to.be.undefined
       })
     })
 
@@ -79,7 +73,7 @@ describe('Presenters', function () {
 
         it('should contain key', function () {
           expect(transformedResponse).to.have.property('key')
-          expect(transformedResponse.key).to.equal('court_appearance')
+          expect(transformedResponse.key).to.equal('hospital')
         })
 
         it('should contain count', function () {
@@ -99,7 +93,7 @@ describe('Presenters', function () {
         it('should translate keys', function () {
           transformedResponse.rows.forEach(row => {
             expect(i18n.t).to.be.calledWithExactly(row.key.text, {
-              context: 'court_appearance',
+              context: 'hospital',
             })
           })
         })
@@ -108,7 +102,7 @@ describe('Presenters', function () {
           expect(i18n.t).to.be.calledWithExactly(
             'moves::detail.additional_information.heading',
             {
-              context: 'court_appearance',
+              context: 'hospital',
             }
           )
         })
@@ -121,27 +115,71 @@ describe('Presenters', function () {
       })
     })
 
-    context('with hospital move type', function () {
+    context('with missing additional information', function () {
       beforeEach(function () {
         transformedResponse = moveToSummaryListComponent({
           ...mockMove,
-          move_type: 'hospital',
+          additional_information: null,
         })
       })
 
-      describe('translations', function () {
-        it('should translate time due label', function () {
-          expect(i18n.t).to.be.calledWithExactly('fields::time_due.label', {
-            context: 'hospital',
-          })
-        })
-        it('should translate additional info label', function () {
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::additional_information.display.label',
-            {
-              context: 'hospital',
-            }
+      describe('response', function () {
+        it('should use fallback as value', function () {
+          const keys = transformedResponse.rows.map(
+            row => row.value.text || row.value.html
           )
+          expect(keys).to.deep.equal([mockMove.time_due, 'not_provided'])
+        })
+      })
+    })
+
+    context('with missing time due', function () {
+      beforeEach(function () {
+        transformedResponse = moveToSummaryListComponent({
+          ...mockMove,
+          time_due: null,
+        })
+      })
+
+      describe('response', function () {
+        it('should not include time', function () {
+          const keys = transformedResponse.rows.map(
+            row => row.value.text || row.value.html
+          )
+          expect(keys).to.deep.equal([mockMove.additional_information])
+        })
+      })
+    })
+
+    describe('move types', function () {
+      const validMoveTypes = ['hospital', 'prison_recall', 'video_remand']
+      const invalidMoveTypes = ['court_appearance', 'prison_transfer']
+
+      validMoveTypes.forEach(moveType => {
+        it('should return correct keys', function () {
+          transformedResponse = moveToSummaryListComponent({
+            ...mockMove,
+            move_type: moveType,
+          })
+
+          expect(Object.keys(transformedResponse)).to.deep.equal([
+            'classes',
+            'count',
+            'key',
+            'heading',
+            'rows',
+          ])
+        })
+      })
+
+      invalidMoveTypes.forEach(moveType => {
+        it('should return undefined', function () {
+          transformedResponse = moveToSummaryListComponent({
+            ...mockMove,
+            move_type: moveType,
+          })
+
+          expect(transformedResponse).to.be.undefined
         })
       })
     })

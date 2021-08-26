@@ -137,7 +137,9 @@
     },
     "additional_information": {
       "heading": "Additional information",
-      "heading_hospital": "Hospital information"
+      "heading_hospital": "Hospital information",
+      "heading_prison_recall": "Prison recall information",
+      "heading_video_remand": "Prison remand information"
     },
     "agreement_status": {
       "agreed": "Agreed with receiving location",
