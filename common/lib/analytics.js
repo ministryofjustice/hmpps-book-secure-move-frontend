@@ -30,6 +30,25 @@ function sendHit(params) {
 }
 
 /**
+ * Send an 'event' hit to Google Analytics Measurement Protocol
+ * @param category The event category.
+ * @param action The event action.
+ * @param label The event label (optional).
+ * @param value The event value (optional).
+ * @returns {Promise<unknown>|Promise<string>}
+ */
+function sendEvent({ category, action, label, value }) {
+  return sendHit({
+    v: 1,
+    t: 'event',
+    ec: category,
+    ea: action,
+    el: label,
+    ev: value,
+  })
+}
+
+/**
  * Send a 'timing' hit to Google Analytics Measurement Protocol
  * @param params
  * @returns {Promise<unknown>|Promise<string>}
@@ -44,5 +63,6 @@ function sendJourneyTime(params = {}) {
 }
 
 module.exports = {
+  sendEvent,
   sendJourneyTime,
 }
