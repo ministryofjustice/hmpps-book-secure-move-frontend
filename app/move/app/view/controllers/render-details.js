@@ -63,6 +63,8 @@ function renderDetails(req, res) {
     allocation: move.allocation,
     isEditable: move._canEdit,
     isAllocationMove: !isNil(move.allocation),
+    hasYouthRiskAssessment: !isNil(move.profile?.youth_risk_assessment),
+    hasPersonEscortRecord: !isNil(move.profile?.person_escort_record),
     moveId: move.id,
     moveSummary,
     sections: {

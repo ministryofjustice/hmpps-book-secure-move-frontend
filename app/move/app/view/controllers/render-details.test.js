@@ -124,6 +124,74 @@ describe('Move view app', function () {
           })
         })
 
+        describe('hasYouthRiskAssessment', function () {
+          context('with youth risk assessment', function () {
+            beforeEach(function () {
+              req.move.profile = {
+                youth_risk_assessment: {
+                  id: '12345',
+                },
+              }
+
+              controller(req, res)
+            })
+
+            it('should set hasYouthRiskAssessment property', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.hasYouthRiskAssessment).to.be.true
+            })
+          })
+
+          context('without youth risk assessment', function () {
+            beforeEach(function () {
+              req.move.profile = {
+                youth_risk_assessment: null,
+              }
+
+              controller(req, res)
+            })
+
+            it('should set hasYouthRiskAssessment property', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.hasYouthRiskAssessment).to.be.false
+            })
+          })
+        })
+
+        describe('hasPersonEscortRecord', function () {
+          context('with person escort record', function () {
+            beforeEach(function () {
+              req.move.profile = {
+                person_escort_record: {
+                  id: '12345',
+                },
+              }
+
+              controller(req, res)
+            })
+
+            it('should set hasYouthRiskAssessment property', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.hasPersonEscortRecord).to.be.true
+            })
+          })
+
+          context('without person escort record', function () {
+            beforeEach(function () {
+              req.move.profile = {
+                person_escort_record: null,
+              }
+
+              controller(req, res)
+            })
+
+            it('should set hasYouthRiskAssessment property', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.hasPersonEscortRecord).to.be.false
+            })
+          })
+        })
+
         describe('moveId', function () {
           beforeEach(function () {
             req.move.id = '_move_id_'
