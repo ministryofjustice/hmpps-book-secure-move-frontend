@@ -27,9 +27,24 @@
 {% endblock %}
 
 {% block contentMain %}
-  <section class="app-!-position-relative govuk-!-margin-bottom-8">
+  <section class="app-!-position-relative govuk-!-margin-bottom-5">
     {{ appTaskList(taskList) }}
   </section>
+
+  {% if isCompleted %}
+    <p class="govuk-!-margin-top-0 govuk-!-margin-bottom-8 govuk-!-font-size-16">
+      <a href="{{baseUrl}}/print" class="app-icon app-icon--print">
+        {{ t("actions::print_assessment", {
+          context: i18nContext
+        }) }}
+      </a>
+    </p>
+  {% endif %}
+
+  {{ govukBackLink({
+    text: t("actions::back_to_move"),
+    href: "/move/" + moveId
+  }) }}
 {% endblock %}
 
 

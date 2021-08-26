@@ -4,7 +4,7 @@
   <ul class="app-task-list__items">
     {% for item in items %}
       <li class="app-task-list__item">
-        <span class="app-task-list__task-name">
+        <div class="app-task-list__task-name">
           {% if item.href %}
             <a href="{{ item.href }}" aria-described-by="{{ item.text | urlencode }}-status">
           {% endif %}
@@ -14,7 +14,13 @@
           {% if item.href %}
             </a>
           {% endif %}
-        </span>
+
+          {% if item.supportingText.text or item.supportingText.html %}
+            <div class="govuk-!-font-size-16 govuk-!-margin-top-2">
+              {{ item.supportingText.html | safe if item.supportingText.html else item.supportingText.text }}
+            </div>
+          {% endif %}
+        </div>
 
         {% if item.tag %}
           {{ govukTag({

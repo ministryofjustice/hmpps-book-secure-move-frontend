@@ -5,6 +5,12 @@ const setMoveSummary = require('../../middleware/set-move-summary')
 const presenters = require('../../presenters')
 const FormWizardController = require('../form-wizard')
 
+const tagClasses = {
+  not_started: 'govuk-tag--grey',
+  in_progress: 'govuk-tag--blue',
+  default: '',
+}
+
 class FrameworkSectionController extends FormWizardController {
   middlewareLocals() {
     super.middlewareLocals()
@@ -58,6 +64,8 @@ class FrameworkSectionController extends FormWizardController {
 
   setMoveId(req, res, next) {
     res.locals.moveId = req.move?.id || req.assessment?.move?.id
+    res.locals.assessmentContext = snakeCase(req.assessment.framework.name)
+    res.locals.returnUrl = `/move/${req.move?.id}/${req.assessment.framework.name}`
     next()
   }
 
@@ -72,7 +80,7 @@ class FrameworkSectionController extends FormWizardController {
 
   setSectionSummary(req, res, next) {
     const { frameworkSection, assessment, baseUrl, form } = req
-    const { name, steps } = frameworkSection
+    const { name, steps, progress } = frameworkSection
     const stepSummaries = Object.entries(steps).map(
       presenters.frameworkStepToSummary(
         form.options.allFields,
@@ -82,6 +90,11 @@ class FrameworkSectionController extends FormWizardController {
     )
 
     res.locals.sectionTitle = name
+    res.locals.sectionTag = {
+      text: i18n.t(`assessment::statuses.${progress}`),
+      classes:
+        (tagClasses[progress] || tagClasses.default) + ' app-!-float-right',
+    }
     res.locals.summarySteps = filter(stepSummaries)
 
     next()
