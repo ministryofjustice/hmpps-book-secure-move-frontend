@@ -16,7 +16,6 @@ module.exports = function assessmentToUnconfirmedBanner({
 
   const taskList = frameworkToTaskListComponent({
     baseUrl: `${baseUrl}/`,
-    deepLinkToFirstStep: true,
     frameworkSections: assessment._framework.sections,
     sectionProgress: assessment.meta.section_progress,
   })

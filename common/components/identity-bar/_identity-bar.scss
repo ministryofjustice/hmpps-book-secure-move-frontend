@@ -71,4 +71,8 @@
   & + & {
     margin-top: govuk-spacing(2);
   }
+
+  @include mq($from: desktop) {
+    float: right;
+  }
 }

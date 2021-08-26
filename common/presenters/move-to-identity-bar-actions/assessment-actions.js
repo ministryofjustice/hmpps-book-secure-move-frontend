@@ -4,8 +4,10 @@ const i18n = require('../../../config/i18n')
 const componentService = require('../../services/component')
 
 function assessmentActions(move = {}, { canAccess } = {}) {
+  const actions = []
+
   if (!move.profile) {
-    return []
+    return actions
   }
 
   const assessmentType =
@@ -18,7 +20,15 @@ function assessmentActions(move = {}, { canAccess } = {}) {
   const context = assessmentType
 
   if (assessment.status === 'confirmed' || assessment.handover_occurred_at) {
-    return []
+    if (canAccess(`${context}:print`)) {
+      actions.push({
+        html: `<a href="${baseUrl}/print" class="app-icon app-icon--print">
+          ${i18n.t('actions::print_assessment', { context })}
+        </a>`,
+      })
+    }
+
+    return actions
   }
 
   if (
@@ -26,43 +36,51 @@ function assessmentActions(move = {}, { canAccess } = {}) {
     canAccess(`${context}:create`)
   ) {
     if (isEmpty(assessment)) {
-      return [
-        {
-          html: componentService.getComponent('govukButton', {
-            text: i18n.t('actions::start_assessment', { context }),
-            preventDoubleClick: true,
-            href: `${baseUrl}/new?returnUrl=${encodeURIComponent(baseUrl)}`,
-          }),
-        },
-      ]
+      actions.push({
+        html: componentService.getComponent('govukButton', {
+          text: i18n.t('actions::start_assessment', { context }),
+          preventDoubleClick: true,
+          href: `${baseUrl}/new?returnUrl=${encodeURIComponent(baseUrl)}`,
+        }),
+      })
+
+      return actions
     }
 
     if (assessment.status !== 'completed') {
-      return [
-        {
-          html: componentService.getComponent('govukButton', {
-            text: i18n.t('actions::continue_assessment', { context }),
-            preventDoubleClick: true,
-            href: baseUrl,
-          }),
-        },
-      ]
+      actions.push({
+        html: componentService.getComponent('govukButton', {
+          text: i18n.t('actions::continue_assessment', { context }),
+          preventDoubleClick: true,
+          href: baseUrl,
+        }),
+      })
+
+      return actions
     }
   }
 
   if (assessment.status === 'completed' && canAccess(`${context}:confirm`)) {
-    return [
-      {
+    if (canAccess(`${context}:confirm`)) {
+      actions.push({
         html: componentService.getComponent('govukButton', {
           text: i18n.t('actions::provide_confirmation', { context }),
           preventDoubleClick: true,
           href: `${baseUrl}/confirm`,
         }),
-      },
-    ]
+      })
+    }
+
+    if (canAccess(`${context}:print`)) {
+      actions.push({
+        html: `<a href="${baseUrl}/print" class="app-icon app-icon--print">
+          ${i18n.t('actions::print_assessment', { context })}
+        </a>`,
+      })
+    }
   }
 
-  return []
+  return actions
 }
 
 module.exports = assessmentActions

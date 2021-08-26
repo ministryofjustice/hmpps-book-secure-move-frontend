@@ -6,7 +6,7 @@ const moveRouter = express.Router({ mergeParams: true })
 // Local dependencies
 const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
-const { ENABLE_DEVELOPMENT_TOOLS } = require('../../config')
+const { ENABLE_DEVELOPMENT_TOOLS, FEATURE_FLAGS } = require('../../config')
 const personEscortRecordApp = require('../person-escort-record')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
 
@@ -48,7 +48,10 @@ router.get('/preview/opt-out', previewOptOut)
 
 router.use(`/:moveId(${uuidRegex})`, moveRouter)
 
-moveRouter.use(checkPreviewChoice({ '/': '/', '/timeline': '/timeline' }))
+if (FEATURE_FLAGS.MOVE_PREVIEW) {
+  moveRouter.use(checkPreviewChoice({ '/': '/', '/timeline': '/timeline' }))
+}
+
 // For all non-timeline routes use standard move middleware
 moveRouter.use(/\/((?!timeline).)*/, setMove)
 // For all timeline route use move events middleware

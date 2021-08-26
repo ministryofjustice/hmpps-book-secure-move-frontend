@@ -82,7 +82,6 @@ describe('Presenters', function () {
               'appTaskList',
               {
                 baseUrl: '/base-url/',
-                deepLinkToFirstStep: true,
                 frameworkSections: [],
                 sectionProgress: [],
               }
