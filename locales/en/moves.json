@@ -137,12 +137,17 @@
     },
     "additional_information": {
       "heading": "Additional information",
-      "heading_hospital": "Hospital information"
+      "heading_hospital": "Hospital information",
+      "heading_prison_recall": "Prison recall information",
+      "heading_video_remand": "Prison remand information"
     },
     "agreement_status": {
       "agreed": "Agreed with receiving location",
       "agreed_with_name": "Agreed by {{name}}",
       "not_agreed": "Not agreed with receiving location"
+    },
+    "single_request": {
+      "heading": "Transfer information"
     }
   },
   "cancel": {

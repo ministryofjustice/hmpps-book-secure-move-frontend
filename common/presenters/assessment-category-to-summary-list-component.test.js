@@ -1,8 +1,10 @@
 const { groupBy } = require('lodash')
 const proxyquire = require('proxyquire')
 
-const assessmentAnswersToMetaListComponentStub = sinon.stub().returnsArg(0)
+const i18n = require('../../config/i18n')
 const componentService = require('../services/component')
+
+const assessmentAnswersToMetaListComponentStub = sinon.stub().returnsArg(0)
 
 const assessmentCategoryToSummaryListComponent = proxyquire(
   './assessment-category-to-summary-list-component',
@@ -17,6 +19,7 @@ describe('Presenters', function () {
     let transformedResponse
 
     beforeEach(function () {
+      sinon.stub(i18n, 't').returnsArg(0)
       sinon.stub(componentService, 'getComponent').returnsArg(0)
       assessmentAnswersToMetaListComponentStub.resetHistory()
     })
@@ -72,6 +75,7 @@ describe('Presenters', function () {
             'sortOrder',
             'tagClass',
             'answers',
+            'heading',
             'count',
             'rows',
           ])
@@ -81,6 +85,16 @@ describe('Presenters', function () {
           expect(transformedResponse.count).to.equal(
             mockAssessmentCategory.answers.length
           )
+        })
+
+        it('should set heading property', function () {
+          expect(transformedResponse.heading).to.equal(
+            'assessment::heading.text'
+          )
+
+          expect(i18n.t).to.be.calledWithExactly('assessment::heading.text', {
+            context: mockAssessmentCategory.key,
+          })
         })
 
         it('should transform answers by title', function () {

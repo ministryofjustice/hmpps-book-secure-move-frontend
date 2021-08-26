@@ -1,5 +1,6 @@
 const { groupBy, map, sortBy } = require('lodash')
 
+const i18n = require('../../config/i18n')
 const componentService = require('../services/component')
 
 const assessmentAnswersToMetaListComponent = require('./assessment-answers-to-meta-list-component')
@@ -23,6 +24,9 @@ function assessmentCategoryToSummaryListComponent(category = {}) {
 
   return {
     ...category,
+    heading: i18n.t('assessment::heading.text', {
+      context: category.key,
+    }),
     count: answers.length,
     rows: sortBy(rows, 'key.text'),
   }
