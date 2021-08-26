@@ -17,6 +17,12 @@
 {% endmacro %}
 
 {% block content %}
+  {% if messageBanner %}
+    <div class="govuk-!-margin-bottom-5">
+      {{ appMessage(messageBanner) }}
+    </div>
+  {% endif %}
+
   {% block contentHeader %}
     {{ appIdentityBar(identityBar) }}
   {% endblock %}

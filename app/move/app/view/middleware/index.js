@@ -1,5 +1,6 @@
 const localsActions = require('./locals.actions')
 const localsIdentityBar = require('./locals.identity-bar')
+const localsMessageBanner = require('./locals.message-banner')
 const localsMoveDetails = require('./locals.move-details')
 const localsPersonSummary = require('./locals.person-summary')
 const localsTabs = require('./locals.tabs')
@@ -10,6 +11,7 @@ const setBreadcrumb = require('./set-breadcrumb')
 module.exports = {
   localsActions,
   localsIdentityBar,
+  localsMessageBanner,
   localsMoveDetails,
   localsPersonSummary,
   localsTabs,

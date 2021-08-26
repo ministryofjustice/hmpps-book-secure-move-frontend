@@ -19,6 +19,7 @@ const {
 const {
   localsActions,
   localsIdentityBar,
+  localsMessageBanner,
   localsMoveDetails,
   localsPersonSummary,
   localsTabs,
@@ -43,6 +44,7 @@ router.use(setBreadcrumb)
 router.use(localsUrls)
 router.use(localsActions({ previewPrefix: PREVIEW_PREFIX }))
 router.use(localsIdentityBar)
+router.use(localsMessageBanner)
 router.use(localsMoveDetails)
 router.use(localsPersonSummary)
 router.use(localsTabs)
