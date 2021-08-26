@@ -1,9 +1,17 @@
+const proxyquire = require('proxyquire')
 const timezoneMock = require('timezone-mock')
 
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
-const moveToSummaryListComponent = require('./move-to-summary-list-component')
+const mapUpdateLinkStub = sinon.stub().returnsArg(0)
+
+const moveToSummaryListComponent = proxyquire(
+  './move-to-summary-list-component',
+  {
+    '../helpers/move/map-update-link': mapUpdateLinkStub,
+  }
+)
 
 const mockMove = {
   date: '2019-06-09',
@@ -78,7 +86,7 @@ describe('Presenters', function () {
 
         it('should contain correct row structure', function () {
           transformedResponse.rows.forEach(row => {
-            expect(row).to.have.all.keys(['key', 'value'])
+            expect(row).to.include.keys(['key', 'value'])
           })
         })
       })
@@ -149,6 +157,62 @@ describe('Presenters', function () {
             mockMove.time_due,
           ])
         })
+      })
+    })
+
+    context('when provided with updateUrls', function () {
+      let transformedResponse
+      let mockUpdateUrls
+
+      beforeEach(function () {
+        mockUpdateUrls = {
+          move: {
+            href: '/move',
+            html: 'Update move',
+          },
+          date: {
+            href: '/date',
+            html: 'Update date',
+          },
+        }
+
+        transformedResponse = moveToSummaryListComponent(mockMove, {
+          updateUrls: mockUpdateUrls,
+        })
+      })
+
+      it('should map update links', function () {
+        expect(mapUpdateLinkStub.callCount).to.equal(
+          Object.keys(mockUpdateUrls).length
+        )
+
+        expect(mapUpdateLinkStub).to.have.been.calledWithExactly(
+          mockUpdateUrls.move,
+          'move'
+        )
+        expect(mapUpdateLinkStub).to.have.been.calledWithExactly(
+          mockUpdateUrls.date,
+          'date'
+        )
+      })
+
+      it('should contain correct number of items', function () {
+        expect(transformedResponse).to.have.property('rows')
+        expect(transformedResponse.rows.length).to.equal(4)
+      })
+
+      it('should contain correct actions', function () {
+        const actions = transformedResponse.rows.map(rows => rows.actions)
+        expect(actions).deep.equal([
+          undefined,
+          {
+            items: [mockUpdateUrls.move],
+          },
+          {
+            items: [mockUpdateUrls.date],
+          },
+          undefined,
+        ])
       })
     })
   })

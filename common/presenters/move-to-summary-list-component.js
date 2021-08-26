@@ -1,13 +1,28 @@
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
+const mapUpdateLink = require('../helpers/move/map-update-link')
 
-function moveToSummaryListComponent({
-  date,
-  time_due: timeDue,
-  move_type: moveType,
-  from_location: fromLocation,
-  to_location: toLocation,
-} = {}) {
+/**
+ * Convert a move into the structure required to render
+ * as a `govukSummaryList` component
+ *
+ * @param {Object} move - the move to format
+ *
+ * @param {Object} [options] - config options for the presenter
+ * @param {Object} [options.updateUrls={}] - object containing URLs for each edit step
+ *
+ * @returns {Object} - a move formatted as a `govukSummaryList` component
+ */
+function moveToSummaryListComponent(
+  {
+    date,
+    time_due: timeDue,
+    move_type: moveType,
+    from_location: fromLocation,
+    to_location: toLocation,
+  } = {},
+  { updateUrls = {} } = {}
+) {
   const pickup = fromLocation?.title
 
   const rows = [
@@ -26,6 +41,7 @@ function moveToSummaryListComponent({
       value: {
         text: pickup ? toLocation?.title : undefined,
       },
+      updateJourneyKey: 'move',
     },
     {
       key: {
@@ -34,6 +50,7 @@ function moveToSummaryListComponent({
       value: {
         text: filters.formatDateWithDay(date),
       },
+      updateJourneyKey: 'date',
     },
     {
       key: {
@@ -44,10 +61,28 @@ function moveToSummaryListComponent({
       },
     },
   ]
+    .filter(row => row.value.text || row.value.html)
+    .map(row => {
+      if (!updateUrls[row.updateJourneyKey]) {
+        return row
+      }
+
+      return {
+        ...row,
+        actions: {
+          items: [
+            mapUpdateLink(
+              updateUrls[row.updateJourneyKey],
+              row.updateJourneyKey
+            ),
+          ],
+        },
+      }
+    })
 
   return {
     classes: 'govuk-!-font-size-16',
-    rows: rows.filter(row => row.value.text || row.value.html),
+    rows,
   }
 }
 
