@@ -165,8 +165,12 @@ class FrameworkStepController extends FormWizardController {
     const currentStep = route
     const isLastStep = nextStep.endsWith(currentStep)
 
-    if (isLastStep || goToOverview) {
+    if (goToOverview) {
       return res.redirect(req.baseUrl)
+    }
+
+    if (isLastStep) {
+      return res.redirect(`/move/${req.move.id}/person-escort-record`)
     }
 
     super.successHandler(req, res, next)
