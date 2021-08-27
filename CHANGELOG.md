@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.89.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.88.0...v2.89.0) (2021-08-27)
+
+
+### Features
+
+* Add PER and YRA links to the preview details tab ([e90a31d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e90a31d4c2291648378e7ae4322d85409da0c1d9))
+* Add print action for PER and YRA ([ea58abc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ea58abc7312c3dc3755aa6be1f6b97808f3bec16))
+* Allow panels to be focusable for warnings ([550e72a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/550e72a81d44bac1d6f99ccad0b8d1d34dd4070d))
+* **assessment:** Add success message on confirmation/hand over ([4f62e4f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4f62e4fd66adb089e96ec5ea3d0d2833a65b5813))
+* **move preview:** Only show warnings once PER has been started ([034697a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/034697aecc8c63dda4f183335361383242d714c9))
+* **move:** Add actions to show what needs to be done next ([8e9ba97](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8e9ba97b8a184f64eee9ea954677b829e52c27d2))
+* **move:** Add message banner component for different states ([b98be40](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b98be404f75f3586855b9f0f3a2975ef7fe3507f))
+* **move:** Render move details within new design ([b4b250e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b4b250ec3e90274040c883f2f01db97af892785a))
+* Record events when opting in or out ([4b08550](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4b0855034422c4ecb70a43452675f8fc28e56ebc))
+* Set feedback URL depending on user design choice ([0f7bb1e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0f7bb1e50d9a0f5b2bd26c78c9d0785f2a838603))
+* Use new shared panel for personal details ([e2f52b1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e2f52b1eec2fd29a5020e1ce27db099a28c4d4aa))
+
+
+### Bug Fixes
+
+* Cope with result.moves being undefined ([d99e52a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d99e52a5a4115067715a56fdc54861b4ef7391c2))
+* Don't redirect move preview if feature flag is disabled ([1b9c946](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1b9c946cfc9150b1c62e842d93c41a331b063db1))
+* Ensure only select routes are redirect after opting in to preview ([9a55d65](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9a55d659cb9e79eab5dd47d34e3be6e781a66692))
+* Remove extra line when there are no actions ([7e53ff5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7e53ff5ec1b6a9fb4fe6877e4e45f034130eadf2))
+
 ## [2.88.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.87.0...v2.88.0) (2021-08-19)
 
 
