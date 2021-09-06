@@ -105,7 +105,7 @@
     "@hmpps-book-secure-move-frameworks/2.2.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v2.2.0",
     "@ministryofjustice/frontend": "0.2.5",
     "@promster/express": "5.0.2",
-    "@sentry/node": "6.11.0",
+    "@sentry/node": "6.12.0",
     "@sentry/tracing": "6.12.0",
     "accessible-autocomplete": "2.0.3",
     "agentkeepalive": "4.1.4",
