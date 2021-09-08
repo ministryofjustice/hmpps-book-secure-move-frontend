@@ -78,7 +78,6 @@ describe('Permissions', function () {
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
-          'youth_risk_assessment:print',
         ])
       })
     })
@@ -116,7 +115,6 @@ describe('Permissions', function () {
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
-          'youth_risk_assessment:print',
         ]
 
         expect(permissions).to.have.members(stcPermissions)
@@ -156,7 +154,6 @@ describe('Permissions', function () {
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
-          'youth_risk_assessment:print',
         ])
       })
     })
@@ -186,7 +183,6 @@ describe('Permissions', function () {
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
-          'youth_risk_assessment:print',
         ])
       })
     })
@@ -237,7 +233,6 @@ describe('Permissions', function () {
           'person_escort_record:view',
           'person_escort_record:print',
           'youth_risk_assessment:view',
-          'youth_risk_assessment:print',
         ])
       })
     })
@@ -257,7 +252,6 @@ describe('Permissions', function () {
           'person_escort_record:view',
           'person_escort_record:print',
           'youth_risk_assessment:view',
-          'youth_risk_assessment:print',
         ])
       })
     })
@@ -276,7 +270,6 @@ describe('Permissions', function () {
           'move:view',
           'person_escort_record:view',
           'youth_risk_assessment:view',
-          'youth_risk_assessment:print',
         ])
       })
     })
@@ -320,7 +313,6 @@ describe('Permissions', function () {
           'person_escort_record:view',
           'person_escort_record:print',
           'youth_risk_assessment:view',
-          'youth_risk_assessment:print',
         ])
       })
     })
@@ -343,7 +335,6 @@ describe('Permissions', function () {
           'person_escort_record:view',
           'person_escort_record:print',
           'youth_risk_assessment:view',
-          'youth_risk_assessment:print',
         ])
       })
     })
@@ -412,7 +403,6 @@ describe('Permissions', function () {
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
-          'youth_risk_assessment:print',
         ]
 
         expect(permissions).to.have.members(allPermissions)
