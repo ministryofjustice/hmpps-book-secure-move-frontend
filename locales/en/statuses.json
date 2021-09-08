@@ -32,9 +32,9 @@
   "description_cancelled_rejected": "<p>$t(events::MoveReject.select_rebook)</p> </p>$t(events::MoveReject.select_cancellation_reason_comment)</p>",
   "cancelled_allocation": "Allocation cancelled",
   "description_allocation": "Reason — Allocation was cancelled",
-  "description_allocation_supplier_declined_to_move": "Reason — Supplier declined to move",
   "description_allocation_made_in_error": "Reason — Made in error",
+  "description_allocation_supplier_declined_to_move": "Reason — Supplier declined to move",
   "description_allocation_lack_of_space_at_receiving_establishment": "Reason — Lack of space at receiving establishment",
-  "description_allocation_unfilled": "Reason — Sending establishment failed to fill allocation",
+  "description_allocation_sending_establishment_failed_to_fill_allocation": "Reason — Sending establishment failed to fill allocation",
   "description_allocation_other": "Reason — {{ comment }}"
 }
