@@ -172,7 +172,7 @@ describe('#movesToTableComponent', function () {
                 text: mockMoves[0].date,
               },
               {
-                html: 'govukTag',
+                html: 'mojBadge',
               },
             ])
           })
@@ -180,8 +180,7 @@ describe('#movesToTableComponent', function () {
           it('should call tag component correctly', function () {
             expect(
               componentService.getComponent.getCall(0)
-            ).to.be.calledWithExactly('govukTag', {
-              classes: 'govuk-tag--blue',
+            ).to.be.calledWithExactly('mojBadge', {
               text: 'collections::labels.move_status',
             })
           })
@@ -213,7 +212,7 @@ describe('#movesToTableComponent', function () {
                 text: mockMoves[3].date,
               },
               {
-                html: 'govukTag',
+                html: 'mojBadge',
               },
             ])
           })
@@ -221,8 +220,7 @@ describe('#movesToTableComponent', function () {
           it('should call tag component correctly', function () {
             expect(
               componentService.getComponent.getCall(3)
-            ).to.be.calledWithExactly('govukTag', {
-              classes: 'govuk-tag--red',
+            ).to.be.calledWithExactly('mojBadge', {
               text: 'collections::labels.move_status',
             })
           })
