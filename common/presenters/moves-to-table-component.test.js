@@ -128,7 +128,7 @@ describe('#movesToTableComponent', function () {
             isSortable: true,
             sortKey: 'date',
             attributes: {
-              width: '135',
+              width: '145',
             },
           },
           {

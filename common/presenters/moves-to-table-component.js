@@ -48,7 +48,7 @@ function movesToTableComponent({ query } = {}) {
         sortKey: 'date',
         html: 'collections::labels.move_date',
         attributes: {
-          width: '135',
+          width: '145',
         },
       },
       row: {
