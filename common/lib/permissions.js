@@ -42,7 +42,6 @@ const contractDeliveryManagerPermissions = [
   'person_escort_record:view',
   'person_escort_record:print',
   'youth_risk_assessment:view',
-  'youth_risk_assessment:print',
 ]
 
 const readOnlyPermissions = [
@@ -57,7 +56,6 @@ const readOnlyPermissions = [
   'person_escort_record:view',
   'person_escort_record:print',
   'youth_risk_assessment:view',
-  'youth_risk_assessment:print',
 ]
 
 const secureChildrensHomePermissions = [
@@ -87,7 +85,6 @@ const secureChildrensHomePermissions = [
   'youth_risk_assessment:create',
   'youth_risk_assessment:update',
   'youth_risk_assessment:confirm',
-  'youth_risk_assessment:print',
 ]
 const secureTrainingCentrePermissions = [
   'dashboard:view',
@@ -116,7 +113,6 @@ const secureTrainingCentrePermissions = [
   'youth_risk_assessment:create',
   'youth_risk_assessment:update',
   'youth_risk_assessment:confirm',
-  'youth_risk_assessment:print',
 ]
 
 const supplierPermissions = [
@@ -128,7 +124,6 @@ const supplierPermissions = [
   'person_escort_record:view',
   'person_escort_record:print',
   'youth_risk_assessment:view',
-  'youth_risk_assessment:print',
 ]
 const prisonPermissions = [
   'dashboard:view',
@@ -149,7 +144,6 @@ const prisonPermissions = [
   'youth_risk_assessment:create',
   'youth_risk_assessment:update',
   'youth_risk_assessment:confirm',
-  'youth_risk_assessment:print',
 ]
 const ocaPermissions = [
   'dashboard:view',
@@ -182,7 +176,6 @@ const pmuPermissions = [
   'person_escort_record:view',
   'person_escort_record:print',
   'youth_risk_assessment:view',
-  'youth_risk_assessment:print',
 ]
 const courtPermissions = [
   'dashboard:view',
@@ -192,7 +185,6 @@ const courtPermissions = [
   'move:view',
   'person_escort_record:view',
   'youth_risk_assessment:view',
-  'youth_risk_assessment:print',
 ]
 const personEscortRecordAuthorPermissions = [
   'person_escort_record:view',
