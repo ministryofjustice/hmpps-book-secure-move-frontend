@@ -602,9 +602,12 @@ describe('Framework controllers', function () {
       beforeEach(function () {
         mockReq = {
           body: {},
-          baseUrl: '/base-url',
+          baseUrl: '/base-url/section',
           form: {
             options: {},
+          },
+          frameworkSection: {
+            key: 'section',
           },
         }
         mockRes = {
@@ -624,7 +627,7 @@ describe('Framework controllers', function () {
           controller.successHandler(mockReq, mockRes, nextSpy)
         })
 
-        it('should redirect to base URL with last step path', function () {
+        it('should redirect to base URL without the section', function () {
           expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
             '/base-url'
           )
@@ -647,9 +650,9 @@ describe('Framework controllers', function () {
             controller.successHandler(mockReq, mockRes, nextSpy)
           })
 
-          it('should redirect to base URL with last step path', function () {
+          it('should redirect to base URL with the section', function () {
             expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url'
+              '/base-url/section'
             )
           })
 
