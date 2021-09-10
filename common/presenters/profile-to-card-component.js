@@ -12,12 +12,10 @@ function profileToCardComponent({
   showMeta = true,
   showTags = true,
 } = {}) {
-  return function item(profile) {
-    const {
-      href,
-      person = {},
-      person_escort_record: personEscortRecord,
-    } = profile || {}
+  return function item({ profile, href } = {}) {
+    const { person = {}, person_escort_record: personEscortRecord } =
+      profile || {}
+
     const {
       id,
       gender,
@@ -25,6 +23,7 @@ function profileToCardComponent({
       _image_url: imageUrl,
       date_of_birth: dateOfBirth,
     } = person
+
     const card = {
       href,
       title: {

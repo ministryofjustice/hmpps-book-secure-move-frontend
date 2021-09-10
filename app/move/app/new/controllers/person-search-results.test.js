@@ -235,13 +235,13 @@ describe('Move controllers', function () {
               ).to.be.calledWithExactly({ locationType, showTags: false })
               expect(
                 profileToCardComponentStub.firstCall
-              ).to.be.calledWithExactly({ person: mockPeople[0] })
+              ).to.be.calledWithExactly({ profile: { person: mockPeople[0] } })
               expect(
                 presenters.profileToCardComponent.secondCall
               ).to.be.calledWithExactly({ locationType, showTags: false })
               expect(
                 profileToCardComponentStub.secondCall
-              ).to.be.calledWithExactly({ person: mockPeople[1] })
+              ).to.be.calledWithExactly({ profile: { person: mockPeople[1] } })
             })
 
             it('should call component service correct number of times', function () {
@@ -251,10 +251,14 @@ describe('Move controllers', function () {
             it('should call component service correctly', function () {
               expect(
                 componentService.getComponent.firstCall
-              ).to.be.calledWithExactly('appCard', { person: mockPeople[0] })
+              ).to.be.calledWithExactly('appCard', {
+                profile: { person: mockPeople[0] },
+              })
               expect(
                 componentService.getComponent.secondCall
-              ).to.be.calledWithExactly('appCard', { person: mockPeople[1] })
+              ).to.be.calledWithExactly('appCard', {
+                profile: { person: mockPeople[1] },
+              })
             })
 
             it('should call next', function () {
@@ -295,7 +299,7 @@ describe('Move controllers', function () {
               ).to.be.calledWithExactly({ locationType, showTags: false })
               expect(
                 profileToCardComponentStub.firstCall
-              ).to.be.calledWithExactly({ person: mockPeople[0] })
+              ).to.be.calledWithExactly({ profile: { person: mockPeople[0] } })
             })
 
             it('should call component service correct number of times', function () {
@@ -305,7 +309,9 @@ describe('Move controllers', function () {
             it('should call component service correctly', function () {
               expect(
                 componentService.getComponent.firstCall
-              ).to.be.calledWithExactly('appCard', { person: mockPeople[0] })
+              ).to.be.calledWithExactly('appCard', {
+                profile: { person: mockPeople[0] },
+              })
             })
 
             it('should call next', function () {

@@ -49,16 +49,14 @@ function moveToCardComponent({
     const statusBadge = showStatusBadge
       ? { text: i18n.t(`statuses::${status}`) }
       : undefined
+
     const personCardComponent = profileToCardComponent({
       locationType,
       meta: moveMetaItems,
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
       showTags,
-    })({
-      ...profile,
-      href,
-    })
+    })({ profile, href })
 
     let tags
 

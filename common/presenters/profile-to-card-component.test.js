@@ -8,9 +8,10 @@ const profileToCardComponent = proxyquire('./profile-to-card-component', {
   './framework-flags-to-tag-list': frameworkFlagsToTagListStub,
 })
 
+const mockHref = '/move/12345'
+
 const mockProfile = {
   id: '12345',
-  href: '/move/12345',
   person: {
     id: '12345',
     _fullname: 'Name, Full',
@@ -23,6 +24,8 @@ const mockProfile = {
     police_national_computer: '321CBA',
   },
 }
+
+const mockArgs = { href: mockHref, profile: mockProfile }
 
 describe('Presenters', function () {
   describe('#profileToCardComponent()', function () {
@@ -37,13 +40,13 @@ describe('Presenters', function () {
     context('with default options', function () {
       context('with mock person', function () {
         beforeEach(function () {
-          transformedResponse = profileToCardComponent()(mockProfile)
+          transformedResponse = profileToCardComponent()(mockArgs)
         })
 
         describe('response', function () {
           it('should contain a href', function () {
             expect(transformedResponse).to.have.property('href')
-            expect(transformedResponse.href).to.equal(mockProfile.href)
+            expect(transformedResponse.href).to.equal(mockHref)
           })
 
           it('should contain a title', function () {
@@ -138,9 +141,11 @@ describe('Presenters', function () {
       context('when meta contains falsey values', function () {
         it('should correctly remove false items', function () {
           const transformedResponse = profileToCardComponent()({
-            date_of_birth: '',
-            gender: '',
-            ethnicity: '',
+            profile: {
+              date_of_birth: '',
+              gender: '',
+              ethnicity: '',
+            },
           })
 
           expect(transformedResponse).to.have.property('meta')
@@ -149,9 +154,11 @@ describe('Presenters', function () {
 
         it('should correctly remove false items', function () {
           const transformedResponse = profileToCardComponent()({
-            date_of_birth: null,
-            gender: null,
-            ethnicity: null,
+            profile: {
+              date_of_birth: null,
+              gender: null,
+              ethnicity: null,
+            },
           })
 
           expect(transformedResponse).to.have.property('meta')
@@ -160,9 +167,11 @@ describe('Presenters', function () {
 
         it('should correctly remove false items', function () {
           const transformedResponse = profileToCardComponent()({
-            date_of_birth: undefined,
-            gender: undefined,
-            ethnicity: undefined,
+            profile: {
+              date_of_birth: undefined,
+              gender: undefined,
+              ethnicity: undefined,
+            },
           })
 
           expect(transformedResponse).to.have.property('meta')
@@ -175,11 +184,13 @@ describe('Presenters', function () {
 
         beforeEach(function () {
           transformedResponse = profileToCardComponent()({
-            person: {
-              date_of_birth: '',
-              gender: mockProfile.person.gender,
+            profile: {
+              person: {
+                date_of_birth: '',
+                gender: mockProfile.person.gender,
+              },
+              assessment_answers: [],
             },
-            assessment_answers: [],
           })
         })
 
@@ -201,9 +212,11 @@ describe('Presenters', function () {
         context('with `not_started` PER', function () {
           beforeEach(function () {
             transformedResponse = profileToCardComponent()({
-              ...mockProfile,
-              person_escort_record: {
-                status: 'not_started',
+              profile: {
+                ...mockProfile,
+                person_escort_record: {
+                  status: 'not_started',
+                },
               },
             })
           })
@@ -230,9 +243,11 @@ describe('Presenters', function () {
         context('with `in_progress` PER', function () {
           beforeEach(function () {
             transformedResponse = profileToCardComponent()({
-              ...mockProfile,
-              person_escort_record: {
-                status: 'in_progress',
+              profile: {
+                ...mockProfile,
+                person_escort_record: {
+                  status: 'in_progress',
+                },
               },
             })
           })
@@ -259,10 +274,13 @@ describe('Presenters', function () {
         context('with `completed` PER', function () {
           beforeEach(function () {
             transformedResponse = profileToCardComponent()({
-              ...mockProfile,
-              person_escort_record: {
-                status: 'completed',
-                flags: ['foo', 'bar'],
+              href: mockHref,
+              profile: {
+                ...mockProfile,
+                person_escort_record: {
+                  status: 'completed',
+                  flags: ['foo', 'bar'],
+                },
               },
             })
           })
@@ -293,7 +311,7 @@ describe('Presenters', function () {
       beforeEach(function () {
         transformedResponse = profileToCardComponent({
           showMeta: false,
-        })(mockProfile)
+        })(mockArgs)
       })
 
       it('should not contain meta items', function () {
@@ -313,7 +331,7 @@ describe('Presenters', function () {
       beforeEach(function () {
         transformedResponse = profileToCardComponent({
           showTags: false,
-        })(mockProfile)
+        })(mockArgs)
       })
 
       it('should not contain tags items', function () {
@@ -338,7 +356,7 @@ describe('Presenters', function () {
       beforeEach(function () {
         transformedResponse = profileToCardComponent({
           showImage: false,
-        })(mockProfile)
+        })(mockArgs)
       })
 
       it('should not contain an image path', function () {
@@ -386,9 +404,9 @@ describe('Presenters', function () {
       })
     })
 
-    context('with null', function () {
+    context('with empty object', function () {
       beforeEach(function () {
-        transformedResponse = profileToCardComponent()(null)
+        transformedResponse = profileToCardComponent()({})
       })
 
       it('should use fallback values', function () {
@@ -410,7 +428,7 @@ describe('Presenters', function () {
                 text: 'Buzz',
               },
             ],
-          })(mockProfile)
+          })(mockArgs)
         })
 
         it('should prepend existing meta', function () {
@@ -463,7 +481,7 @@ describe('Presenters', function () {
         context(`when profile.${property} is populated`, function () {
           beforeEach(function () {
             transformedResponse = profileToCardComponent({ locationType })(
-              mockProfile
+              mockArgs
             )
           })
 
@@ -490,7 +508,7 @@ describe('Presenters', function () {
           beforeEach(function () {
             mockProfile.person[property] = undefined
             transformedResponse = profileToCardComponent({ locationType })(
-              mockProfile
+              mockArgs
             )
           })
 
