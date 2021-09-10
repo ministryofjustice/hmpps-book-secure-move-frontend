@@ -29,11 +29,6 @@ describe('Person app', function () {
                 url: '/base-url/personal-details',
                 isActive: false,
               },
-              {
-                text: 'person::tabs.moves',
-                url: '/base-url/moves',
-                isActive: false,
-              },
             ],
           })
         })
@@ -56,6 +51,33 @@ describe('Person app', function () {
                 text: 'person::tabs.personal_details',
                 url: '/base-url/personal-details',
                 isActive: true,
+              },
+            ],
+          })
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with a CDM user', function () {
+        beforeEach(function () {
+          req.session = {
+            user: {
+              permissions: ['locations:contract_delivery_manager'],
+            },
+          }
+          setTabs(req, res, nextSpy)
+        })
+
+        it('should contain the moves tab', function () {
+          expect(res.locals).to.deep.equal({
+            tabs: [
+              {
+                text: 'person::tabs.personal_details',
+                url: '/base-url/personal-details',
+                isActive: false,
               },
               {
                 text: 'person::tabs.moves',

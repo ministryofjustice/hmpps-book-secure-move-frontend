@@ -48,7 +48,7 @@ function movesToTableComponent({ query } = {}) {
         sortKey: 'date',
         html: 'collections::labels.move_date',
         attributes: {
-          width: '135',
+          width: '145',
         },
       },
       row: {
@@ -66,20 +66,9 @@ function movesToTableComponent({ query } = {}) {
       },
       row: {
         html: data => {
-          const classes = {
-            proposed: 'govuk-tag--grey',
-            requested: 'govuk-tag--purple',
-            booked: 'govuk-tag--blue',
-            in_transit: 'govuk-tag--yellow',
-            completed: 'govuk-tag--green',
-            cancelled: 'govuk-tag--red',
-            default: 'govuk-tag--blue',
-          }
-
           const opts = { context: data.status }
-          return componentService.getComponent('govukTag', {
+          return componentService.getComponent('mojBadge', {
             text: i18n.t('collections::labels.move_status', opts),
-            classes: classes[opts.context] || classes.default,
           })
         },
       },
