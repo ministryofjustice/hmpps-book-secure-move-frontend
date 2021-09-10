@@ -60,6 +60,7 @@ describe('Presenters', function () {
             expect(profileToCardComponentItemStub).to.be.calledWithExactly({
               profile: mockMove.profile,
               href: '/move/12345',
+              reference: 'AB12FS45',
             })
             expect(profileToCardComponentStub).to.be.calledWithExactly({
               locationType: undefined,
@@ -77,32 +78,19 @@ describe('Presenters', function () {
               status: {
                 text: '__translated__',
               },
-              caption: {
-                text: '__translated__',
-              },
+              caption: undefined,
               tags: [{ items: 'moveToImportantEventsTagListComponent' }],
             })
           })
         })
 
-        describe('translations', function () {
-          it('should translate status', function () {
-            expect(i18n.t).to.be.calledWithExactly(
-              `statuses::${mockMove.status}`
-            )
-          })
-
-          it('should translate move reference', function () {
-            expect(i18n.t).to.be.calledWithExactly('moves::move_reference', {
-              reference: 'AB12FS45',
-            })
-          })
-
-          it('should translate correct number of times', function () {
-            expect(i18n.t).to.be.callCount(2)
-          })
+        it('should translate status', function () {
+          expect(i18n.t).to.be.calledOnceWithExactly(
+            `statuses::${mockMove.status}`
+          )
         })
       })
+
       context('when no person is associated to the move', function () {
         beforeEach(function () {
           transformedResponse = moveToCardComponent()({
@@ -112,10 +100,24 @@ describe('Presenters', function () {
             profile: null,
           })
         })
+
         it('does not create the link on the card', function () {
           expect(profileToCardComponentItemStub).to.be.calledWithExactly({
             profile: null,
             href: '',
+            reference: 'AB12FG',
+          })
+        })
+
+        it('should translate move reference', function () {
+          expect(i18n.t).to.be.calledWithExactly('moves::move_reference', {
+            reference: 'AB12FG',
+          })
+        })
+
+        it('should contain the reference in the caption', function () {
+          expect(transformedResponse.caption).to.deep.equal({
+            text: '__translated__',
           })
         })
       })
@@ -132,6 +134,7 @@ describe('Presenters', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           profile: mockMove.profile,
           href: '/move/12345/path/to/somewhere',
+          reference: 'AB12FS45',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -154,6 +157,7 @@ describe('Presenters', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           profile: mockMove.profile,
           href: '/move/12345',
+          reference: 'AB12FS45',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -176,6 +180,7 @@ describe('Presenters', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           profile: mockMove.profile,
           href: '/move/12345',
+          reference: 'AB12FS45',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -198,6 +203,7 @@ describe('Presenters', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           profile: mockMove.profile,
           href: '/move/12345',
+          reference: 'AB12FS45',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -220,6 +226,7 @@ describe('Presenters', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           profile: mockMove.profile,
           href: '/move/12345',
+          reference: 'AB12FS45',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -246,6 +253,7 @@ describe('Presenters', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           profile: mockMove.profile,
           href: '/move/12345',
+          reference: 'AB12FS45',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -261,9 +269,7 @@ describe('Presenters', function () {
           ...mockPersonCardComponent,
           classes: 'app-card--compact ',
           status: undefined,
-          caption: {
-            text: '__translated__',
-          },
+          caption: undefined,
         })
       })
     })
@@ -282,6 +288,7 @@ describe('Presenters', function () {
         expect(profileToCardComponentItemStub).to.be.calledWithExactly({
           profile: mockMove.profile,
           href: '/move/12345',
+          reference: 'AB12FS45',
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -297,9 +304,7 @@ describe('Presenters', function () {
           ...mockPersonCardComponent,
           classes: 'app-card--compact ',
           status: undefined,
-          caption: {
-            text: '__translated__',
-          },
+          caption: undefined,
         })
       })
     })
@@ -326,9 +331,7 @@ describe('Presenters', function () {
             ...mockPersonCardComponent,
             classes: '',
             status: undefined,
-            caption: {
-              text: '__translated__',
-            },
+            caption: undefined,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
@@ -363,9 +366,7 @@ describe('Presenters', function () {
             ...mockPersonCardComponent,
             classes: `app-card--compact ${mockClasses}`,
             status: undefined,
-            caption: {
-              text: '__translated__',
-            },
+            caption: undefined,
           })
         })
       })
@@ -382,9 +383,7 @@ describe('Presenters', function () {
             status: {
               text: '__translated__',
             },
-            caption: {
-              text: '__translated__',
-            },
+            caption: undefined,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
@@ -404,6 +403,7 @@ describe('Presenters', function () {
           expect(profileToCardComponentItemStub).to.be.calledWithExactly({
             profile: mockMove.profile,
             href: '/move/12345',
+            reference: 'AB12FS45',
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: undefined,
@@ -432,6 +432,7 @@ describe('Presenters', function () {
           expect(profileToCardComponentItemStub).to.be.calledWithExactly({
             profile: mockMove.profile,
             href: '/move/12345',
+            reference: 'AB12FS45',
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: undefined,
@@ -461,6 +462,7 @@ describe('Presenters', function () {
           expect(profileToCardComponentItemStub).to.be.calledWithExactly({
             profile: mockMove.profile,
             href: '/move/12345',
+            reference: 'AB12FS45',
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: undefined,
@@ -497,6 +499,7 @@ describe('Presenters', function () {
           expect(profileToCardComponentItemStub).to.be.calledWithExactly({
             profile: mockMove.profile,
             href: '/move/12345',
+            reference: 'AB12FS45',
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: 'prison',

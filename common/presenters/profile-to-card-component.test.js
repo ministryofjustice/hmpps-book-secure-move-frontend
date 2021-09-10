@@ -8,8 +8,6 @@ const profileToCardComponent = proxyquire('./profile-to-card-component', {
   './framework-flags-to-tag-list': frameworkFlagsToTagListStub,
 })
 
-const mockHref = '/move/12345'
-
 const mockProfile = {
   id: '12345',
   person: {
@@ -25,7 +23,14 @@ const mockProfile = {
   },
 }
 
-const mockArgs = { href: mockHref, profile: mockProfile }
+const mockHref = '/move/12345'
+const mockReference = 'ABC'
+
+const mockArgs = {
+  profile: mockProfile,
+  href: mockHref,
+  reference: mockReference,
+}
 
 describe('Presenters', function () {
   describe('#profileToCardComponent()', function () {
@@ -52,7 +57,7 @@ describe('Presenters', function () {
           it('should contain a title', function () {
             expect(transformedResponse).to.have.property('title')
             expect(transformedResponse.title).to.deep.equal({
-              text: mockProfile.person._fullname,
+              text: `${mockProfile.person._fullname} (${mockReference})`,
             })
           })
 

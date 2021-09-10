@@ -12,7 +12,7 @@ function profileToCardComponent({
   showMeta = true,
   showTags = true,
 } = {}) {
-  return function item({ profile, href } = {}) {
+  return function item({ profile, href, reference } = {}) {
     const { person = {}, person_escort_record: personEscortRecord } =
       profile || {}
 
@@ -24,11 +24,14 @@ function profileToCardComponent({
       date_of_birth: dateOfBirth,
     } = person
 
+    const title =
+      reference && fullname
+        ? `${fullname} (${reference})`
+        : fullname || i18n.t('awaiting_person')
+
     const card = {
       href,
-      title: {
-        text: fullname || i18n.t('awaiting_person'),
-      },
+      title: { text: title },
     }
 
     if (!id) {
