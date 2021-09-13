@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.90.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.89.1...v2.90.0) (2021-09-13)
+
+
+### Features
+
+* Change target of "Save and return to overview" button ([efb7731](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/efb7731c0fc2793741f1ba4a9612f4a1cc114125))
+
+
+### Bug Fixes
+
+* Fix missing allocation cancelled description ([637a460](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/637a460e850fc4fedf67bfe22cba53a45f330780))
+* Hide moves tab for non-CDM users ([33a6b49](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/33a6b49282d93b462155b571dab8f37b1312566c))
+* Remove youth_risk_assessment:print permission ([4c6eaa6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4c6eaa67ac1e5929e12fdbdddff3cbb69f509cb0))
+
 ### [2.89.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.89.0...v2.89.1) (2021-09-08)
 
 ## [2.89.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.88.0...v2.89.0) (2021-08-27)
