@@ -1,6 +1,7 @@
-const { filter, findIndex, snakeCase, sortBy } = require('lodash')
+const { filter, snakeCase } = require('lodash')
 
 const i18n = require('../../../config/i18n')
+const setPreviousNextFrameworkSection = require('../../middleware/framework/set-previous-next-framework-section')
 const setMoveSummary = require('../../middleware/set-move-summary')
 const presenters = require('../../presenters')
 const FormWizardController = require('../form-wizard')
@@ -12,6 +13,7 @@ class FrameworkSectionController extends FormWizardController {
     this.use(this.setMoveId)
     this.use(this.setEditableStatus)
     this.use(this.seti18nContext)
+    this.use(setPreviousNextFrameworkSection)
     this.use(this.setPagination)
     this.use(setMoveSummary)
   }
@@ -22,31 +24,28 @@ class FrameworkSectionController extends FormWizardController {
   }
 
   setPagination(req, res, next) {
-    const { assessment, baseUrl } = req
-    const currentSection = req.frameworkSection.key
-    const frameworkSections = sortBy(assessment._framework.sections, ['order'])
-    const currentIndex = findIndex(frameworkSections, { key: currentSection })
+    const {
+      previousFrameworkSection,
+      nextFrameworkSection,
+      frameworkSection: { key: currentSection },
+    } = req
 
     const pagination = {
       classes: 'app-pagination--split govuk-!-margin-top-6',
     }
 
-    if (currentIndex > 0) {
-      const prevSection = frameworkSections[currentIndex - 1]
-
+    if (previousFrameworkSection) {
       pagination.previous = {
-        href: baseUrl.replace(currentSection, prevSection.key),
-        label: prevSection.name,
+        href: req.baseUrl.replace(currentSection, previousFrameworkSection.key),
+        label: previousFrameworkSection.name,
         text: i18n.t('pagination.previous_section'),
       }
     }
 
-    if (currentIndex + 1 < frameworkSections.length) {
-      const nextSection = frameworkSections[currentIndex + 1]
-
+    if (nextFrameworkSection) {
       pagination.next = {
-        href: baseUrl.replace(currentSection, nextSection.key),
-        label: nextSection.name,
+        href: req.baseUrl.replace(currentSection, nextFrameworkSection.key),
+        label: nextFrameworkSection.name,
         text: i18n.t('pagination.next_section'),
       }
     }

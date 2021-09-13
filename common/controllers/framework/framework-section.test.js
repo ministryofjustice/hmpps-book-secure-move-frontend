@@ -4,9 +4,12 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
 const i18n = require('../../../config/i18n')
 
+const setPreviousNextFrameworkSection = sinon.stub()
 const setMoveSummary = sinon.stub()
 
 const Controller = proxyquire('./framework-section', {
+  '../../middleware/framework/set-previous-next-framework-section':
+    setPreviousNextFrameworkSection,
   '../../middleware/set-move-summary': setMoveSummary,
 })
 
@@ -58,6 +61,12 @@ describe('Framework controllers', function () {
         )
       })
 
+      it('should call set prev/next framework section', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          setPreviousNextFrameworkSection
+        )
+      })
+
       it('should call set pagination', function () {
         expect(controller.use).to.have.been.calledWithExactly(
           controller.setPagination
@@ -69,7 +78,7 @@ describe('Framework controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(6)
+        expect(controller.use).to.be.callCount(7)
       })
     })
 
@@ -121,50 +130,33 @@ describe('Framework controllers', function () {
 
     describe('#setPagination', function () {
       let mockReq, mockRes, nextSpy
-      const mockSections = {
-        'health-information': {
-          key: 'health-information',
-          name: 'Health information',
-          order: 2,
-        },
-        'offence-information': {
-          key: 'offence-information',
-          name: 'Offence information',
-          order: 4,
-        },
-        'property-information': {
-          key: 'property-information',
-          name: 'Property information',
-          order: 3,
-        },
-        'risk-information': {
-          key: 'risk-information',
-          name: 'Risk information',
-          order: 1,
-        },
+
+      const mockPreviousSection = {
+        key: 'offence-information',
+        name: 'Offence information',
+      }
+
+      const mockNextSection = {
+        key: 'health-information',
+        name: 'Health information',
       }
 
       beforeEach(function () {
         sinon.stub(i18n, 't').returnsArg(0)
         nextSpy = sinon.spy()
         mockReq = {
-          assessment: {
-            _framework: {
-              sections: mockSections,
-            },
-          },
-          baseUrl: '/move/person-escort-record',
           frameworkSection: {},
+          previousFrameworkSection: null,
+          nextFrameworkSection: null,
         }
-        mockRes = {
-          locals: {},
-        }
+        mockRes = { locals: {} }
       })
 
       context('when current section is first section', function () {
         beforeEach(function () {
           mockReq.frameworkSection.key = 'risk-information'
           mockReq.baseUrl = `/move/person-escort-record/${mockReq.frameworkSection.key}`
+          mockReq.nextFrameworkSection = mockNextSection
 
           controller.setPagination(mockReq, mockRes, nextSpy)
         })
@@ -189,6 +181,8 @@ describe('Framework controllers', function () {
         beforeEach(function () {
           mockReq.frameworkSection.key = 'property-information'
           mockReq.baseUrl = `/move/person-escort-record/${mockReq.frameworkSection.key}`
+          mockReq.previousFrameworkSection = mockPreviousSection
+          mockReq.nextFrameworkSection = mockNextSection
 
           controller.setPagination(mockReq, mockRes, nextSpy)
         })
@@ -197,13 +191,13 @@ describe('Framework controllers', function () {
           expect(mockRes.locals.sectionPagination).to.deep.equal({
             classes: 'app-pagination--split govuk-!-margin-top-6',
             next: {
-              href: '/move/person-escort-record/offence-information',
-              label: 'Offence information',
+              href: '/move/person-escort-record/health-information',
+              label: 'Health information',
               text: 'pagination.next_section',
             },
             previous: {
-              href: '/move/person-escort-record/health-information',
-              label: 'Health information',
+              href: '/move/person-escort-record/offence-information',
+              label: 'Offence information',
               text: 'pagination.previous_section',
             },
           })
@@ -218,6 +212,7 @@ describe('Framework controllers', function () {
         beforeEach(function () {
           mockReq.frameworkSection.key = 'offence-information'
           mockReq.baseUrl = `/move/person-escort-record/${mockReq.frameworkSection.key}`
+          mockReq.previousFrameworkSection = mockPreviousSection
 
           controller.setPagination(mockReq, mockRes, nextSpy)
         })
@@ -226,8 +221,8 @@ describe('Framework controllers', function () {
           expect(mockRes.locals.sectionPagination).to.deep.equal({
             classes: 'app-pagination--split govuk-!-margin-top-6',
             previous: {
-              href: '/move/person-escort-record/property-information',
-              label: 'Property information',
+              href: '/move/person-escort-record/offence-information',
+              label: 'Offence information',
               text: 'pagination.previous_section',
             },
           })
