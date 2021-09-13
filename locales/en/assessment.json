@@ -60,6 +60,7 @@
   "incomplete": "Warnings will display once a Person Escort Record has been completed",
   "incomplete_overview": "This will display once a Person Escort Record has been completed",
   "section_incomplete": "Warnings will display once this section has been completed",
+  "warnings_started": "Warnings will display once a Person Escort Record has been started",
   "prefilled_banner": {
     "title": "Some answers on this page need to be reviewed. They are from the last $t({{context}}) confirmed on {{date}}."
   },

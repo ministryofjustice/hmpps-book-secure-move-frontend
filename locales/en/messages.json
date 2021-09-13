@@ -73,7 +73,7 @@
   },
   "preview_new_feature": {
     "heading":"There is a new version of this page",
-    "content":"<p>Use the new version and help us improve it with your feedback. You will be able to return to the current version at any time.</p>",
+    "content":"<p>Use the new version and help us improve it with your feedback.<br />You will be able to return to the current version at any time.</p>",
     "actions": {
       "yes": "Try the new version",
       "no": "Keep the current version",

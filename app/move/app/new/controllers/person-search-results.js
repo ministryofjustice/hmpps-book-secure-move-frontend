@@ -40,9 +40,8 @@ class PersonSearchResultsController extends PersonController {
       const card = presenters.profileToCardComponent({
         locationType,
         showTags: false,
-      })({
-        person,
-      })
+      })({ profile: { person } })
+
       return {
         html: componentService.getComponent('appCard', card),
         value: person.id,

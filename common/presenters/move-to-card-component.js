@@ -49,16 +49,14 @@ function moveToCardComponent({
     const statusBadge = showStatusBadge
       ? { text: i18n.t(`statuses::${status}`) }
       : undefined
+
     const personCardComponent = profileToCardComponent({
       locationType,
       meta: moveMetaItems,
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
       showTags,
-    })({
-      ...profile,
-      href,
-    })
+    })({ profile, href, reference })
 
     let tags
 
@@ -68,17 +66,17 @@ function moveToCardComponent({
       tags.push({ items: importantEventsTagList })
     }
 
+    const caption = profile
+      ? undefined
+      : { text: i18n.t('moves::move_reference', { reference }) }
+
     return {
       ...personCardComponent,
       status: statusBadge,
       classes: isCompact
         ? `app-card--compact ${personCardComponent.classes || ''}`
         : personCardComponent.classes || '',
-      caption: {
-        text: i18n.t('moves::move_reference', {
-          reference,
-        }),
-      },
+      caption: caption,
       ...(tags ? { tags } : undefined),
     }
   }
