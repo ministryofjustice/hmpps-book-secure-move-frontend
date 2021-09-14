@@ -2,6 +2,7 @@ const { isEmpty, fromPairs, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 const frameworksHelpers = require('../../helpers/frameworks')
+const setPreviousNextFrameworkSection = require('../../middleware/framework/set-previous-next-framework-section')
 const setMoveSummary = require('../../middleware/set-move-summary')
 const FormWizardController = require('../form-wizard')
 
@@ -28,6 +29,7 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setupConditionalFields)
     super.middlewareSetup()
     this.use(this.setValidationRules)
+    this.use(setPreviousNextFrameworkSection)
     this.use(this.setIsLastStep)
     this.use(this.setButtonText)
   }
@@ -69,12 +71,16 @@ class FrameworkStepController extends FormWizardController {
 
   setButtonText(req, res, next) {
     const { stepType } = req.form.options
+    const { isLastStep, nextFrameworkSection } = req
     const isInterruptionCard = stepType === 'interruption-card'
-    const buttonText = isInterruptionCard
-      ? 'actions::continue'
-      : 'actions::save_and_continue'
 
-    req.form.options.buttonText = buttonText
+    if (isInterruptionCard) {
+      req.form.options.buttonText = 'actions::continue'
+    } else if (isLastStep && !nextFrameworkSection) {
+      req.form.options.buttonText = 'actions::save_and_return_to_overview'
+    } else {
+      req.form.options.buttonText = 'actions::save_and_continue'
+    }
 
     next()
   }
@@ -86,6 +92,7 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setPrefillBanner)
     this.use(this.seti18nContext)
     this.use(this.setBreadcrumb)
+    this.use(this.setShowReturnToOverviewButton)
     this.use(setMoveSummary)
   }
 
@@ -135,6 +142,12 @@ class FrameworkStepController extends FormWizardController {
     next()
   }
 
+  setShowReturnToOverviewButton(req, res, next) {
+    res.locals.showReturnToOverviewButton =
+      !req.isLastStep || !!req.nextFrameworkSection
+    next()
+  }
+
   async saveValues(req, res, next) {
     const { form, assessment } = req
     const responses = assessment.responses
@@ -171,16 +184,17 @@ class FrameworkStepController extends FormWizardController {
   successHandler(req, res, next) {
     const {
       isLastStep,
+      nextFrameworkSection,
       body: { save_and_return_to_overview: goToOverview },
     } = req
 
-    if (goToOverview) {
+    if (goToOverview || (isLastStep && !nextFrameworkSection)) {
       const currentSection = req.frameworkSection.key
       const overviewUrl = req.baseUrl.replace(`/${currentSection}`, '')
       return res.redirect(overviewUrl)
     }
 
-    if (isLastStep) {
+    if (isLastStep && nextFrameworkSection) {
       return res.redirect(req.baseUrl)
     }
 

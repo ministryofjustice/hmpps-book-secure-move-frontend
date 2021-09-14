@@ -4,9 +4,12 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
 
+const setPreviousNextFrameworkSection = sinon.stub()
 const setMoveSummary = sinon.stub()
 
 const Controller = proxyquire('./framework-step', {
+  '../../middleware/framework/set-previous-next-framework-section':
+    setPreviousNextFrameworkSection,
   '../../middleware/set-move-summary': setMoveSummary,
 })
 
@@ -70,18 +73,24 @@ describe('Framework controllers', function () {
 
       it('should call set button text method', function () {
         expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
-          controller.setIsLastStep
+          setPreviousNextFrameworkSection
         )
       })
 
       it('should call set button text method', function () {
         expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
+          controller.setIsLastStep
+        )
+      })
+
+      it('should call set button text method', function () {
+        expect(controller.use.getCall(4)).to.have.been.calledWithExactly(
           controller.setButtonText
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(4)
+        expect(controller.use).to.be.callCount(5)
       })
     })
 
@@ -93,6 +102,7 @@ describe('Framework controllers', function () {
         sinon.stub(controller, 'setPrefillBanner')
         sinon.stub(controller, 'seti18nContext')
         sinon.stub(controller, 'setBreadcrumb')
+        sinon.stub(controller, 'setShowReturnToOverviewButton')
         sinon.stub(controller, 'use')
 
         controller.middlewareLocals()
@@ -133,12 +143,18 @@ describe('Framework controllers', function () {
         )
       })
 
+      it('should call set breadcrumbs', function () {
+        expect(controller.use).to.have.been.calledWithExactly(
+          controller.setShowReturnToOverviewButton
+        )
+      })
+
       it('should call set move summary', function () {
         expect(controller.use).to.have.been.calledWithExactly(setMoveSummary)
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(6)
+        expect(controller.use).to.be.callCount(7)
       })
     })
 
@@ -357,9 +373,7 @@ describe('Framework controllers', function () {
       beforeEach(function () {
         nextSpy = sinon.spy()
         mockReq = {
-          form: {
-            options: {},
-          },
+          form: { options: {} },
         }
       })
 
@@ -387,6 +401,24 @@ describe('Framework controllers', function () {
 
         it('should use continue button text', function () {
           expect(mockReq.form.options.buttonText).to.equal('actions::continue')
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when last step and no next section', function () {
+        beforeEach(function () {
+          mockReq.isLastStep = true
+          mockReq.nextFrameworkSection = null
+          controller.setButtonText(mockReq, {}, nextSpy)
+        })
+
+        it('should use save and return to overview button text', function () {
+          expect(mockReq.form.options.buttonText).to.equal(
+            'actions::save_and_return_to_overview'
+          )
         })
 
         it('should call next without error', function () {
@@ -659,6 +691,65 @@ describe('Framework controllers', function () {
             it('should call next without error', function () {
               expect(nextSpy).to.be.calledOnceWithExactly()
             })
+          })
+        })
+      })
+    })
+
+    describe('#setShowReturnToOverviewButton', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        mockReq = { isLastStep: false, nextFrameworkSection: null }
+        mockRes = { locals: {} }
+        nextSpy = sinon.stub()
+      })
+
+      context('when not last step', function () {
+        beforeEach(function () {
+          controller.setShowReturnToOverviewButton(mockReq, mockRes, nextSpy)
+        })
+
+        it('should show the return to overview button', function () {
+          expect(mockRes.locals.showReturnToOverviewButton).to.be.true
+        })
+
+        it('should call next without an error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when last step', function () {
+        beforeEach(function () {
+          mockReq.isLastStep = true
+        })
+
+        context('and no next section', function () {
+          beforeEach(function () {
+            controller.setShowReturnToOverviewButton(mockReq, mockRes, nextSpy)
+          })
+
+          it('should not show the return to overview button', function () {
+            expect(mockRes.locals.showReturnToOverviewButton).to.be.false
+          })
+
+          it('should call next without an error', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
+          })
+        })
+
+        context('and a next section', function () {
+          beforeEach(function () {
+            mockReq.nextFrameworkSection = { key: 'section' }
+            controller.setShowReturnToOverviewButton(mockReq, mockRes, nextSpy)
+          })
+
+          it('should show the return to overview button', function () {
+            expect(mockRes.locals.showReturnToOverviewButton).to.be.true
+          })
+
+          it('should call next without an error', function () {
+            expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
       })
