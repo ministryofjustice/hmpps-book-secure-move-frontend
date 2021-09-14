@@ -57,6 +57,15 @@ class FrameworkStepController extends FormWizardController {
     next()
   }
 
+  setIsLastStep(req, res, next) {
+    const { route: currentStep } = req?.form?.options || {}
+    const nextStep = this.getNextStep(req, res)
+
+    req.isLastStep = nextStep.endsWith(currentStep)
+
+    next()
+  }
+
   setButtonText(req, res, next) {
     const { stepType } = req.form.options
     const isInterruptionCard = stepType === 'interruption-card'

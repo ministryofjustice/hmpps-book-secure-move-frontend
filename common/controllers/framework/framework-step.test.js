@@ -283,6 +283,67 @@ describe('Framework controllers', function () {
       })
     })
 
+    describe('#setIsLastStep', function () {
+      let mockReq, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = { form: { options: {} } }
+        sinon.stub(FormWizardController.prototype, 'getNextStep').returns('/')
+      })
+
+      context('with step that is last step', function () {
+        beforeEach(function () {
+          mockReq.form.options.route = '/two'
+          FormWizardController.prototype.getNextStep.returns('/two')
+          controller.setIsLastStep(mockReq, {}, nextSpy)
+        })
+
+        it('should be the last step', function () {
+          expect(mockReq.isLastStep).to.be.true
+        })
+      })
+
+      context('with step that contains last step', function () {
+        beforeEach(function () {
+          mockReq.form.options.route = '/two'
+          FormWizardController.prototype.getNextStep.returns(
+            '/full/path/to/step/two-continued'
+          )
+          controller.setIsLastStep(mockReq, {}, nextSpy)
+        })
+
+        it('should not be the last step', function () {
+          expect(mockReq.isLastStep).to.be.false
+        })
+      })
+
+      context('with step that contains same end as last step', function () {
+        beforeEach(function () {
+          mockReq.form.options.route = '/continued'
+          FormWizardController.prototype.getNextStep.returns(
+            '/full/path/to/step/two-continued'
+          )
+          controller.setIsLastStep(mockReq, {}, nextSpy)
+        })
+
+        it('should not be the last step', function () {
+          expect(mockReq.isLastStep).to.be.false
+        })
+      })
+
+      context('with all other steps', function () {
+        beforeEach(function () {
+          FormWizardController.prototype.getNextStep.returns('/two')
+          controller.setIsLastStep(mockReq, {}, nextSpy)
+        })
+
+        it('should not be the last step', function () {
+          expect(mockReq.isLastStep).to.be.false
+        })
+      })
+    })
+
     describe('#setButtonText', function () {
       let mockReq, nextSpy
 
