@@ -184,18 +184,22 @@ class FrameworkStepController extends FormWizardController {
   successHandler(req, res, next) {
     const {
       isLastStep,
+      frameworkSection: { key: currentSection },
       nextFrameworkSection,
       body: { save_and_return_to_overview: goToOverview },
     } = req
 
     if (goToOverview || (isLastStep && !nextFrameworkSection)) {
-      const currentSection = req.frameworkSection.key
       const overviewUrl = req.baseUrl.replace(`/${currentSection}`, '')
       return res.redirect(overviewUrl)
     }
 
     if (isLastStep && nextFrameworkSection) {
-      return res.redirect(req.baseUrl)
+      const nextSectionUrl = req.baseUrl.replace(
+        `/${currentSection}`,
+        `/${nextFrameworkSection.key}`
+      )
+      return res.redirect(`${nextSectionUrl}/start`)
     }
 
     super.successHandler(req, res, next)

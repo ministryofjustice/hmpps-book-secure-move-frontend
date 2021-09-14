@@ -816,13 +816,13 @@ describe('Framework controllers', function () {
         context('with last framework step and a next section', function () {
           beforeEach(function () {
             mockReq.isLastStep = true
-            mockReq.nextFrameworkSection = {}
+            mockReq.nextFrameworkSection = { key: 'next-section' }
             controller.successHandler(mockReq, mockRes, nextSpy)
           })
 
           it('should redirect to base URL with the section', function () {
             expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url/section'
+              '/base-url/next-section/start'
             )
           })
 
