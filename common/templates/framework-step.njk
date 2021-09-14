@@ -56,7 +56,7 @@
 {% block submitAction %}
   {{ super() }}
 
-  {% if options.stepType != 'interruption-card' %}
+  {% if showReturnToOverviewButton and options.stepType != 'interruption-card' %}
     {{ govukButton({
       text: t("actions::save_and_return_to_overview"),
       name: "save_and_return_to_overview",
