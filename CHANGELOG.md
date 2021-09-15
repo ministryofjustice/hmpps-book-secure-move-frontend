@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.91.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.90.0...v2.91.0) (2021-09-15)
+
+
+### Features
+
+* Combine fullname and reference in move link ([d7bfb7c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d7bfb7cb35043976f8ef14052564188017082f76))
+* Improve "Save and continue" navigation ([f655a1b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f655a1b083d9969af945dd0ba6d31ddfd9f8aa75))
+* Improve "Save and continue" navigation ([e078df4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e078df43fadcee2a65a13315871b989a07188dc6))
+* Record move design preview dimension in GA ([e4eaf63](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e4eaf6309fdea9fd8622982b2e19b82b8b3d663b))
+
+
+### Bug Fixes
+
+* Remove undefined values from GA params ([de10419](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/de10419a0b60fbf69397b460ac7f3f2e603543a2))
+* Send User-Agent with GA events ([9b80873](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9b808732c4eef639283be68d6c1bd1ba4f0c535c))
+* Support user not being logged in ([740150a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/740150ad1113663d7370ac3345e8d37fb88b9e3d))
+
 ## [2.90.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.89.1...v2.90.0) (2021-09-13)
 
 
