@@ -39,7 +39,8 @@ describe('Analytics', function () {
 
         nock('https://www.google-analytics.com')
           .post(
-            `/collect?v=1&t=event&ec=category&ea=action&el=label&ev=value&cid=${mockUUID}&tid=${mockGaID}`
+            '/collect',
+            `v=1&t=event&ec=category&ea=action&el=label&ev=value&cid=${mockUUID}&tid=${mockGaID}`
           )
           .reply(200, mockResponse)
 
@@ -102,7 +103,8 @@ describe('Analytics', function () {
         beforeEach(async function () {
           nock('https://www.google-analytics.com')
             .post(
-              `/collect?v=1&t=timing&utl=Journey+duration&cid=${mockUUID}&tid=${mockGaID}`
+              '/collect',
+              `v=1&t=timing&utl=Journey%20duration&cid=${mockUUID}&tid=${mockGaID}`
             )
             .reply(200, mockResponse)
 
@@ -122,7 +124,8 @@ describe('Analytics', function () {
         beforeEach(async function () {
           nock('https://www.google-analytics.com')
             .post(
-              `/collect?v=1&t=timing&utl=Journey+duration&utv=Journey+name&utt=10000&utc=Type&cid=${mockUUID}&tid=${mockGaID}`
+              '/collect',
+              `v=1&t=timing&utl=Journey%20duration&utv=Journey%20name&utt=10000&utc=Type&cid=${mockUUID}&tid=${mockGaID}`
             )
             .reply(200, mockResponse)
 

@@ -1,3 +1,5 @@
+const querystring = require('querystring')
+
 const axios = require('axios')
 const { v4: uuidv4 } = require('uuid')
 
@@ -17,15 +19,18 @@ function sendHit(params) {
     return Promise.resolve()
   }
 
+  const payload = {
+    ...params,
+    cid: uuidv4(),
+    tid: GA_ID,
+  }
+
   return axios
-    .post('https://www.google-analytics.com/collect', null, {
-      timeout: 30000,
-      params: {
-        ...params,
-        cid: uuidv4(),
-        tid: GA_ID,
-      },
-    })
+    .post(
+      'https://www.google-analytics.com/collect',
+      querystring.stringify(payload),
+      { timeout: 30000 }
+    )
     .then(response => response.data)
 }
 
