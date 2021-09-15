@@ -1,4 +1,7 @@
+const querystring = require('querystring')
+
 const axios = require('axios')
+const { pickBy } = require('lodash')
 const { v4: uuidv4 } = require('uuid')
 
 const { ANALYTICS: { GA_ID } = {} } = require('../../config')
@@ -17,15 +20,18 @@ function sendHit(params) {
     return Promise.resolve()
   }
 
+  const payload = {
+    ...pickBy(params, v => v !== undefined),
+    cid: uuidv4(),
+    tid: GA_ID,
+  }
+
   return axios
-    .post('https://www.google-analytics.com/collect', null, {
-      timeout: 30000,
-      params: {
-        ...params,
-        cid: uuidv4(),
-        tid: GA_ID,
-      },
-    })
+    .post(
+      'https://www.google-analytics.com/collect',
+      querystring.stringify(payload),
+      { timeout: 30000 }
+    )
     .then(response => response.data)
 }
 
@@ -37,7 +43,7 @@ function sendHit(params) {
  * @param value The event value (optional).
  * @returns {Promise<unknown>|Promise<string>}
  */
-function sendEvent({ category, action, label, value }) {
+function sendEvent({ category, action, label, value, userAgent }) {
   return sendHit({
     v: 1,
     t: 'event',
@@ -45,6 +51,7 @@ function sendEvent({ category, action, label, value }) {
     ea: action,
     el: label,
     ev: value,
+    ua: userAgent,
   })
 }
 

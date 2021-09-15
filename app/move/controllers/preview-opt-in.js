@@ -17,6 +17,7 @@ async function previewOptIn(req, res) {
       category: 'Move Design Preview',
       action: 'Opt in',
       label: req.currentLocation?.location_type,
+      userAgent: req.headers['user-agent'],
     })
   } catch (e) {
     Sentry.captureException(e)

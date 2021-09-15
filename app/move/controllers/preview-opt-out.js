@@ -16,6 +16,7 @@ async function previewOptOut(req, res) {
       category: 'Move Design Preview',
       action: 'Opt out',
       label: req.currentLocation?.location_type,
+      userAgent: req.headers['user-agent'],
     })
   } catch (e) {
     Sentry.captureException(e)
