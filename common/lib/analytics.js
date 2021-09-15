@@ -43,7 +43,7 @@ function sendHit(params) {
  * @param value The event value (optional).
  * @returns {Promise<unknown>|Promise<string>}
  */
-function sendEvent({ category, action, label, value }) {
+function sendEvent({ category, action, label, value, userAgent }) {
   return sendHit({
     v: 1,
     t: 'event',
@@ -51,6 +51,7 @@ function sendEvent({ category, action, label, value }) {
     ea: action,
     el: label,
     ev: value,
+    ua: userAgent,
   })
 }
 

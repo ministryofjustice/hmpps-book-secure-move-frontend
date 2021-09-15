@@ -35,6 +35,7 @@ describe('Move controllers', function () {
         currentLocation: {
           location_type: 'police',
         },
+        headers: { 'user-agent': 'user-agent' },
       }
       res = {
         cookie: sinon.spy(),
@@ -60,6 +61,7 @@ describe('Move controllers', function () {
           category: 'Move Design Preview',
           action: 'Opt in',
           label: 'police',
+          userAgent: 'user-agent',
         })
       })
 
@@ -87,6 +89,7 @@ describe('Move controllers', function () {
           category: 'Move Design Preview',
           action: 'Opt in',
           label: 'police',
+          userAgent: 'user-agent',
         })
       })
 
