@@ -1,6 +1,7 @@
 const querystring = require('querystring')
 
 const axios = require('axios')
+const { pickBy } = require('lodash')
 const { v4: uuidv4 } = require('uuid')
 
 const { ANALYTICS: { GA_ID } = {} } = require('../../config')
@@ -20,7 +21,7 @@ function sendHit(params) {
   }
 
   const payload = {
-    ...params,
+    ...pickBy(params, v => v !== undefined),
     cid: uuidv4(),
     tid: GA_ID,
   }
