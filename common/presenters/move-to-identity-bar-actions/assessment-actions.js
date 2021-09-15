@@ -20,14 +20,6 @@ function assessmentActions(move = {}, { canAccess } = {}) {
   const context = assessmentType
 
   if (assessment.status === 'confirmed' || assessment.handover_occurred_at) {
-    if (canAccess(`${context}:print`)) {
-      actions.push({
-        html: `<a href="${baseUrl}/print" class="app-icon app-icon--print">
-          ${i18n.t('actions::print_assessment', { context })}
-        </a>`,
-      })
-    }
-
     return actions
   }
 
@@ -68,14 +60,6 @@ function assessmentActions(move = {}, { canAccess } = {}) {
           preventDoubleClick: true,
           href: `${baseUrl}/confirm`,
         }),
-      })
-    }
-
-    if (canAccess(`${context}:print`)) {
-      actions.push({
-        html: `<a href="${baseUrl}/print" class="app-icon app-icon--print">
-          ${i18n.t('actions::print_assessment', { context })}
-        </a>`,
       })
     }
   }

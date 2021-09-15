@@ -25,6 +25,8 @@ describe('Framework controllers', function () {
 
       mockReq = {
         originalUrl: '/person-escort-record/1',
+        baseUrl: '/person-escort-record/1',
+        canAccess: () => true,
       }
       mockRes = {
         render: sinon.spy(),
@@ -54,7 +56,7 @@ describe('Framework controllers', function () {
         })
 
         it('should pass correct number of params to template', function () {
-          expect(Object.keys(params)).to.have.length(6)
+          expect(Object.keys(params)).to.have.length(8)
         })
 
         it('should set move', function () {
@@ -85,6 +87,16 @@ describe('Framework controllers', function () {
         it('should not set i18nContext', function () {
           expect(params).to.have.property('i18nContext')
           expect(params.i18nContext).to.equal('')
+        })
+
+        it('should set canPrint', function () {
+          expect(params).to.have.property('canPrint')
+          expect(params.canPrint).to.be.false
+        })
+
+        it('should set canPrint', function () {
+          expect(params).to.have.property('baseUrl')
+          expect(params.baseUrl).to.equal('/person-escort-record/1')
         })
       })
 
@@ -126,6 +138,7 @@ describe('Framework controllers', function () {
                   _fullname: 'John Doe',
                 },
               },
+              status: 'completed',
             },
           },
           mockRes
@@ -166,6 +179,11 @@ describe('Framework controllers', function () {
         it('should set i18nContext', function () {
           expect(params).to.have.property('i18nContext')
           expect(params.i18nContext).to.equal('person_escort_record')
+        })
+
+        it('should set canPrint', function () {
+          expect(params).to.have.property('canPrint')
+          expect(params.canPrint).to.be.true
         })
       })
     })

@@ -30,8 +30,13 @@
   <section class="app-!-position-relative govuk-!-margin-bottom-8">
     {{ appTaskList(taskList) }}
   </section>
-{% endblock %}
 
+  {% if canPrint %}
+    <a href="{{ baseUrl }}/print" class="app-icon app-icon--print">
+      {{ i18n.t('actions::print_assessment', { context: i18nContext }) }}
+    </a>
+  {% endif %}
+{% endblock %}
 
 {% block contentSidebar %}
   {% include "includes/move-summary.njk" %}
