@@ -19,10 +19,6 @@ function assessmentActions(move = {}, { canAccess } = {}) {
   const baseUrl = `/move/${move.id}/${kebabCase(assessmentType)}`
   const context = assessmentType
 
-  if (assessment.status === 'confirmed' || assessment.handover_occurred_at) {
-    return actions
-  }
-
   if (
     ['requested', 'booked'].includes(move.status) &&
     canAccess(`${context}:create`)
@@ -39,7 +35,11 @@ function assessmentActions(move = {}, { canAccess } = {}) {
       return actions
     }
 
-    if (assessment.status !== 'completed') {
+    if (
+      assessment.status !== 'completed' &&
+      assessment.status !== 'confirmed' &&
+      !assessment.handover_occurred_at
+    ) {
       actions.push({
         html: componentService.getComponent('govukButton', {
           text: i18n.t('actions::continue_assessment', { context }),
@@ -61,6 +61,25 @@ function assessmentActions(move = {}, { canAccess } = {}) {
           href: `${baseUrl}/confirm`,
         }),
       })
+    }
+  }
+
+  if (assessmentType === 'person_escort_record') {
+    if (
+      assessment.status === 'completed' ||
+      assessment.status === 'confirmed' ||
+      assessment.handover_occurred_at
+    ) {
+      if (canAccess(`${context}:view`)) {
+        actions.push({
+          html: componentService.getComponent('govukButton', {
+            text: i18n.t('actions::view_assessment', { context }),
+            classes: 'govuk-button--secondary',
+            preventDoubleClick: true,
+            href: baseUrl,
+          }),
+        })
+      }
     }
   }
 

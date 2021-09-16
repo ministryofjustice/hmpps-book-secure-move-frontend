@@ -365,7 +365,7 @@ describe('Presenters', function () {
               output = presenter(mockMove, { canAccess: canAccessStub })
             })
 
-            it('should return confirm action', function () {
+            it('should return confirm and view action', function () {
               expect(output).to.deep.equal([
                 {
                   html: {
@@ -373,6 +373,16 @@ describe('Presenters', function () {
                       href: `/move/${mockMove.id}/person-escort-record/confirm`,
                       preventDoubleClick: true,
                       text: 'actions::provide_confirmation',
+                    },
+                  },
+                },
+                {
+                  html: {
+                    govukButton: {
+                      href: `/move/${mockMove.id}/person-escort-record`,
+                      preventDoubleClick: true,
+                      text: 'actions::view_assessment',
+                      classes: 'govuk-button--secondary',
                     },
                   },
                 },
@@ -386,7 +396,7 @@ describe('Presenters', function () {
               output = presenter(mockMove, { canAccess: canAccessStub })
             })
 
-            it('should return confirm action', function () {
+            it('should return confirm and view action', function () {
               expect(output).to.deep.equal([
                 {
                   html: {
@@ -394,6 +404,16 @@ describe('Presenters', function () {
                       href: `/move/${mockMove.id}/person-escort-record/confirm`,
                       preventDoubleClick: true,
                       text: 'actions::provide_confirmation',
+                    },
+                  },
+                },
+                {
+                  html: {
+                    govukButton: {
+                      href: `/move/${mockMove.id}/person-escort-record`,
+                      preventDoubleClick: true,
+                      text: 'actions::view_assessment',
+                      classes: 'govuk-button--secondary',
                     },
                   },
                 },
@@ -409,8 +429,40 @@ describe('Presenters', function () {
               output = presenter(mockMove, { canAccess: canAccessStub })
             })
 
-            it('should not return any actions', function () {
-              expect(output).to.deep.equal([])
+            it('should return view action', function () {
+              expect(output).to.deep.equal([
+                {
+                  html: {
+                    govukButton: {
+                      href: `/move/${mockMove.id}/person-escort-record`,
+                      preventDoubleClick: true,
+                      text: 'actions::view_assessment',
+                      classes: 'govuk-button--secondary',
+                    },
+                  },
+                },
+              ])
+            })
+          })
+
+          context('without assessment view access', function () {
+            beforeEach(function () {
+              canAccessStub.withArgs('person_escort_record:view').returns(false)
+              output = presenter(mockMove, { canAccess: canAccessStub })
+            })
+
+            it('should return confirm action', function () {
+              expect(output).to.deep.equal([
+                {
+                  html: {
+                    govukButton: {
+                      href: `/move/${mockMove.id}/person-escort-record/confirm`,
+                      preventDoubleClick: true,
+                      text: 'actions::provide_confirmation',
+                    },
+                  },
+                },
+              ])
             })
           })
         })
@@ -423,8 +475,19 @@ describe('Presenters', function () {
             output = presenter(mockMove, { canAccess: canAccessStub })
           })
 
-          it('should not return any actions', function () {
-            expect(output).to.deep.equal([])
+          it('should return view action', function () {
+            expect(output).to.deep.equal([
+              {
+                html: {
+                  govukButton: {
+                    href: `/move/${mockMove.id}/person-escort-record`,
+                    preventDoubleClick: true,
+                    text: 'actions::view_assessment',
+                    classes: 'govuk-button--secondary',
+                  },
+                },
+              },
+            ])
           })
         })
       })
