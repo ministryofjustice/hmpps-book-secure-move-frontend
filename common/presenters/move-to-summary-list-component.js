@@ -1,3 +1,5 @@
+const { isNil } = require('lodash')
+
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 const mapUpdateLink = require('../helpers/move/map-update-link')
@@ -15,13 +17,15 @@ const mapUpdateLink = require('../helpers/move/map-update-link')
  */
 function moveToSummaryListComponent(
   {
+    id: moveId,
     date,
     time_due: timeDue,
     move_type: moveType,
     from_location: fromLocation,
     to_location: toLocation,
+    profile,
   } = {},
-  { updateUrls = {} } = {}
+  { updateUrls = {}, canAccess = () => false } = {}
 ) {
   const pickup = fromLocation?.title
 
@@ -61,28 +65,56 @@ function moveToSummaryListComponent(
       },
     },
   ]
-    .filter(row => row.value.text || row.value.html)
-    .map(row => {
-      if (!updateUrls[row.updateJourneyKey]) {
-        return row
-      }
 
-      return {
-        ...row,
-        actions: {
-          items: [
-            mapUpdateLink(
-              updateUrls[row.updateJourneyKey],
-              row.updateJourneyKey
-            ),
-          ],
-        },
-      }
+  const assessmentLinks = []
+  const hasYouthRiskAssessment = !isNil(profile?.youth_risk_assessment)
+  const hasPersonEscortRecord = !isNil(profile?.person_escort_record)
+
+  if (hasYouthRiskAssessment && canAccess('youth_risk_assessment:view')) {
+    const href = `/move/${moveId}/youth-risk-assessment`
+    const text = i18n.t('youth_risk_assessment')
+    assessmentLinks.push(`<a class="govuk-link" href="${href}">${text}</a>`)
+  }
+
+  if (hasPersonEscortRecord && canAccess('person_escort_record:view')) {
+    const href = `/move/${moveId}/person-escort-record`
+    const text = i18n.t('person_escort_record')
+    assessmentLinks.push(`<a class="govuk-link" href="${href}">${text}</a>`)
+  }
+
+  if (assessmentLinks.length) {
+    rows.push({
+      key: { text: i18n.t('fields::documents.short_label') },
+      value: {
+        html:
+          '<ul class="govuk-list govuk-!-font-size-16">' +
+          assessmentLinks.map(link => `<li>${link}</li>`).join('') +
+          '</ul>',
+      },
     })
+  }
 
   return {
     classes: 'govuk-!-font-size-16',
-    rows,
+    rows: rows
+      .filter(row => row.value.text || row.value.html)
+      .map(row => {
+        if (!updateUrls[row.updateJourneyKey]) {
+          return row
+        }
+
+        return {
+          ...row,
+          actions: {
+            items: [
+              mapUpdateLink(
+                updateUrls[row.updateJourneyKey],
+                row.updateJourneyKey
+              ),
+            ],
+          },
+        }
+      }),
   }
 }
 
