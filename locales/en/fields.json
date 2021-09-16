@@ -344,7 +344,8 @@
   "documents": {
     "heading": "Only include documents that will help plan the move.",
     "label": "Upload a file (optional)",
-    "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes"
+    "hint": "You can upload Word, Excel, PDF and JPEG documents up to 50 megabytes",
+    "short_label": "Documents"
   },
   "prison_transfer_type": {
     "label": "Reason for move"

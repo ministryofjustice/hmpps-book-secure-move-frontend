@@ -14,6 +14,7 @@ const moveToSummaryListComponent = proxyquire(
 )
 
 const mockMove = {
+  id: 'abc',
   date: '2019-06-09',
   time_due: '2000-01-01T14:00:00Z',
   move_type: 'court_appearance',
@@ -213,6 +214,66 @@ describe('Presenters', function () {
           },
           undefined,
         ])
+      })
+    })
+
+    context('with a youth risk assessment', function () {
+      beforeEach(function () {
+        const canAccess = sinon
+          .stub()
+          .withArgs('youth_risk_assessment.view')
+          .returns(true)
+
+        transformedResponse = moveToSummaryListComponent(
+          {
+            ...mockMove,
+            profile: {
+              youth_risk_assessment: {},
+            },
+          },
+          { canAccess }
+        )
+      })
+
+      describe('response', function () {
+        it('should contain a link to the PER', function () {
+          const html =
+            transformedResponse.rows[transformedResponse.rows.length - 1].value
+              .html
+          expect(html).to.equal(
+            '<ul class="govuk-list govuk-!-font-size-16"><li><a class="govuk-link" href="/move/abc/youth-risk-assessment">youth_risk_assessment</a></li></ul>'
+          )
+        })
+      })
+    })
+
+    context('with a person escort record', function () {
+      beforeEach(function () {
+        const canAccess = sinon
+          .stub()
+          .withArgs('person_escort_record.view')
+          .returns(true)
+
+        transformedResponse = moveToSummaryListComponent(
+          {
+            ...mockMove,
+            profile: {
+              person_escort_record: {},
+            },
+          },
+          { canAccess }
+        )
+      })
+
+      describe('response', function () {
+        it('should contain a link to the PER', function () {
+          const html =
+            transformedResponse.rows[transformedResponse.rows.length - 1].value
+              .html
+          expect(html).to.equal(
+            '<ul class="govuk-list govuk-!-font-size-16"><li><a class="govuk-link" href="/move/abc/person-escort-record">person_escort_record</a></li></ul>'
+          )
+        })
       })
     })
   })

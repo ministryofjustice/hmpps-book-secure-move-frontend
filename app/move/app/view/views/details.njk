@@ -76,30 +76,6 @@
     {% endcall %}
   {% endfor %}
 
-  {% if hasYouthRiskAssessment or hasPersonEscortRecord %}
-    <div class="govuk-!-margin-top-5">
-      {% if canAccess("youth_risk_assessment:view") and hasYouthRiskAssessment %}
-        <p class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
-          <a href="/move/{{moveId}}/youth-risk-assessment">
-            {{ t("actions::view_assessment", {
-              context: "youth_risk_assessment"
-            }) }}
-          </a>
-        </p>
-      {% endif %}
-
-      {% if canAccess("person_escort_record:view") and hasPersonEscortRecord %}
-        <p class="govuk-!-font-size-16">
-          <a href="/move/{{moveId}}/person-escort-record">
-            {{ t("actions::view_assessment", {
-              context: "person_escort_record"
-            }) }}
-          </a>
-        </p>
-      {% endif %}
-    </div>
-  {% endif %}
-
   {% if sections.uneditable %}
     {% set detailsHtml %}
       {{ govukWarningText({
