@@ -16,6 +16,12 @@ params:
         type: string
         required: true
         description: If `text` is set, this is not required. HTML to use within the component. If `html` is provided, the `text` argument will be ignored.
+      - name: button.href
+        type: string
+        description: If set, this makes a button appear on the right containing a link to this parameter.
+      - name: button.text
+        type: string
+        describe: Sets the text that appears on the button on the right.
 
 examples:
   - name: default

@@ -1,5 +1,13 @@
-<div class="app-feedback-prompt{% if params.classes %} {{ params.classes }}{% endif %}">
-  <p class="app-feedback-prompt__content">
+<div class="app-feedback-prompt{% if params.classes %} {{ params.classes }}{% endif %} govuk-grid-row">
+  <p class="app-feedback-prompt__content govuk-grid-column-two-thirds">
     {{ params.content.html | safe if params.content.html else params.content.text }}
   </p>
+
+  {% if params.button.href %}
+    <p class="app-feedback-prompt__button govuk-grid-column-one-third">
+      <a href="{{ params.button.href }}" class="govuk-button">
+        {{ params.button.text }}
+      </a>
+    </p>
+  {% endif %}
 </div>

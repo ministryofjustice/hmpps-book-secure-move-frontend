@@ -90,5 +90,25 @@ describe('Feedback prompt component', function () {
         )
       })
     })
+
+    context('when button is passed in', function () {
+      it('should render the button html', function () {
+        const $ = renderComponentHtmlToCheerio('feedback-prompt', {
+          content: {
+            text: 'Text',
+          },
+          button: {
+            href: '/button',
+            text: 'Label',
+          },
+        })
+
+        const $component = $('.app-feedback-prompt')
+        expect($component.html()).to.contain(
+          '<a href="/button" class="govuk-button">'
+        )
+        expect($component.html()).to.contain('Label')
+      })
+    })
   })
 })

@@ -3,7 +3,7 @@
   background: govuk-colour("blue");
 }
 
-.app-feedback-prompt__content {
+.app-feedback-prompt__content, .app-feedback-prompt__button {
   color: govuk-colour("white");
   padding: govuk-spacing(5);
   margin: 0;
@@ -15,5 +15,33 @@
   a:visited,
   a:link {
     color: govuk-colour("white");
+  }
+}
+
+.app-feedback-prompt__button {
+  text-align: right;
+  padding: govuk-spacing(3);
+
+  a {
+    @include govuk-font(19);
+    background: transparent;
+    box-shadow: 0 2px 0 govuk-colour("white");
+    border: 1px govuk-colour("white") solid;
+    min-width: 100%;
+
+    &:hover {
+      // backup style for browsers that don't support rgba
+      background: govuk-colour("black");
+      background: rgba(govuk-colour("black"), .2);
+    }
+
+    @include govuk-media-query($from: mobile) {
+      min-width: 100px;
+      margin-bottom: 0;
+    }
+
+    @include govuk-media-query($from: tablet) {
+      @include govuk-font(16);
+    }
   }
 }
