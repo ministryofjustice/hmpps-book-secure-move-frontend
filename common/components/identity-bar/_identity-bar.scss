@@ -19,6 +19,11 @@
   }
 }
 
+.app-identity-bar__row {
+  display: flex;
+  align-items: center;
+}
+
 .app-identity-bar__caption {
   margin: 0;
 
