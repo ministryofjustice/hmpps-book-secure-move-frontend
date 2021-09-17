@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.92.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.91.0...v2.92.0) (2021-09-17)
+
+
+### Features
+
+* Add "View Person Escort Button" to identity bar ([1b5a0aa](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1b5a0aa3391c472a05fb3d89bb0c67dcdeb6a1b0))
+* Add opt-out button to feedback prompt ([a69af0d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a69af0d8262238965f68efa199910bbdcd1b0f1f))
+* Add optional button to feedback prompt ([343e9fc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/343e9fc43e06570a5a953a9de4364360ef8bea5e))
+* Add setMoveDesignOptOutHref middleware ([ed5d3f7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ed5d3f713360e404099d33607ddb243f2abb9651))
+* Improve links to assessment in details tab ([1df620a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1df620a25136f7ae2213e57ef8ecedba8e7eca00))
+* Vertically align identity bar ([22d6364](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/22d63647e6085928ada247c976a6eb71fa1b5ad9))
+
 ## [2.91.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.90.0...v2.91.0) (2021-09-15)
 
 
