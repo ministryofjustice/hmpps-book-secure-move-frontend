@@ -817,19 +817,44 @@ describe('Framework controllers', function () {
           beforeEach(function () {
             mockReq.isLastStep = true
             mockReq.nextFrameworkSection = { key: 'next-section' }
-            controller.successHandler(mockReq, mockRes, nextSpy)
           })
 
-          it('should redirect to base URL with the section', function () {
-            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url/next-section/start'
-            )
+          context('with new move design', function () {
+            beforeEach(function () {
+              mockReq.moveDesignPreview = true
+              controller.successHandler(mockReq, mockRes, nextSpy)
+            })
+
+            it('should redirect to base URL with the next section', function () {
+              expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+                '/base-url/next-section/start'
+              )
+            })
+
+            it('should not call parent success handler', function () {
+              expect(
+                FormWizardController.prototype.successHandler
+              ).not.to.have.been.called
+            })
           })
 
-          it('should not call parent success handler', function () {
-            expect(
-              FormWizardController.prototype.successHandler
-            ).not.to.have.been.called
+          context('without new move design', function () {
+            beforeEach(function () {
+              mockReq.moveDesignPreview = false
+              controller.successHandler(mockReq, mockRes, nextSpy)
+            })
+
+            it('should redirect to base URL with the section', function () {
+              expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+                '/base-url/section'
+              )
+            })
+
+            it('should not call parent success handler', function () {
+              expect(
+                FormWizardController.prototype.successHandler
+              ).not.to.have.been.called
+            })
           })
         })
 
@@ -837,19 +862,44 @@ describe('Framework controllers', function () {
           beforeEach(function () {
             mockReq.isLastStep = true
             mockReq.nextFrameworkSection = null
-            controller.successHandler(mockReq, mockRes, nextSpy)
           })
 
-          it('should redirect to base URL without the section', function () {
-            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url'
-            )
+          context('with new move design', function () {
+            beforeEach(function () {
+              mockReq.moveDesignPreview = true
+              controller.successHandler(mockReq, mockRes, nextSpy)
+            })
+
+            it('should redirect to base URL without the section', function () {
+              expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+                '/base-url'
+              )
+            })
+
+            it('should not call parent success handler', function () {
+              expect(
+                FormWizardController.prototype.successHandler
+              ).not.to.have.been.called
+            })
           })
 
-          it('should not call parent success handler', function () {
-            expect(
-              FormWizardController.prototype.successHandler
-            ).not.to.have.been.called
+          context('without new move design', function () {
+            beforeEach(function () {
+              mockReq.moveDesignPreview = false
+              controller.successHandler(mockReq, mockRes, nextSpy)
+            })
+
+            it('should redirect to base URL with the section', function () {
+              expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+                '/base-url/section'
+              )
+            })
+
+            it('should not call parent success handler', function () {
+              expect(
+                FormWizardController.prototype.successHandler
+              ).not.to.have.been.called
+            })
           })
         })
       })
