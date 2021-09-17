@@ -77,7 +77,7 @@
     "actions": {
       "yes": "Try the new version",
       "no": "Keep the current version",
-      "return": "Return to the old version"
+      "return": "Return to the old design"
     }
   }
 }
