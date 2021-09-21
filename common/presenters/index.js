@@ -10,6 +10,7 @@ const courtCaseToCardComponent = require('./court-case-to-card-component')
 const courtHearingToSummaryListComponent = require('./court-hearing-to-summary-list-component')
 const eventToTagComponent = require('./event-to-tag-component')
 const eventToTimelineItemComponent = require('./event-to-timeline-item-component')
+const eventToTimelinePanel = require('./event-to-timeline-panel')
 const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
 const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 const frameworkNomisMappingsToPanel = require('./framework-nomis-mappings-to-panel')
@@ -50,6 +51,7 @@ module.exports = {
   courtHearingToSummaryListComponent,
   eventToTagComponent,
   eventToTimelineItemComponent,
+  eventToTimelinePanel,
   frameworkFieldToSummaryListRow,
   frameworkFlagsToTagList,
   frameworkNomisMappingsToPanel,
