@@ -162,7 +162,7 @@ describe('Move view app', function () {
           it('should call correct presenter', function () {
             expect(
               presenters.moveToImportantEventsTagListComponent
-            ).to.have.been.calledOnceWithExactly(req.move)
+            ).to.have.been.calledOnceWithExactly(req.move, true)
           })
 
           it('should set importantEventsTagList variable', function () {

@@ -28,7 +28,8 @@ function setWarnings(req, res, next) {
       includeLink: true,
     })
     importantEventsTagList = presenters.moveToImportantEventsTagListComponent(
-      req.move
+      req.move,
+      true
     )
   }
 
