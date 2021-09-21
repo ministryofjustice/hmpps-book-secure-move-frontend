@@ -3,7 +3,11 @@ const { isEmpty, map, sortBy } = require('lodash')
 const presenters = require('../../../../../common/presenters')
 
 function setWarnings(req, res, next) {
-  const { profile, id: moveId } = req.move || {}
+  const {
+    profile,
+    id: moveId,
+    important_events: importantEvents,
+  } = req.move || {}
 
   if (!profile) {
     return next()
@@ -37,7 +41,7 @@ function setWarnings(req, res, next) {
     ? sortBy(perAssessmentSections, 'order')
     : []
 
-  if (req.move.important_events) {
+  if (importantEvents?.length) {
     sections.unshift(presenters.moveToInTransitEventsPanelList(req.move))
   }
 
