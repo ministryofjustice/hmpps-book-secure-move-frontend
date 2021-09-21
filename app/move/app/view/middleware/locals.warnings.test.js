@@ -13,6 +13,9 @@ describe('Move view app', function () {
           .stub(presenters, 'frameworkFlagsToTagList')
           .returns('__frameworkFlagsToTagList__')
         sinon
+          .stub(presenters, 'moveToImportantEventsTagListComponent')
+          .returns('__moveToImportantEventsTagListComponent__')
+        sinon
           .stub(presenters, 'frameworkSectionToPanelList')
           .returns(frameworkSectionStub)
         sinon.stub(presenters, 'assessmentAnswersByCategory').returnsArg(0)
@@ -142,6 +145,76 @@ describe('Move view app', function () {
           it('should set tagList variable as undefined', function () {
             expect(res.locals.warnings).to.have.property('tagList')
             expect(res.locals.warnings.tagList).to.be.undefined
+          })
+        })
+      })
+
+      describe('importantEventsTagList', function () {
+        context('when Person Escort Record is completed', function () {
+          beforeEach(function () {
+            req.move.profile.person_escort_record = {
+              status: 'completed',
+              flags: ['foo', 'bar'],
+            }
+            middleware(req, res, nextSpy)
+          })
+
+          it('should call correct presenter', function () {
+            expect(
+              presenters.moveToImportantEventsTagListComponent
+            ).to.have.been.calledOnceWithExactly(req.move)
+          })
+
+          it('should set importantEventsTagList variable', function () {
+            expect(res.locals.warnings).to.have.property(
+              'importantEventsTagList'
+            )
+            expect(res.locals.warnings.importantEventsTagList).to.equal(
+              '__moveToImportantEventsTagListComponent__'
+            )
+          })
+        })
+
+        context('when Person Escort Record is not completed', function () {
+          beforeEach(function () {
+            req.move.profile.person_escort_record = {
+              status: 'in_progress',
+              flags: ['foo', 'bar'],
+            }
+            middleware(req, res, nextSpy)
+          })
+
+          it('should call correct presenter', function () {
+            expect(
+              presenters.moveToImportantEventsTagListComponent
+            ).not.to.have.been.called
+          })
+
+          it('should set tagList variable as undefined', function () {
+            expect(res.locals.warnings).to.have.property(
+              'importantEventsTagList'
+            )
+            expect(res.locals.warnings.importantEventsTagList).to.be.undefined
+          })
+        })
+
+        context('without Person Escort Record', function () {
+          beforeEach(function () {
+            req.move.profile = {}
+            middleware(req, res, nextSpy)
+          })
+
+          it('should call correct presenter', function () {
+            expect(
+              presenters.moveToImportantEventsTagListComponent
+            ).not.to.have.been.called
+          })
+
+          it('should set tagList variable as undefined', function () {
+            expect(res.locals.warnings).to.have.property(
+              'importantEventsTagList'
+            )
+            expect(res.locals.warnings.importantEventsTagList).to.be.undefined
           })
         })
       })

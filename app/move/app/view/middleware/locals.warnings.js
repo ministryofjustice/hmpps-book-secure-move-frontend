@@ -9,7 +9,7 @@ function setWarnings(req, res, next) {
     return next()
   }
 
-  let tagList
+  let tagList, importantEventsTagList
   const personEscortRecord = profile.person_escort_record
   const perAssessmentSections = map(
     personEscortRecord?._framework?.sections,
@@ -27,6 +27,9 @@ function setWarnings(req, res, next) {
       hrefPrefix: req.originalUrl,
       includeLink: true,
     })
+    importantEventsTagList = presenters.moveToImportantEventsTagListComponent(
+      req.move
+    )
   }
 
   res.locals.warnings = {
@@ -34,6 +37,7 @@ function setWarnings(req, res, next) {
       ? sortBy(perAssessmentSections, 'order')
       : undefined,
     tagList,
+    importantEventsTagList,
   }
 
   next()
