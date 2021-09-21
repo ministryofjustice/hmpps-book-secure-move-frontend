@@ -28,7 +28,7 @@
     "text_health_nomis": "There is no health information",
     "text_court": "No information for the court",
     "text_release_status": "There is no active release status information",
-    "text_framework": "No {{name}} warnings"
+    "text_framework": "No {{name}} {{type}}"
   },
   "retrieved_from_nomis": {
     "details": {

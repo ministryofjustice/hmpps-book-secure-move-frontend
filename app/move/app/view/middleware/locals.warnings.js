@@ -33,10 +33,16 @@ function setWarnings(req, res, next) {
     )
   }
 
+  const sections = personEscortRecord
+    ? sortBy(perAssessmentSections, 'order')
+    : []
+
+  if (req.move.important_events) {
+    sections.unshift(presenters.moveToInTransitEventsPanelList(req.move))
+  }
+
   res.locals.warnings = {
-    sections: personEscortRecord
-      ? sortBy(perAssessmentSections, 'order')
-      : undefined,
+    sections,
     tagList,
     importantEventsTagList,
   }

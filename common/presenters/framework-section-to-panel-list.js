@@ -65,7 +65,8 @@ function frameworkSectionToPanelList({ baseUrl = '' } = {}) {
       name: section.name,
       order: section.order,
       url: `${baseUrl}/${section.key}`,
-      isCompleted: section.progress === 'completed',
+      isCompleted:
+        section.progress === 'completed' || section.key === 'in-transit-events',
       count: panels.length,
       context: 'framework',
       panels,

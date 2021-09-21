@@ -80,7 +80,7 @@ describe('Move view app', function () {
 
           it('should set sections variable to undefined', function () {
             expect(res.locals.warnings).to.have.property('sections')
-            expect(res.locals.warnings.sections).to.be.undefined
+            expect(res.locals.warnings.sections).to.be.empty
           })
         })
       })
