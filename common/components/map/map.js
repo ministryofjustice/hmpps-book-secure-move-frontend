@@ -6,7 +6,7 @@ import { GeoJSON } from 'ol/format'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer'
 import LayerGroup from 'ol/layer/Group'
 import { fromLonLat } from 'ol/proj'
-import { Vector as VectorSource } from 'ol/source'
+import VectorSource from 'ol/source/Vector'
 import XYZ from 'ol/source/XYZ'
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
 
