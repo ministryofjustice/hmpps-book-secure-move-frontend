@@ -3,13 +3,17 @@ const { isEmpty, map, sortBy } = require('lodash')
 const presenters = require('../../../../../common/presenters')
 
 function setWarnings(req, res, next) {
-  const { profile, id: moveId } = req.move || {}
+  const {
+    profile,
+    id: moveId,
+    important_events: importantEvents,
+  } = req.move || {}
 
   if (!profile) {
     return next()
   }
 
-  let tagList
+  let tagList, importantEventsTagList
   const personEscortRecord = profile.person_escort_record
   const perAssessmentSections = map(
     personEscortRecord?._framework?.sections,
@@ -27,13 +31,24 @@ function setWarnings(req, res, next) {
       hrefPrefix: req.originalUrl,
       includeLink: true,
     })
+    importantEventsTagList = presenters.moveToImportantEventsTagListComponent(
+      req.move,
+      true
+    )
+  }
+
+  const sections = personEscortRecord
+    ? sortBy(perAssessmentSections, 'order')
+    : []
+
+  if (importantEvents?.length) {
+    sections.unshift(presenters.moveToInTransitEventsPanelList(req.move))
   }
 
   res.locals.warnings = {
-    sections: personEscortRecord
-      ? sortBy(perAssessmentSections, 'order')
-      : undefined,
+    sections,
     tagList,
+    importantEventsTagList,
   }
 
   next()

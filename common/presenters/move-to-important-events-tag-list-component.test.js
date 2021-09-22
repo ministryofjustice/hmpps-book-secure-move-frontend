@@ -25,11 +25,13 @@ describe('Presenters', function () {
       expect(eventToTagComponent.callCount).to.equal(2)
       expect(eventToTagComponent.firstCall).to.be.calledWithExactly(
         'a',
-        '#move'
+        '#move',
+        false
       )
       expect(eventToTagComponent.secondCall).to.be.calledWithExactly(
         'b',
-        '#move'
+        '#move',
+        false
       )
     })
 

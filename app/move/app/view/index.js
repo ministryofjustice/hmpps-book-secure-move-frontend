@@ -33,10 +33,10 @@ router.get('/', (req, res) => res.redirect(`${req.baseUrl}/warnings`))
 
 // Define shared middleware
 
-// For all non-timeline routes use standard move middleware
-router.use(/\/((?!timeline).)*/, setMove)
-// For all timeline route use move events middleware
-router.use('/timeline', setMoveWithEvents)
+// For all non-timeline/warning routes use standard move middleware
+router.use(/\/((?!timeline|warnings).)*/, setMove)
+// For all timeline/warning route use move events middleware
+router.use(/\/(timeline|warnings).*/, setMoveWithEvents)
 
 router.use(breadcrumbs.setHome())
 router.use(setPersonEscortRecord)

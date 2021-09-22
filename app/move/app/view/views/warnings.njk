@@ -33,7 +33,7 @@
     }) }}
   {% endif %}
 
-  {% if (assessment.url and assessment.isCompleted) %}
+  {% if (assessment.url and assessment.isCompleted and assessment.key != 'in-transit-events') %}
     <p class="govuk-!-font-size-16 govuk-!-margin-top-2">
       <a href="{{ assessment.url }}">
         {{ t("assessment::view_framework_section", {
@@ -51,14 +51,24 @@
     </h2>
 
     <div data-tag-list-source="person-escort-record">
-      {% for tag in warnings.tagList %}
-        {{ appTag(tag) }}
+      {% if warnings.tagList | length or warnings.importantEventsTagList | length %}
+        {% for tag in warnings.tagList %}
+          {{ appTag(tag) }}
+        {% endfor %}
+
+        {% if warnings.importantEventsTagList | length %}
+          <div class="govuk-!-margin-top-2" data-tag-list-source="move-important-events">
+            {% for tag in warnings.importantEventsTagList %}
+              {{ appTag(tag) }}
+            {% endfor %}
+          </div>
+        {% endif %}
       {% else %}
         {{ govukInsetText({
           classes: "govuk-!-font-size-16 govuk-!-margin-top-0",
           text: t("assessment::incomplete_overview")
         }) }}
-      {% endfor %}
+      {% endif %}
     </div>
 
     {% if warnings.sections | length %}
