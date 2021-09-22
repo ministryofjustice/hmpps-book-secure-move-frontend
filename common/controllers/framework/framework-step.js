@@ -2,7 +2,6 @@ const { isEmpty, fromPairs, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 const frameworksHelpers = require('../../helpers/frameworks')
-const setPreviousNextFrameworkSection = require('../../middleware/framework/set-previous-next-framework-section')
 const setMoveSummary = require('../../middleware/set-move-summary')
 const FormWizardController = require('../form-wizard')
 
@@ -29,7 +28,6 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setupConditionalFields)
     super.middlewareSetup()
     this.use(this.setValidationRules)
-    this.use(setPreviousNextFrameworkSection)
     this.use(this.setIsLastStep)
     this.use(this.setHasNextSteps)
     this.use(this.setButtonText)
@@ -78,12 +76,12 @@ class FrameworkStepController extends FormWizardController {
 
   setButtonText(req, res, next) {
     const { stepType } = req.form.options
-    const { hasNextSteps, nextFrameworkSection } = req
+    const { hasNextSteps } = req
     const isInterruptionCard = stepType === 'interruption-card'
 
     if (isInterruptionCard) {
       req.form.options.buttonText = 'actions::continue'
-    } else if (!hasNextSteps && !nextFrameworkSection) {
+    } else if (!hasNextSteps) {
       req.form.options.buttonText = 'actions::save_and_return_to_overview'
     } else {
       req.form.options.buttonText = 'actions::save_and_continue'
@@ -150,8 +148,7 @@ class FrameworkStepController extends FormWizardController {
   }
 
   setShowReturnToOverviewButton(req, res, next) {
-    res.locals.showReturnToOverviewButton =
-      req.hasNextSteps || !!req.nextFrameworkSection
+    res.locals.showReturnToOverviewButton = req.hasNextSteps
     next()
   }
 
@@ -192,21 +189,12 @@ class FrameworkStepController extends FormWizardController {
     const {
       isLastStep,
       frameworkSection: { key: currentSection },
-      nextFrameworkSection,
       body: { save_and_return_to_overview: goToOverview },
     } = req
 
-    if (goToOverview || (isLastStep && !nextFrameworkSection)) {
+    if (goToOverview || isLastStep) {
       const overviewUrl = req.baseUrl.replace(`/${currentSection}`, '')
       return res.redirect(overviewUrl)
-    }
-
-    if (isLastStep && nextFrameworkSection) {
-      const nextSectionUrl = req.baseUrl.replace(
-        `/${currentSection}`,
-        `/${nextFrameworkSection.key}`
-      )
-      return res.redirect(`${nextSectionUrl}/start`)
     }
 
     super.successHandler(req, res, next)

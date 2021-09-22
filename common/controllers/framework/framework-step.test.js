@@ -4,12 +4,9 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
 
-const setPreviousNextFrameworkSection = sinon.stub()
 const setMoveSummary = sinon.stub()
 
 const Controller = proxyquire('./framework-step', {
-  '../../middleware/framework/set-previous-next-framework-section':
-    setPreviousNextFrameworkSection,
   '../../middleware/set-move-summary': setMoveSummary,
 })
 
@@ -74,30 +71,24 @@ describe('Framework controllers', function () {
 
       it('should call set button text method', function () {
         expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
-          setPreviousNextFrameworkSection
-        )
-      })
-
-      it('should call set button text method', function () {
-        expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
           controller.setIsLastStep
         )
       })
 
       it('should call set button text method', function () {
-        expect(controller.use.getCall(4)).to.have.been.calledWithExactly(
+        expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
           controller.setHasNextSteps
         )
       })
 
       it('should call set button text method', function () {
-        expect(controller.use.getCall(5)).to.have.been.calledWithExactly(
+        expect(controller.use.getCall(4)).to.have.been.calledWithExactly(
           controller.setButtonText
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(6)
+        expect(controller.use).to.be.callCount(5)
       })
     })
 
@@ -786,21 +777,6 @@ describe('Framework controllers', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
-
-        context('and a next section', function () {
-          beforeEach(function () {
-            mockReq.nextFrameworkSection = { key: 'section' }
-            controller.setShowReturnToOverviewButton(mockReq, mockRes, nextSpy)
-          })
-
-          it('should show the return to overview button', function () {
-            expect(mockRes.locals.showReturnToOverviewButton).to.be.true
-          })
-
-          it('should call next without an error', function () {
-            expect(nextSpy).to.be.calledOnceWithExactly()
-          })
-        })
       })
     })
 
@@ -865,27 +841,6 @@ describe('Framework controllers', function () {
         context('with last framework step and a next section', function () {
           beforeEach(function () {
             mockReq.isLastStep = true
-            mockReq.nextFrameworkSection = { key: 'next-section' }
-            controller.successHandler(mockReq, mockRes, nextSpy)
-          })
-
-          it('should redirect to base URL with the section', function () {
-            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url/next-section/start'
-            )
-          })
-
-          it('should not call parent success handler', function () {
-            expect(
-              FormWizardController.prototype.successHandler
-            ).not.to.have.been.called
-          })
-        })
-
-        context('with last framework step and no next section', function () {
-          beforeEach(function () {
-            mockReq.isLastStep = true
-            mockReq.nextFrameworkSection = null
             controller.successHandler(mockReq, mockRes, nextSpy)
           })
 
