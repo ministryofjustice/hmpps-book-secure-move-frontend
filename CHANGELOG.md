@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.93.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.92.0...v2.93.0) (2021-09-22)
+
+
+### Features
+
+* Add eventToTimelinePanel ([1ea03e3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1ea03e303208eb99fa97663f7eddd8b9e5ddc529))
+* Hide "Save and continue" button at the end of a section ([bbcc653](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/bbcc6531e264339ec6b131a4db988de993e7f8f2))
+* Show in-transit events on warnings tab ([341f2cb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/341f2cb53260c8ec8517e8539c7ca58fd020ba0a))
+* Show tags for important events ([0397dce](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0397dcefdf6cda85b8ac51c646113d3056617221))
+
+
+### Bug Fixes
+
+* Ensure "Save and continue" goes to next step ([6842b70](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6842b707e775695b44871abc4ed51c503a47afb8))
+* Send users to move page if not opted-in to new design ([81bdee4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/81bdee4bd2f513f1ed65601b38fe34e17a04c70d))
+* Show "Save and continue" if there are next steps ([3bdf728](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3bdf7288e5c87fd56b011a929cff716fb55b25f8))
+
 ## [2.92.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.91.0...v2.92.0) (2021-09-17)
 
 
