@@ -28,7 +28,6 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setupConditionalFields)
     super.middlewareSetup()
     this.use(this.setValidationRules)
-    this.use(this.setIsLastStep)
     this.use(this.setHasNextSteps)
     this.use(this.setButtonText)
   }
@@ -55,15 +54,6 @@ class FrameworkStepController extends FormWizardController {
     if (req.form.options.fullPath !== req.journeyModel.get('lastVisited')) {
       req.sessionModel.set(savedValues)
     }
-
-    next()
-  }
-
-  setIsLastStep(req, res, next) {
-    const { route: currentStep } = req?.form?.options || {}
-    const nextStep = this.getNextStep(req, res)
-
-    req.isLastStep = nextStep.endsWith(currentStep)
 
     next()
   }
@@ -187,14 +177,19 @@ class FrameworkStepController extends FormWizardController {
 
   successHandler(req, res, next) {
     const {
-      isLastStep,
       frameworkSection: { key: currentSection },
       body: { save_and_return_to_overview: goToOverview },
       moveDesignPreview,
       assessment: {
         framework: { name: frameworkName },
       },
+      form: {
+        options: { route: currentStep },
+      },
     } = req
+
+    const nextStep = this.getNextStep(req, res)
+    const isLastStep = nextStep.endsWith(currentStep)
 
     if (goToOverview || isLastStep) {
       let overviewUrl = req.baseUrl.replace(`/${currentSection}`, '')

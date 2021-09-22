@@ -46,7 +46,6 @@ describe('Framework controllers', function () {
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setButtonText')
         sinon.stub(controller, 'setValidationRules')
-        sinon.stub(controller, 'setIsLastStep')
         sinon.stub(controller, 'setHasNextSteps')
 
         controller.middlewareSetup()
@@ -71,24 +70,18 @@ describe('Framework controllers', function () {
 
       it('should call set button text method', function () {
         expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
-          controller.setIsLastStep
-        )
-      })
-
-      it('should call set button text method', function () {
-        expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
           controller.setHasNextSteps
         )
       })
 
       it('should call set button text method', function () {
-        expect(controller.use.getCall(4)).to.have.been.calledWithExactly(
+        expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
           controller.setButtonText
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(5)
+        expect(controller.use).to.be.callCount(4)
       })
     })
 
@@ -300,67 +293,6 @@ describe('Framework controllers', function () {
 
         it('should not call next', function () {
           expect(nextSpy).not.to.be.called
-        })
-      })
-    })
-
-    describe('#setIsLastStep', function () {
-      let mockReq, nextSpy
-
-      beforeEach(function () {
-        nextSpy = sinon.spy()
-        mockReq = { form: { options: {} } }
-        sinon.stub(FormWizardController.prototype, 'getNextStep').returns('/')
-      })
-
-      context('with step that is last step', function () {
-        beforeEach(function () {
-          mockReq.form.options.route = '/two'
-          FormWizardController.prototype.getNextStep.returns('/two')
-          controller.setIsLastStep(mockReq, {}, nextSpy)
-        })
-
-        it('should be the last step', function () {
-          expect(mockReq.isLastStep).to.be.true
-        })
-      })
-
-      context('with step that contains last step', function () {
-        beforeEach(function () {
-          mockReq.form.options.route = '/two'
-          FormWizardController.prototype.getNextStep.returns(
-            '/full/path/to/step/two-continued'
-          )
-          controller.setIsLastStep(mockReq, {}, nextSpy)
-        })
-
-        it('should not be the last step', function () {
-          expect(mockReq.isLastStep).to.be.false
-        })
-      })
-
-      context('with step that contains same end as last step', function () {
-        beforeEach(function () {
-          mockReq.form.options.route = '/continued'
-          FormWizardController.prototype.getNextStep.returns(
-            '/full/path/to/step/two-continued'
-          )
-          controller.setIsLastStep(mockReq, {}, nextSpy)
-        })
-
-        it('should not be the last step', function () {
-          expect(mockReq.isLastStep).to.be.false
-        })
-      })
-
-      context('with all other steps', function () {
-        beforeEach(function () {
-          FormWizardController.prototype.getNextStep.returns('/two')
-          controller.setIsLastStep(mockReq, {}, nextSpy)
-        })
-
-        it('should not be the last step', function () {
-          expect(mockReq.isLastStep).to.be.false
         })
       })
     })
@@ -793,6 +725,7 @@ describe('Framework controllers', function () {
           frameworkSection: {
             key: 'section',
           },
+          form: { options: {} },
         }
         mockRes = {
           redirect: sinon.stub(),
@@ -800,6 +733,7 @@ describe('Framework controllers', function () {
         nextSpy = sinon.stub()
 
         sinon.stub(FormWizardController.prototype, 'successHandler')
+        sinon.stub(FormWizardController.prototype, 'getNextStep').returns('/')
       })
 
       context('with save and return submission', function () {
@@ -850,7 +784,6 @@ describe('Framework controllers', function () {
       context('with standard submission', function () {
         context('with middle framework step', function () {
           beforeEach(function () {
-            mockReq.isLastStep = false
             controller.successHandler(mockReq, mockRes, nextSpy)
           })
 
@@ -867,7 +800,8 @@ describe('Framework controllers', function () {
 
         context('with last framework step', function () {
           beforeEach(function () {
-            mockReq.isLastStep = true
+            mockReq.form.options.route = '/two'
+            FormWizardController.prototype.getNextStep.returns('/two')
           })
 
           context('with old move design', function () {
