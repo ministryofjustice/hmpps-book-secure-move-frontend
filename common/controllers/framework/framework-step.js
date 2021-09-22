@@ -2,7 +2,6 @@ const { isEmpty, fromPairs, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 const frameworksHelpers = require('../../helpers/frameworks')
-const setPreviousNextFrameworkSection = require('../../middleware/framework/set-previous-next-framework-section')
 const setMoveSummary = require('../../middleware/set-move-summary')
 const FormWizardController = require('../form-wizard')
 
@@ -29,8 +28,7 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setupConditionalFields)
     super.middlewareSetup()
     this.use(this.setValidationRules)
-    this.use(setPreviousNextFrameworkSection)
-    this.use(this.setIsLastStep)
+    this.use(this.setHasNextSteps)
     this.use(this.setButtonText)
   }
 
@@ -60,23 +58,20 @@ class FrameworkStepController extends FormWizardController {
     next()
   }
 
-  setIsLastStep(req, res, next) {
-    const { route: currentStep } = req?.form?.options || {}
-    const nextStep = this.getNextStep(req, res)
-
-    req.isLastStep = nextStep.endsWith(currentStep)
-
+  setHasNextSteps(req, res, next) {
+    const { next: nextSteps = [] } = req?.form?.options || {}
+    req.hasNextSteps = !!nextSteps.length
     next()
   }
 
   setButtonText(req, res, next) {
     const { stepType } = req.form.options
-    const { isLastStep, nextFrameworkSection } = req
+    const { hasNextSteps } = req
     const isInterruptionCard = stepType === 'interruption-card'
 
     if (isInterruptionCard) {
       req.form.options.buttonText = 'actions::continue'
-    } else if (isLastStep && !nextFrameworkSection) {
+    } else if (!hasNextSteps) {
       req.form.options.buttonText = 'actions::save_and_return_to_overview'
     } else {
       req.form.options.buttonText = 'actions::save_and_continue'
@@ -143,8 +138,7 @@ class FrameworkStepController extends FormWizardController {
   }
 
   setShowReturnToOverviewButton(req, res, next) {
-    res.locals.showReturnToOverviewButton =
-      !req.isLastStep || !!req.nextFrameworkSection
+    res.locals.showReturnToOverviewButton = req.hasNextSteps
     next()
   }
 
@@ -183,23 +177,28 @@ class FrameworkStepController extends FormWizardController {
 
   successHandler(req, res, next) {
     const {
-      isLastStep,
       frameworkSection: { key: currentSection },
-      nextFrameworkSection,
       body: { save_and_return_to_overview: goToOverview },
+      moveDesignPreview,
+      assessment: {
+        framework: { name: frameworkName },
+      },
+      form: {
+        options: { route: currentStep },
+      },
     } = req
 
-    if (goToOverview || (isLastStep && !nextFrameworkSection)) {
-      const overviewUrl = req.baseUrl.replace(`/${currentSection}`, '')
-      return res.redirect(overviewUrl)
-    }
+    const nextStep = this.getNextStep(req, res)
+    const isLastStep = nextStep.endsWith(currentStep)
 
-    if (isLastStep && nextFrameworkSection) {
-      const nextSectionUrl = req.baseUrl.replace(
-        `/${currentSection}`,
-        `/${nextFrameworkSection.key}`
-      )
-      return res.redirect(`${nextSectionUrl}/start`)
+    if (goToOverview || isLastStep) {
+      let overviewUrl = req.baseUrl.replace(`/${currentSection}`, '')
+
+      if (!moveDesignPreview) {
+        overviewUrl = overviewUrl.replace(`/${frameworkName}`, '')
+      }
+
+      return res.redirect(overviewUrl)
     }
 
     super.successHandler(req, res, next)

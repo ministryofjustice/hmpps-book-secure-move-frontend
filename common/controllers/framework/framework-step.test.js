@@ -4,12 +4,9 @@ const FormWizardController = require('../../../common/controllers/form-wizard')
 const fieldHelpers = require('../../../common/helpers/field')
 const frameworksHelpers = require('../../../common/helpers/frameworks')
 
-const setPreviousNextFrameworkSection = sinon.stub()
 const setMoveSummary = sinon.stub()
 
 const Controller = proxyquire('./framework-step', {
-  '../../middleware/framework/set-previous-next-framework-section':
-    setPreviousNextFrameworkSection,
   '../../middleware/set-move-summary': setMoveSummary,
 })
 
@@ -49,7 +46,7 @@ describe('Framework controllers', function () {
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setButtonText')
         sinon.stub(controller, 'setValidationRules')
-        sinon.stub(controller, 'setIsLastStep')
+        sinon.stub(controller, 'setHasNextSteps')
 
         controller.middlewareSetup()
       })
@@ -73,24 +70,18 @@ describe('Framework controllers', function () {
 
       it('should call set button text method', function () {
         expect(controller.use.getCall(2)).to.have.been.calledWithExactly(
-          setPreviousNextFrameworkSection
+          controller.setHasNextSteps
         )
       })
 
       it('should call set button text method', function () {
         expect(controller.use.getCall(3)).to.have.been.calledWithExactly(
-          controller.setIsLastStep
-        )
-      })
-
-      it('should call set button text method', function () {
-        expect(controller.use.getCall(4)).to.have.been.calledWithExactly(
           controller.setButtonText
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(5)
+        expect(controller.use).to.be.callCount(4)
       })
     })
 
@@ -306,63 +297,43 @@ describe('Framework controllers', function () {
       })
     })
 
-    describe('#setIsLastStep', function () {
+    describe('#setHasNextSteps', function () {
       let mockReq, nextSpy
 
       beforeEach(function () {
         nextSpy = sinon.spy()
         mockReq = { form: { options: {} } }
-        sinon.stub(FormWizardController.prototype, 'getNextStep').returns('/')
       })
 
-      context('with step that is last step', function () {
+      context('with step that has undefined next steps', function () {
         beforeEach(function () {
-          mockReq.form.options.route = '/two'
-          FormWizardController.prototype.getNextStep.returns('/two')
-          controller.setIsLastStep(mockReq, {}, nextSpy)
+          controller.setHasNextSteps(mockReq, {}, nextSpy)
         })
 
-        it('should be the last step', function () {
-          expect(mockReq.isLastStep).to.be.true
+        it('should not have next steps', function () {
+          expect(mockReq.hasNextSteps).to.be.false
         })
       })
 
-      context('with step that contains last step', function () {
+      context('with step that has no next steps', function () {
         beforeEach(function () {
-          mockReq.form.options.route = '/two'
-          FormWizardController.prototype.getNextStep.returns(
-            '/full/path/to/step/two-continued'
-          )
-          controller.setIsLastStep(mockReq, {}, nextSpy)
+          mockReq.form.options.next = []
+          controller.setHasNextSteps(mockReq, {}, nextSpy)
+        })
+
+        it('should not have next steps', function () {
+          expect(mockReq.hasNextSteps).to.be.false
+        })
+      })
+
+      context('with step that has next steps', function () {
+        beforeEach(function () {
+          mockReq.form.options.next = ['next']
+          controller.setHasNextSteps(mockReq, {}, nextSpy)
         })
 
         it('should not be the last step', function () {
-          expect(mockReq.isLastStep).to.be.false
-        })
-      })
-
-      context('with step that contains same end as last step', function () {
-        beforeEach(function () {
-          mockReq.form.options.route = '/continued'
-          FormWizardController.prototype.getNextStep.returns(
-            '/full/path/to/step/two-continued'
-          )
-          controller.setIsLastStep(mockReq, {}, nextSpy)
-        })
-
-        it('should not be the last step', function () {
-          expect(mockReq.isLastStep).to.be.false
-        })
-      })
-
-      context('with all other steps', function () {
-        beforeEach(function () {
-          FormWizardController.prototype.getNextStep.returns('/two')
-          controller.setIsLastStep(mockReq, {}, nextSpy)
-        })
-
-        it('should not be the last step', function () {
-          expect(mockReq.isLastStep).to.be.false
+          expect(mockReq.hasNextSteps).to.be.true
         })
       })
     })
@@ -374,6 +345,7 @@ describe('Framework controllers', function () {
         nextSpy = sinon.spy()
         mockReq = {
           form: { options: {} },
+          hasNextSteps: true,
         }
       })
 
@@ -410,7 +382,7 @@ describe('Framework controllers', function () {
 
       context('when last step and no next section', function () {
         beforeEach(function () {
-          mockReq.isLastStep = true
+          mockReq.hasNextSteps = false
           mockReq.nextFrameworkSection = null
           controller.setButtonText(mockReq, {}, nextSpy)
         })
@@ -700,7 +672,7 @@ describe('Framework controllers', function () {
       let mockReq, mockRes, nextSpy
 
       beforeEach(function () {
-        mockReq = { isLastStep: false, nextFrameworkSection: null }
+        mockReq = { hasNextSteps: true, nextFrameworkSection: null }
         mockRes = { locals: {} }
         nextSpy = sinon.stub()
       })
@@ -721,7 +693,7 @@ describe('Framework controllers', function () {
 
       context('when last step', function () {
         beforeEach(function () {
-          mockReq.isLastStep = true
+          mockReq.hasNextSteps = false
         })
 
         context('and no next section', function () {
@@ -737,21 +709,6 @@ describe('Framework controllers', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })
-
-        context('and a next section', function () {
-          beforeEach(function () {
-            mockReq.nextFrameworkSection = { key: 'section' }
-            controller.setShowReturnToOverviewButton(mockReq, mockRes, nextSpy)
-          })
-
-          it('should show the return to overview button', function () {
-            expect(mockRes.locals.showReturnToOverviewButton).to.be.true
-          })
-
-          it('should call next without an error', function () {
-            expect(nextSpy).to.be.calledOnceWithExactly()
-          })
-        })
       })
     })
 
@@ -761,10 +718,14 @@ describe('Framework controllers', function () {
       beforeEach(function () {
         mockReq = {
           body: {},
-          baseUrl: '/base-url/section',
+          baseUrl: '/base-url/framework/section',
+          assessment: {
+            framework: { name: 'framework' },
+          },
           frameworkSection: {
             key: 'section',
           },
+          form: { options: {} },
         }
         mockRes = {
           redirect: sinon.stub(),
@@ -772,6 +733,7 @@ describe('Framework controllers', function () {
         nextSpy = sinon.stub()
 
         sinon.stub(FormWizardController.prototype, 'successHandler')
+        sinon.stub(FormWizardController.prototype, 'getNextStep').returns('/')
       })
 
       context('with save and return submission', function () {
@@ -779,26 +741,49 @@ describe('Framework controllers', function () {
           mockReq.body = {
             save_and_return_to_overview: '1',
           }
-          controller.successHandler(mockReq, mockRes, nextSpy)
         })
 
-        it('should redirect to base URL without the section', function () {
-          expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-            '/base-url'
-          )
+        context('with old move design', function () {
+          beforeEach(function () {
+            controller.successHandler(mockReq, mockRes, nextSpy)
+          })
+
+          it('should redirect to base URL without the framework and section', function () {
+            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+              '/base-url'
+            )
+          })
+
+          it('should not call parent success handler', function () {
+            expect(
+              FormWizardController.prototype.successHandler
+            ).not.to.have.been.called
+          })
         })
 
-        it('should not call parent success handler', function () {
-          expect(
-            FormWizardController.prototype.successHandler
-          ).not.to.have.been.called
+        context('with new move design preview', function () {
+          beforeEach(function () {
+            mockReq.moveDesignPreview = true
+            controller.successHandler(mockReq, mockRes, nextSpy)
+          })
+
+          it('should redirect to base URL without the section', function () {
+            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+              '/base-url/framework'
+            )
+          })
+
+          it('should not call parent success handler', function () {
+            expect(
+              FormWizardController.prototype.successHandler
+            ).not.to.have.been.called
+          })
         })
       })
 
       context('with standard submission', function () {
         context('with middle framework step', function () {
           beforeEach(function () {
-            mockReq.isLastStep = false
             controller.successHandler(mockReq, mockRes, nextSpy)
           })
 
@@ -813,43 +798,47 @@ describe('Framework controllers', function () {
           })
         })
 
-        context('with last framework step and a next section', function () {
+        context('with last framework step', function () {
           beforeEach(function () {
-            mockReq.isLastStep = true
-            mockReq.nextFrameworkSection = { key: 'next-section' }
-            controller.successHandler(mockReq, mockRes, nextSpy)
+            mockReq.form.options.route = '/two'
+            FormWizardController.prototype.getNextStep.returns('/two')
           })
 
-          it('should redirect to base URL with the section', function () {
-            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url/next-section/start'
-            )
+          context('with old move design', function () {
+            beforeEach(function () {
+              controller.successHandler(mockReq, mockRes, nextSpy)
+            })
+
+            it('should redirect to base URL without the framework and section', function () {
+              expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+                '/base-url'
+              )
+            })
+
+            it('should not call parent success handler', function () {
+              expect(
+                FormWizardController.prototype.successHandler
+              ).not.to.have.been.called
+            })
           })
 
-          it('should not call parent success handler', function () {
-            expect(
-              FormWizardController.prototype.successHandler
-            ).not.to.have.been.called
-          })
-        })
+          context('with new move design preview', function () {
+            beforeEach(function () {
+              mockReq.moveDesignPreview = true
+              controller.successHandler(mockReq, mockRes, nextSpy)
+            })
 
-        context('with last framework step and no next section', function () {
-          beforeEach(function () {
-            mockReq.isLastStep = true
-            mockReq.nextFrameworkSection = null
-            controller.successHandler(mockReq, mockRes, nextSpy)
-          })
+            it('should redirect to base URL without the section', function () {
+              expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+                '/base-url/framework'
+              )
+            })
 
-          it('should redirect to base URL without the section', function () {
-            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url'
-            )
-          })
-
-          it('should not call parent success handler', function () {
-            expect(
-              FormWizardController.prototype.successHandler
-            ).not.to.have.been.called
+            it('should not call parent success handler', function () {
+              expect(
+                FormWizardController.prototype.successHandler
+              ).not.to.have.been.called
+            })
           })
         })
       })
