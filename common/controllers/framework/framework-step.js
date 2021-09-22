@@ -78,12 +78,12 @@ class FrameworkStepController extends FormWizardController {
 
   setButtonText(req, res, next) {
     const { stepType } = req.form.options
-    const { isLastStep, nextFrameworkSection } = req
+    const { hasNextSteps, nextFrameworkSection } = req
     const isInterruptionCard = stepType === 'interruption-card'
 
     if (isInterruptionCard) {
       req.form.options.buttonText = 'actions::continue'
-    } else if (isLastStep && !nextFrameworkSection) {
+    } else if (!hasNextSteps && !nextFrameworkSection) {
       req.form.options.buttonText = 'actions::save_and_return_to_overview'
     } else {
       req.form.options.buttonText = 'actions::save_and_continue'
@@ -151,7 +151,7 @@ class FrameworkStepController extends FormWizardController {
 
   setShowReturnToOverviewButton(req, res, next) {
     res.locals.showReturnToOverviewButton =
-      !req.isLastStep || !!req.nextFrameworkSection
+      req.hasNextSteps || !!req.nextFrameworkSection
     next()
   }
 

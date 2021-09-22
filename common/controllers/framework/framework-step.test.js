@@ -422,6 +422,7 @@ describe('Framework controllers', function () {
         nextSpy = sinon.spy()
         mockReq = {
           form: { options: {} },
+          hasNextSteps: true,
         }
       })
 
@@ -458,7 +459,7 @@ describe('Framework controllers', function () {
 
       context('when last step and no next section', function () {
         beforeEach(function () {
-          mockReq.isLastStep = true
+          mockReq.hasNextSteps = false
           mockReq.nextFrameworkSection = null
           controller.setButtonText(mockReq, {}, nextSpy)
         })
@@ -748,7 +749,7 @@ describe('Framework controllers', function () {
       let mockReq, mockRes, nextSpy
 
       beforeEach(function () {
-        mockReq = { isLastStep: false, nextFrameworkSection: null }
+        mockReq = { hasNextSteps: true, nextFrameworkSection: null }
         mockRes = { locals: {} }
         nextSpy = sinon.stub()
       })
@@ -769,7 +770,7 @@ describe('Framework controllers', function () {
 
       context('when last step', function () {
         beforeEach(function () {
-          mockReq.isLastStep = true
+          mockReq.hasNextSteps = false
         })
 
         context('and no next section', function () {
