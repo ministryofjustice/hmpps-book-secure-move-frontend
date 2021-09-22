@@ -31,6 +31,7 @@ class FrameworkStepController extends FormWizardController {
     this.use(this.setValidationRules)
     this.use(setPreviousNextFrameworkSection)
     this.use(this.setIsLastStep)
+    this.use(this.setHasNextSteps)
     this.use(this.setButtonText)
   }
 
@@ -66,6 +67,12 @@ class FrameworkStepController extends FormWizardController {
 
     req.isLastStep = nextStep.endsWith(currentStep)
 
+    next()
+  }
+
+  setHasNextSteps(req, res, next) {
+    const { next: nextSteps = [] } = req?.form?.options || {}
+    req.hasNextSteps = !!nextSteps.length
     next()
   }
 

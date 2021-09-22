@@ -50,6 +50,7 @@ describe('Framework controllers', function () {
         sinon.stub(controller, 'setButtonText')
         sinon.stub(controller, 'setValidationRules')
         sinon.stub(controller, 'setIsLastStep')
+        sinon.stub(controller, 'setHasNextSteps')
 
         controller.middlewareSetup()
       })
@@ -85,12 +86,18 @@ describe('Framework controllers', function () {
 
       it('should call set button text method', function () {
         expect(controller.use.getCall(4)).to.have.been.calledWithExactly(
+          controller.setHasNextSteps
+        )
+      })
+
+      it('should call set button text method', function () {
+        expect(controller.use.getCall(5)).to.have.been.calledWithExactly(
           controller.setButtonText
         )
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use).to.be.callCount(5)
+        expect(controller.use).to.be.callCount(6)
       })
     })
 
@@ -363,6 +370,47 @@ describe('Framework controllers', function () {
 
         it('should not be the last step', function () {
           expect(mockReq.isLastStep).to.be.false
+        })
+      })
+    })
+
+    describe('#setHasNextSteps', function () {
+      let mockReq, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = { form: { options: {} } }
+      })
+
+      context('with step that has undefined next steps', function () {
+        beforeEach(function () {
+          controller.setHasNextSteps(mockReq, {}, nextSpy)
+        })
+
+        it('should not have next steps', function () {
+          expect(mockReq.hasNextSteps).to.be.false
+        })
+      })
+
+      context('with step that has no next steps', function () {
+        beforeEach(function () {
+          mockReq.form.options.next = []
+          controller.setHasNextSteps(mockReq, {}, nextSpy)
+        })
+
+        it('should not have next steps', function () {
+          expect(mockReq.hasNextSteps).to.be.false
+        })
+      })
+
+      context('with step that has next steps', function () {
+        beforeEach(function () {
+          mockReq.form.options.next = ['next']
+          controller.setHasNextSteps(mockReq, {}, nextSpy)
+        })
+
+        it('should not be the last step', function () {
+          expect(mockReq.hasNextSteps).to.be.true
         })
       })
     })
