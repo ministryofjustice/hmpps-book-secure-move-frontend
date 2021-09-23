@@ -244,6 +244,7 @@ jobs:
             REDIS_URL: ""
             SERVER_HOST: localhost:3000
             E2E_BASE_URL: http://localhost:3000
+            NODE_OPTIONS: --max-old-space-size=12288
           command: |
             npm run test-e2e:ci-pre-flight
             npm run test-e2e:ci
