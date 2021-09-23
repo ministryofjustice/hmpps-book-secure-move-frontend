@@ -31,34 +31,64 @@ describe('Framework middleware', function () {
             },
           },
         }
-        middleware(mockReq, mockRes, nextSpy)
       })
 
-      it('should set move breadcrumb item', function () {
-        expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
-          text: 'DOE, JOHN (PFX7536F)',
-          href: '/move/__move_12345__',
+      context('when not handing over', function () {
+        beforeEach(function () {
+          middleware(mockReq, mockRes, nextSpy)
+        })
+
+        it('should set move breadcrumb item', function () {
+          expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
+            text: 'DOE, JOHN (PFX7536F)',
+            href: '/move/__move_12345__',
+          })
+        })
+
+        it('should set assessment breadcrumb item', function () {
+          expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
+            text: 'assessment::page_title',
+            href: '/move/__move_12345__/assessment-name',
+          })
+        })
+
+        it('should translate correctly', function () {
+          expect(mockReq.t).to.have.been.calledWithExactly(
+            'assessment::page_title',
+            {
+              context: 'assessment_name',
+            }
+          )
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
 
-      it('should set assessment breadcrumb item', function () {
-        expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
-          text: 'assessment::page_title',
-          href: '/move/__move_12345__/assessment-name',
+      context('when handing over', function () {
+        beforeEach(function () {
+          mockReq.originalUrl = 'confirm/handover'
+          middleware(mockReq, mockRes, nextSpy)
         })
-      })
 
-      it('should translate correctly', function () {
-        expect(mockReq.t).to.have.been.calledWithExactly(
-          'assessment::page_title',
-          {
-            context: 'assessment_name',
-          }
-        )
-      })
+        it('should set move breadcrumb item', function () {
+          expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
+            text: 'DOE, JOHN (PFX7536F)',
+            href: '/move/__move_12345__',
+          })
+        })
 
-      it('should call next without error', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
+        it('should set not assessment breadcrumb item', function () {
+          expect(mockRes.breadcrumb).to.not.have.been.calledWith({
+            text: 'assessment::page_title',
+            href: '/move/__move_12345__/assessment-name',
+          })
+        })
+
+        it('should call next without error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 
