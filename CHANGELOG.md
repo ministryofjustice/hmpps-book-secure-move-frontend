@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.94.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.93.0...v2.94.0) (2021-09-23)
+
+
+### Features
+
+* Hide framework from handover breadcrumbs ([f88ee69](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f88ee6916d0db13d35cd4b3080bcfa52cbf41593))
+
 ## [2.93.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.92.0...v2.93.0) (2021-09-22)
 
 
