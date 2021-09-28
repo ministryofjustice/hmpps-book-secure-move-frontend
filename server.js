@@ -79,7 +79,7 @@ if (config.SENTRY.DSN) {
       // enable Express.js middleware tracing
       new Tracing.Integrations.Express({ app }),
     ],
-    // Quarter of all requests will be used for performance sampling
+    // 10% of all requests will be used for performance sampling
     tracesSampler: samplingContext => {
       const transactionName =
         samplingContext &&
@@ -89,8 +89,7 @@ if (config.SENTRY.DSN) {
       if (transactionName && transactionName.includes('ping')) {
         return 0
       } else {
-        // Default sample rate
-        return 0.25
+        return 0.1
       }
     },
   })
