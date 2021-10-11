@@ -109,7 +109,7 @@
     "@sentry/tracing": "6.13.3",
     "accessible-autocomplete": "2.0.3",
     "agentkeepalive": "4.1.4",
-    "audit-ci": "4.1.0",
+    "audit-ci": "5.0.0",
     "axios": "0.22.0",
     "axios-debug-log": "0.8.4",
     "bluebird": "3.7.2",
