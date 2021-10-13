@@ -154,15 +154,36 @@ describe('Move controllers', function () {
             moveId: '#moveId',
           },
         }
-        controller.setCancelUrl(req, res, nextSpy)
       })
 
-      it('should set cancel url correctly', function () {
-        expect(res.locals.cancelUrl).to.equal('/move/moveId')
+      context('when previewing the new move design', function () {
+        beforeEach(function () {
+          req.moveDesignPreview = true
+          controller.setCancelUrl(req, res, nextSpy)
+        })
+
+        it('should set cancel url correctly', function () {
+          expect(res.locals.cancelUrl).to.equal('/move/preview/moveId/details')
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
 
-      it('should call next', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
+      context('when not previewing the new move design', function () {
+        beforeEach(function () {
+          req.moveDesignPreview = false
+          controller.setCancelUrl(req, res, nextSpy)
+        })
+
+        it('should set cancel url correctly', function () {
+          expect(res.locals.cancelUrl).to.equal('/move/moveId')
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 
@@ -174,20 +195,42 @@ describe('Move controllers', function () {
       beforeEach(function () {
         nextSpy = sinon.spy()
         req = {
+          getMoveId: sinon.stub().returns('moveId'),
           form: {
             options: {},
           },
         }
         controller.getBaseUrl = sinon.stub().returns('/move/moveId')
-        controller.setNextStep(req, res, nextSpy)
       })
 
-      it('should set form options next step', function () {
-        expect(req.form.options.next).to.equal('/move/moveId')
+      context('when previewing the new move design', function () {
+        beforeEach(function () {
+          req.moveDesignPreview = true
+          controller.setNextStep(req, res, nextSpy)
+        })
+
+        it('should set cancel url correctly', function () {
+          expect(req.form.options.next).to.equal('/move/preview/moveId/details')
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
 
-      it('should call next', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
+      context('when not previewing the new move design', function () {
+        beforeEach(function () {
+          req.moveDesignPreview = false
+          controller.setNextStep(req, res, nextSpy)
+        })
+
+        it('should set cancel url correctly', function () {
+          expect(req.form.options.next).to.equal('/move/moveId')
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
       })
     })
 

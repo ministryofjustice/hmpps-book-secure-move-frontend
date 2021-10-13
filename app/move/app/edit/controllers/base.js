@@ -2,6 +2,7 @@ const { get, isEqual, keys, pick } = require('lodash')
 
 const filters = require('../../../../../config/nunjucks/filters')
 const CreateBaseController = require('../../new/controllers/base')
+const { PREVIEW_PREFIX } = require('../../view/constants')
 
 class UpdateBaseController extends CreateBaseController {
   middlewareChecks() {
@@ -37,14 +38,22 @@ class UpdateBaseController extends CreateBaseController {
     return `/move/${moveId}`
   }
 
+  getReturnUrl(req) {
+    if (req.moveDesignPreview) {
+      const moveId = req.getMoveId()
+      return `/move${PREVIEW_PREFIX}/${moveId}/details`
+    } else {
+      return this.getBaseUrl(req)
+    }
+  }
+
   setCancelUrl(req, res, next) {
-    res.locals.cancelUrl = this.getBaseUrl(req)
+    res.locals.cancelUrl = this.getReturnUrl(req)
     next()
   }
 
   setNextStep(req, res, next) {
-    const nextUrl = this.getBaseUrl(req)
-    req.form.options.next = nextUrl
+    req.form.options.next = this.getReturnUrl(req)
     next()
   }
 
