@@ -61,5 +61,5 @@
   "remove_item": "Remove <span class=\"govuk-visually-hidden\">{{name}} {{index}}</span>",
   "save_and_calculate": "Save and calculate",
   "view_old_move_design": "Use the old design of this page",
-  "change_move_details": "Change or view move details"
+  "view_or_edit_move_details": "View or edit move details"
 }
