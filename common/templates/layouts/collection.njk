@@ -105,11 +105,7 @@
   {% endblock %}
 
   {% block filter %}
-    {% if totalResults > 0 %}
-      {{ appFilter({
-        items: filter
-      }) }}
-    {% endif %}
+    {{ appFilter({ items: filter }) }}
   {% endblock %}
 
   {% block pageContent %}{% endblock %}
