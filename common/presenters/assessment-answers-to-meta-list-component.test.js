@@ -364,5 +364,38 @@ describe('Presenters', function () {
         ])
       })
     })
+
+    context('with framework response NOMIS contact', function () {
+      const mockAssessmentAnswers = [
+        {
+          comments: 'First Middle Last',
+          code_description: 'Next of kin',
+          creation_date: '2019-01-01',
+        },
+      ]
+
+      beforeEach(function () {
+        transformedResponse = assessmentAnswersToMetaListComponent(
+          mockAssessmentAnswers
+        )
+      })
+
+      it('should format dates', function () {
+        expect(filters.formatDateWithDay).to.have.been.calledOnceWithExactly(
+          '2019-01-01'
+        )
+      })
+
+      it('should include date', function () {
+        expect(transformedResponse).to.contain.property('items')
+        expect(transformedResponse.items).to.deep.equal([
+          {
+            value: {
+              html: '<div>\n      <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">\n        Next of kin\n      </h4>\n    <span class="app-!-text-colour-black">First Middle Last</span>\n      <div class="app-secondary-text-colour govuk-!-margin-top-1 govuk-!-font-size-14">\n        Created on Mon 10 Aug\n        \n      </div>\n    </div>',
+            },
+          },
+        ])
+      })
+    })
   })
 })

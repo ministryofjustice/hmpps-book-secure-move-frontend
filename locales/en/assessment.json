@@ -48,6 +48,7 @@
       "resource_types": {
         "alerts": "alerts",
         "assessments": "assessments",
+        "contacts": "contacts",
         "personal_care_needs": "personal care needs",
         "reasonable_adjustments": "reasonable adjustments"
       }

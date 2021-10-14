@@ -441,6 +441,10 @@ describe('Framework controllers', function () {
                 status: 'success',
               },
               {
+                resource_type: 'contacts',
+                status: 'success',
+              },
+              {
                 resource_type: 'personal_care_needs',
                 status: 'success',
               },
@@ -494,6 +498,10 @@ describe('Framework controllers', function () {
             },
             {
               resource_type: 'assessments',
+              status: 'success',
+            },
+            {
+              resource_type: 'contacts',
               status: 'success',
             },
             {
