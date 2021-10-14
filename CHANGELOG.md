@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.95.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.94.2...v2.95.0) (2021-10-14)
+
+
+### Features
+
+* Always show filter boxes in a collection view ([2f03d78](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2f03d78acfd94de001ddc54b008824eef13cb650))
+* Redirect users to details tab after editing ([5ac4ea2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5ac4ea2121a4802a546732d0f092d45a586f689c))
+* Support contact NOMIS mappings ([1cf990c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1cf990cc62586e219649b9739cdc96047ea72ca0))
+
 ### [2.94.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.94.1...v2.94.2) (2021-10-08)
 
 ### [2.94.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.94.0...v2.94.1) (2021-09-29)
