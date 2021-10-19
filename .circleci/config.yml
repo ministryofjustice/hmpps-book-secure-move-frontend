@@ -10,7 +10,7 @@ aliases:
   # Shared containers
   - &circle_container
     docker:
-      - image: cimg/node:14.18.0-browsers
+      - image: cimg/node:14.18.1-browsers
   - &cloud_container
     docker:
       - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
