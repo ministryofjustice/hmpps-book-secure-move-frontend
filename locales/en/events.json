@@ -35,15 +35,15 @@
   },
   "JourneyAdmitToReception": {
     "heading": "Admitted to reception",
-    "description": "Vehicle {{journey.vehicle.registration}} admitted to reception of {{location.title}}"
+    "description": "Vehicle {{vehicle_reg}} admitted to reception of {{location.title}}"
   },
   "JourneyAdmitThroughOuterGate": {
     "heading": "Admitted through outer gate",
-    "description": "Vehicle {{journey.vehicle.registration}} admitted through outer gate of {{location.title}}"
+    "description": "Vehicle {{vehicle_reg}} admitted through outer gate of {{location.title}}"
   },
   "JourneyArriveAtOuterGate": {
     "heading": "Arrived at outer gate",
-    "description": "Vehicle {{journey.vehicle.registration}} arrived at outer gate of {{location.title}}"
+    "description": "Vehicle {{vehicle_reg}} arrived at outer gate of {{location.title}}"
   },
   "JourneyCancel": {
     "heading": "Journey cancelled",
@@ -63,7 +63,7 @@
   },
   "JourneyExitThroughOuterGate": {
     "heading": "Exited from outer gate",
-    "description": "Vehicle {{journey.vehicle.registration}} exited through outer gate of {{journey.from_location.title}}"
+    "description": "Vehicle {{vehicle_reg}} exited through outer gate of {{journey.from_location.title}}"
   },
   "JourneyHandoverToDestination": {
     "heading": "Handover to establishment",
@@ -75,15 +75,15 @@
   },
   "JourneyPersonBoardsVehicle": {
     "heading": "Boarded escort vehicle",
-    "description": "$t(events::person) boarded escort vehicle {{journey.vehicle.registration}}"
+    "description": "$t(events::person) boarded escort vehicle {{vehicle_reg}}"
   },
   "JourneyPersonLeaveVehicle": {
     "heading": "Left escort vehicle",
-    "description": "$t(events::person) left escort vehicle {{journey.vehicle.registration}}"
+    "description": "$t(events::person) left escort vehicle {{vehicle_reg}}"
   },
   "JourneyReadyToExit": {
     "heading": "Ready to exit",
-    "description": "Escort vehicle {{journey.vehicle.registration}} boarding complete, ready to exit from {{journey.from_location.title}}"
+    "description": "Escort vehicle {{vehicle_reg}} boarding complete, ready to exit from {{journey.from_location.title}}"
   },
   "JourneyReject": {
     "heading": "Journey rejected",
