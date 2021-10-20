@@ -2,6 +2,9 @@ const i18n = require('../../../config/i18n')
 
 const getDescription = event => {
   const { event_type: eventType, details } = event
+  details.vehicle_reg =
+    details.vehicle_reg || details.journey?.vehicle?.registration
+
   const description = i18n
     .t(`events::${eventType}.description`, details)
     .replace(/^(\s*<br>)+/, '')

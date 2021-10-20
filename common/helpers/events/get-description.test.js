@@ -7,7 +7,10 @@ describe('Helpers', function () {
     const mockEvent = {
       id: 'eventId',
       event_type: 'eventType',
-      details: 'details',
+      details: {
+        aDetail: 'details',
+        journey: { vehicle: { registration: 'fallback reg' } },
+      },
     }
 
     beforeEach(function () {
@@ -27,12 +30,18 @@ describe('Helpers', function () {
         it('should get description string', function () {
           expect(i18n.t).to.be.calledOnceWithExactly(
             'events::eventType.description',
-            'details'
+            mockEvent.details
           )
         })
 
         it('should strip any leading <br>s and return the description', function () {
           expect(description).to.equal('description<br>more description')
+        })
+
+        it('should set vehicle_reg in details', function () {
+          expect(mockEvent.details.vehicle_reg).to.equal(
+            mockEvent.details.journey.vehicle.registration
+          )
         })
       })
     })
