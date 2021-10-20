@@ -18,6 +18,7 @@ const mockStoreOptions = {
   client: 'mockClient',
 }
 const errorStub = sinon.stub()
+const retryStrategyStub = sinon.stub()
 
 describe('Redis store', function () {
   describe('#redisStore()', function () {
@@ -34,9 +35,8 @@ describe('Redis store', function () {
       before(function () {
         redisStore = proxyquire('./redis-store', {
           redis: mockRedisClient,
-          'connect-redis': function () {
-            return MockRedisStore
-          },
+          'connect-redis': () => MockRedisStore,
+          'node-redis-retry-strategy': () => retryStrategyStub,
           './': {
             REDIS: {
               SESSION: mockRedisConfig,
@@ -57,6 +57,7 @@ describe('Redis store', function () {
           expect(mockRedisClient.createClient).to.be.calledWithExactly({
             ...mockRedisConfig,
             logErrors: errorStub,
+            retry_strategy: retryStrategyStub,
           })
           expect(bluebird.promisifyAll).to.be.calledOnceWithExactly(
             'mockClient'
@@ -112,9 +113,8 @@ describe('Redis store', function () {
       before(function () {
         redisStore = proxyquire('./redis-store', {
           redis: mockRedisClient,
-          'connect-redis': function () {
-            return MockRedisStore
-          },
+          'connect-redis': () => MockRedisStore,
+          'node-redis-retry-strategy': () => retryStrategyStub,
           './': {
             REDIS: {
               SESSION: mockRedisConfig,
