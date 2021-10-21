@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.96.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.95.1...v2.96.0) (2021-10-21)
+
+
+### Features
+
+* Add a Redis retry strategy ([8932514](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/89325148dd99fe00a8cf6c32b35ff83c112a3f3e))
+* Change journey events to display details reg ([50ff740](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/50ff740d0a4cdef3fced4ec7f5e508b2bf883299))
+
 ### [2.95.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.95.0...v2.95.1) (2021-10-19)
 
 
