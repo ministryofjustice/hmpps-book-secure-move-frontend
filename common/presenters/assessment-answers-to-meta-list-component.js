@@ -1,3 +1,5 @@
+const { escape } = require('lodash')
+
 const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 
@@ -43,13 +45,13 @@ function _mapAnswer({
   if (description) {
     html = `
       <h4 class="govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2">
-        ${description}
+        ${escape(description)}
       </h4>
     `
   }
 
   html += comments
-    ? `<span class="app-!-text-colour-black">${comments}</span>`
+    ? `<span class="app-!-text-colour-black">${escape(comments)}</span>`
     : `<span class="app-secondary-text-colour">${i18n.t(
         'empty_details'
       )}</span>`
