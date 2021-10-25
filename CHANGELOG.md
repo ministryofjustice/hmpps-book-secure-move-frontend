@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.96.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.96.0...v2.96.1) (2021-10-25)
+
+
+### Bug Fixes
+
+* Ensure text is escaped before being rendered ([fdb1ef7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fdb1ef708e7e82be8b8370daeb4eaad5db8ee06f))
+* Npm audit fix ([03e7201](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/03e7201a63f7062893f972ac136fee5e00f988b5))
+
 ## [2.96.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.95.1...v2.96.0) (2021-10-21)
 
 
