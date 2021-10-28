@@ -23,7 +23,7 @@ const populateResources = (obj, req, options, processed = []) => {
         scope.setLevel('warning')
         scope.setContext('Events', {
           'All events': JSON.stringify(cleanedObj),
-          'Unpopulated resources': processed,
+          'Unpopulated resources': JSON.stringify(processed),
         })
         Sentry.captureException(unprocessedError)
       })
