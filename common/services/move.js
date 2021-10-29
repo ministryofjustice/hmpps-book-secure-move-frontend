@@ -308,6 +308,10 @@ class MoveService extends BaseService {
       ...this.defaultInclude(),
       'timeline_events',
       'timeline_events.eventable',
+      'timeline_events.location',
+      'timeline_events.court_location',
+      'timeline_events.from_location',
+      'timeline_events.to_location',
       'journeys.to_location',
       'journeys.from_location',
     ]
