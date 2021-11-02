@@ -161,7 +161,7 @@
     "ol": "6.9.0",
     "path-to-regexp": "6.2.0",
     "pluralize": "8.0.0",
-    "prom-client": "14.0.0",
+    "prom-client": "14.0.1",
     "qs": "6.10.1",
     "redis": "3.1.2",
     "response-time": "2.3.2",
