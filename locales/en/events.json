@@ -137,7 +137,7 @@
   "MoveLockout": {
     "contextKey": "reason",
     "heading": "Lockout",
-    "description": "$t(events::person) locked out from {{move.from_location.title}} $t(events::MoveLockout.select_reason)",
+    "description": "$t(events::person) locked out from {{from_location.title}} $t(events::MoveLockout.select_reason)",
     "select_reason": "$t(events::MoveLockout.reason, {\"context\": \"{{reason}}\"})",
     "reason": "",
     "reason_no_space": "due to there being no space",
