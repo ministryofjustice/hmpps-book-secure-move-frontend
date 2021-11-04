@@ -16,7 +16,7 @@ function localsMoveDetails(req, res, next) {
       url: person._image_url,
       alt: person._fullname,
     },
-    profileLink: `/person/${person.id}`,
+    profileLink: `/person/${person.id}?move=${req.move.id}`,
   }
 
   next()

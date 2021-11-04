@@ -14,7 +14,15 @@ const {
   setMoveResults,
 } = require('./middleware')
 
-router.get('/', (req, res) => res.redirect(`${req.baseUrl}/personal-details`))
+router.get('/', (req, res) => {
+  let url = `${req.baseUrl}/personal-details`
+
+  if (req.query?.move) {
+    url += `?move=${req.query.move}`
+  }
+
+  res.redirect(url)
+})
 router.get('/image', image(PLACEHOLDER_IMAGES.PERSON))
 
 router.use(breadcrumbs.setHome())

@@ -10,6 +10,7 @@ describe('Person app', function () {
           person: { _fullname: 'DOE, JOHN' },
           resultsAsTable: {},
           t: sinon.stub().returnsArg(0),
+          query: { move: 'move id' },
         }
         res = {
           breadcrumb: sinon.stub().returnsThis(),
@@ -31,7 +32,8 @@ describe('Person app', function () {
         })
 
         it('should pass correct keys', function () {
-          expect(locals).to.have.all.keys(['resultsAsTable'])
+          expect(locals).to.have.all.keys(['resultsAsTable', 'moveId'])
+          expect(locals.moveId).to.equal('move id')
         })
       })
     })
