@@ -230,7 +230,7 @@
     "standard": "16.0.4",
     "standard-version": "9.3.2",
     "terser-webpack-plugin": "5.2.4",
-    "testcafe": "1.16.1",
+    "testcafe": "1.17.0",
     "testcafe-browser-provider-browserstack": "1.13.1",
     "testcafe-reporter-xunit": "2.1.0",
     "timezone-mock": "1.2.2",
