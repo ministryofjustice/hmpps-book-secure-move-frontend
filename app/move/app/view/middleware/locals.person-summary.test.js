@@ -51,7 +51,7 @@ describe('Move view app', function () {
                 url: '/person/image/__profile12345__',
                 alt: 'DOE, JOHN',
               },
-              profileLink: '/person/__profile12345__',
+              profileLink: '/person/__profile12345__?move=__move1__',
             },
           })
         })

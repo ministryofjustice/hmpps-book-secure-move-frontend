@@ -7,5 +7,6 @@ module.exports = (req, res) => {
 
   res.render('person/views/personal-details', {
     personalDetailsSummary,
+    moveId: req.query?.move,
   })
 }

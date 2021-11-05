@@ -24,5 +24,11 @@ module.exports = (req, res, next) => {
     isActive: req.originalUrl.split('?').shift().endsWith(item.url),
   }))
 
+  if (req.query?.move) {
+    res.locals.tabs.forEach(tab => {
+      tab.url += `?move=${req.query.move}`
+    })
+  }
+
   next()
 }

@@ -59,6 +59,25 @@ describe('Person app', function () {
         it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
+
+        context('when a move id is included in query', function () {
+          beforeEach(function () {
+            req.query = { move: 'move_id' }
+            setTabs(req, res, nextSpy)
+          })
+
+          it('should append the url with the move param', function () {
+            expect(res.locals).to.deep.equal({
+              tabs: [
+                {
+                  text: 'person::tabs.personal_details',
+                  url: '/base-url/personal-details?move=move_id',
+                  isActive: true,
+                },
+              ],
+            })
+          })
+        })
       })
 
       context('with a CDM user', function () {
@@ -90,6 +109,30 @@ describe('Person app', function () {
 
         it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+
+        context('when a move id is included in query', function () {
+          beforeEach(function () {
+            req.query = { move: 'move_id' }
+            setTabs(req, res, nextSpy)
+          })
+
+          it('should append the urls with the move param', function () {
+            expect(res.locals).to.deep.equal({
+              tabs: [
+                {
+                  text: 'person::tabs.personal_details',
+                  url: '/base-url/personal-details?move=move_id',
+                  isActive: false,
+                },
+                {
+                  text: 'person::tabs.moves',
+                  url: '/base-url/moves?move=move_id',
+                  isActive: false,
+                },
+              ],
+            })
+          })
         })
       })
     })

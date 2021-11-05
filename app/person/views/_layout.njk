@@ -19,4 +19,11 @@
     {% block tabContent %}
     {% endblock %}
   </div>
+
+  {% if moveId %}
+    {{ govukBackLink({
+      text: t("actions::back_to_move"),
+      href: "/move/" + moveId
+    }) }}
+  {% endif %}
 {% endblock %}
