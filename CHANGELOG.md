@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.97.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.96.2...v2.97.0) (2021-11-09)
+
+
+### Features
+
+* Add "Back to move" button on profiles ([bc284ae](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/bc284aee6dfc6b9683635fb0064a05f8a2fe142c))
+
+
+### Bug Fixes
+
+* Change MoveLockout to display event location ([e068c68](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e068c6832882451855157145f965f4205fac23c5))
+
 ### [2.96.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.96.1...v2.96.2) (2021-11-01)
 
 
