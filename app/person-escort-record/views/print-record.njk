@@ -50,7 +50,7 @@
         </p>
       {% endif %}
 
-      {% if hasSelfHarmWarning %}
+      {% if requiresMedicationDuringTransport %}
         {% set html %}
           {{ govukWarningText({
             text: "See “Health Information” for details",
