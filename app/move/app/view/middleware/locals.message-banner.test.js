@@ -88,7 +88,7 @@ describe('Move view app', function () {
               html: 'messages::pending_review.content',
             },
             allowDismiss: false,
-            classes: 'govuk-!-padding-right-0',
+            classes: 'govuk-!-padding-right-3',
           })
         })
 
@@ -138,7 +138,7 @@ describe('Move view app', function () {
                   html: 'statuses::description',
                 },
                 allowDismiss: false,
-                classes: 'govuk-!-padding-right-0',
+                classes: 'govuk-!-padding-right-3',
               })
             })
 
@@ -197,7 +197,7 @@ describe('Move view app', function () {
                 html: 'statuses::description',
               },
               allowDismiss: false,
-              classes: 'govuk-!-padding-right-0',
+              classes: 'govuk-!-padding-right-3',
             })
           })
 
@@ -262,7 +262,7 @@ describe('Move view app', function () {
               expect(res.locals.messageBanner).to.deep.equal({
                 foo: 'bar',
                 allowDismiss: false,
-                classes: 'govuk-!-padding-right-0',
+                classes: 'govuk-!-padding-right-3',
               })
             })
 
