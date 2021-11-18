@@ -29,7 +29,7 @@ function moveToAdditionalInfoListComponent({
       },
       value: {
         classes: !additionalInformation ? 'app-secondary-text-colour' : '',
-        html: additionalInformation || i18n.t('not_provided'),
+        text: additionalInformation || i18n.t('not_provided'),
       },
     },
   ].filter(row => row.value.text || row.value.html)
