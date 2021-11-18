@@ -73,7 +73,7 @@ module.exports = async (req, res, next) => {
     res.locals.messageBanner = {
       ...messageBanner,
       allowDismiss: false,
-      classes: 'govuk-!-padding-right-0',
+      classes: 'govuk-!-padding-right-3',
     }
   }
 
