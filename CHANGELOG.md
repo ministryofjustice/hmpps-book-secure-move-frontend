@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.97.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.0...v2.97.1) (2021-11-18)
+
+
+### Bug Fixes
+
+* Don't allow HTML in move additional information ([ca0dcc1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ca0dcc101e06904142bedade61d9242f44275787))
+
 ## [2.97.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.96.2...v2.97.0) (2021-11-09)
 
 
