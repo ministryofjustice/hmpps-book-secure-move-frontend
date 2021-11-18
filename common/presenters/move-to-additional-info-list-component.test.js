@@ -56,9 +56,8 @@ describe('Presenters', function () {
         })
 
         it('should contain correct values', function () {
-          const keys = transformedResponse.rows.map(
-            row => row.value.text || row.value.html
-          )
+          const keys = transformedResponse.rows.map(row => row.value.text)
+
           expect(keys).to.deep.equal([
             mockMove.time_due,
             mockMove.additional_information,
