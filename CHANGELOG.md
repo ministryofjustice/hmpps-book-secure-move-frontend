@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.97.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.1...v2.97.2) (2021-11-19)
+
+
+### Bug Fixes
+
+* Adding right hand padding to the message banner as there was no spacing when text was wrapped ([2a9f08a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2a9f08a22fa468b000e17989f1bfa1633cfea27b))
+* Build Docker container with Python 2 ([6fbffe2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6fbffe2d38de0d14cb7996e9a75ef494c6bede0c))
+* Downgrade to Alpine 3.13 ([dfb6168](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dfb6168eeed576880abee591594dc0559f1d151e)), closes [/wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0#faccessat2](https://github.com/ministryofjustice//wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0/issues/faccessat2)
+* Explicitly install Python 3 in Docker container ([841ad36](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/841ad36b359aefe10e063d5ec2ef784bff5cb12d))
+* Fix when medication while moving warning is displayed ([7f45bc6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7f45bc6e4dbb7d74df961fd54de6b6e93377f782))
+
 ### [2.97.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.0...v2.97.1) (2021-11-18)
 
 
