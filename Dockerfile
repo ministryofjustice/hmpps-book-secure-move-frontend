@@ -2,7 +2,7 @@ FROM node:14.18.1-alpine as build-stage
 
 WORKDIR /home/node/app
 
-RUN apk add --no-cache python3 git build-base nasm zlib-dev libpng-dev autoconf automake
+RUN apk add --no-cache python2 git build-base nasm zlib-dev libpng-dev autoconf automake
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 COPY package*.json ./
