@@ -133,14 +133,7 @@ export function checkNoCancelLink() {
   return moveDetailPage.checkCancelLink(false)
 }
 
-const updatePages = [
-  'personal_details',
-  'risk',
-  'health',
-  'court',
-  'date',
-  'document',
-]
+const updatePages = ['personal_details', 'risk', 'health', 'court', 'date']
 
 /**
  * Filter update pages into
@@ -443,63 +436,6 @@ export async function checkUpdateMoveDate(date = 'Tomorrow') {
   await createMovePage.submitForm()
 
   await moveDetailPage.checkMoveDetails(updatedMove)
-}
-
-/*
- * Change documents and confirm changes on move view page
- *
- * First adds 2 documents and then deletes all documents
- *
- * @returns {undefined}
- */
-export async function checkUpdateDocuments() {
-  const noDocumentsMessage = moveDetailPage.nodes.noDocumentsMessage
-  const documentList = moveDetailPage.nodes.documentList
-  const deleteDocumentButton = Selector('[name=delete]')
-
-  const { documents } = t.ctx.move
-  let documentCount = documents ? documents.length : 0
-
-  const checkDocumentList = async () => {
-    if (documentCount) {
-      await t.expect(noDocumentsMessage.exists).notOk()
-      await t.expect(documentList.find('li').count).eql(documentCount)
-    } else {
-      await t.expect(noDocumentsMessage.exists).ok()
-      await t.expect(documentList.exists).notOk()
-    }
-  }
-
-  const addDocuments = async files => {
-    await moveDetailPage.clickUpdateLink('document')
-
-    await createMovePage.fillInDocumentUploads(files)
-    documentCount += files.length
-
-    await createMovePage.submitForm()
-
-    await checkDocumentList()
-  }
-
-  const deleteDocument = async () => {
-    await moveDetailPage.clickUpdateLink('document')
-
-    await t.click(deleteDocumentButton)
-    documentCount--
-
-    await createMovePage.submitForm()
-
-    await checkDocumentList()
-  }
-
-  await checkDocumentList()
-
-  await addDocuments(['a-random-text-file.txt', 'leo-the-cat.png'])
-
-  // eslint-disable-next-line no-unmodified-loop-condition
-  while (documentCount) {
-    await deleteDocument()
-  }
 }
 
 /**

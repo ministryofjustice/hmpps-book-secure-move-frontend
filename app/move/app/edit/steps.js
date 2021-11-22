@@ -3,7 +3,6 @@ const createSteps = require('../new/steps')
 const {
   Assessment,
   Court,
-  Document,
   Hospital,
   MoveDate,
   MoveDetails,
@@ -114,17 +113,6 @@ const updateSteps = [
         ...createSteps['/health-information'],
         ...updateStepPropOverrides,
         controller: Assessment,
-      },
-    },
-  },
-  {
-    key: 'document',
-    permission: 'move:update',
-    steps: {
-      '/document': {
-        ...createSteps['/document'],
-        ...updateStepPropOverrides,
-        controller: Document,
       },
     },
   },

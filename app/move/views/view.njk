@@ -255,7 +255,8 @@
         {% include "move/views/_includes/additional-information.njk" %}
       {% endif %}
 
-      {% if move.from_location.can_upload_documents %}
+      {# TODO: Ideally we want to remove this altogether. Left in for historic moves with previously attached documents #}
+      {% if move.profile.documents | length %}
         {% include "move/views/_includes/documents.njk" %}
       {% endif %}
     </div>
