@@ -57,9 +57,6 @@
     "special_vehicle": {
       "heading": "Special vehicle"
     },
-    "document": {
-      "heading": "Are there any documents to upload?"
-    },
     "prison_transfer_reason": {
       "heading": "Request information"
     }
@@ -224,10 +221,6 @@
       },
       "date": {
         "heading": "Move date updated",
-        "message": "$t(moves::update_flash.supplier_message)"
-      },
-      "document": {
-        "heading": "Supporting documents updated",
         "message": "$t(moves::update_flash.supplier_message)"
       },
       "health": {

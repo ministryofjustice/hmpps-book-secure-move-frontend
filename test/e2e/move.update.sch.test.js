@@ -3,7 +3,6 @@ import {
   checkUpdateLinks,
   checkUpdatePagesAccessible,
   checkUpdatePagesRedirected,
-  checkUpdateDocuments,
   createMove,
 } from './_move'
 import { schUser } from './_roles'
@@ -21,24 +20,18 @@ fixture('Existing move from Secure Children Home (SCH) to Court').beforeEach(
   }
 )
 
-test.meta('hasDocument', 'true')(
-  'User should be able to update move',
-  async () => {
-    await checkUpdateLinks(
-      ['personal_details', 'court', 'move', 'date', 'document'],
-      false,
-      ['risk', 'health']
-    )
+test('User should be able to update move', async () => {
+  await checkUpdateLinks(['personal_details', 'court', 'move', 'date'], false, [
+    'risk',
+    'health',
+  ])
 
-    await checkUpdateDocuments()
-
-    await checkUpdatePagesAccessible(
-      ['personal_details', 'move', 'date', 'court', 'document'],
-      false,
-      ['risk', 'health']
-    )
-  }
-)
+  await checkUpdatePagesAccessible(
+    ['personal_details', 'move', 'date', 'court'],
+    false,
+    ['risk', 'health']
+  )
+})
 
 fixture(
   'Existing move from Secure Training Centre (STC) to Hospital'
@@ -52,24 +45,19 @@ fixture(
   })
 })
 
-test.meta('hasDocument', 'true')(
-  'User should be able to update move',
-  async () => {
-    await checkUpdateLinks(
-      ['personal_details', 'move', 'date', 'document'],
-      false,
-      ['court', 'risk', 'health']
-    )
+test('User should be able to update move', async () => {
+  await checkUpdateLinks(['personal_details', 'move', 'date'], false, [
+    'court',
+    'risk',
+    'health',
+  ])
 
-    await checkUpdateDocuments()
-
-    await checkUpdatePagesAccessible(
-      ['personal_details', 'move', 'date', 'document'],
-      false,
-      ['court', 'risk', 'health']
-    )
-  }
-)
+  await checkUpdatePagesAccessible(
+    ['personal_details', 'move', 'date'],
+    false,
+    ['court', 'risk', 'health']
+  )
+})
 
 fixture('Existing move from Secure Children Home (SCH) to Prison').beforeEach(
   async t => {
@@ -83,16 +71,12 @@ fixture('Existing move from Secure Children Home (SCH) to Prison').beforeEach(
   }
 )
 
-test.meta('hasDocument', 'true')(
-  'User should not be able to update move',
-  async () => {
-    await checkUpdateLinks(
-      ['personal_details', 'court', 'move', 'date', 'document'],
-      true,
-      ['risk', 'health']
-    )
-  }
-)
+test('User should not be able to update move', async () => {
+  await checkUpdateLinks(['personal_details', 'court', 'move', 'date'], true, [
+    'risk',
+    'health',
+  ])
+})
 
 fixture(
   'Existing move from Secure Children Home (SCH) to Secure Training Centre (STC)'
@@ -106,16 +90,12 @@ fixture(
   })
 })
 
-test.meta('hasDocument', 'true')(
-  'User should not be able to update move',
-  async () => {
-    await checkUpdateLinks(
-      ['personal_details', 'court', 'move', 'date', 'document'],
-      true,
-      ['risk', 'health']
-    )
-  }
-)
+test('User should not be able to update move', async () => {
+  await checkUpdateLinks(['personal_details', 'court', 'move', 'date'], true, [
+    'risk',
+    'health',
+  ])
+})
 
 fixture(
   'Existing move from Secure Children Home (SCH) to Secure Children Home (SCH)'
@@ -129,16 +109,12 @@ fixture(
   })
 })
 
-test.meta('hasDocument', 'true')(
-  'User should not be able to update move',
-  async () => {
-    await checkUpdateLinks(
-      ['personal_details', 'court', 'move', 'date', 'document'],
-      true,
-      ['risk', 'health']
-    )
-  }
-)
+test('User should not be able to update move', async () => {
+  await checkUpdateLinks(['personal_details', 'court', 'move', 'date'], true, [
+    'risk',
+    'health',
+  ])
+})
 
 fixture.beforeEach(async t => {
   await t.useRole(schUser).navigateTo(home)
