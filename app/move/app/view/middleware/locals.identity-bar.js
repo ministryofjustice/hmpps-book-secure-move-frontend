@@ -22,6 +22,7 @@ function localsIdentityCard(req, res, next) {
     },
     summary: {
       html: req.t('moves::detail.page_heading_summary', {
+        context: move.status,
         fromLocation: move.from_location?.title,
         toLocation: move.to_location?.title,
         date: filters.formatDate(move.date),
