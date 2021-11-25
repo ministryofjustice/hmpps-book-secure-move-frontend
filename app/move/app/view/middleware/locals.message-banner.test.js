@@ -1,17 +1,4 @@
-const proxyquire = require('proxyquire')
-
-const assessmentToHandedOverBannerMock = {
-  classes: 'notification-banner',
-  foo: 'bar',
-}
-const assessmentToHandedOverBanner = sinon
-  .stub()
-  .returns(assessmentToHandedOverBannerMock)
-
-const middleware = proxyquire('./locals.message-banner', {
-  '../../../../../common/presenters/message-banner/assessment-to-handed-over-banner':
-    assessmentToHandedOverBanner,
-})
+const middleware = require('./locals.message-banner')
 
 const mockEvents = {
   timeline_events: [
@@ -36,7 +23,6 @@ describe('Move view app', function () {
       let req, res, nextSpy
 
       beforeEach(function () {
-        assessmentToHandedOverBanner.resetHistory()
         req = {
           canAccess: sinon.stub(),
           move: {
@@ -188,7 +174,7 @@ describe('Move view app', function () {
             await middleware(req, res, nextSpy)
           })
 
-          it('should set hand over message banner', function () {
+          it('should set cancellation message banner', function () {
             expect(res.locals.messageBanner).to.deep.equal({
               title: {
                 text: `statuses::${req.move.status}`,
@@ -258,21 +244,8 @@ describe('Move view app', function () {
               await middleware(req, res, nextSpy)
             })
 
-            it('should set hand over message banner', function () {
-              expect(res.locals.messageBanner).to.deep.equal({
-                foo: 'bar',
-                allowDismiss: false,
-                classes: 'govuk-!-padding-right-3',
-              })
-            })
-
-            it('should call assessmentToHandedOverBanner', function () {
-              expect(assessmentToHandedOverBanner).to.be.calledOnceWithExactly({
-                assessment: req.move.profile.person_escort_record,
-                baseUrl: '/move/_move_id_/person-escort-record',
-                canAccess: req.canAccess,
-                context: 'person_escort_record',
-              })
+            it('should not set message banner', function () {
+              expect(res.locals).to.deep.equal({})
             })
           })
 
