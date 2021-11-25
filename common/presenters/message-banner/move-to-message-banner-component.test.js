@@ -6,14 +6,10 @@ const assessmentToStartBannerStub = sinon
 const assessmentToUnconfirmedBannerStub = sinon
   .stub()
   .returns('__assessmentToUnconfirmedBanner__')
-const assessmentToHandedOverBannerStub = sinon
-  .stub()
-  .returns('__assessmentToHandedOverBanner__')
 
 const presenter = proxyquire('./move-to-message-banner-component', {
   './assessment-to-start-banner': assessmentToStartBannerStub,
   './assessment-to-unconfirmed-banner': assessmentToUnconfirmedBannerStub,
-  './assessment-to-handed-over-banner': assessmentToHandedOverBannerStub,
 })
 
 describe('Presenters', function () {
@@ -24,7 +20,6 @@ describe('Presenters', function () {
       beforeEach(function () {
         assessmentToStartBannerStub.resetHistory()
         assessmentToUnconfirmedBannerStub.resetHistory()
-        assessmentToHandedOverBannerStub.resetHistory()
       })
 
       context('without args', function () {
@@ -74,45 +69,6 @@ describe('Presenters', function () {
             })
 
             context('with assessment', function () {
-              context('with handed over assessment', function () {
-                beforeEach(function () {
-                  output = presenter({
-                    ...mockArgs,
-                    move: {
-                      ...mockMove,
-                      profile: {
-                        person_escort_record: {
-                          id: '12345',
-                          status: 'confirmed',
-                          handover_occurred_at: '2018-10-10T14:30:00Z',
-                        },
-                      },
-                    },
-                  })
-                })
-
-                it('should return handed over banner', function () {
-                  expect(output).to.deep.equal(
-                    '__assessmentToHandedOverBanner__'
-                  )
-                })
-
-                it('should call presenter', function () {
-                  expect(
-                    assessmentToHandedOverBannerStub
-                  ).to.have.been.calledOnceWithExactly({
-                    assessment: {
-                      id: '12345',
-                      status: 'confirmed',
-                      handover_occurred_at: '2018-10-10T14:30:00Z',
-                    },
-                    baseUrl: '/move/12345/person-escort-record',
-                    canAccess: mockArgs.canAccess,
-                    context: 'person_escort_record',
-                  })
-                })
-              })
-
               context('with confirmed assessment', function () {
                 beforeEach(function () {
                   output = presenter({
@@ -146,45 +102,6 @@ describe('Presenters', function () {
                     baseUrl: '/move/12345/person-escort-record',
                     canAccess: mockArgs.canAccess,
                     context: 'person_escort_record',
-                  })
-                })
-
-                context('with handover', function () {
-                  beforeEach(function () {
-                    output = presenter({
-                      ...mockArgs,
-                      move: {
-                        ...mockMove,
-                        profile: {
-                          person_escort_record: {
-                            id: '12345',
-                            status: 'confirmed',
-                            handover_occurred_at: '2020-10-10T14:20:00Z',
-                          },
-                        },
-                      },
-                    })
-                  })
-
-                  it('should return handed over banner', function () {
-                    expect(output).to.deep.equal(
-                      '__assessmentToHandedOverBanner__'
-                    )
-                  })
-
-                  it('should call presenter', function () {
-                    expect(
-                      assessmentToHandedOverBannerStub
-                    ).to.have.been.calledOnceWithExactly({
-                      assessment: {
-                        id: '12345',
-                        status: 'confirmed',
-                        handover_occurred_at: '2020-10-10T14:20:00Z',
-                      },
-                      baseUrl: '/move/12345/person-escort-record',
-                      canAccess: mockArgs.canAccess,
-                      context: 'person_escort_record',
-                    })
                   })
                 })
               })

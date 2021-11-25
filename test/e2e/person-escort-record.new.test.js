@@ -98,32 +98,14 @@ test('Start new Record', async t => {
     .expect(moveDetailPage.getCurrentUrl())
     .contains('/person-escort-record/confirm/handover')
 
-  const handoverDetails = await confirmPersonEscortRecordPage.fillIn()
+  await confirmPersonEscortRecordPage.fillIn()
 
   await moveDetailPage.submitForm()
 
   // Check "confirmed" state
   await t
-    .expect(moveDetailPage.nodes.instructionBanner.innerText)
-    .contains(
-      'Person has been handed over',
-      'Should contain handed over PER banner'
-    )
-    .expect(moveDetailPage.nodes.instructionBanner.innerText)
-    .contains(
-      handoverDetails.handoverDispatchingOfficer,
-      'Should contain dispatching officer'
-    )
-    .expect(moveDetailPage.nodes.instructionBanner.innerText)
-    .contains(
-      handoverDetails.handoverReceivingOfficer,
-      'Should contain receiving officer'
-    )
-    .expect(moveDetailPage.nodes.instructionBanner.innerText)
-    .contains(
-      handoverDetails.handoverOtherOrganisation,
-      'Should contain receiving organisation'
-    )
+    .expect(moveDetailPage.nodes.getHandoverSuccess.innerText)
+    .contains('Handover recorded successfully')
     .expect(moveDetailPage.nodes.personEscortRecordSectionStatuses.count)
     .eql(0, 'Should not show PER sections')
 

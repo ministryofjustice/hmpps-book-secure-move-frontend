@@ -45,11 +45,6 @@
     "confirmed": {
       "heading": "$t({{context}}) has been confirmed",
       "content": "All information in this $t({{context}}) was confirmed at <strong>{{date}}</strong>."
-    },
-    "handed_over": {
-      "heading": "Person has been handed over",
-      "content": "This person was handed over to {{details.receiving_organisation}}.",
-      "warning": "Contact relevant parties if you have any additional risk or health information to share about this person:<br><br>{{details.dispatching_officer}} — {{details.dispatching_officer_contact}}<br>{{details.receiving_officer}}, {{details.receiving_organisation}} — {{details.receiving_officer_contact}}"
     }
   },
   "cancel_allocation_move": {
