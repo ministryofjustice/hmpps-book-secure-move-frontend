@@ -1,6 +1,8 @@
-<section class="app-border-top-2 app-border--blue govuk-!-padding-top-3 govuk-!-margin-bottom-7">
-  {% include "includes/person-summary.njk" %}
-</section>
+{% if personSummary %}
+  <section class="app-border-top-2 app-border--blue govuk-!-padding-top-3 govuk-!-margin-bottom-7">
+    {% include "includes/person-summary.njk" %}
+  </section>
+{% endif %}
 
 {% if moveSummary %}
   <section class="app-border-top-1 govuk-!-padding-top-3" data-move-summary>
