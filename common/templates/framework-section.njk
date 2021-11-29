@@ -56,12 +56,4 @@
 
   </div>
 
-  {% if moveId %}
-    <p class="govuk-!-margin-top-6 govuk-!-margin-bottom-0">
-      {{ govukBackLink({
-        text: t("actions::back_to_move"),
-        href: "/move/" + moveId
-      }) }}
-    </p>
-  {% endif %}
 {% endblock %}
