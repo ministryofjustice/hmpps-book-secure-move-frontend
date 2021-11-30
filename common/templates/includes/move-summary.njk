@@ -1,15 +1,20 @@
-{% if personSummary %}
+{% macro _moveSummarySection(class = 'app-border-top-1') %}
+  {% if moveSummary %}
+    <section class="{{ class }} govuk-!-padding-top-3" data-move-summary>
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+        {{ t("moves::move_details") }}
+      </h3>
+
+      {{ appMetaList(moveSummary) }}
+    </section>
+  {% endif %}
+{% endmacro %}
+
+{% if personSummary.image.url or personSummary.metaList or personSummary.profileLink %}
   <section class="app-border-top-2 app-border--blue govuk-!-padding-top-3 govuk-!-margin-bottom-7">
     {% include "includes/person-summary.njk" %}
   </section>
-{% endif %}
-
-{% if moveSummary %}
-  <section class="app-border-top-1 govuk-!-padding-top-3" data-move-summary>
-    <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
-      {{ t("moves::move_details") }}
-    </h3>
-
-    {{ appMetaList(moveSummary) }}
-  </section>
+  {{ _moveSummarySection() }}
+{% else %}
+  {{ _moveSummarySection('app-border-top-2 app-border--blue') }}
 {% endif %}
