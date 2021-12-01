@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.97.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.2...v2.97.3) (2021-12-01)
+
+
+### Bug Fixes
+
+* Changes to remove of handover notification banner, information availble in history of events ([da065ab](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/da065ab2515b9358b0d66213dfe1758dfcba48f9))
+* Fixing wording in identity bar for proposed moves ([949f74c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/949f74c97bf2c948bf40e56f25fa791de38df36a))
+* Removes superfluous back link from the PER ([671bbbd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/671bbbdd624068ad02a1f5cc807ce412d0f77a80))
+* Removes the person details side panel when nothing to show ([5147955](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5147955a14cf29b50a0254cd38007d57485ce018))
+* Removing blue line appearing to the right on allocation pages ([7f1c02e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7f1c02e8790096f70952f9598586d1d9c06e0f59))
+* Removing the ability to upload documents ([110f37d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/110f37d89fd191e3ed18d9c56ccba1b4a3f1122f))
+
 ### [2.97.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.1...v2.97.2) (2021-11-19)
 
 
