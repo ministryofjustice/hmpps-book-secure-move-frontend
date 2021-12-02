@@ -32,9 +32,7 @@ const getUpdateUrls = sinon.stub().returns(mockUpdateUrls)
 const mapUpdateLink = sinon.stub().returnsArg(0)
 
 const pathStubs = {
-  '../../../config': {
-    FEATURE_FLAGS: { MOVE_PREVIEW: false },
-  },
+  '../../../config': {},
   '../../presenters': presenters,
   './get-assessments': getAssessments,
   './get-court-hearings': getCourtHearings,
@@ -49,12 +47,6 @@ const pathStubs = {
 }
 
 const getLocals = proxyquire('./get-locals', pathStubs)
-const getLocalsWithBannerFeature = proxyquire('./get-locals', {
-  ...pathStubs,
-  '../../../config': {
-    FEATURE_FLAGS: { MOVE_PREVIEW: true },
-  },
-})
 
 const mockAssessmentAnswers = []
 
@@ -120,7 +112,7 @@ describe('Move helpers', function () {
 
       it('should set the hidePreviewOptInBanner param', function () {
         expect(params).to.have.property('hidePreviewOptInBanner')
-        expect(params.hidePreviewOptInBanner).to.be.true
+        expect(params.hidePreviewOptInBanner).to.be.undefined
       })
 
       describe('move summary', function () {
@@ -368,13 +360,13 @@ describe('Move helpers', function () {
       })
     })
 
-    context('when preview feature is enabled', function () {
+    describe('hiding the preview opt-in banner', function () {
       let params
 
-      context('with request as true', function () {
+      context('with request property', function () {
         beforeEach(function () {
           req.hidePreviewOptInBanner = true
-          params = getLocalsWithBannerFeature(req)
+          params = getLocals(req)
         })
 
         it('should set the hidePreviewOptInBanner param', function () {
@@ -386,7 +378,7 @@ describe('Move helpers', function () {
       context('without request property', function () {
         beforeEach(function () {
           delete req.hidePreviewOptInBanner
-          params = getLocalsWithBannerFeature(req)
+          params = getLocals(req)
         })
 
         it('should set the hidePreviewOptInBanner param', function () {
