@@ -22,8 +22,8 @@ There are three main repositories that comprise the Book a secure move service:
 
 ### Major Dependencies
 
-- [Node.js](https://nodejs.org/en/) (>= 14)
-- [NPM](https://www.npmjs.com/) (>= 6.14)
+- [Node.js](https://nodejs.org/en/) (>= 16.13.0)
+- [NPM](https://www.npmjs.com/) (>= 8.1.0)
 - [Redis](https://redis.io/) (>= 5.0.5)
 
 ### Installation
