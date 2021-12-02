@@ -75,7 +75,6 @@ module.exports = {
       process.env.STATIC_ASSETS_CACHE_MAX_AGE || (IS_PRODUCTION ? '1w' : false),
   },
   FEEDBACK_URL: process.env.FEEDBACK_URL,
-  MOVE_DESIGN_FEEDBACK_URL: process.env.MOVE_DESIGN_FEEDBACK_URL,
   SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
   APP_VERSION,
   APP_BUILD_DATE: process.env.APP_BUILD_DATE,
