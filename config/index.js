@@ -282,7 +282,7 @@ module.exports = {
   },
   FEATURE_FLAGS: {
     GOT: /true/i.test(process.env.FEATURE_FLAG_GOT),
-    MOVE_PREVIEW: /true/i.test(process.env.FEATURE_FLAG_MOVE_PREVIEW),
+    MOVE_PREVIEW: true,
   },
   COOKIES: {
     MOVE_DESIGN_PREVIEW: {
