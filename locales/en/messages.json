@@ -70,14 +70,5 @@
     "content":"",
     "content_youth_risk_assessment":"The $t({{context}}) for <strong>{{name}}</strong> has been successfully confirmed. You can now start the Person Escort Record.",
     "content_person_escort_record":"The handover for <strong>{{name}}</strong> has been recorded. You can view the details recorded in the <a href=\"{{timelineUrl}}\">history of events</a>."
-  },
-  "preview_new_feature": {
-    "heading":"There is a new version of this page",
-    "content":"<p>Use the new version and help us improve it with your feedback.<br />You will be able to return to the current version at any time.</p>",
-    "actions": {
-      "yes": "Try the new version",
-      "no": "Keep the current version",
-      "return": "Return to the old design"
-    }
   }
 }

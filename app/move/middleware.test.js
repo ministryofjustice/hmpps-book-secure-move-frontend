@@ -74,10 +74,6 @@ describe('Move middleware', function () {
       it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
       })
-
-      it('should not set hide banner property', function () {
-        expect(req).not.to.have.property('hidePreviewOptInBanner')
-      })
     })
 
     context('when cookie exists', function () {
@@ -103,10 +99,6 @@ describe('Move middleware', function () {
           it('should not call next', function () {
             expect(nextSpy).not.to.be.called
           })
-
-          it('should not set hide banner property', function () {
-            expect(req).not.to.have.property('hidePreviewOptInBanner')
-          })
         })
 
         context('with a path that should not be redirect', function () {
@@ -121,10 +113,6 @@ describe('Move middleware', function () {
 
           it('should call next', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
-          })
-
-          it('should not set hide banner property', function () {
-            expect(req).not.to.have.property('hidePreviewOptInBanner')
           })
         })
       })
@@ -141,10 +129,6 @@ describe('Move middleware', function () {
 
         it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
-        })
-
-        it('should set hide banner property', function () {
-          expect(req.hidePreviewOptInBanner).to.be.true
         })
       })
     })

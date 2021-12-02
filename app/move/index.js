@@ -6,7 +6,6 @@ const moveRouter = express.Router({ mergeParams: true })
 // Local dependencies
 const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
-const setMoveDesignOptOutHref = require('../../common/middleware/set-move-design-opt-out-href')
 const { ENABLE_DEVELOPMENT_TOOLS } = require('../../config')
 const personEscortRecordApp = require('../person-escort-record')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
@@ -18,7 +17,6 @@ const newApp = require('./app/new')
 const reviewApp = require('./app/review')
 const unassignApp = require('./app/unassign')
 const viewApp = require('./app/view')
-const { PREVIEW_PREFIX } = require('./app/view/constants')
 const {
   confirmation,
   journeys,
@@ -58,7 +56,6 @@ moveRouter.use(/\/((?!timeline).)*/, setMove)
 moveRouter.use('/timeline', setMoveWithEvents)
 moveRouter.use(setPersonEscortRecord)
 moveRouter.use(setYouthRiskAssessment)
-moveRouter.use(setMoveDesignOptOutHref({ previewPrefix: PREVIEW_PREFIX }))
 
 if (ENABLE_DEVELOPMENT_TOOLS) {
   moveRouter.use(setDevelopmentTools)

@@ -7,34 +7,6 @@
   gtag('set', {'page_title': 'Move details'});
 {% endblock %}
 
-{% block bodyStart %}
-  {{ super() }}
-
-  {% if not hidePreviewOptInBanner %}
-    {{ govukCookieBanner({
-      ariaLabel: t("messages::preview_new_feature.heading"),
-      messages: [
-        {
-          headingText: t("messages::preview_new_feature.heading"),
-          html: t("messages::preview_new_feature.content"),
-          actions: [
-            {
-              href: "/move/preview/opt-in?move_id=" + move.id,
-              text: t("messages::preview_new_feature.actions.yes"),
-              type: "button"
-            },
-            {
-              href: "/move/preview/opt-out?move_id=" + move.id,
-              text: t("messages::preview_new_feature.actions.no"),
-              type: "button"
-            }
-          ]
-        }
-      ]
-    }) }}
-  {% endif %}
-{% endblock %}
-
 {% block pageTitle %}
   {{ t("moves::detail.page_title", {
     name: name

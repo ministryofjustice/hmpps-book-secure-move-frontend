@@ -19,8 +19,6 @@ module.exports = {
         return res.redirect(
           `/move${PREVIEW_PREFIX}/${moveId}${pathMap[req.path]}`
         )
-      } else if (cookie === '0') {
-        req.hidePreviewOptInBanner = true
       }
 
       next()

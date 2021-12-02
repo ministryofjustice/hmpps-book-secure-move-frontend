@@ -110,11 +110,6 @@ describe('Move helpers', function () {
         })
       })
 
-      it('should set the hidePreviewOptInBanner param', function () {
-        expect(params).to.have.property('hidePreviewOptInBanner')
-        expect(params.hidePreviewOptInBanner).to.be.undefined
-      })
-
       describe('move summary', function () {
         it('should get the move summary', function () {
           expect(getMoveSummary).to.be.calledOnceWithExactly(mockMove, {
@@ -312,7 +307,6 @@ describe('Move helpers', function () {
           'additionalInfoSummary',
           'assessments',
           'courtHearings',
-          'hidePreviewOptInBanner',
           'messageBanner',
           'messageContent',
           'messageTitle',
@@ -345,7 +339,6 @@ describe('Move helpers', function () {
           'additionalInfoSummary',
           'assessments',
           'courtHearings',
-          'hidePreviewOptInBanner',
           'messageBanner',
           'messageContent',
           'messageTitle',
@@ -357,34 +350,6 @@ describe('Move helpers', function () {
           'updateLinks',
           'urls',
         ])
-      })
-    })
-
-    describe('hiding the preview opt-in banner', function () {
-      let params
-
-      context('with request property', function () {
-        beforeEach(function () {
-          req.hidePreviewOptInBanner = true
-          params = getLocals(req)
-        })
-
-        it('should set the hidePreviewOptInBanner param', function () {
-          expect(params).to.have.property('hidePreviewOptInBanner')
-          expect(params.hidePreviewOptInBanner).to.be.true
-        })
-      })
-
-      context('without request property', function () {
-        beforeEach(function () {
-          delete req.hidePreviewOptInBanner
-          params = getLocals(req)
-        })
-
-        it('should set the hidePreviewOptInBanner param', function () {
-          expect(params).to.have.property('hidePreviewOptInBanner')
-          expect(params.hidePreviewOptInBanner).to.be.undefined
-        })
       })
     })
   })
