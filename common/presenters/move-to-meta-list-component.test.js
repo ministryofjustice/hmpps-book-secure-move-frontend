@@ -408,8 +408,11 @@ describe('Presenters', function () {
           const values = transformedResponse.items.map(
             item => item.value.text || item.value.html
           )
-          expect(values).to.include(
+          expect(values).to.not.include(
             'fields::move_type.items.video_remand.label — Some additional information about this move'
+          )
+          expect(values).to.include(
+            'fields::move_type.items.video_remand.label'
           )
         })
       })
