@@ -366,6 +366,7 @@ describe('Framework controllers', function () {
             },
           },
           frameworkSection: {
+            key: 'risk-information',
             name: 'Foo',
             steps: {
               '/step-1': {},
@@ -375,6 +376,14 @@ describe('Framework controllers', function () {
           },
           assessment: {
             responses: [{ id: '1' }, { id: '2' }, { id: '3' }],
+            meta: {
+              section_progress: [
+                {
+                  key: 'risk-information',
+                  status: 'in_progress',
+                },
+              ],
+            },
           },
         }
         mockRes = {
@@ -395,6 +404,16 @@ describe('Framework controllers', function () {
 
       it('should set section title', function () {
         expect(mockRes.locals.sectionTitle).to.equal('Foo')
+      })
+
+      it('should set section progress text to in progress', function () {
+        expect(mockRes.locals.sectionProgress.text).to.equal('In progress')
+      })
+
+      it('should set section progress classes gov tag blue', function () {
+        expect(mockRes.locals.sectionProgress.classes).to.equal(
+          'govuk-tag--blue'
+        )
       })
 
       it('should call presenter', function () {

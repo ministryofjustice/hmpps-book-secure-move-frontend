@@ -70,6 +70,12 @@ class FrameworkSectionController extends FormWizardController {
   }
 
   setSectionSummary(req, res, next) {
+    const tagClasses = {
+      not_started: 'govuk-tag--grey',
+      in_progress: 'govuk-tag--blue',
+      default: '',
+    }
+
     const { frameworkSection, assessment, baseUrl, form } = req
     const { name, steps } = frameworkSection
     const stepSummaries = Object.entries(steps).map(
@@ -79,8 +85,15 @@ class FrameworkSectionController extends FormWizardController {
         `${baseUrl}/`
       )
     )
+    const sectionProgress = assessment.meta?.section_progress.filter(
+      status => status.key === frameworkSection.key
+    )[0]
 
     res.locals.sectionTitle = name
+    res.locals.sectionProgress = {
+      text: i18n.t(`assessment::statuses.${sectionProgress.status}`),
+      classes: tagClasses[sectionProgress.status] || tagClasses.default,
+    }
     res.locals.summarySteps = filter(stepSummaries)
 
     next()
