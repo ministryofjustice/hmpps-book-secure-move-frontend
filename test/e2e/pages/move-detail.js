@@ -71,7 +71,6 @@ class MoveDetailPage extends Page {
       getUpdateLink: category => {
         return Selector(`[data-update-link="${category}"]`)
       },
-      getHandoverSuccess: Selector('[id="app-message__heading"]'),
     }
   }
 
