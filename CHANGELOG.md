@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.97.5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.4...v2.97.5) (2021-12-07)
+
+
+### Bug Fixes
+
+* Adds the PER section status tag to the top of section pages ([ae7a9b4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ae7a9b46542d55c45a7c0f002517b915db5746dc))
+* Remove style override on cancel allocation banner so uses default style ([46a9446](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/46a9446b633b92d8caaea13b56edc348a58fe643))
+* Removes additional info from side panel when prison remand ([7c82de5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7c82de5e2f02ca5152ed607af22851e9b59314f9))
+* Small tweak to package.json to allow greater then or equal to versions of node and npm ([3cdbbd6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3cdbbd6670befa84ce4b63f052d39b365f5314c0))
+
 ### [2.97.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.2...v2.97.4) (2021-12-01)
 
 
