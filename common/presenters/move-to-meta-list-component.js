@@ -36,7 +36,6 @@ function moveToMetaListComponent(move, { updateUrls = {} } = {}) {
   const destinationTitle = get(toLocation, 'title', 'Unknown')
   const destinationId = get(toLocation, 'id')
   const useLabel = ['prison_recall', 'video_remand']
-  const hasAdditionalInfo = useLabel
   const destinationLabel = useLabel.includes(moveType)
     ? `${i18n.t(`fields::move_type.items.${moveType}.label`, {
         context: destinationId ? 'with_location' : '',
@@ -44,9 +43,7 @@ function moveToMetaListComponent(move, { updateUrls = {} } = {}) {
       })}`
     : destinationTitle
   const destinationSuffix =
-    additionalInfo && hasAdditionalInfo.includes(moveType)
-      ? ` — ${additionalInfo}`
-      : ''
+    additionalInfo && moveType === 'prison_recall' ? ` — ${additionalInfo}` : ''
   const prisonTransferReasonTitle = prisonTransferReason
     ? prisonTransferReason.title
     : ''
