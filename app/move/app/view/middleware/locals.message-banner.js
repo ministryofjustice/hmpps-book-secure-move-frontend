@@ -1,5 +1,11 @@
+const { kebabCase } = require('lodash')
+
+const assessmentToHandedOverBanner = require('../../../../../common/presenters/message-banner/assessment-to-handed-over-banner')
+
 module.exports = async (req, res, next) => {
-  const { move } = req
+  const { canAccess, move } = req
+  const isPERHandedOver =
+    move.profile?.person_escort_record?.handover_occurred_at
 
   let messageBanner
 
@@ -52,6 +58,15 @@ module.exports = async (req, res, next) => {
         }),
       },
     }
+  } else if (isPERHandedOver) {
+    const assessmentType = 'person_escort_record'
+
+    messageBanner = assessmentToHandedOverBanner({
+      assessment: move.profile[assessmentType],
+      baseUrl: `/move/${move.id}/${kebabCase(assessmentType)}`,
+      canAccess,
+      context: assessmentType,
+    })
   }
 
   if (messageBanner) {
