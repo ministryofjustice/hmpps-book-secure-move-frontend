@@ -31,7 +31,7 @@
   {% if messageTitle %}
     {{ appMessage({
       allowDismiss: false,
-      classes: "app-message--temporary",
+      classes: "app-message--temporary" if not isMoveDesignPreview,
       title: {
         text: messageTitle
       },

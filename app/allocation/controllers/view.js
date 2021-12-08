@@ -3,7 +3,7 @@ const { sortBy } = require('lodash')
 const presenters = require('../../../common/presenters')
 
 function viewAllocation(req, res) {
-  const { allocation, canAccess } = req
+  const { allocation, canAccess, moveDesignPreview } = req
   const { moves, status, totalSlots, from_location: fromLocation } = allocation
   const bannerStatuses = ['cancelled']
   const movesWithoutProfile = moves.filter(move => !move.profile)
@@ -26,6 +26,7 @@ function viewAllocation(req, res) {
   }
 
   const locals = {
+    isMoveDesignPreview: moveDesignPreview,
     allocation,
     // TODO: Find way to store the actual URL they came from: See similar solution within moves app
     dashboardUrl: '/allocations',
