@@ -8,10 +8,11 @@
   {{ getPageTitle() | join(' – ') if getPageTitle }}
 {% endblock %}
 
-{% macro _sidebarSection(params) %}
-  {% set borderClasses = "app-border-top-2 app-border--blue" if params.first else "app-border-top-1" %}
+{% macro _sidebarSection(borderTopClasses = true, borderBottomClasses = true) %}
+  {% set top = "app-border-top-2 app-border--blue govuk-!-padding-top-3" if borderTopClasses else "" %}
+  {% set bottom = "govuk-!-margin-bottom-7" if borderBottomClasses else "govuk-!-margin-bottom-2" %}
 
-  <section class="{{ borderClasses }} govuk-!-padding-top-3 govuk-!-margin-bottom-7">
+  <section class="{{ top }} {{ bottom }}">
     {{ caller() if caller }}
   </section>
 {% endmacro %}
@@ -53,7 +54,7 @@
           {% include "includes/person-summary.njk" %}
         {% endcall %}
 
-        {% call _sidebarSection() %}
+        {% call _sidebarSection(borderBottomClasses = false) %}
           <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
             {{ t("moves::move_details") }}
           </h3>
@@ -68,7 +69,7 @@
         {% endcall %}
 
         {% if actions | length %}
-          {% call _sidebarSection() %}
+          {% call _sidebarSection(false, false) %}
             <ul class="govuk-list govuk-!-margin-0 govuk-!-font-size-16">
               {% for action in actions %}
                 <li class="{{ action.itemClasses }}">
