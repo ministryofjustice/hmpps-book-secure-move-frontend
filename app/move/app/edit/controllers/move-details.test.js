@@ -286,6 +286,7 @@ describe('Move controllers', function () {
       let nextSpy, moveService
 
       beforeEach(function () {
+        sinon.stub(controller, 'setFlash')
         moveService = {
           redirect: sinon.stub(),
           update: sinon.stub(),
@@ -415,6 +416,13 @@ describe('Move controllers', function () {
                   id: '#toLocation',
                 },
               })
+            })
+
+            it('should set the confirmation message', function () {
+              expect(controller.setFlash).to.be.calledOnceWithExactly(
+                req,
+                'move'
+              )
             })
 
             it('should not call move service’s update method', function () {

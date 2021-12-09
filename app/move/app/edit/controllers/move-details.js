@@ -82,6 +82,8 @@ class UpdateMoveDetailsController extends UpdateBase {
             id: toLocation,
           },
         })
+
+        this.setFlash(req, 'move')
       }
 
       if (
