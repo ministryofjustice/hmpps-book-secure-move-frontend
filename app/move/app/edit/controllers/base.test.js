@@ -159,7 +159,7 @@ describe('Move controllers', function () {
       })
 
       it('should set cancel url correctly', function () {
-        expect(res.locals.cancelUrl).to.equal('/move/preview/moveId/details')
+        expect(res.locals.cancelUrl).to.equal('/move/moveId/details')
       })
 
       it('should call next', function () {
@@ -185,7 +185,7 @@ describe('Move controllers', function () {
       })
 
       it('should set cancel url correctly', function () {
-        expect(req.form.options.next).to.equal('/move/preview/moveId/details')
+        expect(req.form.options.next).to.equal('/move/moveId/details')
       })
 
       it('should call next', function () {

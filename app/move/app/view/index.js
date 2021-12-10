@@ -10,7 +10,6 @@ const {
   setYouthRiskAssessment,
 } = require('../../middleware')
 
-const { PREVIEW_PREFIX } = require('./constants')
 const {
   renderDetails,
   renderTimeline,
@@ -57,5 +56,5 @@ router.get('/timeline', renderTimeline)
 // Export
 module.exports = {
   router,
-  mountpath: `${PREVIEW_PREFIX}/:moveId(${uuidRegex})`,
+  mountpath: `/:moveId(${uuidRegex})`,
 }

@@ -1,8 +1,5 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-const viewConstants = {
-  PREVIEW_PREFIX: '/preview-prefix',
-}
 const populateResources = sinon.stub()
 
 const middleware = proxyquire('./middleware', {
@@ -14,7 +11,6 @@ const middleware = proxyquire('./middleware', {
       completeAssessment: '/assessment-path',
     },
   },
-  './app/view/constants': viewConstants,
 })
 
 const moveStub = { foo: 'bar' }
@@ -30,63 +26,6 @@ const mockMoveId = '6904dea1-017f-48d8-a5ad-2723dee9d146'
 const errorStub = new Error('Problem')
 
 describe('Move middleware', function () {
-  describe('#checkPreviewChoice()', function () {
-    let req, res, nextSpy
-    const mockPathMap = {
-      '/': '/',
-      '/path-to-redirect': '/new-redirect-path',
-    }
-
-    beforeEach(function () {
-      req = {
-        params: {
-          moveId: 'AAAA-BBBB-1111',
-        },
-        user: {
-          userId: 'user_1',
-        },
-      }
-      res = {
-        redirect: sinon.spy(),
-      }
-      nextSpy = sinon.spy()
-    })
-
-    context('with a path that should be redirect', function () {
-      beforeEach(function () {
-        req.path = '/path-to-redirect'
-        middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
-      })
-
-      it('should redirect to preview move URL', function () {
-        expect(res.redirect).to.be.calledOnceWithExactly(
-          `/move${viewConstants.PREVIEW_PREFIX}/${req.params.moveId}${
-            mockPathMap[req.path]
-          }`
-        )
-      })
-
-      it('should not call next', function () {
-        expect(nextSpy).not.to.be.called
-      })
-    })
-
-    context('with a path that should not be redirect', function () {
-      beforeEach(function () {
-        req.path = '/path-to-ignore'
-        middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
-      })
-
-      it('should not redirect', function () {
-        expect(res.redirect).not.to.be.called
-      })
-
-      it('should call next', function () {
-        expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-    })
-  })
-
   describe('#setMove()', function () {
     let req, res, nextSpy, moveService
 

@@ -19,7 +19,6 @@ const unassignApp = require('./app/unassign')
 const viewApp = require('./app/view')
 const { confirmation, journeys, timeline, view } = require('./controllers')
 const {
-  checkPreviewChoice,
   setMove,
   setMoveWithEvents,
   setPersonEscortRecord,
@@ -37,8 +36,6 @@ router.use(viewApp.mountpath, viewApp.router)
 // New view app preview routes
 
 router.use(`/:moveId(${uuidRegex})`, moveRouter)
-
-moveRouter.use(checkPreviewChoice({ '/': '/', '/timeline': '/timeline' }))
 
 // For all non-timeline routes use standard move middleware
 moveRouter.use(/\/((?!timeline).)*/, setMove)
