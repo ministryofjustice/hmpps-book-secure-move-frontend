@@ -17,10 +17,9 @@ const newApp = require('./app/new')
 const reviewApp = require('./app/review')
 const unassignApp = require('./app/unassign')
 const viewApp = require('./app/view')
-const { confirmation, journeys, timeline, view } = require('./controllers')
+const { confirmation, journeys } = require('./controllers')
 const {
   setMove,
-  setMoveWithEvents,
   setPersonEscortRecord,
   setYouthRiskAssessment,
   setAllocation,
@@ -28,19 +27,12 @@ const {
   setDevelopmentTools,
 } = require('./middleware')
 
-// Define param middleware
-
-// Define routes
 router.use(newApp.mountpath, newApp.router)
 router.use(viewApp.mountpath, viewApp.router)
-// New view app preview routes
 
 router.use(`/:moveId(${uuidRegex})`, moveRouter)
 
-// For all non-timeline routes use standard move middleware
-moveRouter.use(/\/((?!timeline).)*/, setMove)
-// For all timeline route use move events middleware
-moveRouter.use('/timeline', setMoveWithEvents)
+moveRouter.use(setMove)
 moveRouter.use(setPersonEscortRecord)
 moveRouter.use(setYouthRiskAssessment)
 
@@ -48,8 +40,6 @@ if (ENABLE_DEVELOPMENT_TOOLS) {
   moveRouter.use(setDevelopmentTools)
 }
 
-moveRouter.get('/', protectRoute('move:view'), view)
-moveRouter.get('/timeline', protectRoute('move:view'), timeline)
 moveRouter.get(
   '/confirmation',
   protectRoute(['move:create', 'move:review']),
