@@ -15,7 +15,6 @@ module.exports = function setLocals(req, res, next) {
     CURRENT_LOCATION: req.session.currentLocation,
     CURRENT_REGION: req.session.currentRegion,
     MOVES_URL: req.session.movesUrl || movesApp.mountpath,
-    MOVE_DESIGN_PREVIEW: req.moveDesignPreview,
     SERVICE_NAME,
     getLocal: key => res.locals[key],
     getMessages: () => req.flash(),

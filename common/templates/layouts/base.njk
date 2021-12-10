@@ -66,8 +66,7 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       {% block customGtagConfig %}{% endblock %}
-      gtag('set', { 'custom_map': { 'dimension1': 'move_design_preview' } })
-      gtag('config', '{{ GA_ID }}', { 'move_design_preview': '{{ MOVE_DESIGN_PREVIEW }}' })
+      gtag('config', '{{ GA_ID }}')
     </script>
   {% endif %}
 {% endblock %}
