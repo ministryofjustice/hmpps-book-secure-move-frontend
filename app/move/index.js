@@ -17,14 +17,7 @@ const newApp = require('./app/new')
 const reviewApp = require('./app/review')
 const unassignApp = require('./app/unassign')
 const viewApp = require('./app/view')
-const {
-  confirmation,
-  journeys,
-  previewOptIn,
-  previewOptOut,
-  timeline,
-  view,
-} = require('./controllers')
+const { confirmation, journeys, timeline, view } = require('./controllers')
 const {
   checkPreviewChoice,
   setMove,
@@ -42,9 +35,6 @@ const {
 router.use(newApp.mountpath, newApp.router)
 router.use(viewApp.mountpath, viewApp.router)
 // New view app preview routes
-// TODO: Remove these once the new design is being used everywhere
-router.get('/preview/opt-in', previewOptIn)
-router.get('/preview/opt-out', previewOptOut)
 
 router.use(`/:moveId(${uuidRegex})`, moveRouter)
 
