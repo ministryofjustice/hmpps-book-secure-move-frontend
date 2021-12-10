@@ -1,13 +1,5 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-const config = {
-  COOKIES: {
-    MOVE_DESIGN_PREVIEW: {
-      name: userId => `cookie__${userId}`,
-      maxAge: 3600,
-    },
-  },
-}
 const viewConstants = {
   PREVIEW_PREFIX: '/preview-prefix',
 }
@@ -22,7 +14,6 @@ const middleware = proxyquire('./middleware', {
       completeAssessment: '/assessment-path',
     },
   },
-  '../../config': config,
   './app/view/constants': viewConstants,
 })
 
@@ -48,7 +39,6 @@ describe('Move middleware', function () {
 
     beforeEach(function () {
       req = {
-        cookies: {},
         params: {
           moveId: 'AAAA-BBBB-1111',
         },
@@ -62,9 +52,29 @@ describe('Move middleware', function () {
       nextSpy = sinon.spy()
     })
 
-    context('when cookie does not exist', function () {
+    context('with a path that should be redirect', function () {
       beforeEach(function () {
-        middleware.checkPreviewChoice()(req, res, nextSpy)
+        req.path = '/path-to-redirect'
+        middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
+      })
+
+      it('should redirect to preview move URL', function () {
+        expect(res.redirect).to.be.calledOnceWithExactly(
+          `/move${viewConstants.PREVIEW_PREFIX}/${req.params.moveId}${
+            mockPathMap[req.path]
+          }`
+        )
+      })
+
+      it('should not call next', function () {
+        expect(nextSpy).not.to.be.called
+      })
+    })
+
+    context('with a path that should not be redirect', function () {
+      beforeEach(function () {
+        req.path = '/path-to-ignore'
+        middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
       })
 
       it('should not redirect', function () {
@@ -73,63 +83,6 @@ describe('Move middleware', function () {
 
       it('should call next', function () {
         expect(nextSpy).to.be.calledOnceWithExactly()
-      })
-    })
-
-    context('when cookie exists', function () {
-      context('with a value of `1`', function () {
-        beforeEach(function () {
-          req.cookies.cookie__user_1 = '1'
-        })
-
-        context('with a path that should be redirect', function () {
-          beforeEach(function () {
-            req.path = '/path-to-redirect'
-            middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
-          })
-
-          it('should redirect to preview move URL', function () {
-            expect(res.redirect).to.be.calledOnceWithExactly(
-              `/move${viewConstants.PREVIEW_PREFIX}/${req.params.moveId}${
-                mockPathMap[req.path]
-              }`
-            )
-          })
-
-          it('should not call next', function () {
-            expect(nextSpy).not.to.be.called
-          })
-        })
-
-        context('with a path that should not be redirect', function () {
-          beforeEach(function () {
-            req.path = '/path-to-ignore'
-            middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
-          })
-
-          it('should not redirect', function () {
-            expect(res.redirect).not.to.be.called
-          })
-
-          it('should call next', function () {
-            expect(nextSpy).to.be.calledOnceWithExactly()
-          })
-        })
-      })
-
-      context('with a value of `0`', function () {
-        beforeEach(function () {
-          req.cookies.cookie__user_1 = '0'
-          middleware.checkPreviewChoice(mockPathMap)(req, res, nextSpy)
-        })
-
-        it('should not redirect', function () {
-          expect(res.redirect).not.to.be.called
-        })
-
-        it('should call next', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
       })
     })
   })
