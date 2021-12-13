@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.97.6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.5...v2.97.6) (2021-12-13)
+
+
+### Bug Fixes
+
+* Remove style override on cancel allocation banner so uses default style on new design ([05790e5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/05790e5f69c4459a91d7952ae522b425029a722b))
+* Show the flash banner when the to location is changed on a move ([4dc7030](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4dc703068e572c41e0185cc6a51c8bb877e48b3b))
+* Tweaks to border styling on the move details side panel ([911d415](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/911d4151084ec26406bf3c9718d7e9581368612c))
+
 ### [2.97.5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.4...v2.97.5) (2021-12-07)
 
 
