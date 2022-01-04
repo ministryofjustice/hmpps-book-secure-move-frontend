@@ -290,6 +290,9 @@
       "cancelled_by_pmu": {
         "label": "Cancelled by Population Management Unit (PMU)"
       },
+      "database_correction": {
+        "label": "Actual cancellation reason and time unknown due to missing supplier data"
+      },
       "other": {
         "label": "Another reason"
       }
