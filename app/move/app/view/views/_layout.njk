@@ -17,6 +17,16 @@
   </section>
 {% endmacro %}
 
+{% block breadcrumbs %}
+  <div class="govuk-width-container">
+    {{ govukBackLink({
+      text: t("actions::back_to_dashboard"),
+      classes: "app-print--hide",
+      href: MOVES_URL
+    }) }}
+  </div>
+{% endblock %}
+
 {% block content %}
   {% if messageBanner %}
     <div class="govuk-!-margin-bottom-5">
