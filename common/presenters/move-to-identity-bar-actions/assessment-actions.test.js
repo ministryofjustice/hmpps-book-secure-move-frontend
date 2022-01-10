@@ -421,6 +421,28 @@ describe('Presenters', function () {
             })
           })
 
+          context('with cancelled move', function () {
+            beforeEach(function () {
+              mockMove.status = 'cancelled'
+              output = presenter(mockMove, { canAccess: canAccessStub })
+            })
+
+            it('should return view action', function () {
+              expect(output).to.deep.equal([
+                {
+                  html: {
+                    govukButton: {
+                      href: `/move/${mockMove.id}/person-escort-record`,
+                      preventDoubleClick: true,
+                      text: 'actions::view_assessment',
+                      classes: 'govuk-button--secondary',
+                    },
+                  },
+                },
+              ])
+            })
+          })
+
           context('without assessment confirm access', function () {
             beforeEach(function () {
               canAccessStub
