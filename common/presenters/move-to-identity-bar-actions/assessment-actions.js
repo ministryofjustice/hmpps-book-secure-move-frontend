@@ -52,16 +52,18 @@ function assessmentActions(move = {}, { canAccess } = {}) {
     }
   }
 
-  if (assessment.status === 'completed' && canAccess(`${context}:confirm`)) {
-    if (canAccess(`${context}:confirm`)) {
-      actions.push({
-        html: componentService.getComponent('govukButton', {
-          text: i18n.t('actions::provide_confirmation', { context }),
-          preventDoubleClick: true,
-          href: `${baseUrl}/confirm`,
-        }),
-      })
-    }
+  if (
+    assessment.status === 'completed' &&
+    move.status !== 'cancelled' &&
+    canAccess(`${context}:confirm`)
+  ) {
+    actions.push({
+      html: componentService.getComponent('govukButton', {
+        text: i18n.t('actions::provide_confirmation', { context }),
+        preventDoubleClick: true,
+        href: `${baseUrl}/confirm`,
+      }),
+    })
   }
 
   if (assessmentType === 'person_escort_record') {
