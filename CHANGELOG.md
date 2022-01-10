@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.98.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.7...v2.98.0) (2022-01-10)
+
+
+### Features
+
+* Add database correction cancellation reason ([d00055a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d00055af10c99893782f401e39b4254e30c6e6fb))
+
+
+### Bug Fixes
+
+* Fix the person name missing on cancel form ([1fccb69](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1fccb69f4f8f7cddbb1dfff46d96a8bbb68ea54a))
+* Hide record handover button if move is cancelled ([f26641a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f26641a768ad473fd5acb4980315a1d3249a40a6))
+
 ### [2.97.7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.6...v2.97.7) (2022-01-06)
 
 
