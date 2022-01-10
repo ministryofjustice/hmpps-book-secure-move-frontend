@@ -55,6 +55,7 @@ describe('Move controllers', function () {
         sinon.stub(FormWizardController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
         sinon.stub(middleware, 'setMoveSummary')
+        sinon.stub(controller, 'setMoveLocal')
 
         controller.middlewareLocals()
       })
@@ -70,8 +71,14 @@ describe('Move controllers', function () {
         )
       })
 
+      it('should call setMoveSummary middleware', function () {
+        expect(controller.use.secondCall).to.have.been.calledWith(
+          controller.setMoveLocal
+        )
+      })
+
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(1)
+        expect(controller.use.callCount).to.equal(2)
       })
     })
 
@@ -176,6 +183,28 @@ describe('Move controllers', function () {
         it('should not call next', function () {
           expect(nextSpy).not.to.be.called
         })
+      })
+    })
+
+    describe('#setMoveLocal()', function () {
+      let mockReq, mockRes, nextSpy
+
+      beforeEach(function () {
+        nextSpy = sinon.spy()
+        mockReq = { move: { id: '12345' } }
+        mockRes = { locals: {} }
+      })
+
+      beforeEach(function () {
+        controller.setMoveLocal(mockReq, mockRes, nextSpy)
+      })
+
+      it('should set the move on locals', function () {
+        expect(mockRes.locals.move).to.deep.equal(mockReq.move)
+      })
+
+      it('should call next', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 

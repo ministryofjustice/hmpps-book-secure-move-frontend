@@ -7,6 +7,7 @@ class CancelController extends FormWizardController {
   middlewareLocals() {
     super.middlewareLocals()
     this.use(middleware.setMoveSummary)
+    this.use(this.setMoveLocal)
   }
 
   middlewareChecks() {
@@ -32,6 +33,11 @@ class CancelController extends FormWizardController {
       return res.redirect(`/move/${moveId}`)
     }
 
+    next()
+  }
+
+  setMoveLocal(req, res, next) {
+    res.locals.move = req.move
     next()
   }
 
