@@ -1,11 +1,11 @@
-FROM node:14.18.1-alpine3.13 as build-stage
+FROM node:16.13.1-alpine3.13 as build-stage
 
 WORKDIR /home/node/app
 
 RUN apk add --no-cache python2 git build-base nasm zlib-dev libpng-dev autoconf automake
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 USER 1000
 RUN npm install
 
@@ -23,7 +23,7 @@ ENV API_VERSION default
 RUN NODE_ENV=production npm run build
 ############### End of Build step ###############
 
-FROM node:14.18.1-alpine3.13
+FROM node:16.13.1-alpine3.13
 
 WORKDIR /home/node/app
 USER 1000
