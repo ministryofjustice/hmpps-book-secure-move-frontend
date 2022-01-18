@@ -600,7 +600,7 @@ export async function expectStatusCode(url, statusCode, negated = true) {
   const logger = createLogger(url)
   await t.addRequestHooks(logger)
   await t.navigateTo(url)
-  const expectMethod = negated === false ? 'notOk' : 'ok'
-  await t.expect(getResponseStatus(logger, url) === statusCode)[expectMethod]()
+  const expectMethod = negated === false ? 'notEql' : 'eql'
+  await t.expect(getResponseStatus(logger, url))[expectMethod](statusCode)
   await t.removeRequestHooks(logger)
 }

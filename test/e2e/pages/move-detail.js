@@ -10,17 +10,19 @@ class MoveDetailPage extends Page {
 
     this.nodes = {
       ...this.nodes,
-      title: Selector('#main-content > header h1.govuk-heading-xl'),
-      subTitle: Selector('#main-content > header span.govuk-caption-xl'),
+      title: Selector('#main-content .app-identity-bar__heading'),
+      subTitle: Selector('#main-content .app-identity-bar__summary'),
       cancelLink: Selector('.app-link--destructive').withText(
         'Cancel this move'
       ),
-      tagList: Selector('header [data-tag-list-source]'),
-      tags: Selector('header a.app-tag'),
-      personalDetails: Selector('#main-content h2')
+      tagList: Selector('[data-tag-list-source]'),
+      tags: Selector('[data-tag-list-source] a.app-tag'),
+      personalDetails: Selector('#main-content h3')
         .withText('Personal details')
         .sibling('dl'),
-      moveDetails: Selector('[data-move-summary] .app-meta-list'),
+      moveDetails: Selector('#main-content h3')
+        .withText('Move details')
+        .sibling('dl'),
       courtInformationHeading: Selector('#main-content h2').withText(
         'Information for the court'
       ),
@@ -30,41 +32,33 @@ class MoveDetailPage extends Page {
       noCourtInformationMessage: Selector('.app-message').withText(
         'No information for the court'
       ),
-      noCourtHearingsMessage:
-        Selector('.app-message').withText('No court hearings'),
       riskInformation: Selector('#main-content h2')
         .withText('Risk information')
-        .parent('section'),
+        .sibling('dl'),
       noRiskInformationMessage: Selector('.app-message').withText(
         'No risk information'
       ),
       healthInformation: Selector('#main-content h2')
         .withText('Health information')
-        .parent('section'),
+        .sibling('dl'),
       noHealthInformationMessage: Selector('.app-message').withText(
         'No health information'
       ),
-      offenceInformation: Selector('#main-content h2')
-        .withText('Offence information')
-        .parent('section'),
-      propertyInformation: Selector('#main-content h2')
-        .withText('Property information')
-        .parent('section'),
-      documentList: Selector('#main-content h2')
-        .withText('Supporting documents')
-        .sibling('.govuk-list'),
-      noDocumentsMessage: Selector('.app-message').withText(
-        'No documents uploaded'
+      identityBar: Selector('.app-identity-bar__inner'),
+      personEscortRecordSectionStatuses: Selector(
+        '#main-content .app-task-list__item .govuk-tag'
       ),
-      personEscortRecordSectionStatuses:
-        this.nodes.instructionBanner.find('.govuk-tag'),
-      personEscortRecordSectionLinks:
-        Selector('#main-content a').withText('Review'),
+      personEscortRecordSectionLinks: Selector(
+        '#main-content .app-task-list__item a'
+      ),
       personEscortRecordWarnings: Selector('#main-content strong.app-tag'),
-      personEscortRecordStartButton: this.nodes.instructionBanner
+      personEscortRecordStartButton: Selector('.app-identity-bar__inner')
         .find('.govuk-button')
         .withText('Start Person Escort Record'),
-      personEscortRecordConfirmationButton: this.nodes.instructionBanner
+      personEscortRecordViewButton: Selector('.app-identity-bar__inner')
+        .find('.govuk-button')
+        .withText('View Person Escort Record'),
+      personEscortRecordConfirmationButton: Selector('.app-identity-bar__inner')
         .find('.govuk-button')
         .withText('Record handover'),
       getCancelLink: Selector('.app-link--destructive'),
@@ -77,28 +71,15 @@ class MoveDetailPage extends Page {
   checkHeader({ fullname } = {}) {
     return t
       .expect(this.nodes.title.innerText)
-      .eql(fullname, 'Title contains fullname')
-      .expect(this.nodes.subTitle.innerText)
-      .match(/[A-Z]{3}[0-9]{4}[A-Z]{1}$/, 'Subtitle contains reference number')
+      .contains(fullname, 'Title contains fullname')
+      .expect(this.nodes.title.innerText)
+      .match(/[A-Z]{3}[0-9]{4}[A-Z]{1}/, 'Subtitle contains reference number')
   }
 
-  async checkPersonalDetails({
-    policeNationalComputer,
-    prisonNumber,
-    dateOfBirth,
-    gender,
-    ethnicity,
-  } = {}) {
+  async checkPersonalDetails({ policeNationalComputer, prisonNumber } = {}) {
     await this.checkSummaryList(this.nodes.personalDetails, {
       'PNC number': policeNationalComputer,
       'Prison number': prisonNumber,
-      'Date of birth': dateOfBirth
-        ? `${filters.formatDate(dateOfBirth)} (Age ${filters.calculateAge(
-            dateOfBirth
-          )})`
-        : undefined,
-      Gender: gender,
-      Ethnicity: ethnicity,
     })
   }
 
@@ -127,11 +108,11 @@ class MoveDetailPage extends Page {
 
   checkCourtHearings({ hasCourtCase } = {}) {
     if (hasCourtCase === 'No') {
-      return t.expect(this.nodes.noCourtHearingsMessage.exists).ok()
+      return t.expect(this.nodes.noCourtInformationMessage.exists).ok()
     }
 
     // TODO: Write further assertions for when a move does have a court case
-    return t.expect(this.nodes.noCourtHearingsMessage.exists).not.ok()
+    return t.expect(this.nodes.noCourtInformationMessage.exists).not.ok()
   }
 
   checkCourtInformation({
@@ -164,7 +145,7 @@ class MoveDetailPage extends Page {
       return t.expect(this.nodes.noRiskInformationMessage.exists).ok()
     }
 
-    return this.checkAssessment(this.nodes.riskInformation, selectedItems, {
+    return this.checkSummaryList(this.nodes.riskInformation, {
       Violent: violent,
       Escape: escapeRisk,
       'Must be held separately': holdSeparately,
@@ -194,7 +175,7 @@ class MoveDetailPage extends Page {
       return t.expect(this.nodes.noHealthInformationMessage.exists).ok()
     }
 
-    return this.checkAssessment(this.nodes.healthInformation, selectedItems, {
+    return this.checkSummaryList(this.nodes.healthInformation, {
       'Special diet or allergy': specialDietOrAllergy,
       'Health issue': healthIssue,
       Medication: medication,

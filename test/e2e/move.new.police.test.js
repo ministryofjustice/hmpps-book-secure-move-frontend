@@ -66,6 +66,8 @@ test('With unfound person', async t => {
 
   await registerMoveUrl()
 
+  await t.click(Selector('a').withExactText('Details'))
+
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
@@ -122,6 +124,8 @@ test('With existing person', async t => {
 
   await registerMoveUrl()
 
+  await t.click(Selector('a').withExactText('Details'))
+
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
@@ -176,6 +180,8 @@ test('With a new person', async t => {
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
   await registerMoveUrl()
+
+  await t.click(Selector('a').withExactText('Details'))
 
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })

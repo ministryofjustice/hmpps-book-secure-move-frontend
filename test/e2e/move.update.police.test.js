@@ -1,4 +1,5 @@
 import { addDays, format } from 'date-fns'
+import { Selector } from 'testcafe'
 
 import { acceptMove, startMove } from './_helpers'
 import {
@@ -20,6 +21,7 @@ import { home, getMove } from './_routes'
 fixture('Existing move from Police Custody to Court').beforeEach(async t => {
   await t.useRole(policeUser).navigateTo(home)
   await createCourtMove()
+  await t.click(Selector('a').withExactText('Details'))
 })
 
 test('With existing PNC number', async t => {
@@ -65,6 +67,7 @@ test.before(async t => {
       policeNationalComputer: undefined,
     },
   })
+  await t.click(Selector('a').withExactText('Details'))
 })('Without existing PNC number', async t => {
   await checkUpdatePersonalDetails({
     include: ['policeNationalComputer'],
@@ -78,6 +81,7 @@ fixture.beforeEach(async t => {
       move_type: 'prison_recall',
     },
   })
+  await t.click(Selector('a').withExactText('Details'))
 })('Existing move from Police Custody to Prison (recall)')
 
 test('User should be able to update move details', async t => {
@@ -90,6 +94,7 @@ fixture.beforeEach(async t => {
   await acceptMove(t.ctx.move.id)
   await startMove(t.ctx.move.id)
   await t.navigateTo(getMove(t.ctx.move.id))
+  await t.click(Selector('a').withExactText('Details'))
 })('Existing move that has left custody')
 
 test('User should not be able to update any information', async t => {

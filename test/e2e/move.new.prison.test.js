@@ -71,6 +71,8 @@ test('With existing person', async t => {
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
+  await t.click(Selector('a').withExactText('Details'))
+
   // Move detail assertions
   await moveDetailPage.checkHeader(personalDetails)
 
@@ -126,6 +128,8 @@ test('With existing person', async t => {
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
+  await t.click(Selector('a').withExactText('Details'))
+
   // Move detail assertions
   await moveDetailPage.checkHeader(personalDetails)
 
@@ -171,6 +175,8 @@ test('Can be cancelled', async t => {
     location: moveDetails.prisonLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
+
+  await t.click(Selector('a').withExactText('Details'))
 
   // Move detail assertions
   await moveDetailPage.checkHeader(personalDetails)

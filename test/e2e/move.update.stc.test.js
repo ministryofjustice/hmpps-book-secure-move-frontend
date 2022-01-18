@@ -1,3 +1,5 @@
+import { Selector } from 'testcafe'
+
 import { acceptMove, startMove } from './_helpers'
 import {
   checkUpdateLinks,
@@ -17,6 +19,7 @@ fixture('Existing move from Secure Training Centre (STC) to Court').beforeEach(
         move_type: 'court_appearance',
       },
     })
+    await t.click(Selector('a').withExactText('Details'))
   }
 )
 
@@ -43,6 +46,7 @@ fixture(
       move_type: 'hospital',
     },
   })
+  await t.click(Selector('a').withExactText('Details'))
 })
 
 test('User should be able to update move', async () => {
@@ -68,6 +72,7 @@ fixture('Existing move from Secure Training Centre (STC) to Prison').beforeEach(
         move_type: 'prison_transfer',
       },
     })
+    await t.click(Selector('a').withExactText('Details'))
   }
 )
 
@@ -88,6 +93,7 @@ fixture(
       move_type: 'prison_transfer',
     },
   })
+  await t.click(Selector('a').withExactText('Details'))
 })
 
 test('User should not be able to update move', async () => {
@@ -107,6 +113,7 @@ fixture(
       move_type: 'prison_transfer',
     },
   })
+  await t.click(Selector('a').withExactText('Details'))
 })
 
 test('User should not be able to update move', async () => {
@@ -127,6 +134,7 @@ fixture.beforeEach(async t => {
   await acceptMove(t.ctx.move.id)
   await startMove(t.ctx.move.id)
   await t.navigateTo(getMove(t.ctx.move.id))
+  await t.click(Selector('a').withExactText('Details'))
 })('Existing move that has left custody')
 
 test('User should not be able to update any information', async t => {

@@ -23,9 +23,9 @@ export default class Page {
       username: Selector('#navigation li:nth-child(1)'),
       signOutLink: Selector('#navigation li a').withExactText('Sign out'),
       submitButton: Selector('button[type="submit"]'),
-      bannerHeading: Selector('.app-message--temporary .app-message__heading'),
-      bannerContent: Selector('.app-message--temporary .app-message__content'),
-      instructionBanner: Selector('.app-message--instruction'),
+      bannerHeading: Selector('.app-message__heading'),
+      bannerContent: Selector('.app-message__content'),
+      instructionBanner: Selector('.app-message'),
       locationsList: Selector(
         'ul[data-location-type="locations"] li a'
       ).withAttribute('href', /\/locations\/.+/),

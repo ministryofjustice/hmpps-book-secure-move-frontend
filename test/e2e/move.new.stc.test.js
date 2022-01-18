@@ -41,6 +41,8 @@ test('With a new person', async t => {
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
+  await t.click(Selector('a').withExactText('Details'))
+
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
@@ -52,9 +54,9 @@ test('With a new person', async t => {
 
   // Check banner
   await t
-    .expect(moveDetailPage.nodes.instructionBanner.innerText)
+    .expect(moveDetailPage.nodes.identityBar.innerText)
     .contains(
-      'Start the Youth Risk Assessment',
+      'Start Youth Risk Assessment',
       'Should contain start assessment banner'
     )
 })
@@ -102,6 +104,8 @@ test('With a new person', async t => {
 
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
+
+  await t.click(Selector('a').withExactText('Details'))
 
   // Personal details assertions
   await moveDetailPage.checkPersonalDetails(personalDetails)
@@ -151,6 +155,8 @@ test('With a new person', async t => {
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
+  await t.click(Selector('a').withExactText('Details'))
+
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
 
@@ -159,9 +165,9 @@ test('With a new person', async t => {
 
   // Check banner
   await t
-    .expect(moveDetailPage.nodes.instructionBanner.innerText)
+    .expect(moveDetailPage.nodes.identityBar.innerText)
     .contains(
-      'Start the Youth Risk Assessment',
+      'Start Youth Risk Assessment',
       'Should contain start assessment banner'
     )
 })
@@ -206,6 +212,8 @@ test('With a new person', async t => {
     location: moveDetails.secureChildrensHomeLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
+
+  await t.click(Selector('a').withExactText('Details'))
 
   // Move detail assertions
   await moveDetailPage.checkHeader({ fullname: personalDetails.fullname })
