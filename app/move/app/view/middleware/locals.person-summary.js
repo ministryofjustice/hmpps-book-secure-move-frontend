@@ -1,7 +1,10 @@
+const moveHelpers = require('../../../../../common/helpers/move')
 const presenters = require('../../../../../common/presenters')
 
 function localsMoveDetails(req, res, next) {
-  const profile = req.move?.profile
+  const { canAccess, move } = req
+
+  const profile = move?.profile
 
   if (!profile) {
     return next()
@@ -9,6 +12,7 @@ function localsMoveDetails(req, res, next) {
 
   const person = profile.person
   const metaList = presenters.personToMetaListComponent(person)
+  const updateUrls = moveHelpers.getUpdateUrls(move, canAccess)
 
   res.locals.personSummary = {
     metaList,
@@ -17,6 +21,7 @@ function localsMoveDetails(req, res, next) {
       alt: person._fullname,
     },
     profileLink: `/person/${person.id}?move=${req.move.id}`,
+    updateLink: updateUrls.personal_details,
   }
 
   next()

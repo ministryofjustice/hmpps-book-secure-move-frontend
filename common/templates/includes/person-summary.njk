@@ -30,5 +30,13 @@
         </a>
       </p>
     {% endif %}
+
+    {% if personSummary.updateLink %}
+      <p class="govuk-!-margin-top-1 govuk-!-margin-bottom-0 govuk-!-font-size-16">
+        <a href="{{ personSummary.updateLink }}" data-update-link="personal_details">
+          {{ t("actions::edit_profile") }}
+        </a>
+      </p>
+    {% endif %}
   </div>
 {% endif %}

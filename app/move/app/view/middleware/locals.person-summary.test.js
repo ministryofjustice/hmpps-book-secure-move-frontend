@@ -52,12 +52,35 @@ describe('Move view app', function () {
                 alt: 'DOE, JOHN',
               },
               profileLink: '/person/__profile12345__?move=__move1__',
+              updateLink: undefined,
             },
           })
         })
 
         it('should call next', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with profile and permission to edit', function () {
+        beforeEach(function () {
+          req.canAccess = () => true
+          req.move._canEdit = true
+          middleware(req, res, nextSpy)
+        })
+
+        it('should set locals correctly', function () {
+          expect(res.locals).to.be.deep.equal({
+            personSummary: {
+              metaList: mockMetaListComponent,
+              image: {
+                url: '/person/image/__profile12345__',
+                alt: 'DOE, JOHN',
+              },
+              profileLink: '/person/__profile12345__?move=__move1__',
+              updateLink: '/move/__move1__/edit/personal-details',
+            },
+          })
         })
       })
 
