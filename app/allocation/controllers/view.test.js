@@ -186,7 +186,7 @@ describe('Allocation controllers', function () {
         })
 
         it('should contain correct number of locals', function () {
-          expect(Object.keys(locals)).to.have.length(11)
+          expect(Object.keys(locals)).to.have.length(10)
         })
       })
 
@@ -196,19 +196,14 @@ describe('Allocation controllers', function () {
       })
     })
 
-    context('with cancelled allocation (and old design)', function () {
+    context('with cancelled allocation', function () {
       let locals
 
       beforeEach(function () {
         mockReq.allocation.status = 'cancelled'
-        mockReq.moveDesignPreview = false
 
         controller(mockReq, mockRes)
         locals = mockRes.render.firstCall.lastArg
-      })
-
-      it('is not new design', function () {
-        expect(locals.isMoveDesignPreview).to.equal(false)
       })
 
       it('does create a message banner title', function () {
@@ -235,18 +230,13 @@ describe('Allocation controllers', function () {
       })
     })
 
-    context('when user has permission to assign (and new design)', function () {
+    context('when user has permission to assign', function () {
       let locals
 
       beforeEach(function () {
         mockReq.canAccess.returns(true)
-        mockReq.moveDesignPreview = true
         controller(mockReq, mockRes)
         locals = mockRes.render.firstCall.lastArg
-      })
-
-      it('is new design', function () {
-        expect(locals.isMoveDesignPreview).to.equal(true)
       })
 
       it('should filter out moves without a person', function () {
