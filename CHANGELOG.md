@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.99.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.98.0...v2.99.0) (2022-01-20)
+
+
+### Features
+
+* Mount new move design without /preview prefix ([caa4b6b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/caa4b6b548d73f16b5fed62c18168f72717915e0))
+
+
+### Bug Fixes
+
+* Align remove button correctly ([0b5d1b5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0b5d1b5039407be8b6738cfc19df3231051999b0))
+* Increase right padding on PER headings ([8f41579](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8f415795af064a11c692c50fbc67bcd4725cd18a))
+* Make it possible to edit personal details in new design ([738b13c](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/738b13c3cff9d1ceef5b548dd38c5369326d2ca2))
+* Temporarily disable e2e tests for move details ([edbe42e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/edbe42ecfb91139355f319468fa3a5c9ce729ab4))
+* Update e2e tests for new move page design ([5356c90](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5356c90aa73d103d4a7d35fbba5a70a8e7b88ca8))
+
 ## [2.98.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.97.7...v2.98.0) (2022-01-10)
 
 
