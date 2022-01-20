@@ -75,7 +75,6 @@ module.exports = {
       process.env.STATIC_ASSETS_CACHE_MAX_AGE || (IS_PRODUCTION ? '1w' : false),
   },
   FEEDBACK_URL: process.env.FEEDBACK_URL,
-  MOVE_DESIGN_FEEDBACK_URL: process.env.MOVE_DESIGN_FEEDBACK_URL,
   SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
   APP_VERSION,
   APP_BUILD_DATE: process.env.APP_BUILD_DATE,
@@ -282,13 +281,6 @@ module.exports = {
   },
   FEATURE_FLAGS: {
     GOT: /true/i.test(process.env.FEATURE_FLAG_GOT),
-    MOVE_PREVIEW: /true/i.test(process.env.FEATURE_FLAG_MOVE_PREVIEW),
-  },
-  COOKIES: {
-    MOVE_DESIGN_PREVIEW: {
-      name: userId => `move-design-preview.${userId}`,
-      maxAge: 365 * 24 * 60 * 60 * 1000, // one year from opt-in,
-    },
   },
   FRAMEWORKS: {
     CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,

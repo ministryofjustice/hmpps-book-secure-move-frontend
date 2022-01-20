@@ -749,43 +749,20 @@ describe('Framework controllers', function () {
           mockReq.body = {
             save_and_return_to_overview: '1',
           }
+
+          controller.successHandler(mockReq, mockRes, nextSpy)
         })
 
-        context('with old move design', function () {
-          beforeEach(function () {
-            controller.successHandler(mockReq, mockRes, nextSpy)
-          })
-
-          it('should redirect to base URL without the framework and section', function () {
-            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url'
-            )
-          })
-
-          it('should not call parent success handler', function () {
-            expect(
-              FormWizardController.prototype.successHandler
-            ).not.to.have.been.called
-          })
+        it('should redirect to base URL without the section', function () {
+          expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+            '/base-url/framework'
+          )
         })
 
-        context('with new move design preview', function () {
-          beforeEach(function () {
-            mockReq.moveDesignPreview = true
-            controller.successHandler(mockReq, mockRes, nextSpy)
-          })
-
-          it('should redirect to base URL without the section', function () {
-            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-              '/base-url/framework'
-            )
-          })
-
-          it('should not call parent success handler', function () {
-            expect(
-              FormWizardController.prototype.successHandler
-            ).not.to.have.been.called
-          })
+        it('should not call parent success handler', function () {
+          expect(
+            FormWizardController.prototype.successHandler
+          ).not.to.have.been.called
         })
       })
 
@@ -810,43 +787,19 @@ describe('Framework controllers', function () {
           beforeEach(function () {
             mockReq.form.options.route = '/two'
             FormWizardController.prototype.getNextStep.returns('/two')
+            controller.successHandler(mockReq, mockRes, nextSpy)
           })
 
-          context('with old move design', function () {
-            beforeEach(function () {
-              controller.successHandler(mockReq, mockRes, nextSpy)
-            })
-
-            it('should redirect to base URL without the framework and section', function () {
-              expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-                '/base-url'
-              )
-            })
-
-            it('should not call parent success handler', function () {
-              expect(
-                FormWizardController.prototype.successHandler
-              ).not.to.have.been.called
-            })
+          it('should redirect to base URL without the section', function () {
+            expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
+              '/base-url/framework'
+            )
           })
 
-          context('with new move design preview', function () {
-            beforeEach(function () {
-              mockReq.moveDesignPreview = true
-              controller.successHandler(mockReq, mockRes, nextSpy)
-            })
-
-            it('should redirect to base URL without the section', function () {
-              expect(mockRes.redirect).to.have.been.calledOnceWithExactly(
-                '/base-url/framework'
-              )
-            })
-
-            it('should not call parent success handler', function () {
-              expect(
-                FormWizardController.prototype.successHandler
-              ).not.to.have.been.called
-            })
+          it('should not call parent success handler', function () {
+            expect(
+              FormWizardController.prototype.successHandler
+            ).not.to.have.been.called
           })
         })
       })

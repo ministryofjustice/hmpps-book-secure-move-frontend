@@ -3,7 +3,6 @@ const router = require('express').Router({ mergeParams: true })
 
 const { uuidRegex } = require('../../../../common/helpers/url')
 const breadcrumbs = require('../../../../common/middleware/breadcrumbs')
-const setMoveDesignOptOutHref = require('../../../../common/middleware/set-move-design-opt-out-href')
 const {
   setMove,
   setMoveWithEvents,
@@ -11,7 +10,6 @@ const {
   setYouthRiskAssessment,
 } = require('../../middleware')
 
-const { PREVIEW_PREFIX } = require('./constants')
 const {
   renderDetails,
   renderTimeline,
@@ -41,7 +39,6 @@ router.use(/\/(timeline|warnings).*/, setMoveWithEvents)
 router.use(breadcrumbs.setHome())
 router.use(setPersonEscortRecord)
 router.use(setYouthRiskAssessment)
-router.use(setMoveDesignOptOutHref({ previewPrefix: PREVIEW_PREFIX }))
 router.use(setBreadcrumb)
 router.use(localsUrls)
 router.use(localsActions)
@@ -59,5 +56,5 @@ router.get('/timeline', renderTimeline)
 // Export
 module.exports = {
   router,
-  mountpath: `${PREVIEW_PREFIX}/:moveId(${uuidRegex})`,
+  mountpath: `/:moveId(${uuidRegex})`,
 }

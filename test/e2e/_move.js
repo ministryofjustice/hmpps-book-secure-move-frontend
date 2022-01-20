@@ -265,7 +265,7 @@ export async function checkUpdatePagesRedirected(moveId, pages = updatePages) {
     await t
       .navigateTo(url)
       .expect(page.getCurrentUrl())
-      .match(/\/move\/[\w]{8}(-[\w]{4}){3}-[\w]{12}$/)
+      .match(/\/move\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/warnings/)
   }
 }
 
@@ -279,6 +279,7 @@ export async function checkUpdatePagesRedirected(moveId, pages = updatePages) {
 export async function checkUpdatePersonalDetails(options) {
   const { person } = t.ctx.move
   await moveDetailPage.clickUpdateLink('personal_details')
+
   const gender = person.gender === 'Female' ? 'Male' : 'Female'
   const updatedFields = await createMovePage.fillInPersonalDetails(
     { gender },

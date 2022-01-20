@@ -6,8 +6,7 @@ const moveRouter = express.Router({ mergeParams: true })
 // Local dependencies
 const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
-const setMoveDesignOptOutHref = require('../../common/middleware/set-move-design-opt-out-href')
-const { ENABLE_DEVELOPMENT_TOOLS, FEATURE_FLAGS } = require('../../config')
+const { ENABLE_DEVELOPMENT_TOOLS } = require('../../config')
 const personEscortRecordApp = require('../person-escort-record')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
 
@@ -18,19 +17,9 @@ const newApp = require('./app/new')
 const reviewApp = require('./app/review')
 const unassignApp = require('./app/unassign')
 const viewApp = require('./app/view')
-const { PREVIEW_PREFIX } = require('./app/view/constants')
+const { confirmation, journeys } = require('./controllers')
 const {
-  confirmation,
-  journeys,
-  previewOptIn,
-  previewOptOut,
-  timeline,
-  view,
-} = require('./controllers')
-const {
-  checkPreviewChoice,
   setMove,
-  setMoveWithEvents,
   setPersonEscortRecord,
   setYouthRiskAssessment,
   setAllocation,
@@ -38,36 +27,19 @@ const {
   setDevelopmentTools,
 } = require('./middleware')
 
-// Define param middleware
-
-// Define routes
 router.use(newApp.mountpath, newApp.router)
 router.use(viewApp.mountpath, viewApp.router)
-// New view app preview routes
-// TODO: Remove these once the new design is being used everywhere
-router.get('/preview/opt-in', previewOptIn)
-router.get('/preview/opt-out', previewOptOut)
 
 router.use(`/:moveId(${uuidRegex})`, moveRouter)
 
-if (FEATURE_FLAGS.MOVE_PREVIEW) {
-  moveRouter.use(checkPreviewChoice({ '/': '/', '/timeline': '/timeline' }))
-}
-
-// For all non-timeline routes use standard move middleware
-moveRouter.use(/\/((?!timeline).)*/, setMove)
-// For all timeline route use move events middleware
-moveRouter.use('/timeline', setMoveWithEvents)
+moveRouter.use(setMove)
 moveRouter.use(setPersonEscortRecord)
 moveRouter.use(setYouthRiskAssessment)
-moveRouter.use(setMoveDesignOptOutHref({ previewPrefix: PREVIEW_PREFIX }))
 
 if (ENABLE_DEVELOPMENT_TOOLS) {
   moveRouter.use(setDevelopmentTools)
 }
 
-moveRouter.get('/', protectRoute('move:view'), view)
-moveRouter.get('/timeline', protectRoute('move:view'), timeline)
 moveRouter.get(
   '/confirmation',
   protectRoute(['move:create', 'move:review']),

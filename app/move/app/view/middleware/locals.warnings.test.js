@@ -83,6 +83,27 @@ describe('Move view app', function () {
             expect(res.locals.warnings.sections).to.be.empty
           })
         })
+
+        context('with important events', function () {
+          beforeEach(function () {
+            req.move.important_events = [{ id: 10 }]
+            middleware(req, res, nextSpy)
+          })
+
+          it('should set sections variable to include important events', function () {
+            expect(res.locals.warnings).to.have.property('sections')
+            expect(res.locals.warnings.sections).to.deep.equal([
+              {
+                context: 'framework',
+                count: 0,
+                isCompleted: true,
+                key: 'in-transit-events',
+                name: 'In transit information',
+                panels: [],
+              },
+            ])
+          })
+        })
       })
 
       describe('tagList', function () {
