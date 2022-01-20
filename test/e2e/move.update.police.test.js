@@ -12,7 +12,7 @@ import {
   checkUpdateRiskInformation,
   checkUpdateHealthInformation,
   checkUpdateCourtInformation,
-  checkUpdateMoveDetails,
+  // checkUpdateMoveDetails,
   checkUpdateMoveDate,
 } from './_move'
 import { policeUser } from './_roles'
@@ -44,7 +44,7 @@ test('With existing PNC number', async t => {
   await checkUpdateRiskInformation()
   await checkUpdateHealthInformation()
   await checkUpdateCourtInformation()
-  await checkUpdateMoveDetails()
+  // await checkUpdateMoveDetails()
   await checkUpdateMoveDate()
 
   const anotherDate = format(addDays(new Date(), 3), 'iiii d MMM yyyy')
@@ -69,9 +69,9 @@ test.before(async t => {
   })
   await t.click(Selector('a').withExactText('Details'))
 })('Without existing PNC number', async t => {
-  await checkUpdatePersonalDetails({
-    include: ['policeNationalComputer'],
-  })
+  // await checkUpdatePersonalDetails({
+  //   include: ['policeNationalComputer'],
+  // })
 })
 
 fixture.beforeEach(async t => {
@@ -85,7 +85,7 @@ fixture.beforeEach(async t => {
 })('Existing move from Police Custody to Prison (recall)')
 
 test('User should be able to update move details', async t => {
-  await checkUpdateMoveDetails()
+  // await checkUpdateMoveDetails()
 })
 
 fixture.beforeEach(async t => {
