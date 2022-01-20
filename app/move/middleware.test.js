@@ -167,6 +167,29 @@ describe('Move middleware', function () {
           expect(nextSpy).to.be.calledOnceWithExactly()
         })
       })
+
+      context('when API call returns an error', function () {
+        beforeEach(async function () {
+          await middleware.setMoveWithEvents(
+            {
+              params: { moveId: mockMoveId },
+              services: {
+                move: { getByIdWithEvents: sinon.stub().throws(errorStub) },
+              },
+            },
+            res,
+            nextSpy
+          )
+        })
+
+        it('should not set response data to request object', function () {
+          expect(req).not.to.have.property('move')
+        })
+
+        it('should send error to next function', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly(errorStub)
+        })
+      })
     })
   })
 
