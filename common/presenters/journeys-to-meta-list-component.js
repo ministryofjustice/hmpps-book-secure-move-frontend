@@ -6,6 +6,7 @@ function _mapJourney({
   state,
   from_location: fromLocation,
   to_location: toLocation,
+  date,
   vehicle,
 } = {}) {
   const rows = [
@@ -18,6 +19,18 @@ function _mapJourney({
         text: i18n.t('moves::map.labels.route.text', {
           from: fromLocation.title,
           to: toLocation.title,
+        }),
+      },
+    },
+    {
+      classes: 'govuk-!-font-size-16',
+      key: {
+        text: i18n.t('moves::map.labels.date.heading'),
+      },
+      value: {
+        text: i18n.t('moves::map.labels.date.text', {
+          context: date ? '' : 'unknown',
+          date,
         }),
       },
     },
