@@ -1,6 +1,7 @@
 const { sortBy } = require('lodash')
 
 const i18n = require('../../config/i18n')
+const { formatDate } = require('../../config/nunjucks/filters')
 
 function _mapJourney({
   state,
@@ -30,7 +31,7 @@ function _mapJourney({
       value: {
         text: i18n.t('moves::map.labels.date.text', {
           context: date ? '' : 'unknown',
-          date,
+          date: formatDate(date),
         }),
       },
     },

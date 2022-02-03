@@ -175,7 +175,7 @@ describe('Presenters', function () {
                 'moves::map.labels.date.text',
                 {
                   context: '',
-                  date: journey.date,
+                  date: '2 Jan 2020',
                 }
               )
             } else {
