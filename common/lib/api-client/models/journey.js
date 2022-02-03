@@ -4,6 +4,7 @@ module.exports = {
     billable: '',
     vehicle: '',
     timestamp: '',
+    date: '',
     from_location: {
       jsonApi: 'hasOne',
       type: 'locations',

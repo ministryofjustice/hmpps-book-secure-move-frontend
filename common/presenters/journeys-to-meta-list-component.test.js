@@ -23,6 +23,7 @@ describe('Presenters', function () {
           id: '1234',
           registration: 'JM18 AHI',
         },
+        date: '2020-01-01',
       },
       {
         state: 'proposed',
@@ -40,6 +41,7 @@ describe('Presenters', function () {
           id: '1AG',
           registration: 'XK21 HUA',
         },
+        date: '2020-01-02',
       },
       {
         state: 'in_progress',
@@ -54,6 +56,7 @@ describe('Presenters', function () {
           title: 'HMP Pentonville',
         },
         vehicle: null,
+        date: null,
       },
       {
         state: 'completed',
@@ -131,6 +134,15 @@ describe('Presenters', function () {
               {
                 classes: 'govuk-!-font-size-16',
                 key: {
+                  text: 'moves::map.labels.date.heading',
+                },
+                value: {
+                  text: 'moves::map.labels.date.text',
+                },
+              },
+              {
+                classes: 'govuk-!-font-size-16',
+                key: {
                   text: 'moves::map.labels.vehicle.heading',
                 },
                 value: {
@@ -153,6 +165,28 @@ describe('Presenters', function () {
                 to: journey.to_location.title,
               }
             )
+
+            expect(i18n.t).to.be.calledWithExactly(
+              'moves::map.labels.date.heading'
+            )
+
+            if (journey.date) {
+              expect(i18n.t).to.be.calledWithExactly(
+                'moves::map.labels.date.text',
+                {
+                  context: '',
+                  date: '2 Jan 2020',
+                }
+              )
+            } else {
+              expect(i18n.t).to.be.calledWithExactly(
+                'moves::map.labels.date.text',
+                {
+                  context: 'unknown',
+                  date: undefined,
+                }
+              )
+            }
 
             expect(i18n.t).to.be.calledWithExactly(
               'moves::map.labels.vehicle.heading'

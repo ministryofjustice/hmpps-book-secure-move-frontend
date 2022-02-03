@@ -260,6 +260,11 @@
         "heading": "Route",
         "text": "{{from}} to {{to}}"
       },
+      "date": {
+        "heading": "Date",
+        "text": "{{date}}",
+        "text_unknown": "Unknown"
+      },
       "vehicle": {
         "heading": "Vehicle",
         "text": "{{registration}} ({{id}})",
