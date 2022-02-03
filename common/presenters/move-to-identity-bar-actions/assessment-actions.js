@@ -53,8 +53,10 @@ function assessmentActions(move = {}, { canAccess } = {}) {
   }
 
   if (
-    assessment.status === 'completed' &&
     move.status !== 'cancelled' &&
+    (assessment.status === 'completed' ||
+      (assessment.status === 'confirmed' &&
+        !assessment.handover_occurred_at)) &&
     canAccess(`${context}:confirm`)
   ) {
     actions.push({

@@ -493,6 +493,7 @@ describe('Presenters', function () {
           beforeEach(function () {
             mockMove.profile.person_escort_record = {
               status: 'confirmed',
+              handover_occurred_at: '2020-01-01',
             }
             output = presenter(mockMove, { canAccess: canAccessStub })
           })
