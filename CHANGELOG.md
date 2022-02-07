@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.100.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.100.0...v2.100.1) (2022-02-07)
+
+
+### Bug Fixes
+
+* Correct logic for record handover button ([c9dc0f7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c9dc0f74ea218629d1540fbaed17894ae6e927ed))
+
 ## [2.100.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.99.0...v2.100.0) (2022-02-03)
 
 
