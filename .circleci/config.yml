@@ -6,6 +6,34 @@ orbs:
   slack: circleci/slack@4.3.0
   hmpps: ministryofjustice/hmpps@3.0.4
 
+commands:
+  export_kube_vars:
+    description: "Exports kube vars for the chosen environment and cluster."
+    parameters:
+      env:
+        type: string
+      cluster:
+        type: string
+        default: "live-1"
+    steps:
+      - run:
+          name: Export kubernetes env vars
+          command: |
+            ENV_UPCASED=$(echo "<< parameters.env >>" | tr '[:lower:]' '[:upper:]')
+            [[ "<< parameters.cluster >>" = "live" ]] && CLUSTER_SUFFIX="_LIVE"
+
+            CLUSTER_VAR="KUBE_CLUSTER${CLUSTER_SUFFIX}"
+            CACERT_VAR="KUBE_ENV_${ENV_UPCASED}_CACERT${CLUSTER_SUFFIX}"
+            NAME_VAR="KUBE_ENV_${ENV_UPCASED}_NAME"
+            NAMESPACE_VAR="KUBE_ENV_${ENV_UPCASED}_NAMESPACE"
+            TOKEN_VAR="KUBE_ENV_${ENV_UPCASED}_TOKEN${CLUSTER_SUFFIX}"
+
+            echo "export KUBE_CLUSTER=\"${!CLUSTER_VAR}\"" >> $BASH_ENV
+            echo "export KUBE_CACERT=\"${!CACERT_VAR}\"" >> $BASH_ENV
+            echo "export KUBE_NAME=\"${!NAME_VAR}\"" >> $BASH_ENV
+            echo "export KUBE_NAMESPACE=\"${!NAMESPACE_VAR}\"" >> $BASH_ENV
+            echo "export KUBE_TOKEN=\"${!TOKEN_VAR}\"" >> $BASH_ENV
+
 aliases:
   # Shared containers
   - &circle_container
@@ -370,19 +398,28 @@ jobs:
     parameters:
       env:
         type: string
+      cluster:
+        type: string
+        default: "live-1"
       notify_slack:
         type: string
         default: ""
     steps:
       - checkout
       - *set_package_version
+      - export_kube_vars:
+          env: << parameters.env >>
+          cluster: << parameters.cluster >>
       - run:
-          name: Set k8s context
+          name: Authenticate with cluster
           command: |
-            setup-kube-auth
-            kubectl config use-context << parameters.env >>
+            echo -n $KUBE_CACERT | base64 -d > ./ca.crt
+            kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
+            kubectl config set-credentials circleci --token=${KUBE_TOKEN}
+            kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=circleci --namespace=${KUBE_NAMESPACE}
+            kubectl config use-context ${KUBE_CLUSTER}
       - deploy:
-          name: Deploy image to << parameters.env >>
+          name: Deploy image to << parameters.env >> on << parameters.cluster >> cluster
           command: |
             export BUILD_DATE=$(date -Is) >> $BASH_ENV
             source $BASH_ENV
@@ -451,9 +488,31 @@ workflows:
       - deploy:
           context:
             - hmpps-common-vars
+          <<: *only_main
+          name: deploy-staging-live
+          env: 'staging'
+          cluster: 'live'
+          requires:
+            - build-docker-image-main
+            - end-to-end-test-main
+            - lint-and-unit-test
+      - deploy:
+          context:
+            - hmpps-common-vars
           <<: *only_deploy_tags
           name: deploy-preproduction
           env: 'preprod'
+          requires:
+            - build-docker-image-release
+            - end-to-end-test-release
+            - lint-and-unit-test
+      - deploy:
+          context:
+            - hmpps-common-vars
+          <<: *only_deploy_tags
+          name: deploy-preproduction-live
+          env: 'preprod'
+          cluster: 'live'
           requires:
             - build-docker-image-release
             - end-to-end-test-release
@@ -472,10 +531,29 @@ workflows:
           context:
             - hmpps-common-vars
           <<: *only_deploy_tags
+          name: deploy-uat-live
+          env: 'uat'
+          cluster: 'live'
+          requires:
+            - build-docker-image-release
+            - end-to-end-test-release
+            - lint-and-unit-test
+      - deploy:
+          context:
+            - hmpps-common-vars
+          <<: *only_deploy_tags
           <<: *requires_production_approval
           name: deploy-production
           env: 'production'
           notify_slack: 'true'
+      - deploy:
+          context:
+            - hmpps-common-vars
+          <<: *only_deploy_tags
+          <<: *requires_production_approval
+          name: deploy-production-live
+          env: 'production'
+          cluster: 'live'
       # Production approval
       - approval:
           context:
