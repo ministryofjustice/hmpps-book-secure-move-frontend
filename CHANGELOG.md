@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.100.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.100.1...v2.100.2) (2022-02-09)
+
+
+### Bug Fixes
+
+* Remove duplicate breadcrumb from frameworks ([416194e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/416194ef0c7703ada2bf4b5a1978d4a2e2ca6eb3))
+
 ### [2.100.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.100.0...v2.100.1) (2022-02-07)
 
 
