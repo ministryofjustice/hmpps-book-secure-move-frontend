@@ -38,13 +38,6 @@ describe('Framework middleware', function () {
           middleware(mockReq, mockRes, nextSpy)
         })
 
-        it('should set move breadcrumb item', function () {
-          expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
-            text: 'DOE, JOHN (PFX7536F)',
-            href: '/move/__move_12345__',
-          })
-        })
-
         it('should set assessment breadcrumb item', function () {
           expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
             text: 'assessment::page_title',
@@ -70,13 +63,6 @@ describe('Framework middleware', function () {
         beforeEach(function () {
           mockReq.originalUrl = 'confirm/handover'
           middleware(mockReq, mockRes, nextSpy)
-        })
-
-        it('should set move breadcrumb item', function () {
-          expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
-            text: 'DOE, JOHN (PFX7536F)',
-            href: '/move/__move_12345__',
-          })
         })
 
         it('should set not assessment breadcrumb item', function () {
@@ -110,13 +96,6 @@ describe('Framework middleware', function () {
           },
         }
         middleware(mockReq, mockRes, nextSpy)
-      })
-
-      it('should set move breadcrumb item', function () {
-        expect(mockRes.breadcrumb).to.have.been.calledWithExactly({
-          text: 'DOE, JOHN (PFX7536F)',
-          href: '/move/__move_12345__',
-        })
       })
 
       it('should set assessment breadcrumb item', function () {
