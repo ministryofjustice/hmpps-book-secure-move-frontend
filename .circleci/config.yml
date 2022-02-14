@@ -481,16 +481,6 @@ workflows:
           <<: *only_main
           name: deploy-staging
           env: 'staging'
-          requires:
-            - build-docker-image-main
-            - end-to-end-test-main
-            - lint-and-unit-test
-      - deploy:
-          context:
-            - hmpps-common-vars
-          <<: *only_main
-          name: deploy-staging-live
-          env: 'staging'
           cluster: 'live'
           requires:
             - build-docker-image-main
