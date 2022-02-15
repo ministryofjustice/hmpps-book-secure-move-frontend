@@ -14,7 +14,7 @@ commands:
         type: string
       cluster:
         type: string
-        default: "live-1"
+        default: "live"
     steps:
       - run:
           name: Export kubernetes env vars
@@ -400,7 +400,7 @@ jobs:
         type: string
       cluster:
         type: string
-        default: "live-1"
+        default: "live"
       notify_slack:
         type: string
         default: ""
@@ -481,7 +481,6 @@ workflows:
           <<: *only_main
           name: deploy-staging
           env: 'staging'
-          cluster: 'live'
           requires:
             - build-docker-image-main
             - end-to-end-test-main
@@ -500,30 +499,8 @@ workflows:
           context:
             - hmpps-common-vars
           <<: *only_deploy_tags
-          name: deploy-preproduction-live
-          env: 'preprod'
-          cluster: 'live'
-          requires:
-            - build-docker-image-release
-            - end-to-end-test-release
-            - lint-and-unit-test
-      - deploy:
-          context:
-            - hmpps-common-vars
-          <<: *only_deploy_tags
           name: deploy-uat
           env: 'uat'
-          requires:
-            - build-docker-image-release
-            - end-to-end-test-release
-            - lint-and-unit-test
-      - deploy:
-          context:
-            - hmpps-common-vars
-          <<: *only_deploy_tags
-          name: deploy-uat-live
-          env: 'uat'
-          cluster: 'live'
           requires:
             - build-docker-image-release
             - end-to-end-test-release
@@ -536,14 +513,6 @@ workflows:
           name: deploy-production
           env: 'production'
           notify_slack: 'true'
-      - deploy:
-          context:
-            - hmpps-common-vars
-          <<: *only_deploy_tags
-          <<: *requires_production_approval
-          name: deploy-production-live
-          env: 'production'
-          cluster: 'live'
       # Production approval
       - approval:
           context:
