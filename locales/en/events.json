@@ -329,7 +329,7 @@
   },
   "PerMedicalAid": {
     "flag": "medical",
-    "heading": "Medical attention requested",
+    "heading": "Medical attention",
     "description": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} at {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} at {{treated_at, formatTime}} $t(events::PerMedicalAid.select_location)",
     "select_location": "$t(events::PerMedicalAid.location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
     "location_vehicle": "at {{location.title}}",
@@ -398,7 +398,7 @@
   },
   "PersonMoveUsedForce": {
     "flag": "red",
-    "heading": "Supplier used force",
+    "heading": "Used force",
     "description": "{{move.supplier.name}} staff {{supplier_personnel_numbers}} used force on $t(events::person) <br>The incident was reported at {{reported_at, formatTime}} <br>$t(events::select_fault_classification)"
   },
   "PersonMoveVehicleBrokeDown": {
