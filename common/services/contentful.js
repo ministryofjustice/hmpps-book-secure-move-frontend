@@ -1,3 +1,4 @@
+const { documentToHtmlString } = require('@contentful/rich-text-html-renderer')
 const contentful = require('contentful')
 
 const {
@@ -10,7 +11,7 @@ const service = {
     space: CONTENTFUL_SPACE_ID,
     accessToken: CONTENTFUL_DELIVERY_ACCESS_TOKEN,
   }),
-  formatEntries: async () => {
+  fetchEntries: async () => {
     const entries = await service.client.getEntries()
 
     if (!entries.items?.length) {
@@ -23,6 +24,10 @@ const service = {
     const latestNotificationBody = latestNotification.fields.body.content
 
     return { title: latestNotificationTitle, body: latestNotificationBody }
+  },
+  convertToHTMLFormat: contentBody => {
+    const formattedResponse = documentToHtmlString(contentBody)
+    return formattedResponse
   },
 }
 module.exports = service

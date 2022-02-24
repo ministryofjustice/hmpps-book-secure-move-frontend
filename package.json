@@ -95,6 +95,7 @@
     "ministryofjustice"
   ],
   "dependencies": {
+    "@contentful/rich-text-html-renderer": "15.11.1",
     "@hmpps-book-secure-move-frameworks/1.0.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.0.0",
     "@hmpps-book-secure-move-frameworks/1.1.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.1.0",
     "@hmpps-book-secure-move-frameworks/1.2.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.2.0",

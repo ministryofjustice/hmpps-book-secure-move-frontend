@@ -24,7 +24,7 @@ const mockedResponse = {
           data: {},
           content: [
             {
-              nodeType: 'paragraph',
+              nodeType: 'heading-1',
               content: [
                 {
                   nodeType: 'text',
@@ -37,11 +37,11 @@ const mockedResponse = {
               data: {},
             },
             {
-              nodeType: 'heading-4',
+              nodeType: 'paragraph',
               content: [
                 {
                   nodeType: 'text',
-                  value: 'We love a heading 4.',
+                  value: 'Some random paragraph text.',
                   marks: [],
                   data: {},
                 },
@@ -60,20 +60,20 @@ const emptyMockedResponse = { items: [] }
 describe('Contentful Service', function () {
   it('calls the contentful.createClient method', async function () {
     sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
-    const results = await contentfulService.formatEntries()
+    const results = await contentfulService.fetchEntries()
     expect(results.title).to.equal('Whats new today!')
   })
 
   it('returns the content title', async function () {
     sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
-    const formattedEntries = await contentfulService.formatEntries()
+    const formattedEntries = await contentfulService.fetchEntries()
     expect(formattedEntries.title).to.equal('Whats new today!')
   })
 
   it('returns the body', async function () {
     sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
-    const formattedEntries = await contentfulService.formatEntries()
-    expect(formattedEntries.body[0].nodeType).to.equal('paragraph')
+    const formattedEntries = await contentfulService.fetchEntries()
+    expect(formattedEntries.body[0].nodeType).to.equal('heading-1')
     expect(formattedEntries.body[0].content[0].value).to.equal(
       'The latest updates and improvements to Book a secure move.'
     )
@@ -83,7 +83,16 @@ describe('Contentful Service', function () {
     sinon
       .stub(contentfulService.client, 'getEntries')
       .resolves(emptyMockedResponse)
-    const formattedEntries = await contentfulService.formatEntries()
+    const formattedEntries = await contentfulService.fetchEntries()
     expect(formattedEntries).to.equal(null)
+  })
+
+  it('converts the content into html format', async function () {
+    const htmlFormatted = await contentfulService.convertToHTMLFormat(
+      mockedResponse.items[0].fields.body
+    )
+    expect(htmlFormatted).to.equal(
+      '<h1>The latest updates and improvements to Book a secure move.</h1><p>Some random paragraph text.</p>'
+    )
   })
 })
