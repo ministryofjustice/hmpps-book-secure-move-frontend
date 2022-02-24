@@ -5,25 +5,82 @@
   "version": "2.100.4",
   "main": "start.js",
   "contributors": [
-    "Dom Smith <dom@teneightfive.com>",
-    "Alex Robinson <github@alex.fu2k.org>",
-    "Thomas Leese <thomas@leese.io>",
-    "Robin Harrison <merlinc@courts.io>",
-    "Ben Chidgey <ben@feedmypixel.com>",
-    "Nevelina Aleksandrova <nevelina.aleksandrova@digital.justice.gov.uk>",
-    "barbaracassani <barbara@kitsch-en.net>",
-    "Adam Sharp <adam.sharp@digital.justice.gov.uk>",
-    "Daniele Polencic <daniele.polencic@gmail.com>",
-    "Barbara Cassani <barbaracassani@users.noreply.github.com>",
-    "Steve Lorek <steve@stevelorek.com>",
-    "Matt Crowson <matt.crowson@digital.justice.gov.uk>",
-    "Tyom Semonov <inspiro@gmail.com>",
-    "Ryan Brooks <ryan@slatehorse.com>",
-    "Ed Brindley <ed@maidavale.org>",
-    "Steve Hook <steve.hook@gmail.com>",
-    "Miguel Afonso <mafonso@gmail.com>",
-    "Andy White <andy@wireworldmedia.co.uk>",
-    "Martin Ballhatchet <64074996+martin-ballhatchet-moj@users.noreply.github.com>"
+    {
+      "name": "Dom Smith",
+      "email": "dom@teneightfive.com"
+    },
+    {
+      "name": "Alex Robinson",
+      "email": "github@alex.fu2k.org"
+    },
+    {
+      "name": "Thomas Leese",
+      "email": "thomas@leese.io"
+    },
+    {
+      "name": "Robin Harrison",
+      "email": "merlinc@courts.io"
+    },
+    {
+      "name": "Ben Chidgey",
+      "email": "ben@feedmypixel.com"
+    },
+    {
+      "name": "Nevelina Aleksandrova",
+      "email": "nevelina.aleksandrova@digital.justice.gov.uk"
+    },
+    {
+      "name": "barbaracassani",
+      "email": "barbara@kitsch-en.net"
+    },
+    {
+      "name": "Adam Sharp",
+      "email": "adam.sharp@digital.justice.gov.uk"
+    },
+    {
+      "name": "Daniele Polencic",
+      "email": "daniele.polencic@gmail.com"
+    },
+    {
+      "name": "Barbara Cassani",
+      "email": "barbaracassani@users.noreply.github.com"
+    },
+    {
+      "name": "Steve Lorek",
+      "email": "steve@stevelorek.com"
+    },
+    {
+      "name": "Matt Crowson",
+      "email": "matt.crowson@digital.justice.gov.uk"
+    },
+    {
+      "name": "Tyom Semonov",
+      "email": "inspiro@gmail.com"
+    },
+    {
+      "name": "Ryan Brooks",
+      "email": "ryan@slatehorse.com"
+    },
+    {
+      "name": "Ed Brindley",
+      "email": "ed@maidavale.org"
+    },
+    {
+      "name": "Steve Hook",
+      "email": "steve.hook@gmail.com"
+    },
+    {
+      "name": "Miguel Afonso",
+      "email": "mafonso@gmail.com"
+    },
+    {
+      "name": "Andy White",
+      "email": "andy@wireworldmedia.co.uk"
+    },
+    {
+      "name": "Martin Ballhatchet",
+      "email": "64074996+martin-ballhatchet-moj@users.noreply.github.com"
+    }
   ],
   "repository": {
     "type": "git",
@@ -68,6 +125,7 @@
     "concurrently": "6.4.0",
     "connect-flash": "0.1.1",
     "connect-redis": "6.0.0",
+    "contentful": "9.1.10",
     "convert-hrtime": "3.0.0",
     "cookie-parser": "1.4.6",
     "core-js": "3.19.2",

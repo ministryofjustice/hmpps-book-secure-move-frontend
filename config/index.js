@@ -15,6 +15,9 @@ if (!API_VERSION) {
   throw new Error('The API_VERSION environment variable must be set')
 }
 
+const CONTENTFUL_SPACE_ID = process.env.CONTENTFUL_SPACE_ID
+const CONTENTFUL_DELIVERY_ACCESS_TOKEN =
+  process.env.CONTENTFUL_DELIVERY_ACCESS_TOKEN
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 const SERVER_HOST = process.env.HEROKU_APP_NAME
@@ -62,6 +65,8 @@ function _authUrl(path) {
 }
 
 module.exports = {
+  CONTENTFUL_SPACE_ID,
+  CONTENTFUL_DELIVERY_ACCESS_TOKEN,
   AUTH_BASE_URL,
   IS_DEV,
   IS_PRODUCTION,
