@@ -58,20 +58,20 @@ const mockedResponse = {
 const emptyMockedResponse = { items: [] }
 
 describe('Contentful Service', function () {
-  it('calls the fetchEntries method', async function () {
-    const contentfulSpy = sinon.spy(contentfulService, 'fetchEntries')
-    await contentfulService.formatEntries()
-    expect(contentfulSpy).to.have.been.calledOnce
+  it('calls the contentful.createClient method', async function () {
+    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
+    const results = await contentfulService.formatEntries()
+    expect(results.title).to.equal('Whats new today!')
   })
 
   it('returns the content title', async function () {
-    sinon.stub(contentfulService, 'fetchEntries').resolves(mockedResponse)
+    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
     const formattedEntries = await contentfulService.formatEntries()
     expect(formattedEntries.title).to.equal('Whats new today!')
   })
 
   it('returns the body', async function () {
-    sinon.stub(contentfulService, 'fetchEntries').resolves(mockedResponse)
+    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
     const formattedEntries = await contentfulService.formatEntries()
     expect(formattedEntries.body[0].nodeType).to.equal('paragraph')
     expect(formattedEntries.body[0].content[0].value).to.equal(
@@ -80,7 +80,9 @@ describe('Contentful Service', function () {
   })
 
   it('return null if no content is found', async function () {
-    sinon.stub(contentfulService, 'fetchEntries').resolves(emptyMockedResponse)
+    sinon
+      .stub(contentfulService.client, 'getEntries')
+      .resolves(emptyMockedResponse)
     const formattedEntries = await contentfulService.formatEntries()
     expect(formattedEntries).to.equal(null)
   })
