@@ -70,12 +70,11 @@ describe('Contentful Service', function () {
     expect(formattedEntries.title).to.equal('Whats new today!')
   })
 
-  it('returns the body', async function () {
+  it('returns the formatted body', async function () {
     sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
     const formattedEntries = await contentfulService.fetchEntries()
-    expect(formattedEntries.body[0].nodeType).to.equal('heading-1')
-    expect(formattedEntries.body[0].content[0].value).to.equal(
-      'The latest updates and improvements to Book a secure move.'
+    expect(formattedEntries.body).to.equal(
+      '<h1>The latest updates and improvements to Book a secure move.</h1><p>Some random paragraph text.</p>'
     )
   })
 
@@ -87,8 +86,8 @@ describe('Contentful Service', function () {
     expect(formattedEntries).to.equal(null)
   })
 
-  it('converts the content into html format', async function () {
-    const htmlFormatted = await contentfulService.convertToHTMLFormat(
+  it('converts the content into html format', function () {
+    const htmlFormatted = contentfulService.convertToHTMLFormat(
       mockedResponse.items[0].fields.body
     )
     expect(htmlFormatted).to.equal(

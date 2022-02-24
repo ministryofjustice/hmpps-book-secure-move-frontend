@@ -21,9 +21,11 @@ const service = {
     const latestNotification = entries.items[0]
 
     const latestNotificationTitle = latestNotification.fields.title
-    const latestNotificationBody = latestNotification.fields.body.content
+    const latestNotificationBody = latestNotification.fields.body
 
-    return { title: latestNotificationTitle, body: latestNotificationBody }
+    const formattedBody = service.convertToHTMLFormat(latestNotificationBody)
+
+    return { title: latestNotificationTitle, body: formattedBody }
   },
   convertToHTMLFormat: contentBody => {
     const formattedResponse = documentToHtmlString(contentBody)
