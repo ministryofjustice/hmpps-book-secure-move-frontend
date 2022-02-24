@@ -55,21 +55,33 @@ const mockedResponse = {
   ],
 }
 
+const emptyMockedResponse = { items: [] }
+
 describe('Contentful Service', function () {
-  beforeEach(function () {
-    sinon.stub(contentfulService, 'fetchEntries').resolves(mockedResponse)
+  it('calls the fetchEntries method', async function () {
+    const contentfulSpy = sinon.spy(contentfulService, 'fetchEntries')
+    await contentfulService.formatEntries()
+    expect(contentfulSpy).to.have.been.calledOnce
   })
 
-  it('should return the content title', async function () {
+  it('returns the content title', async function () {
+    sinon.stub(contentfulService, 'fetchEntries').resolves(mockedResponse)
     const formattedEntries = await contentfulService.formatEntries()
     expect(formattedEntries.title).to.equal('Whats new today!')
   })
 
-  it('should return the body', async function () {
+  it('returns the body', async function () {
+    sinon.stub(contentfulService, 'fetchEntries').resolves(mockedResponse)
     const formattedEntries = await contentfulService.formatEntries()
     expect(formattedEntries.body[0].nodeType).to.equal('paragraph')
     expect(formattedEntries.body[0].content[0].value).to.equal(
       'The latest updates and improvements to Book a secure move.'
     )
+  })
+
+  it('return null if no content is found', async function () {
+    sinon.stub(contentfulService, 'fetchEntries').resolves(emptyMockedResponse)
+    const formattedEntries = await contentfulService.formatEntries()
+    expect(formattedEntries).to.equal(null)
   })
 })
