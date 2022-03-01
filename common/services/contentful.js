@@ -49,8 +49,7 @@ const service = {
     return { title: latestNotificationTitle, body: formattedBody }
   },
   convertToHTMLFormat: contentBody => {
-    const formattedResponse = documentToHtmlString(contentBody, options)
-    return formattedResponse
+    return documentToHtmlString(contentBody, options)
   },
 }
 module.exports = service
