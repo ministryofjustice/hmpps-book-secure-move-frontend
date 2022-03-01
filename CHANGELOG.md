@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.101.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.100.4...v2.101.0) (2022-03-01)
+
+
+### Features
+
+* Add conversion package to allow for custom rich test formats ([9236ac6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9236ac6c0754e1184a1be240ecdfb2426a8f8d9f))
+* Convert body to content before returning ([52f32fd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/52f32fd40876b04b95fceca41b5da87dbc7fce2e))
+* Integrate Contenful ([01b70ab](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/01b70ab9cf15441cefee49695d5bf83e793ce395))
+
+
+### Bug Fixes
+
+* Add test for null items ([2ee9979](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2ee9979a35c79e2b78fe548f14a816fb62ffffc3))
+* Fix failing tests ([bc7dce9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/bc7dce96f2643accdc8a0a7c10bba31961d7a5a1))
+
 ### [2.100.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.100.3...v2.100.4) (2022-02-21)
 
 ### [2.100.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.100.2...v2.100.3) (2022-02-14)
