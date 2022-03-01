@@ -37,12 +37,92 @@ const mockedResponse = {
               data: {},
             },
             {
+              nodeType: 'heading-2',
+              content: [
+                {
+                  nodeType: 'text',
+                  value: 'Test heading 2.',
+                  marks: [],
+                  data: {},
+                },
+              ],
+              data: {},
+            },
+            {
+              nodeType: 'heading-3',
+              content: [
+                {
+                  nodeType: 'text',
+                  value: 'Test heading 3.',
+                  marks: [{ type: 'italic' }],
+                  data: {},
+                },
+              ],
+              data: {},
+            },
+            {
+              nodeType: 'hyperlink',
+              content: [
+                {
+                  nodeType: 'text',
+                  value: 'Test Link',
+                  marks: [],
+                  data: {},
+                },
+              ],
+              data: {
+                uri: 'https://google.com',
+              },
+            },
+            {
               nodeType: 'paragraph',
               content: [
                 {
                   nodeType: 'text',
                   value: 'Some random paragraph text.',
-                  marks: [],
+                  marks: [{ type: 'bold' }],
+                  data: {},
+                },
+              ],
+              data: {},
+            },
+            {
+              nodeType: 'unordered-list',
+              content: [
+                {
+                  nodeType: 'list-item',
+                  content: [
+                    {
+                      nodeType: 'paragraph',
+                      content: [
+                        {
+                          nodeType: 'text',
+                          value: 'TEST LINE 1',
+                          marks: [],
+                          data: {},
+                        },
+                      ],
+                      data: {},
+                    },
+                  ],
+                  data: {},
+                },
+                {
+                  nodeType: 'list-item',
+                  content: [
+                    {
+                      nodeType: 'paragraph',
+                      content: [
+                        {
+                          nodeType: 'text',
+                          value: 'TEST LINE 2',
+                          marks: [],
+                          data: {},
+                        },
+                      ],
+                      data: {},
+                    },
+                  ],
                   data: {},
                 },
               ],
@@ -74,7 +154,7 @@ describe('Contentful Service', function () {
     sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
     const formattedEntries = await contentfulService.fetchEntries()
     expect(formattedEntries.body).to.equal(
-      '<h1>The latest updates and improvements to Book a secure move.</h1><p>Some random paragraph text.</p>'
+      '<h1 class="govuk-heading-l">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-m">Test heading 2.</h2><h3 class="govuk-heading-s"><i>Test heading 3.</i></h3><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul>'
     )
   })
 
@@ -84,14 +164,5 @@ describe('Contentful Service', function () {
       .resolves(emptyMockedResponse)
     const formattedEntries = await contentfulService.fetchEntries()
     expect(formattedEntries).to.equal(null)
-  })
-
-  it('converts the content into html format', function () {
-    const htmlFormatted = contentfulService.convertToHTMLFormat(
-      mockedResponse.items[0].fields.body
-    )
-    expect(htmlFormatted).to.equal(
-      '<h1>The latest updates and improvements to Book a secure move.</h1><p>Some random paragraph text.</p>'
-    )
   })
 })
