@@ -23,6 +23,10 @@ const footerItems = [
     href: ENABLE_COMPONENTS_LIBRARY ? componentsUrl : undefined,
     text: i18n.t('components::title'),
   },
+  {
+    href: '/whats-new',
+    text: "What's new",
+  },
 ]
 
 try {
