@@ -1,0 +1,22 @@
+{% extends "layouts/base.njk" %}
+
+{% set heading = "What's New" %}
+
+{% block pageTitle %}
+  {{ heading }} – {{ super() }}
+{% endblock %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ heading }}
+    </h1>
+  </header>
+  
+  <h2 class="govuk-heading-l">
+    {{ contentTitle  }}
+  </h2>
+  
+  {{ contentBody | safe }}
+
+{% endblock %}
