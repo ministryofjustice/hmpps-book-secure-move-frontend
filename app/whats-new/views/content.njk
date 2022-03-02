@@ -6,17 +6,19 @@
   {{ heading }} – {{ super() }}
 {% endblock %}
 
-{% block content %}
-  <header>
-    <h1 class="govuk-heading-xl">
-      {{ heading }}
-    </h1>
-  </header>
+{% block content %}  
+  {% if contentBody and contentTitle %}
+    <header>
+      <h1 class="govuk-heading-xl">
+        {{ heading }}
+      </h1>
+    </header>
+    
+    <h2 class="govuk-heading-l">
+      {{ contentTitle }}
+      </h2>
+      {{ contentBody | safe }}
+  {% else %}
   
-  <h2 class="govuk-heading-l">
-    {{ contentTitle  }}
-  </h2>
-  
-  {{ contentBody | safe }}
-
+{% endif %}
 {% endblock %}
