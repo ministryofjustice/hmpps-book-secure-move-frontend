@@ -2,10 +2,7 @@ const { documentToHtmlString } = require('@contentful/rich-text-html-renderer')
 const { BLOCKS, MARKS, INLINES } = require('@contentful/rich-text-types')
 const contentful = require('contentful')
 
-const {
-  CONTENTFUL_SPACE_ID,
-  CONTENTFUL_DELIVERY_ACCESS_TOKEN,
-} = require('../../config')
+const { CONTENTFUL_SPACE_ID, CONTENTFUL_ACCESS_TOKEN } = require('../../config')
 
 const options = {
   renderMark: {
@@ -30,7 +27,7 @@ const options = {
 const service = {
   client: contentful.createClient({
     space: CONTENTFUL_SPACE_ID,
-    accessToken: CONTENTFUL_DELIVERY_ACCESS_TOKEN,
+    accessToken: CONTENTFUL_ACCESS_TOKEN,
   }),
   fetchEntries: async () => {
     const entries = await service.client.getEntries()
