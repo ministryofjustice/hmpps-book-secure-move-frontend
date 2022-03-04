@@ -44,7 +44,7 @@
       <div class="govuk-grid-column-two-thirds">
 
         {% if spaces.details.updated_at %}
-          <h2 class="govuk-heading-xl">{{ t("population::daily_view.free_spaces_with_count", {count:spaces.details.free_spaces}) }}</h2>
+          <h2 class="govuk-heading-m">{{ t("population::daily_view.free_spaces_with_count", {count:spaces.details.free_spaces}) }}</h2>
           <p>{{ t("population::daily_view.free_space_description") }}</p>
           <p><b>{{  t("population::daily_view.labels.last_updated") }} {{  spaces.details.updated_at | formatDateWithTimeAndDay }}</b></p>
           <p class="govuk-!-margin-bottom-0">
