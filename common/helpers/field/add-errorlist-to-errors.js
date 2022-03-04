@@ -9,7 +9,7 @@ function addErrorListToErrors(errors = {}, fields) {
         ...field,
         ...error,
       }),
-      href: `#${field.id}`,
+      href: field.id ? `#${field.id}` : undefined,
     }
   })
 
