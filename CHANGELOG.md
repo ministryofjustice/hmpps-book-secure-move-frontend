@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.102.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.101.0...v2.102.0) (2022-03-04)
+
+
+### Features
+
+* Add condtion incase contentful returns no content ([9b1d4c1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9b1d4c14a2e870439300f5e0da7554613dfa7a5d))
+* Add contentful host to allow for preview url ([a8b4fed](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a8b4fed9c01c036de79a2aad9bd3b63842a632d5))
+* Add footer link to whats new page ([c9c7e8e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c9c7e8e6b57deb0314c438cdd8ac592af1c5704d))
+* Add whats new page and render contentful content ([35b7199](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/35b7199756f4889c884fe2063bdae25fbd48367d))
+
 ## [2.101.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.100.4...v2.101.0) (2022-03-01)
 
 
