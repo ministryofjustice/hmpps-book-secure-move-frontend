@@ -143,7 +143,6 @@
     "date-fns": "2.27.0",
     "debug": "4.3.3",
     "devour-client": "3.0.0",
-    "dot-prop": "4.2.1",
     "dotenv": "10.0.0",
     "dropzone": "5.9.3",
     "express": "4.17.3",
