@@ -2,8 +2,8 @@
   "daily_view": {
     "page_title_with_date": "Population for {{date}}",
     "subheading": "Population for",
-    "free_spaces_with_count": "{{count}} free space",
-    "free_spaces_with_count_plural": "{{count}} free spaces",
+    "free_spaces_with_count_one": "{{count}} free space",
+    "free_spaces_with_count_other": "{{count}} free spaces",
     "free_space_description": "Projected free spaces based upon the figures provided in this page, along with transfers in and out",
     "labels": {
       "last_updated": "Last updated",
