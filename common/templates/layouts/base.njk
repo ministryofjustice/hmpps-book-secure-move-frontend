@@ -150,9 +150,11 @@
       </div>
     {% endif %}
   {% endblock %}
-
-  {{ appWhatsNewBanner() }}
-
+  
+  {% if REQUEST_PATH === "/" %}
+    {{ appWhatsNewBanner() }}
+  {% endif %}
+  
 {% endblock %}
 
 {% block beforeContent %}
