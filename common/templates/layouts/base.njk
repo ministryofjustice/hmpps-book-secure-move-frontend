@@ -125,6 +125,7 @@
     {% if CURRENT_LOCATION or CURRENT_REGION or canAccess("locations:all") %}
       <div class="govuk-width-container">
         {{ mojOrganisationSwitcher({
+          label: 'Location switcher',
           text: CURRENT_LOCATION.title or CURRENT_REGION.name or t("locations::all_locations"),
           link: {
             text: t("actions::switch_location"),

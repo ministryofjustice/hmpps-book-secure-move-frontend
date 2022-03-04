@@ -9,7 +9,7 @@
   {% if focusOnload %} data-focus{% endif %}
   tabindex="-1"
   role="alert"
-  aria-labelledby="app-message__heading"
+  {% if params.title.html or params.title.text %}aria-labelledby="app-message__heading"{% endif %}
   >
   {% if params.title.html or params.title.text %}
     <h2 class="app-message__heading" id="app-message__heading">
