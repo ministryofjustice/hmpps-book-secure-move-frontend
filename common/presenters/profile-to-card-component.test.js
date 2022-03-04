@@ -72,11 +72,9 @@ describe('Presenters', function () {
             )
           })
 
-          it('should contain image alt', function () {
+          it('should not contain image alt', function () {
             expect(transformedResponse).to.have.property('image_alt')
-            expect(transformedResponse.image_alt).to.equal(
-              mockProfile.person._fullname
-            )
+            expect(transformedResponse.image_alt).to.equal('')
           })
 
           it('should contain correct meta data', function () {
@@ -396,7 +394,7 @@ describe('Presenters', function () {
       title: { text: '__translated__' },
       meta: { items: [] },
       image_path: undefined,
-      image_alt: '__translated__',
+      image_alt: '',
     }
 
     context('with no arguments', function () {
