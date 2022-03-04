@@ -125,7 +125,7 @@
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.1.4",
     "audit-ci": "5.1.2",
-    "axios": "0.24.0",
+    "axios": "0.26.0",
     "axios-debug-log": "0.8.4",
     "bluebird": "3.7.2",
     "chrono-node": "2.3.3",
