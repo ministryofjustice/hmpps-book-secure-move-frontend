@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.102.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.102.0...v2.102.1) (2022-03-07)
+
+
+### Bug Fixes
+
+* Fix pluralised "free spaces" heading ([cfc29e2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cfc29e2fe9b57c0f009f00274585f2d9ae85a8ce))
+* Handle case when field doesn't have an id ([3bce8ee](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3bce8eea88bce2776c6179a60e01c419ef1b4d77))
+* Remove alt text on person image ([52397d5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/52397d50e441345065844011af6a36d77a43b9f6))
+* Remove aria-labelledby for unused element ([fde5045](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fde50456d0e1e9bfa07d61365d696908287b0e9a))
+* Set aria-label on location switcher ([c478004](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c4780043fb696edf89c8c9eaa2ee2e99b0bd0862))
+
 ## [2.102.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.101.0...v2.102.0) (2022-03-04)
 
 
