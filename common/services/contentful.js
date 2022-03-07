@@ -45,10 +45,18 @@ const service = {
 
     const latestNotificationTitle = latestNotification.fields.title
     const latestNotificationBody = latestNotification.fields.body
+    const latestNotificationDate = latestNotification.fields.date
+    const latestNotificationBriefBannerText =
+      latestNotification.fields.briefBannerText
 
     const formattedBody = service.convertToHTMLFormat(latestNotificationBody)
 
-    return { title: latestNotificationTitle, body: formattedBody }
+    return {
+      title: latestNotificationTitle,
+      body: formattedBody,
+      bannerText: latestNotificationBriefBannerText,
+      date: latestNotificationDate,
+    }
   },
   convertToHTMLFormat: contentBody => {
     return documentToHtmlString(contentBody, options)
