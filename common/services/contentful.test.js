@@ -164,7 +164,7 @@ describe('Contentful Service', function () {
     sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
     const formattedEntries = await contentfulService.fetchEntries()
     expect(formattedEntries.bannerText).to.equal(
-      'Some text briefly explaining the changes'
+      'Some text briefly explaining the changes.'
     )
   })
 
