@@ -180,7 +180,7 @@
     "redis": "3.1.2",
     "response-time": "2.3.2",
     "retry-axios": "2.6.0",
-    "semver-sort": "0.0.4",
+    "semver-sort": "1.0.0",
     "serve-favicon": "2.5.0",
     "sticky-sidebar": "3.3.1",
     "stream-mock": "2.0.5",
