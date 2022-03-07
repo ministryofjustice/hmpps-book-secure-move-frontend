@@ -171,7 +171,7 @@ describe('Contentful Service', function () {
   it('returns the formatted date', async function () {
     sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
     const formattedEntries = await contentfulService.fetchEntries()
-    expect(formattedEntries.date).to.equal('2022-03-04T00:00+00:00')
+    expect(formattedEntries.date).to.equal('4 March 2022')
   })
 
   it('return null if no content is found', async function () {

@@ -46,7 +46,6 @@
 {% from "task-list/macro.njk"         import appTaskList %}
 {% from "time/macro.njk"              import appTime %}
 {% from "timeline/macro.njk"          import appTimeline %}
-{% from "whats-new-banner/macro.njk"  import appWhatsNewBanner %}
 
 {% block head %}
   <link rel="canonical" href="{{ CANONICAL_URL }}">
@@ -152,9 +151,21 @@
   {% endblock %}
   
   {% if REQUEST_PATH === "/" %}
-    {{ appWhatsNewBanner() }}
+    <div class="whats-new-banner">
+      <div class="govuk-width-container">
+        <div class="govuk-grid-row banner-padding">
+          <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">{{ content.title }}</h1>
+            <p class="govuk-body">{{ content.date }}: {{ content.bannerText }}.<p>
+            <a href="/whats-new" class="govuk-link">Read more about these changes.</a>
+          </div>
+          <div class="govuk-grid-column-one-third">
+            <a href="#" id="dismiss-banner" class="govuk-link dismiss-button">Dismiss</a>
+          </div>
+        </div>
+      </div>
+    </div>
   {% endif %}
-  
 {% endblock %}
 
 {% block beforeContent %}
