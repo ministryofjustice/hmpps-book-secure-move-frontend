@@ -27,6 +27,7 @@ const AddAnother = require('../../components/add-another/add-another')
 const Header = require('../../components/internal-header/internal-header')
 const Message = require('../../components/message/message')
 const Time = require('../../components/time/time')
+const Banner = require('../../components/whats-new-banner/whats-new-banner')
 
 const Analytics = require('./analytics')
 const { nodeListForEach } = require('./utils')
@@ -45,6 +46,13 @@ nodeListForEach($times, function ($module) {
 
 const $toggleButton = document.querySelector('[data-module="header"]')
 new Header($toggleButton).init()
+
+const $banner = document.querySelectorAll(
+  '[data-module="app-whats-new-banner"]'
+)
+nodeListForEach($banner, function ($banner) {
+  new Banner($banner).init()
+})
 
 const $messages = document.querySelectorAll('[data-module="app-message"]')
 nodeListForEach($messages, function ($message) {

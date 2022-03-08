@@ -151,7 +151,7 @@
   {% endblock %}
   
   {% if REQUEST_PATH === "/" %}
-    <div class="whats-new-banner">
+    <div id="whats-new-banner" class="whats-new-banner" data-module="app-whats-new-banner">
       <div class="govuk-width-container">
         <div class="govuk-grid-row banner-padding">
           <div class="govuk-grid-column-two-thirds">
@@ -160,7 +160,7 @@
             <a href="/whats-new" class="govuk-link">Read more about these changes.</a>
           </div>
           <div class="govuk-grid-column-one-third">
-            <a href="#" id="dismiss-banner" class="govuk-link dismiss-button">Dismiss</a>
+            <a href="#" id="dismiss-banner-button" class="govuk-link dismiss-button">Dismiss</a>
           </div>
         </div>
       </div>
