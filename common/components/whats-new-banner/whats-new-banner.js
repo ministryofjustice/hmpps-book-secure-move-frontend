@@ -11,14 +11,14 @@ function Banner($module) {
 
 Banner.prototype = {
   init: function () {
-    this.render()
+    this.renderBanner()
   },
 
   cacheEls: function ($module) {
     this.$module = $module
   },
 
-  render: function () {
+  renderBanner: function () {
     this.dismissBanner(this.$module)
 
     if (this.settings.isFocused) {
