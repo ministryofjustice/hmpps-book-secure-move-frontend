@@ -1,12 +1,5 @@
 function Banner($module) {
   this.cacheEls($module)
-
-  this.defaults = {
-    isDismissable: this.$module.hasAttribute('data-allow-dismiss'),
-    isFocused: this.$module.hasAttribute('data-focus'),
-  }
-
-  this.settings = this.defaults
 }
 
 Banner.prototype = {
@@ -26,10 +19,6 @@ Banner.prototype = {
       this.removeElement($element)
     } else {
       this.dismissBanner(this.$module)
-
-      if (this.settings.isFocused) {
-        this.$module.focus()
-      }
     }
   },
 
