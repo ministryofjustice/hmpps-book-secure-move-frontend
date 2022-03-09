@@ -202,7 +202,7 @@
     "chai": "4.3.4",
     "chai-as-promised": "7.1.1",
     "cheerio": "1.0.0-rc.10",
-    "copy-webpack-plugin": "9.1.0",
+    "copy-webpack-plugin": "10.2.4",
     "coveralls": "3.1.1",
     "css-loader": "6.6.0",
     "del-cli": "4.0.1",
