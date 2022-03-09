@@ -1,3 +1,5 @@
+const { contentfulService } = require('../../../common/services/contentful')
+
 function Banner($module) {
   this.cacheEls($module)
 
@@ -42,6 +44,16 @@ Banner.prototype = {
     } else {
       element.style.display = 'none'
     }
+  },
+  setBannerCookie: async function () {
+    const content = await contentfulService.fetchEntries()
+    const cookieValue = true
+    const contentDate = content.data
+    const date = new Date(contentDate)
+    const expires = 'expires=' + date.toUTCString()
+
+    document.cookie =
+      'banner-dismissed' + '=' + cookieValue + ';' + expires + ';path=/'
   },
 }
 
