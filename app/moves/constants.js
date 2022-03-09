@@ -95,7 +95,7 @@ const FILTERS = {
       status: 'rejected',
     },
     {
-      label: 'collections::cancelled',
+      label: 'statuses::cancelled_filter',
       status: 'cancelled',
     },
   ],

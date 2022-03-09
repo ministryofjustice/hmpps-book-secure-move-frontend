@@ -107,7 +107,7 @@ function profileToCardComponent({
 
     if (showImage) {
       card.image_path = imageUrl
-      card.image_alt = fullname || i18n.t('awaiting_person')
+      card.image_alt = ''
     }
 
     return card
