@@ -1,5 +1,3 @@
-const { contentfulService } = require('../../../common/services/contentful')
-
 function Banner($module) {
   this.cacheEls($module)
 
@@ -13,18 +11,25 @@ function Banner($module) {
 
 Banner.prototype = {
   init: function () {
-    this.renderBanner()
+    this.renderBanner(this.$module)
   },
 
   cacheEls: function ($module) {
     this.$module = $module
   },
 
-  renderBanner: function () {
-    this.dismissBanner(this.$module)
+  renderBanner: function ($element) {
+    const contentfulDate = this.getContnetDate($element)
+    const cookieValue = this.getCookie('banner-dismissed')
 
-    if (this.settings.isFocused) {
-      this.$module.focus()
+    if (contentfulDate.toString() === cookieValue.toString()) {
+      this.removeElement($element)
+    } else {
+      this.dismissBanner(this.$module)
+
+      if (this.settings.isFocused) {
+        this.$module.focus()
+      }
     }
   },
 
@@ -34,7 +39,7 @@ Banner.prototype = {
     button.onclick = e => {
       e.preventDefault()
       this.removeElement($element)
-      this.setBannerCookie()
+      this.setBannerCookie($element)
     }
   },
 
@@ -45,15 +50,33 @@ Banner.prototype = {
       element.style.display = 'none'
     }
   },
-  setBannerCookie: async function () {
-    const content = await contentfulService.fetchEntries()
-    const cookieValue = true
-    const contentDate = content.data
-    const date = new Date(contentDate)
-    const expires = 'expires=' + date.toUTCString()
+  getCookie: function (cookieName) {
+    const name = cookieName + '='
+    const decodedCookie = decodeURIComponent(document.cookie)
+    const ca = decodedCookie.split(';')
 
-    document.cookie =
-      'banner-dismissed' + '=' + cookieValue + ';' + expires + ';path=/'
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i]
+
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1)
+      }
+
+      if (c.indexOf(name) === 0) {
+        return c.substring(name.length, c.length)
+      }
+    }
+
+    return ''
+  },
+  getContnetDate: function (element) {
+    const dateElement = element.getAttribute('data-content-date')
+    const date = new Date(dateElement)
+    return date
+  },
+  setBannerCookie: function () {
+    const date = this.getContnetDate(this.$module)
+    document.cookie = 'banner-dismissed' + '=' + date + ';' + ';path=/'
   },
 }
 
