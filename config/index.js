@@ -18,6 +18,7 @@ if (!API_VERSION) {
 const CONTENTFUL_SPACE_ID = process.env.CONTENTFUL_SPACE_ID
 const CONTENTFUL_ACCESS_TOKEN = process.env.CONTENTFUL_ACCESS_TOKEN
 const CONTENTFUL_HOST = process.env.CONTENTFUL_HOST
+const BANNER_VISIBLE = process.env.BANNER_VISIBLE
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 const SERVER_HOST = process.env.HEROKU_APP_NAME
@@ -68,6 +69,7 @@ module.exports = {
   CONTENTFUL_HOST,
   CONTENTFUL_SPACE_ID,
   CONTENTFUL_ACCESS_TOKEN,
+  BANNER_VISIBLE,
   AUTH_BASE_URL,
   IS_DEV,
   IS_PRODUCTION,

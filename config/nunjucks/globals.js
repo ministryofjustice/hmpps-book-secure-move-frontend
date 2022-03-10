@@ -6,6 +6,7 @@ const {
   AUTH_BASE_URL,
   ENABLE_COMPONENTS_LIBRARY,
   FEEDBACK_URL,
+  BANNER_VISIBLE,
   SUPPORT_EMAIL,
 } = require('../')
 const { mountpath: componentsUrl } = require('../../app/components')
@@ -39,6 +40,7 @@ module.exports = {
   FOOTER_ITEMS: footerItems.filter(item => item.href),
   SUPPORT_EMAIL,
   FEEDBACK_URL,
+  BANNER_VISIBLE,
   AUTH_BASE_URL,
   t: (...args) => i18n.t(...args),
   callAsMacro(name) {
