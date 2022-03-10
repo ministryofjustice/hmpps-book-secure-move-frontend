@@ -287,7 +287,7 @@ module.exports = {
   },
   FEATURE_FLAGS: {
     GOT: /true/i.test(process.env.FEATURE_FLAG_GOT),
-    BANNER_VISIBLE: /true/i.test(process.env.BANNER_VISIBLE),
+    BANNER_VISIBLE: /true/i.test(process.env.FEATURE_FLAG_BANNER_VISIBLE),
   },
   FRAMEWORKS: {
     CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
