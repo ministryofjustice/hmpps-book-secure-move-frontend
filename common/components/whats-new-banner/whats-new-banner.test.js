@@ -26,9 +26,9 @@ describe('Whats new banner component', function () {
 
     beforeEach(function () {
       const $ = renderComponentHtmlToCheerio('whats-new-banner', {
-        contentTitle: 'Title Here',
-        contentDate: '4th March 2022',
-        contentBannerText: 'Some random banner text',
+        title: 'Title Here',
+        date: '4th March 2022',
+        body: 'Some random banner text',
       })
 
       $component = $('[data-module="app-whats-new-banner"]')
@@ -40,7 +40,7 @@ describe('Whats new banner component', function () {
       )
     })
 
-    it('should render the banner text and data tag and content', function () {
+    it('should render the body text and date tag and content', function () {
       expect($component.html()).to.contain(
         '<p class="govuk-body">4th March 2022: Some random banner text.</p>'
       )

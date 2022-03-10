@@ -4,7 +4,7 @@ const contentfulService = require('../../common/services/contentful')
 async function dashboard(req, res) {
   const currentWeek = dateHelpers.getCurrentWeekAsRange()
   const today = new Date().toISOString()
-  const content = await contentfulService.fetchEntries()
+  const whatsNewContent = await contentfulService.fetchEntries()
 
   const sections = {
     outgoing: {
@@ -38,7 +38,7 @@ async function dashboard(req, res) {
     sections,
     currentWeek,
     today,
-    content,
+    whatsNewContent,
   })
 }
 

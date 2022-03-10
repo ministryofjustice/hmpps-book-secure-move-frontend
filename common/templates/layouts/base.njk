@@ -153,9 +153,9 @@
   
   {% if REQUEST_PATH === '/' %}
     {{ appWhatsNewBanner({
-      contentTitle: content.title,
-      contentBannerText: content.bannerText,
-      contentDate: content.date
+      title: whatsNewContent.title,
+      body: whatsNewContent.bannerText,
+      date: whatsNewContent.date
     }) }}
   {% endif %}
 {% endblock %}

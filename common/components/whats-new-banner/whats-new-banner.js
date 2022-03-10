@@ -12,7 +12,7 @@ Banner.prototype = {
   },
 
   renderBanner: function ($element) {
-    const contentfulDate = this.getContnetDate($element)
+    const contentfulDate = this.getContentDate($element)
     const cookieValue = this.getCookie('banner-dismissed')
 
     if (contentfulDate.toString() === cookieValue.toString()) {
@@ -58,13 +58,13 @@ Banner.prototype = {
 
     return ''
   },
-  getContnetDate: function (element) {
+  getContentDate: function (element) {
     const dateElement = element.getAttribute('data-content-date')
     const date = new Date(dateElement)
     return date
   },
   setBannerCookie: function () {
-    const date = this.getContnetDate(this.$module)
+    const date = this.getContentDate(this.$module)
     document.cookie = 'banner-dismissed' + '=' + date + ';' + ';path=/'
   },
 }

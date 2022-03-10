@@ -48,7 +48,7 @@ describe('Home controllers', function () {
           'sections',
           'currentWeek',
           'today',
-          'content'
+          'whatsNewContent'
         )
         expect(params.pageTitle).to.equal('dashboard::page_title')
         expect(params.sections).to.have.all.keys(sections)
