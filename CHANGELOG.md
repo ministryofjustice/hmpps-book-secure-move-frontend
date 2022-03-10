@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.102.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.102.2...v2.102.3) (2022-03-10)
+
+
+### Bug Fixes
+
+* Hide parts of handover banner ([4932e65](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4932e65d682263057b5f4d44264ce2e3b014ffcc))
+* Improve handover event description ([3a7cba2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3a7cba274736cef3c1a4c48650c4acf61508fdc5))
+
 ### [2.102.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.102.1...v2.102.2) (2022-03-09)
 
 
