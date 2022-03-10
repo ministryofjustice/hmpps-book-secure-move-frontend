@@ -1,0 +1,16 @@
+params:
+  - name: classes
+    type: string
+    required: false
+    description: Classes to add to the parent element.
+  - name: attributes
+    type: object
+    required: false
+    description: HTML attributes (for example data attributes) to add to the component.
+
+examples:
+  - name: default
+    data:
+      contentTitle: 'Title Here'
+      contentDate: '4th March 2022'
+      contentBannerText: 'Some random banner text'

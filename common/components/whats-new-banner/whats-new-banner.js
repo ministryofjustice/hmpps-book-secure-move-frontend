@@ -42,10 +42,10 @@ Banner.prototype = {
   getCookie: function (cookieName) {
     const name = cookieName + '='
     const decodedCookie = decodeURIComponent(document.cookie)
-    const ca = decodedCookie.split(';')
+    const cookie = decodedCookie.split(';')
 
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i]
+    for (let i = 0; i < cookie.length; i++) {
+      let c = cookie[i]
 
       while (c.charAt(0) === ' ') {
         c = c.substring(1)
