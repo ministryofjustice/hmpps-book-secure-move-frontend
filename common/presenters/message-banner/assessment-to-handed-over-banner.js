@@ -1,3 +1,5 @@
+const { isEmpty } = require('lodash')
+
 const i18n = require('../../../config/i18n')
 const filters = require('../../../config/nunjucks/filters')
 const componentService = require('../../services/component')
@@ -13,32 +15,38 @@ module.exports = function assessmentToHandedOverBanner({
     return {}
   }
 
-  let content = `
-    <p>
-      ${i18n.t('messages::assessment.handed_over.content', {
-        context,
-        date: filters.formatDateWithTimeAndDay(assessment.handover_occurred_at),
-        details: assessment.handover_details,
-      })}
-    </p>
+  const {
+    handover_details: handoverDetails,
+    handover_occurred_at: handoverOccurredAt,
+  } = assessment
 
-    ${componentService.getComponent('govukWarningText', {
-      html: i18n.t('messages::assessment.handed_over.warning', {
-        details: assessment.handover_details,
-      }),
-      iconFallbackText: 'Warning',
-    })}
-    `
+  let content = ''
+
+  if (!isEmpty(handoverDetails)) {
+    content += `
+      <p>
+        ${i18n.t('messages::assessment.handed_over.content', {
+          context,
+          date: filters.formatDateWithTimeAndDay(handoverOccurredAt),
+          details: handoverDetails,
+        })}
+      </p>
+
+      ${componentService.getComponent('govukWarningText', {
+        html: i18n.t('messages::assessment.handed_over.warning', {
+          details: handoverDetails,
+        }),
+        iconFallbackText: 'Warning',
+      })}
+     `
+  }
 
   content += assessmentPrintButton({ baseUrl, canAccess, context })
 
   content += `
     <p class="govuk-!-font-size-16 govuk-!-margin-top-1">
       ${i18n.t('handed_over_at', {
-        date: filters.formatDateWithTimeAndDay(
-          assessment.handover_occurred_at,
-          true
-        ),
+        date: filters.formatDateWithTimeAndDay(handoverOccurredAt, true),
       })}
     </p>
   `

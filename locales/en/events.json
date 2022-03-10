@@ -415,6 +415,10 @@
   },
   "PerHandover": {
     "heading": "Person handed over",
-    "description": "This person was handed over to <strong>{{receiving_officer}} ({{receiving_officer_id}}), {{receiving_organisation}}</strong> by <strong>{{dispatching_officer}} ({{dispatching_officer_id}})</strong>"
+    "description": "This person was handed over $t(events::PerHandover.receiving, {\"context\": \"{{receiving_officer, exists}}\"}) $t(events::PerHandover.dispatching, {\"context\": \"{{dispatching_officer, exists}}\"})",
+    "receiving_true": "to <strong>{{receiving_officer}} ({{receiving_officer_id}}), {{receiving_organisation}}</strong>",
+    "receiving_false": "",
+    "dispatching_true": "by <strong>{{dispatching_officer}} ({{dispatching_officer_id}})</strong>",
+    "dispatching_false": ""
   }
 }
