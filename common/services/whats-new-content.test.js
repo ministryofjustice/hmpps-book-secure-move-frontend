@@ -1,6 +1,6 @@
 const sinon = require('sinon')
 
-const contentfulService = require('./contentful')
+const whatsNewContentService = require('./whats-new-content')
 
 const mockedResponse = {
   items: [
@@ -139,46 +139,52 @@ const mockedResponse = {
 
 const emptyMockedResponse = { items: [] }
 
-describe('Contentful Service', function () {
-  it('calls the contentful.createClient method', async function () {
-    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
-    const results = await contentfulService.fetchEntries()
-    expect(results.title).to.equal('Whats new today!')
+describe('whatsNewContentService Service', function () {
+  context('with a response', function () {
+    beforeEach(function () {
+      sinon
+        .stub(whatsNewContentService.client, 'getEntries')
+        .resolves(mockedResponse)
+    })
+
+    it('calls the whatsNewContentService.createClient method', async function () {
+      const results = await whatsNewContentService.fetchWhatsNewContent()
+      expect(results.title).to.equal('Whats new today!')
+    })
+    it('returns the content title', async function () {
+      const formattedEntries =
+        await whatsNewContentService.fetchWhatsNewContent()
+      expect(formattedEntries.title).to.equal('Whats new today!')
+    })
+    it('returns the formatted body', async function () {
+      const formattedEntries =
+        await whatsNewContentService.fetchWhatsNewContent()
+      expect(formattedEntries.body).to.equal(
+        '<h1 class="govuk-heading-l">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-m">Test heading 2.</h2><h3 class="govuk-heading-s"><i>Test heading 3.</i></h3><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul>'
+      )
+    })
+    it('returns the banner text', async function () {
+      const formattedEntries =
+        await whatsNewContentService.fetchWhatsNewContent()
+      expect(formattedEntries.bannerText).to.equal(
+        'Some text briefly explaining the changes.'
+      )
+    })
+    it('returns the formatted date', async function () {
+      const formattedEntries =
+        await whatsNewContentService.fetchWhatsNewContent()
+      expect(formattedEntries.date).to.equal('4 March 2022')
+    })
   })
 
-  it('returns the content title', async function () {
-    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
-    const formattedEntries = await contentfulService.fetchEntries()
-    expect(formattedEntries.title).to.equal('Whats new today!')
-  })
-
-  it('returns the formatted body', async function () {
-    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
-    const formattedEntries = await contentfulService.fetchEntries()
-    expect(formattedEntries.body).to.equal(
-      '<h1 class="govuk-heading-l">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-m">Test heading 2.</h2><h3 class="govuk-heading-s"><i>Test heading 3.</i></h3><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul>'
-    )
-  })
-
-  it('returns the banner text', async function () {
-    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
-    const formattedEntries = await contentfulService.fetchEntries()
-    expect(formattedEntries.bannerText).to.equal(
-      'Some text briefly explaining the changes.'
-    )
-  })
-
-  it('returns the formatted date', async function () {
-    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
-    const formattedEntries = await contentfulService.fetchEntries()
-    expect(formattedEntries.date).to.equal('4 March 2022')
-  })
-
-  it('return null if no content is found', async function () {
-    sinon
-      .stub(contentfulService.client, 'getEntries')
-      .resolves(emptyMockedResponse)
-    const formattedEntries = await contentfulService.fetchEntries()
-    expect(formattedEntries).to.equal(null)
+  context('without a response', function () {
+    it('return null if no content is found', async function () {
+      sinon
+        .stub(whatsNewContentService.client, 'getEntries')
+        .resolves(emptyMockedResponse)
+      const formattedEntries =
+        await whatsNewContentService.fetchWhatsNewContent()
+      expect(formattedEntries).to.equal(null)
+    })
   })
 })

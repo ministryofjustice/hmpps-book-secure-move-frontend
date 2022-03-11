@@ -36,7 +36,7 @@ const service = {
     space: CONTENTFUL_SPACE_ID,
     accessToken: CONTENTFUL_ACCESS_TOKEN,
   }),
-  fetchEntries: async () => {
+  fetchWhatsNewContent: async () => {
     const entries = await service.client.getEntries()
 
     if (!entries.items?.length) {

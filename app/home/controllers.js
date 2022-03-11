@@ -1,10 +1,10 @@
 const dateHelpers = require('../../common/helpers/date')
-const contentfulService = require('../../common/services/contentful')
+const whatsNewContentService = require('../../common/services/whats-new-content')
 
 async function dashboard(req, res) {
   const currentWeek = dateHelpers.getCurrentWeekAsRange()
   const today = new Date().toISOString()
-  const whatsNewContent = await contentfulService.fetchEntries()
+  const whatsNewContent = await whatsNewContentService.fetchWhatsNewContent()
 
   const sections = {
     outgoing: {
