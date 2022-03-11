@@ -46,6 +46,7 @@
 {% from "task-list/macro.njk"         import appTaskList %}
 {% from "time/macro.njk"              import appTime %}
 {% from "timeline/macro.njk"          import appTimeline %}
+{% from "whats-new-banner/macro.njk"  import appWhatsNewBanner %}
 
 {% block head %}
   <link rel="canonical" href="{{ CANONICAL_URL }}">
@@ -149,6 +150,14 @@
       </div>
     {% endif %}
   {% endblock %}
+  
+  {% if FEATURE_FLAGS.WHATS_NEW_BANNER and REQUEST_PATH === '/' %}
+    {{ appWhatsNewBanner({
+      title: whatsNewContent.title,
+      body: whatsNewContent.bannerText,
+      date: whatsNewContent.date
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block beforeContent %}

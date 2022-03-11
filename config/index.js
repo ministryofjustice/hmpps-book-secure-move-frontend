@@ -111,6 +111,7 @@ module.exports = {
   DATE_FORMATS: {
     SHORT: 'd M yyyy',
     LONG: 'd MMM yyyy',
+    WITH_MONTH: 'd MMMM yyyy',
     WITH_DAY: 'EEEE d MMM yyyy',
     WITH_TIME_AND_DAY: "h:mmaaa 'on' EEEE d MMM yyyy",
     WITH_TIME_WITH_SECONDS_AND_DAY: "h:mm:ssaaa 'on' EEEE d MMM yyyy",

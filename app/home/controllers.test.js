@@ -23,8 +23,8 @@ describe('Home controllers', function () {
     })
 
     context('with correct permission', function () {
-      beforeEach(function () {
-        controllers.dashboard(req, res)
+      beforeEach(async function () {
+        await controllers.dashboard(req, res)
       })
 
       it('should render template', function () {
@@ -47,7 +47,8 @@ describe('Home controllers', function () {
           'pageTitle',
           'sections',
           'currentWeek',
-          'today'
+          'today',
+          'whatsNewContent'
         )
         expect(params.pageTitle).to.equal('dashboard::page_title')
         expect(params.sections).to.have.all.keys(sections)

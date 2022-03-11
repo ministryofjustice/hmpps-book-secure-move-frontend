@@ -1,12 +1,14 @@
 const { documentToHtmlString } = require('@contentful/rich-text-html-renderer')
 const { BLOCKS, MARKS, INLINES } = require('@contentful/rich-text-types')
 const contentful = require('contentful')
+const { format } = require('date-fns')
 
 const {
   CONTENTFUL_SPACE_ID,
   CONTENTFUL_ACCESS_TOKEN,
   CONTENTFUL_HOST,
 } = require('../../config')
+const { DATE_FORMATS } = require('../../config/index')
 
 const options = {
   renderMark: {
@@ -45,13 +47,26 @@ const service = {
 
     const latestNotificationTitle = latestNotification.fields.title
     const latestNotificationBody = latestNotification.fields.body
+    const latestNotificationDate = latestNotification.fields.date
+    const latestNotificationBriefBannerText =
+      latestNotification.fields.briefBannerText
 
     const formattedBody = service.convertToHTMLFormat(latestNotificationBody)
+    const formattedDate = service.formatDate(latestNotificationDate)
 
-    return { title: latestNotificationTitle, body: formattedBody }
+    return {
+      title: latestNotificationTitle,
+      body: formattedBody,
+      bannerText: latestNotificationBriefBannerText,
+      date: formattedDate,
+    }
   },
   convertToHTMLFormat: contentBody => {
     return documentToHtmlString(contentBody, options)
+  },
+  formatDate: date => {
+    const newDate = new Date(date)
+    return format(newDate, DATE_FORMATS.WITH_MONTH)
   },
 }
 module.exports = service

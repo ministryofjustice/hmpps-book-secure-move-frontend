@@ -33,6 +33,10 @@ describe('Nunjucks globals', function () {
             href: componentsUrl,
             text: 'components::title',
           },
+          {
+            href: '/whats-new',
+            text: "What's new",
+          },
         ])
       })
     })
@@ -51,6 +55,10 @@ describe('Nunjucks globals', function () {
           {
             href: '/help/accessibility-statement',
             text: 'Accessibility statement',
+          },
+          {
+            href: '/whats-new',
+            text: "What's new",
           },
         ])
       })

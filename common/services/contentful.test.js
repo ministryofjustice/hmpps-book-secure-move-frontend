@@ -130,6 +130,8 @@ const mockedResponse = {
             },
           ],
         },
+        briefBannerText: 'Some text briefly explaining the changes.',
+        date: '2022-03-04T00:00+00:00',
       },
     },
   ],
@@ -156,6 +158,20 @@ describe('Contentful Service', function () {
     expect(formattedEntries.body).to.equal(
       '<h1 class="govuk-heading-l">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-m">Test heading 2.</h2><h3 class="govuk-heading-s"><i>Test heading 3.</i></h3><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul>'
     )
+  })
+
+  it('returns the banner text', async function () {
+    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
+    const formattedEntries = await contentfulService.fetchEntries()
+    expect(formattedEntries.bannerText).to.equal(
+      'Some text briefly explaining the changes.'
+    )
+  })
+
+  it('returns the formatted date', async function () {
+    sinon.stub(contentfulService.client, 'getEntries').resolves(mockedResponse)
+    const formattedEntries = await contentfulService.fetchEntries()
+    expect(formattedEntries.date).to.equal('4 March 2022')
   })
 
   it('return null if no content is found', async function () {
