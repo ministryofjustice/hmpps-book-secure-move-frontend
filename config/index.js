@@ -287,6 +287,7 @@ module.exports = {
   },
   FEATURE_FLAGS: {
     GOT: /true/i.test(process.env.FEATURE_FLAG_GOT),
+    WHATS_NEW_BANNER: /true/i.test(process.env.FEATURE_FLAG_WHATS_NEW_BANNER),
   },
   FRAMEWORKS: {
     CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,

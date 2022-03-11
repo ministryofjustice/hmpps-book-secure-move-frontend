@@ -7,6 +7,7 @@ const {
   ENABLE_COMPONENTS_LIBRARY,
   FEEDBACK_URL,
   SUPPORT_EMAIL,
+  FEATURE_FLAGS,
 } = require('../')
 const { mountpath: componentsUrl } = require('../../app/components')
 const i18n = require('../i18n')
@@ -40,6 +41,7 @@ module.exports = {
   SUPPORT_EMAIL,
   FEEDBACK_URL,
   AUTH_BASE_URL,
+  FEATURE_FLAGS,
   t: (...args) => i18n.t(...args),
   callAsMacro(name) {
     const macro = this.ctx[name]
