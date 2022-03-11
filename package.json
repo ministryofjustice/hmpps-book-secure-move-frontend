@@ -163,7 +163,7 @@
     "json2csv": "5.0.7",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.21",
-    "lru-cache": "6.0.0",
+    "lru-cache": "7.4.4",
     "markdown-it": "12.3.2",
     "markdown-it-container": "3.0.0",
     "morgan": "1.10.0",
