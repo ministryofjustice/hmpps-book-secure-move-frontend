@@ -148,31 +148,27 @@ describe('whatsNewContentService Service', function () {
     })
 
     it('calls the whatsNewContentService.createClient method', async function () {
-      const results = await whatsNewContentService.fetchWhatsNewContent()
+      const results = await whatsNewContentService.fetch()
       expect(results.title).to.equal('Whats new today!')
     })
     it('returns the content title', async function () {
-      const formattedEntries =
-        await whatsNewContentService.fetchWhatsNewContent()
+      const formattedEntries = await whatsNewContentService.fetch()
       expect(formattedEntries.title).to.equal('Whats new today!')
     })
     it('returns the formatted body', async function () {
-      const formattedEntries =
-        await whatsNewContentService.fetchWhatsNewContent()
+      const formattedEntries = await whatsNewContentService.fetch()
       expect(formattedEntries.body).to.equal(
         '<h1 class="govuk-heading-l">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-m">Test heading 2.</h2><h3 class="govuk-heading-s"><i>Test heading 3.</i></h3><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul>'
       )
     })
     it('returns the banner text', async function () {
-      const formattedEntries =
-        await whatsNewContentService.fetchWhatsNewContent()
+      const formattedEntries = await whatsNewContentService.fetch()
       expect(formattedEntries.bannerText).to.equal(
         'Some text briefly explaining the changes.'
       )
     })
     it('returns the formatted date', async function () {
-      const formattedEntries =
-        await whatsNewContentService.fetchWhatsNewContent()
+      const formattedEntries = await whatsNewContentService.fetch()
       expect(formattedEntries.date).to.equal('4 March 2022')
     })
   })
@@ -182,8 +178,7 @@ describe('whatsNewContentService Service', function () {
       sinon
         .stub(whatsNewContentService.client, 'getEntries')
         .resolves(emptyMockedResponse)
-      const formattedEntries =
-        await whatsNewContentService.fetchWhatsNewContent()
+      const formattedEntries = await whatsNewContentService.fetch()
       expect(formattedEntries).to.equal(null)
     })
   })

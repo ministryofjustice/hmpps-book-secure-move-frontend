@@ -5,7 +5,7 @@ const whatsNewContentService = require('../../common/services/whats-new-content'
 
 // Define routes
 router.get('/', async (req, res) => {
-  const content = await whatsNewContentService.fetchWhatsNewContent()
+  const content = await whatsNewContentService.fetch()
   res.render('whats-new/whats-new', {
     contentTitle: content.title,
     contentBody: content.body,
