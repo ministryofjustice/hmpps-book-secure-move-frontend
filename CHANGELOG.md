@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.103.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.102.3...v2.103.0) (2022-03-14)
+
+
+### Features
+
+* Add BANNER_VISIBLE env var ([8496c96](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8496c96ca473b2918d5371c2e72281902dfec538))
+* Add whats new footer link ([f799749](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f7997493a44c733ac3163907d404e36679e619ac))
+* Allow a user to dismiss the whats new banner ([2fc8131](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2fc8131cab3dfc6d3de15d26bd1d1a66b4d8d2d7))
+* Only show the banner on the home page ([68a3805](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/68a3805488550e3bb2362388ef806ff8bd8c99a6))
+* Pull in contentful content to view ([8fe05ec](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8fe05eca6a877ae977ca05386a95edda90923395))
+* Setup html and styles for the whats new banner ([8a9a328](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8a9a3288f3d09fb15e7b0f08c2ecb73d2fca31f0))
+* Use cookie to remember when dismiss button has been clicked ([cc3da8f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/cc3da8f078f9c27492aecab29ae9768efe2f7c9d))
+
 ### [2.102.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.102.2...v2.102.3) (2022-03-10)
 
 
