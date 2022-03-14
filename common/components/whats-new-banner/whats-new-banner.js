@@ -19,6 +19,7 @@ Banner.prototype = {
       this.removeElement($element)
     } else {
       this.dismissBanner(this.$module)
+      this.linkToWhatsNewPageClicked()
     }
   },
 
@@ -29,6 +30,23 @@ Banner.prototype = {
       e.preventDefault()
       this.removeElement($element)
       this.setBannerCookie($element)
+      this.sendEvent(
+        'dismiss-whats-new-banner',
+        'banner-dismissed',
+        'When a user has clicked the dimiss banner button'
+      )
+    }
+  },
+
+  linkToWhatsNewPageClicked: function () {
+    const link = document.getElementById('whats-new-page-link')
+
+    link.onclick = e => {
+      this.sendEvent(
+        'whats-new-banner-call-to-action-link-clicked',
+        'banner-call-to-action-clicked',
+        'When a user has clicked on the read more about these changes banner link'
+      )
     }
   },
 
@@ -66,6 +84,14 @@ Banner.prototype = {
   setBannerCookie: function () {
     const date = this.getContentDate(this.$module)
     document.cookie = 'banner-dismissed' + '=' + date + ';' + ';path=/'
+  },
+  sendEvent: function (eventName, eventCategory, eventLabel) {
+    if (window.gtag) {
+      window.gtag('event', eventName, {
+        event_category: eventCategory,
+        event_label: eventLabel,
+      })
+    }
   },
 }
 
