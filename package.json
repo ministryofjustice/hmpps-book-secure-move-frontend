@@ -176,7 +176,7 @@
     "path-to-regexp": "6.2.0",
     "pluralize": "8.0.0",
     "prom-client": "14.0.1",
-    "qs": "6.10.1",
+    "qs": "6.10.3",
     "redis": "3.1.2",
     "response-time": "2.3.2",
     "retry-axios": "2.6.0",
