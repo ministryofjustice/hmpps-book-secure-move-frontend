@@ -224,7 +224,7 @@
     "imagemin-jpegtran": "7.0.0",
     "imagemin-optipng": "8.0.0",
     "imagemin-svgo": "10.0.1",
-    "lint-staged": "12.1.2",
+    "lint-staged": "12.3.5",
     "mini-css-extract-plugin": "2.6.0",
     "mocha": "9.2.2",
     "mocha-junit-reporter": "2.0.2",
