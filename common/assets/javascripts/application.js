@@ -24,6 +24,7 @@ const HcSticky = require('hc-sticky')
 const StickySidebar = require('sticky-sidebar/dist/sticky-sidebar')
 
 const AddAnother = require('../../components/add-another/add-another')
+const Footer = require('../../components/footer/footer')
 const Header = require('../../components/internal-header/internal-header')
 const Message = require('../../components/message/message')
 const Time = require('../../components/time/time')
@@ -105,4 +106,9 @@ const $multiFileUploads = document.querySelectorAll(
 )
 nodeListForEach($multiFileUploads, function ($multiFileUpload) {
   new MultiFileUpload($multiFileUpload).init()
+})
+
+const $footer = document.querySelectorAll('footer')
+nodeListForEach($footer, function ($module) {
+  new Footer($module).init()
 })

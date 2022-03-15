@@ -66,7 +66,7 @@ describe('Whats new banner component', function () {
 
     it('should render read more about these changes link', function () {
       expect($component.html()).to.contain(
-        '<a href="/whats-new" class="govuk-link">Read more about these changes.</a>'
+        '<a href="/whats-new" id="whats-new-page-link" class="govuk-link">Read more about these changes.</a>'
       )
     })
   })
