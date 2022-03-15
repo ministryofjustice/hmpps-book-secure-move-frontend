@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.104.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.103.0...v2.104.0) (2022-03-15)
+
+
+### Features
+
+* Add analytics to whats new banner ([32168f9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/32168f9cd8b9582feefbcdb6094f0752bf8a03cd))
+* Setup GA for footer links ([7757535](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7757535844a234ed620566497acd9d97a6422255))
+
 ## [2.103.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.102.3...v2.103.0) (2022-03-14)
 
 
