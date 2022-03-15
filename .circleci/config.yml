@@ -282,17 +282,6 @@ jobs:
           path: artifacts
       - *notify_slack_on_failure
 
-  publish-release-to-github:
-    <<: *circle_container
-    steps:
-      - checkout
-      - *restore_cache
-      - *install_dependencies
-      - *save_cache
-      - run:
-          name: Publish release to GitHub
-          command: npm run release:github
-
   publish-release-to-sentry:
     <<: *circle_container
     parameters:
@@ -532,11 +521,6 @@ workflows:
             - end-to-end-test-release
             - lint-and-unit-test
       # Post release
-      - publish-release-to-github:
-          context:
-            - hmpps-common-vars
-          <<: *only_deploy_tags
-          <<: *requires_production_approval
       - publish-release-to-sentry:
           <<: *only_main
           name: publish-release-to-sentry-staging
