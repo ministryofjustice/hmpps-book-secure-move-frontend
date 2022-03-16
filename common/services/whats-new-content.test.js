@@ -61,6 +61,18 @@ const mockedResponse = {
               data: {},
             },
             {
+              nodeType: 'heading-4',
+              content: [
+                {
+                  nodeType: 'text',
+                  value: 'Test heading 4.',
+                  marks: [],
+                  data: {},
+                },
+              ],
+              data: {},
+            },
+            {
               nodeType: 'hyperlink',
               content: [
                 {
@@ -158,7 +170,7 @@ describe('whatsNewContentService Service', function () {
     it('returns the formatted body', async function () {
       const formattedEntries = await whatsNewContentService.fetch()
       expect(formattedEntries.body).to.equal(
-        '<h1 class="govuk-heading-l">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-m">Test heading 2.</h2><h3 class="govuk-heading-s"><i>Test heading 3.</i></h3><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul>'
+        '<h1 class="govuk-heading-l">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-s">Test heading 2.</h2><h3 class="govuk-heading-m"><i>Test heading 3.</i></h3><h4 class="govuk-heading-s">Test heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul>'
       )
     })
     it('returns the banner text', async function () {
