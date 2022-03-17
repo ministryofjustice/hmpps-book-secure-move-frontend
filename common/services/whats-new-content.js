@@ -19,11 +19,13 @@ const options = {
     [BLOCKS.HEADING_1]: (node, next) =>
       `<h1 class="govuk-heading-l">${next(node.content)}</h1>`,
     [BLOCKS.HEADING_2]: (node, next) =>
-      `<h2 class="govuk-heading-s govuk-!-margin-top-7">${next(
+      `<h2 class="govuk-heading-s govuk-!-margin-top-5">${next(
         node.content
       )}</h2>`,
     [BLOCKS.HEADING_3]: (node, next) =>
-      `<h3 class="govuk-heading-m">${next(node.content)}</h3>`,
+      `<h3 class="govuk-heading-m govuk-!-margin-top-3">${next(
+        node.content
+      )}</h3>`,
     [BLOCKS.HEADING_4]: (node, next) =>
       `<h4 class="govuk-heading-s">${next(node.content)}</h4>`,
     [BLOCKS.UL_LIST]: (node, next) =>
