@@ -19,7 +19,9 @@ const options = {
     [BLOCKS.HEADING_1]: (node, next) =>
       `<h1 class="govuk-heading-l">${next(node.content)}</h1>`,
     [BLOCKS.HEADING_2]: (node, next) =>
-      `<h2 class="govuk-heading-s section-heading">${next(node.content)}</h2>`,
+      `<h2 class="govuk-heading-s govuk-!-margin-top-7">${next(
+        node.content
+      )}</h2>`,
     [BLOCKS.HEADING_3]: (node, next) =>
       `<h3 class="govuk-heading-m">${next(node.content)}</h3>`,
     [BLOCKS.HEADING_4]: (node, next) =>
