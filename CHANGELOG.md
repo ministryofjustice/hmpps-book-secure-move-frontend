@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.105.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.104.1...v2.105.0) (2022-03-17)
+
+
+### Features
+
+* Include journey numbers in events ([c79f0a8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c79f0a80a2d6e630fe0502402fe30bca0b662fb5))
+
 ### [2.104.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.104.0...v2.104.1) (2022-03-15)
 
 ## [2.104.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.103.0...v2.104.0) (2022-03-15)
