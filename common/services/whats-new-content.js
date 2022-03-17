@@ -23,7 +23,7 @@ const options = {
         node.content
       )}</h2>`,
     [BLOCKS.HEADING_3]: (node, next) =>
-      `<h3 class="govuk-heading-m govuk-!-margin-top-3">${next(
+      `<h3 class="govuk-heading-m govuk-!-margin-top-4">${next(
         node.content
       )}</h3>`,
     [BLOCKS.HEADING_4]: (node, next) =>
