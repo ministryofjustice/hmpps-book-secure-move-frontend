@@ -26,16 +26,16 @@ describe('Nunjucks globals', function () {
       it('should set footer items', function () {
         expect(globals.FOOTER_ITEMS).to.deep.equal([
           {
+            href: '/whats-new',
+            text: "What's new",
+          },
+          {
             href: '/help/accessibility-statement',
             text: 'Accessibility statement',
           },
           {
             href: componentsUrl,
             text: 'components::title',
-          },
-          {
-            href: '/whats-new',
-            text: "What's new",
           },
         ])
       })
@@ -53,12 +53,12 @@ describe('Nunjucks globals', function () {
       it('should set default footer items', function () {
         expect(globals.FOOTER_ITEMS).to.deep.equal([
           {
-            href: '/help/accessibility-statement',
-            text: 'Accessibility statement',
-          },
-          {
             href: '/whats-new',
             text: "What's new",
+          },
+          {
+            href: '/help/accessibility-statement',
+            text: 'Accessibility statement',
           },
         ])
       })

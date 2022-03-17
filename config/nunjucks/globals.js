@@ -17,16 +17,16 @@ const { manifest: manifestPath } = require('../paths')
 let webpackManifest = {}
 const footerItems = [
   {
+    href: '/whats-new',
+    text: "What's new",
+  },
+  {
     href: '/help/accessibility-statement',
     text: 'Accessibility statement',
   },
   {
     href: ENABLE_COMPONENTS_LIBRARY ? componentsUrl : undefined,
     text: i18n.t('components::title'),
-  },
-  {
-    href: '/whats-new',
-    text: "What's new",
   },
 ]
 
