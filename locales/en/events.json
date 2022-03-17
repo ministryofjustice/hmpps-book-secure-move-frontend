@@ -46,7 +46,7 @@
     "description": "Vehicle {{vehicle_reg}} arrived at outer gate of {{location.title}}"
   },
   "JourneyCancel": {
-    "heading": "Journey cancelled",
+    "heading": "Journey {{journey.number}} cancelled",
     "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} cancelled"
   },
   "JourneyChangeVehicle": {
@@ -54,11 +54,11 @@
     "description": "$t(events::person) moved from {{previous_vehicle_reg}} to {{vehicle_reg}}"
   },
   "JourneyComplete": {
-    "heading": "Journey completed",
+    "heading": "Journey {{journey.number}} completed",
     "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} completed"
   },
   "JourneyCreate": {
-    "heading": "Journey created",
+    "heading": "Journey {{journey.number}} created",
     "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} created by {{supplier.name}}"
   },
   "JourneyExitThroughOuterGate": {
@@ -86,23 +86,23 @@
     "description": "Escort vehicle {{vehicle_reg}} boarding complete, ready to exit from {{journey.from_location.title}}"
   },
   "JourneyReject": {
-    "heading": "Journey rejected",
+    "heading": "Journey {{journey.number}} rejected",
     "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} rejected by {{move.supplier.name}}"
   },
   "JourneyStart": {
-    "heading": "Journey started",
+    "heading": "Journey {{journey.number}} started",
     "description": "Journey from {{journey.from_location.title}} to {{journey.to_location.title}} started by {{move.supplier.name}}"
   },
   "JourneyUpdate": {
-    "heading": "Journey updated by {{supplier.name}}",
+    "heading": "Journey {{journey.number}} updated by {{supplier.name}}",
     "description": ""
   },
   "JourneyUncancel": {
-    "heading": "Journey uncancelled",
+    "heading": "Journey {{journey.number}} uncancelled",
     "description": "Cancelled Journey from {{journey.from_location.title}} to {{journey.to_location.title}} revoked by {{move.supplier.name}}"
   },
   "JourneyUncomplete": {
-    "heading": "Journey uncompleted",
+    "heading": "Journey {{journey.number}} uncompleted",
     "description": "Completed Journey from {{journey.from_location.title}} to {{journey.to_location.title}} revoked by {{move.supplier.name}}"
   },
   "MoveDateChanged": {
