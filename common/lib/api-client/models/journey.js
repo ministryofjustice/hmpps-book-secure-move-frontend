@@ -5,6 +5,7 @@ module.exports = {
     vehicle: '',
     timestamp: '',
     date: '',
+    number: '',
     from_location: {
       jsonApi: 'hasOne',
       type: 'locations',
