@@ -15,8 +15,11 @@ function toPanelList(events, move) {
 
 module.exports = function (move = {}) {
   const { timeline_events: timelineEvents = [] } = move
+
   const importantEvents = timelineEvents.filter(
-    ({ classification }) => classification === 'incident'
+    ({ event_type: eventType, classification }) =>
+      eventType === 'PerPropertyChange' || classification === 'incident'
   )
+
   return toPanelList(importantEvents, move)
 }

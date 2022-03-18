@@ -30,6 +30,7 @@
   "no_events": "No events",
   "person": "{{person._fullname}}",
   "classification": {
+    "default": "Incident",
     "incident": "Serious incident",
     "medical": "Medical incident"
   },
@@ -346,6 +347,10 @@
     "subtype_beverage": "a beverage",
     "subtype_additional_clothing": "additional clothing",
     "subtype_relevant_information_given": "relevant information"
+  },
+  "PerPropertyChange": {
+    "heading": "Property change",
+    "description": "{{notes}}"
   },
   "PersonMoveAssault": {
     "flag": "red",
