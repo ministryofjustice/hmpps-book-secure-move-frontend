@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.107.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.105.0...v2.107.0) (2022-03-18)
+
+
+### Features
+
+* Add H4 tag conversion for contentful rendering ([67c2076](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/67c2076d503f35d0b1a506a7271b0162e3f51964))
+
 ### [2.106.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.106.1...v2.106.2) (2022-03-18)
 
 ### [2.106.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.106.0...v2.106.1) (2022-03-17)
