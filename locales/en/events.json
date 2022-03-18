@@ -30,6 +30,7 @@
   "no_events": "No events",
   "person": "{{person._fullname}}",
   "classification": {
+    "default": "Incident",
     "incident": "Serious incident",
     "medical": "Medical incident"
   },

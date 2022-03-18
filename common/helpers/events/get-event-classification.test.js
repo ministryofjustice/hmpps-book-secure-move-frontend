@@ -19,6 +19,11 @@ describe('Helpers', function () {
       ...mockEvent,
       classification: 'incident',
     }
+    const mockEventWithPropertyChangeEventType = {
+      ...mockEvent,
+      event_type: 'PerPropertyChange',
+      classification: 'default',
+    }
 
     describe('#getEventClassification', function () {
       let classification
@@ -67,6 +72,19 @@ describe('Helpers', function () {
 
         it('should return expected classification', function () {
           expect(classification).to.deep.equal('incident')
+        })
+      })
+
+      context('when event has property change event type', function () {
+        beforeEach(function () {
+          classification = getEventClassification(
+            mockEventWithPropertyChangeEventType
+          )
+        })
+
+        it('should return expected classification', function () {
+          classification
+          expect(classification).to.deep.equal('default')
         })
       })
     })
