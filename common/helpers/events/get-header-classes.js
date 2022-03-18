@@ -11,6 +11,8 @@ const getHeaderClasses = event => {
 
   if (classification === 'incident') {
     headerClasses += ' app-tag--destructive'
+  } else if (classification === 'default') {
+    headerClasses += ' app-tag--inactive'
   }
 
   return headerClasses

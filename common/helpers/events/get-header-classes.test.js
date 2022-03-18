@@ -19,6 +19,11 @@ describe('Helpers', function () {
       ...mockEvent,
       classification: 'incident',
     }
+    const mockEventWithPropertyChangeEventType = {
+      ...mockEvent,
+      event_type: 'PerPropertyChange',
+      classification: 'default',
+    }
 
     describe('#getHeaderClasses', function () {
       let headerClasses
@@ -60,6 +65,16 @@ describe('Helpers', function () {
 
         it('should return expected classes', function () {
           expect(headerClasses).to.deep.equal('app-tag app-tag--destructive')
+        })
+      })
+
+      context('when event has property change event type', function () {
+        beforeEach(function () {
+          headerClasses = getHeaderClasses(mockEventWithPropertyChangeEventType)
+        })
+
+        it('should return expected classes', function () {
+          expect(headerClasses).to.deep.equal('app-tag app-tag--inactive')
         })
       })
     })
