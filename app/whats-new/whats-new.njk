@@ -17,15 +17,15 @@
 
   {% for post in posts %}
     {% if post.fields.body and post.fields.title %}
-      <h3 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
+      <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
         {{ post.fields.date }}
-      </h3>
+      </h2>
 
       <hr>
       
-      <h2 class="govuk-heading-l govuk-!-margin-top-5">
+      <h3 class="govuk-heading-l govuk-!-margin-top-5">
         {{ post.fields.title }}
-      </h2>
+      </h3>
         
       {{ post.fields.body | safe }}
       {% else %}
