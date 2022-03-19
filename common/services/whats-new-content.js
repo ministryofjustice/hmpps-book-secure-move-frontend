@@ -49,22 +49,30 @@ const service = {
       return null
     }
 
+    for (let i = 0; i < entries.items.length; i++) {
+      const currentItem = entries.items[i]
+      currentItem.fields.body = service.convertToHTMLFormat(
+        currentItem.fields.body
+      )
+      currentItem.fields.date = service.formatDate(currentItem.fields.date)
+    }
+
     const latestNotification = entries.items[0]
 
     const latestNotificationTitle = latestNotification.fields.title
-    const latestNotificationBody = latestNotification.fields.body
     const latestNotificationDate = latestNotification.fields.date
     const latestNotificationBriefBannerText =
       latestNotification.fields.briefBannerText
 
-    const formattedBody = service.convertToHTMLFormat(latestNotificationBody)
     const formattedDate = service.formatDate(latestNotificationDate)
 
     return {
-      title: latestNotificationTitle,
-      body: formattedBody,
-      bannerText: latestNotificationBriefBannerText,
-      date: formattedDate,
+      bannerContent: {
+        title: latestNotificationTitle,
+        body: latestNotificationBriefBannerText,
+        date: formattedDate,
+      },
+      posts: entries.items,
     }
   },
   convertToHTMLFormat: contentBody => {
