@@ -215,7 +215,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-promise": "5.1.1",
     "eslint-plugin-testcafe": "0.2.1",
-    "finepack": "2.10.11",
+    "finepack": "2.10.12",
     "git-authors-cli": "1.0.37",
     "glob": "7.2.0",
     "husky": "7.0.4",
