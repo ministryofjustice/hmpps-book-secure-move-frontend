@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.108.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.107.0...v2.108.0) (2022-03-21)
+
+
+### Features
+
+* Include property change events in move overview ([b3780ee](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b3780eef7e160a3a4467b7e2eeb17f6ca8f397d8))
+
 ## [2.107.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.105.0...v2.107.0) (2022-03-18)
 
 
