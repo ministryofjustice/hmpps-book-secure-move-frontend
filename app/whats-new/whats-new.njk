@@ -1,19 +1,28 @@
 {% extends "layouts/base.njk" %}
 
 {% block pageTitle %}
-  {{ heading }} – {{ super() }}
+  What's new
 {% endblock %}
 
-{% block content %}  
-  {% if contentBody and contentTitle %}
-    <header>
-      <h1 class="govuk-heading-xl govuk-!-margin-top-1 govuk-!-margin-bottom-6">
-        {{ contentTitle }}
-      </h1>
-    </header>
-      
-    {{ contentBody | safe }}
-    {% else %}
-    
-    {% endif %}
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl govuk-!-margin-top-1 govuk-!-margin-bottom-6">
+      What's new
+    </h1>
+  </header>
+
+  <p class="govuk-!-margin-bottom-5">
+    The latest updates and improvements to Book a Secure Move.
+  </p>
+
+  {% for post in posts %}
+    <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
+      {{ post.date }}
+    </h2>
+    <hr>
+    <h3 class="govuk-heading-l govuk-!-margin-top-5">
+      {{ post.title }}
+    </h3>
+    {{ post.body | safe }}
+  {% endfor %}
 {% endblock %}

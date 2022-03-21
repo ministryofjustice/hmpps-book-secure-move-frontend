@@ -49,22 +49,30 @@ const service = {
       return null
     }
 
+    const formattedEntries = entries.items.map(
+      ({ fields: { title, body, date } }) => ({
+        title,
+        body: service.convertToHTMLFormat(body),
+        date: service.formatDate(date),
+      })
+    )
+
     const latestNotification = entries.items[0]
 
     const latestNotificationTitle = latestNotification.fields.title
-    const latestNotificationBody = latestNotification.fields.body
     const latestNotificationDate = latestNotification.fields.date
     const latestNotificationBriefBannerText =
       latestNotification.fields.briefBannerText
 
-    const formattedBody = service.convertToHTMLFormat(latestNotificationBody)
     const formattedDate = service.formatDate(latestNotificationDate)
 
     return {
-      title: latestNotificationTitle,
-      body: formattedBody,
-      bannerText: latestNotificationBriefBannerText,
-      date: formattedDate,
+      bannerContent: {
+        title: latestNotificationTitle,
+        body: latestNotificationBriefBannerText,
+        date: formattedDate,
+      },
+      posts: formattedEntries,
     }
   },
   convertToHTMLFormat: contentBody => {
