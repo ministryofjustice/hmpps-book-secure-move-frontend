@@ -161,7 +161,7 @@ describe('whatsNewContentService Service', function () {
 
     it('returns the formatted body', async function () {
       const formattedEntries = await whatsNewContentService.fetch()
-      expect(formattedEntries.posts[0].fields.body).to.equal(
+      expect(formattedEntries.posts[0].body).to.equal(
         '<h1 class="govuk-heading-l">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-s govuk-!-margin-top-5">Test heading 2.</h2><h3 class="govuk-heading-m govuk-!-margin-top-4"><i>Test heading 3.</i></h3><h4 class="govuk-heading-s">Test heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul>'
       )
     })
@@ -171,9 +171,7 @@ describe('whatsNewContentService Service', function () {
     })
     it('returns the content title', async function () {
       const formattedEntries = await whatsNewContentService.fetch()
-      expect(formattedEntries.posts[0].fields.title).to.equal(
-        'Whats new today!'
-      )
+      expect(formattedEntries.posts[0].title).to.equal('Whats new today!')
     })
     it('returns the banner text', async function () {
       const formattedEntries = await whatsNewContentService.fetch()
@@ -183,7 +181,7 @@ describe('whatsNewContentService Service', function () {
     })
     it('returns the formatted date', async function () {
       const formattedEntries = await whatsNewContentService.fetch()
-      expect(formattedEntries.posts[0].fields.date).to.equal('4 March 2022')
+      expect(formattedEntries.posts[0].date).to.equal('4 March 2022')
     })
   })
 

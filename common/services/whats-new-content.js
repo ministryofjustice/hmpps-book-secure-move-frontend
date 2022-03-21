@@ -49,13 +49,13 @@ const service = {
       return null
     }
 
-    for (let i = 0; i < entries.items.length; i++) {
-      const currentItem = entries.items[i]
-      currentItem.fields.body = service.convertToHTMLFormat(
-        currentItem.fields.body
-      )
-      currentItem.fields.date = service.formatDate(currentItem.fields.date)
-    }
+    const formattedEntries = entries.items.map(
+      ({ fields: { title, body, date } }) => ({
+        title,
+        body: service.convertToHTMLFormat(body),
+        date: service.formatDate(date),
+      })
+    )
 
     const latestNotification = entries.items[0]
 
@@ -72,7 +72,7 @@ const service = {
         body: latestNotificationBriefBannerText,
         date: formattedDate,
       },
-      posts: entries.items,
+      posts: formattedEntries,
     }
   },
   convertToHTMLFormat: contentBody => {

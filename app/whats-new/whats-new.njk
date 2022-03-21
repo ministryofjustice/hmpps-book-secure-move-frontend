@@ -16,20 +16,13 @@
   </p>
 
   {% for post in posts %}
-    {% if post.fields.body and post.fields.title %}
-      <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
-        {{ post.fields.date }}
-      </h2>
-
-      <hr>
-      
-      <h3 class="govuk-heading-l govuk-!-margin-top-5">
-        {{ post.fields.title }}
-      </h3>
-        
-      {{ post.fields.body | safe }}
-      {% else %}
-      
-    {% endif %}
+    <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
+      {{ post.date }}
+    </h2>
+    <hr>
+    <h3 class="govuk-heading-l govuk-!-margin-top-5">
+      {{ post.title }}
+    </h3>
+    {{ post.body | safe }}
   {% endfor %}
 {% endblock %}

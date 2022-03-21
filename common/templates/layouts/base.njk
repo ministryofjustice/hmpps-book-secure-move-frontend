@@ -152,11 +152,7 @@
   {% endblock %}
   
   {% if FEATURE_FLAGS.WHATS_NEW_BANNER and REQUEST_PATH === '/' %}
-    {{ appWhatsNewBanner({
-      title: whatsNewContent.bannerContent.title,
-      body: whatsNewContent.bannerContent.body,
-      date: whatsNewContent.bannerContent.date
-    }) }}
+    {{ appWhatsNewBanner(whatsNewContent.bannerContent) }}
   {% endif %}
 {% endblock %}
 
