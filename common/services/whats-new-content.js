@@ -61,18 +61,15 @@ const service = {
       })
     )
 
-    const latestNotification = entries.items[0]
-    const latestNotificationTitle = latestNotification.fields.title
-    const latestNotificationDate = latestNotification.fields.date
-    const latestNotificationBriefBannerText =
-      latestNotification.fields.briefBannerText
-    const formattedDate = service.formatDate(latestNotificationDate)
+    const latestContent = entries.items[0]
+    const latestContentTitle = latestContent.fields.title
+    const latestContentBannerText = latestContent.fields.briefBannerText
 
     return {
       bannerContent: {
-        title: latestNotificationTitle,
-        body: latestNotificationBriefBannerText,
-        date: formattedDate,
+        title: latestContentTitle,
+        body: latestContentBannerText,
+        date: service.formatDate(latestContent.fields.date),
       },
       posts: formattedEntries,
     }
