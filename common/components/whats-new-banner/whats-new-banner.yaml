@@ -18,4 +18,3 @@ examples:
     data:
       error: 'ServerError'
       errorMessage: 'Server error occured.'
-      
