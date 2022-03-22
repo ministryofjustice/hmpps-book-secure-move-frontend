@@ -62,12 +62,10 @@ const service = {
     )
 
     const latestNotification = entries.items[0]
-
     const latestNotificationTitle = latestNotification.fields.title
     const latestNotificationDate = latestNotification.fields.date
     const latestNotificationBriefBannerText =
       latestNotification.fields.briefBannerText
-
     const formattedDate = service.formatDate(latestNotificationDate)
 
     return {
