@@ -12,9 +12,15 @@
   {% if params.title.html or params.title.text %}aria-labelledby="app-message__heading"{% endif %}
   >
   {% if params.title.html or params.title.text %}
-    <h2 class="app-message__heading" id="app-message__heading">
-      {{ params.title.html | safe if params.title.html else params.title.text }}
-    </h2>
+    {% if params.content.html or params.content.text %}
+      <h2 class="app-message__heading" id="app-message__heading">
+        {{ params.title.html | safe if params.title.html else params.title.text }}
+      </h2>
+    {% else %}
+      <span class="app-message__heading" id="app-message__heading">
+        {{ params.title.html | safe if params.title.html else params.title.text }}
+      </span>
+    {% endif %}
   {% endif %}
 
   {% if params.content.html or params.content.text %}
