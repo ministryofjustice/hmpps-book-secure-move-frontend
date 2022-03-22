@@ -14,3 +14,7 @@ examples:
       contentTitle: 'Title Here'
       contentDate: '4th March 2022'
       contentBannerText: 'Some random banner text'
+  - name: withError
+    data:
+      error: 'ServerError'
+      errorMessage: 'Server error occured.'

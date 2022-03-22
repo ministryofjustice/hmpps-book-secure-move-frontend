@@ -45,6 +45,10 @@ const service = {
   fetch: async () => {
     const entries = await service.client.getEntries()
 
+    if (!entries.items && entries.sys.id === 'ServerError') {
+      return { error: 'ServerError', errorMessage: entries.message }
+    }
+
     if (!entries.items?.length) {
       return null
     }

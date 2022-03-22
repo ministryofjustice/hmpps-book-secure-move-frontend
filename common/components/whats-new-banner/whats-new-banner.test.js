@@ -70,4 +70,21 @@ describe('Whats new banner component', function () {
       )
     })
   })
+
+  context('will not render the banner if a server error occured', function () {
+    let $component
+
+    beforeEach(function () {
+      const $ = renderComponentHtmlToCheerio('whats-new-banner', {
+        error: 'ServerError',
+        errorMessage: 'Server error occured.',
+      })
+
+      $component = $('[data-module="app-whats-new-banner"]')
+    })
+
+    it('will not render the banner', function () {
+      expect($component.length).to.equal(0)
+    })
+  })
 })

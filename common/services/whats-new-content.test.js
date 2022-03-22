@@ -151,6 +151,15 @@ const mockedResponse = {
 
 const emptyMockedResponse = { items: [] }
 
+const errorMockedResponse = {
+  sys: {
+    type: 'Error',
+    id: 'ServerError',
+  },
+  message: 'Server error occured.',
+  requestId: '111111-2222-333-4444-5555555555',
+}
+
 describe('whatsNewContentService Service', function () {
   context('with a response', function () {
     beforeEach(function () {
@@ -192,6 +201,17 @@ describe('whatsNewContentService Service', function () {
         .resolves(emptyMockedResponse)
       const formattedEntries = await whatsNewContentService.fetch()
       expect(formattedEntries).to.equal(null)
+    })
+  })
+
+  context('when Contentful is down', function () {
+    it('returns the error', async function () {
+      sinon
+        .stub(whatsNewContentService.client, 'getEntries')
+        .resolves(errorMockedResponse)
+      const response = await whatsNewContentService.fetch()
+      expect(response.error).to.equal('ServerError')
+      expect(response.errorMessage).to.equal('Server error occured.')
     })
   })
 })
