@@ -11,11 +11,11 @@ router.get('/', async (req, res, next) => {
     const error = new Error('Contentful servers are down')
     error.statusCode = 500
     return next(error)
-  } else {
-    res.render('whats-new/whats-new', {
-      posts: content.posts,
-    })
   }
+
+  res.render('whats-new/whats-new', {
+    posts: content.posts,
+  })
 })
 
 // Export
