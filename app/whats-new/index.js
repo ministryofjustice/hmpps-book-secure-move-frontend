@@ -7,7 +7,7 @@ const whatsNewContentService = require('../../common/services/whats-new-content'
 router.get('/', async (req, res, next) => {
   const content = await whatsNewContentService.fetch()
 
-  if (!content.error === 'ServerError') {
+  if (content.error === 'ServerError') {
     const error = new Error('Contentful servers are down')
     error.statusCode = 500
     return next(error)
