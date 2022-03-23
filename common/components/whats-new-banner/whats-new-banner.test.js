@@ -13,6 +13,7 @@ describe('Whats new banner component', function () {
         'whats-new-banner',
         examples.default
       )
+
       $component = $('[data-module="app-whats-new-banner"]')
     })
 
@@ -25,11 +26,10 @@ describe('Whats new banner component', function () {
     let $component
 
     beforeEach(function () {
-      const $ = renderComponentHtmlToCheerio('whats-new-banner', {
-        title: 'Title Here',
-        date: '4th March 2022',
-        body: 'Some random banner text',
-      })
+      const $ = renderComponentHtmlToCheerio(
+        'whats-new-banner',
+        examples.default
+      )
 
       $component = $('[data-module="app-whats-new-banner"]')
     })
@@ -55,6 +55,7 @@ describe('Whats new banner component', function () {
         'whats-new-banner',
         examples.default
       )
+
       $component = $('[data-module="app-whats-new-banner"]')
     })
 
@@ -68,23 +69,6 @@ describe('Whats new banner component', function () {
       expect($component.html()).to.contain(
         '<a href="/whats-new" id="whats-new-page-link" class="govuk-link">Read more about these changes.</a>'
       )
-    })
-  })
-
-  context('will not render the banner if a server error occured', function () {
-    let $component
-
-    beforeEach(function () {
-      const $ = renderComponentHtmlToCheerio('whats-new-banner', {
-        error: 'ServerError',
-        errorMessage: 'Server error occured.',
-      })
-
-      $component = $('[data-module="app-whats-new-banner"]')
-    })
-
-    it('will not render the banner', function () {
-      expect($component.length).to.equal(0)
     })
   })
 })
