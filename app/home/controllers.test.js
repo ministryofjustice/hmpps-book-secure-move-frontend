@@ -1,10 +1,17 @@
+const sinon = require('sinon')
+
+const whatsNewContentService = require('../../common/services/whats-new-content')
+
 const controllers = require('./controllers')
 
 describe('Home controllers', function () {
   describe('#dashboard()', function () {
+    const errorMock = new Error('500')
     let req, res
 
     beforeEach(function () {
+      sinon.stub(whatsNewContentService, 'fetch').throws(errorMock)
+
       req = {
         filterSingleRequests: ['foo', 'bar'],
         filterAllocations: ['fizz', 'buzz'],
@@ -60,6 +67,10 @@ describe('Home controllers', function () {
           expect(params.sections[section].filter).to.be.an('array')
           expect(params.sections[section].period).to.be.a('string')
         })
+      })
+      it('will return null for the whatsNewContent if an error is raised from contentful', function () {
+        const params = res.render.args[0][1]
+        expect(params.whatsNewContent).to.equal(null)
       })
     })
   })
