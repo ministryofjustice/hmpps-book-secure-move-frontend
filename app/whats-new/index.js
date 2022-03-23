@@ -5,12 +5,12 @@ const whatsNewContentService = require('../../common/services/whats-new-content'
 
 // Define routes
 router.get('/', async (req, res, next) => {
-  const content = await whatsNewContentService.fetch()
+  let content
 
-  if (content.error === 'ServerError') {
-    const error = new Error('Contentful servers are down')
-    error.statusCode = 500
-    return next(error)
+  try {
+    content = await whatsNewContentService.fetch()
+  } catch (e) {
+    return next(e)
   }
 
   res.render('whats-new/whats-new', {

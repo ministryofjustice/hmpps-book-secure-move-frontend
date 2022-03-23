@@ -4,7 +4,13 @@ const whatsNewContentService = require('../../common/services/whats-new-content'
 async function dashboard(req, res) {
   const currentWeek = dateHelpers.getCurrentWeekAsRange()
   const today = new Date().toISOString()
-  const whatsNewContent = await whatsNewContentService.fetch()
+  let whatsNewContent
+
+  try {
+    whatsNewContent = await whatsNewContentService.fetch()
+  } catch (e) {
+    whatsNewContent = null
+  }
 
   const sections = {
     outgoing: {

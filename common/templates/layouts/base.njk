@@ -151,7 +151,7 @@
     {% endif %}
   {% endblock %}
   
-  {% if FEATURE_FLAGS.WHATS_NEW_BANNER and REQUEST_PATH === '/' %}
+  {% if FEATURE_FLAGS.WHATS_NEW_BANNER and REQUEST_PATH === '/' and whatsNewContent %}
     {{ appWhatsNewBanner(whatsNewContent.bannerContent) }}
   {% endif %}
 {% endblock %}
