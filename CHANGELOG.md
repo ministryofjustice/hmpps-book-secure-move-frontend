@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.110.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.109.1...v2.110.0) (2022-03-23)
+
+
+### Features
+
+* Fix headings used for styling ([3f496f6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3f496f60c6397b523e89e208fe76d40250ddad06))
+* If contetnful is down dont render the banner ([436c4f3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/436c4f3d36905cecdbcbacf9c8a73c4c053bc773))
+* Render 500 page when contenful servers are down on the whats-new page ([a2af48e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a2af48efb2a59eff7fdbba42ac6d1c2f218797b5))
+
 ### [2.109.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.109.0...v2.109.1) (2022-03-22)
 
 ## [2.109.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.108.0...v2.109.0) (2022-03-21)
