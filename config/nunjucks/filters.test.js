@@ -21,12 +21,6 @@ const filters = proxyquire('./filters', {
   filesize: mockFilesizejs,
 })
 
-function isDST(d) {
-  const jan = new Date(d.getFullYear(), 0, 1).getTimezoneOffset()
-  const jul = new Date(d.getFullYear(), 6, 1).getTimezoneOffset()
-  return Math.max(jan, jul) !== d.getTimezoneOffset()
-}
-
 describe('Nunjucks filters', function () {
   describe('#formatDate()', function () {
     context('when no date is provided', function () {
@@ -739,12 +733,12 @@ describe('Nunjucks filters', function () {
 
         it('should return correct format', function () {
           const time = filters.formatTime('2000-01-01T01:00:00.000Z')
-          expect(time).to.equal(isDST(new Date()) ? '6pm' : '5pm')
+          expect(time).to.equal('6pm')
         })
 
         it('should return correct format', function () {
           const time = filters.formatTime('2000-06-01T01:00:00.000Z')
-          expect(time).to.equal(isDST(new Date()) ? '6pm' : '5pm')
+          expect(time).to.equal('6pm')
         })
       })
 
@@ -759,12 +753,12 @@ describe('Nunjucks filters', function () {
 
         it('should return correct format', function () {
           const time = filters.formatTime('2018-01-01T01:00:00.000Z')
-          expect(time).to.equal(isDST(new Date()) ? '11pm' : '10pm')
+          expect(time).to.equal('10pm')
         })
 
         it('should return correct format', function () {
           const time = filters.formatTime('2018-06-01T01:00:00.000Z')
-          expect(time).to.equal(isDST(new Date()) ? '11pm' : '10pm')
+          expect(time).to.equal('10pm')
         })
       })
     })
