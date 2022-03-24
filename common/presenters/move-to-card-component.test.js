@@ -19,7 +19,29 @@ const mockMove = {
   from_location: {
     title: 'Snaresbrook Court',
   },
+  timeline_events: [],
 }
+
+const mockLockoutMove = {
+  id: '12345',
+  reference: 'AB12FS45',
+  status: 'requested',
+  profile: {
+    person: {
+      _fullname: 'Name, Full',
+      prison_number: 'A1234BC',
+      police_national_computer: 'A1BC2D/E3',
+    },
+  },
+  to_location: {
+    title: 'Pentonville',
+  },
+  from_location: {
+    title: 'Snaresbrook Court',
+  },
+  timeline_events: [{ event_type: 'MoveLockout' }],
+}
+
 const mockPersonCardComponent = {
   href: '/move/12345',
   title: 'Name, Full',
@@ -78,7 +100,7 @@ describe('Presenters', function () {
               status: {
                 text: '__translated__',
               },
-              isLockOut: false,
+              isLockout: false,
               caption: undefined,
               tags: [{ items: 'moveToImportantEventsTagListComponent' }],
             })
@@ -271,7 +293,7 @@ describe('Presenters', function () {
           classes: 'app-card--compact ',
           status: undefined,
           caption: undefined,
-          isLockOut: false,
+          isLockout: false,
         })
       })
     })
@@ -280,7 +302,7 @@ describe('Presenters', function () {
       beforeEach(function () {
         transformedResponse = moveToCardComponent({
           showIsALockout: true,
-        })(mockMove)
+        })(mockLockoutMove)
       })
 
       it('should call profile to card component correctly', function () {
@@ -306,7 +328,7 @@ describe('Presenters', function () {
           },
           tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           caption: undefined,
-          isLockOut: true,
+          isLockout: true,
         })
       })
     })
@@ -342,7 +364,7 @@ describe('Presenters', function () {
           classes: 'app-card--compact ',
           status: undefined,
           caption: undefined,
-          isLockOut: false,
+          isLockout: false,
         })
       })
     })
@@ -370,7 +392,7 @@ describe('Presenters', function () {
             classes: '',
             status: undefined,
             caption: undefined,
-            isLockOut: false,
+            isLockout: false,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
@@ -406,7 +428,7 @@ describe('Presenters', function () {
             classes: `app-card--compact ${mockClasses}`,
             status: undefined,
             caption: undefined,
-            isLockOut: false,
+            isLockout: false,
           })
         })
       })
@@ -420,7 +442,7 @@ describe('Presenters', function () {
           expect(transformedResponse).to.deep.equal({
             ...mockPersonCardComponent,
             classes: mockClasses,
-            isLockOut: false,
+            isLockout: false,
             status: {
               text: '__translated__',
             },

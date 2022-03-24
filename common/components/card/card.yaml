@@ -145,6 +145,9 @@ examples:
       insetText:
         classes: govuk-inset-text--compact
         text: A message about this card
+  - name: with isLockout param
+    data:
+      isLockout: true
   - name: complete example
     data:
       title:

@@ -85,7 +85,7 @@ function moveToCardComponent({
     return {
       ...personCardComponent,
       status: statusBadge,
-      isLockOut: showIsALockout,
+      isLockout: showIsALockout,
       classes: isCompact
         ? `app-card--compact ${personCardComponent.classes || ''}`
         : personCardComponent.classes || '',
