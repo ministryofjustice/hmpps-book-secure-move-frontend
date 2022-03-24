@@ -733,7 +733,7 @@ describe('Nunjucks filters', function () {
 
         it('should return correct format', function () {
           const time = filters.formatTime('2000-01-01T01:00:00.000Z')
-          expect(time).to.equal('6pm')
+          expect(time).to.equal('5pm')
         })
 
         it('should return correct format', function () {
@@ -753,7 +753,7 @@ describe('Nunjucks filters', function () {
 
         it('should return correct format', function () {
           const time = filters.formatTime('2018-01-01T01:00:00.000Z')
-          expect(time).to.equal('10pm')
+          expect(time).to.equal('11pm')
         })
 
         it('should return correct format', function () {
