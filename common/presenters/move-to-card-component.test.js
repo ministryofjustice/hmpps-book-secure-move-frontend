@@ -78,6 +78,7 @@ describe('Presenters', function () {
               status: {
                 text: '__translated__',
               },
+              isLockOut: false,
               caption: undefined,
               tags: [{ items: 'moveToImportantEventsTagListComponent' }],
             })
@@ -270,6 +271,42 @@ describe('Presenters', function () {
           classes: 'app-card--compact ',
           status: undefined,
           caption: undefined,
+          isLockOut: false,
+        })
+      })
+    })
+
+    context('with lockout enabled', function () {
+      beforeEach(function () {
+        transformedResponse = moveToCardComponent({
+          showIsALockout: true,
+        })(mockMove)
+      })
+
+      it('should call profile to card component correctly', function () {
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
+          profile: mockMove.profile,
+          href: '/move/12345',
+          reference: 'AB12FS45',
+        })
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
+          meta: [],
+          showImage: false,
+          showMeta: false,
+          showTags: false,
+        })
+      })
+      it('should contain correct output', function () {
+        expect(transformedResponse).to.deep.equal({
+          ...mockPersonCardComponent,
+          classes: '',
+          status: {
+            text: '__translated__',
+          },
+          tags: [{ items: 'moveToImportantEventsTagListComponent' }],
+          caption: undefined,
+          isLockOut: true,
         })
       })
     })
@@ -305,6 +342,7 @@ describe('Presenters', function () {
           classes: 'app-card--compact ',
           status: undefined,
           caption: undefined,
+          isLockOut: false,
         })
       })
     })
@@ -332,6 +370,7 @@ describe('Presenters', function () {
             classes: '',
             status: undefined,
             caption: undefined,
+            isLockOut: false,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
@@ -367,6 +406,7 @@ describe('Presenters', function () {
             classes: `app-card--compact ${mockClasses}`,
             status: undefined,
             caption: undefined,
+            isLockOut: false,
           })
         })
       })
@@ -380,6 +420,7 @@ describe('Presenters', function () {
           expect(transformedResponse).to.deep.equal({
             ...mockPersonCardComponent,
             classes: mockClasses,
+            isLockOut: false,
             status: {
               text: '__translated__',
             },

@@ -8,6 +8,8 @@ const mockActiveMoves = [
   { id: '3', foo: 'bar', status: 'completed' },
   { id: '4', fizz: 'buzz', status: 'completed' },
 ]
+
+const mockActiveEvents = []
 const mockBodyKey = 'outgoing'
 const mockLocationKey = 'from_location'
 const errorStub = new Error('Problem')
@@ -19,6 +21,7 @@ describe('Moves middleware', function () {
     beforeEach(function () {
       moveService = {
         getActive: sinon.stub(),
+        getByIdWithEvents: sinon.stub(),
       }
       moveToCardComponentMapStub = sinon.stub().returnsArg(0)
       sinon.stub(presenters, 'movesByVehicle').returnsArg(0)
@@ -49,6 +52,7 @@ describe('Moves middleware', function () {
     context('when API call returns successfully', function () {
       beforeEach(function () {
         moveService.getActive.resolves(mockActiveMoves)
+        moveService.getByIdWithEvents.resolves(mockActiveEvents)
       })
 
       context('without current location', function () {

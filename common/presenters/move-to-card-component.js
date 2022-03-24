@@ -9,6 +9,7 @@ function moveToCardComponent({
   showMeta = true,
   showTags = true,
   showStatus = true,
+  showIsALockout = false,
   showToLocation = false,
   showFromLocation = false,
   hrefSuffix = '',
@@ -44,6 +45,17 @@ function moveToCardComponent({
       })
     }
 
+    if (move.timeline_events) {
+      for (let i = 0; i < move.timeline_events.length; i++) {
+        const eventType = move.timeline_events[i].event_type
+
+        if (eventType === 'MoveLockout') {
+          showIsALockout = true
+          break
+        }
+      }
+    }
+
     const showStatusBadge =
       showStatus && !excludedBadgeStatuses.includes(status) && !isCompact
     const statusBadge = showStatusBadge
@@ -73,6 +85,7 @@ function moveToCardComponent({
     return {
       ...personCardComponent,
       status: statusBadge,
+      isLockOut: showIsALockout,
       classes: isCompact
         ? `app-card--compact ${personCardComponent.classes || ''}`
         : personCardComponent.classes || '',
