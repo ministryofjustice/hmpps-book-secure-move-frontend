@@ -41,7 +41,7 @@ const mockLockoutMove = {
   },
   timeline_events: [
     {
-      id: '620e3f9c-40ac-4f58-88fe-b093e619f514',
+      id: '1111-2222-33333-4444-55555',
       type: 'events',
       event_type: 'MoveRequested',
       classification: 'default',
@@ -53,7 +53,7 @@ const mockLockoutMove = {
       eventable: {},
     },
     {
-      id: '258158cb-2158-4659-a2b6-22550f0a1335',
+      id: '1111-2222-33333-4444-66666',
       type: 'events',
       event_type: 'MoveLockout',
       classification: 'default',
