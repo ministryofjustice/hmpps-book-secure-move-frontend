@@ -39,7 +39,32 @@ const mockLockoutMove = {
   from_location: {
     title: 'Snaresbrook Court',
   },
-  timeline_events: [{ event_type: 'MoveLockout' }],
+  timeline_events: [
+    {
+      id: '620e3f9c-40ac-4f58-88fe-b093e619f514',
+      type: 'events',
+      event_type: 'MoveRequested',
+      classification: 'default',
+      occurred_at: '2022-03-23T14:29:02+00:00',
+      recorded_at: '2022-03-23T14:29:02+00:00',
+      notes: 'Automatically generated event',
+      created_by: null,
+      details: {},
+      eventable: {},
+    },
+    {
+      id: '258158cb-2158-4659-a2b6-22550f0a1335',
+      type: 'events',
+      event_type: 'MoveLockout',
+      classification: 'default',
+      occurred_at: '2022-03-24T11:17:56+00:00',
+      recorded_at: '2022-03-24T11:17:56+00:00',
+      notes: 'Additional information about this event',
+      created_by: null,
+      details: {},
+      eventable: {},
+    },
+  ],
 }
 
 const mockPersonCardComponent = {
