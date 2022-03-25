@@ -121,7 +121,7 @@
     "@ministryofjustice/frontend": "1.2.0",
     "@promster/express": "7.0.4",
     "@sentry/node": "6.19.2",
-    "@sentry/tracing": "6.19.1",
+    "@sentry/tracing": "6.19.2",
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.2.1",
     "audit-ci": "6.1.1",
