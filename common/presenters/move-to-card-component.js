@@ -45,15 +45,8 @@ function moveToCardComponent({
       })
     }
 
-    if (move.timeline_events) {
-      for (let i = 0; i < move.timeline_events.length; i++) {
-        const eventType = move.timeline_events[i].event_type
-
-        if (eventType === 'MoveLockout') {
-          showIsALockout = true
-          break
-        }
-      }
+    if (move.is_lockout) {
+      showIsALockout = true
     }
 
     const showStatusBadge =

@@ -14,12 +14,6 @@ function setResultsMoves(bodyKey, locationKey) {
       const args = omitBy(req.body[bodyKey], isUndefined)
       const activeMoves = await req.services.move.getActive(args)
 
-      for (let i = 0; i < activeMoves.length; i++) {
-        const move = activeMoves[i]
-        const eventsForMove = await req.services.move.getByIdWithEvents(move.id)
-        move.timeline_events = eventsForMove.timeline_events
-      }
-
       if (groupBy === 'vehicle') {
         req.resultsAsCards = presenters.movesByVehicle({
           moves: activeMoves,

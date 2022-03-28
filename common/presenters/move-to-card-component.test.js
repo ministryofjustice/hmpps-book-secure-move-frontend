@@ -6,6 +6,7 @@ const mockMove = {
   id: '12345',
   reference: 'AB12FS45',
   status: 'requested',
+  is_lockout: false,
   profile: {
     person: {
       _fullname: 'Name, Full',
@@ -19,13 +20,13 @@ const mockMove = {
   from_location: {
     title: 'Snaresbrook Court',
   },
-  timeline_events: [],
 }
 
 const mockLockoutMove = {
   id: '12345',
   reference: 'AB12FS45',
   status: 'requested',
+  is_lockout: true,
   profile: {
     person: {
       _fullname: 'Name, Full',
@@ -39,32 +40,6 @@ const mockLockoutMove = {
   from_location: {
     title: 'Snaresbrook Court',
   },
-  timeline_events: [
-    {
-      id: '1111-2222-33333-4444-55555',
-      type: 'events',
-      event_type: 'MoveRequested',
-      classification: 'default',
-      occurred_at: '2022-03-23T14:29:02+00:00',
-      recorded_at: '2022-03-23T14:29:02+00:00',
-      notes: 'Automatically generated event',
-      created_by: null,
-      details: {},
-      eventable: {},
-    },
-    {
-      id: '1111-2222-33333-4444-66666',
-      type: 'events',
-      event_type: 'MoveLockout',
-      classification: 'default',
-      occurred_at: '2022-03-24T11:17:56+00:00',
-      recorded_at: '2022-03-24T11:17:56+00:00',
-      notes: 'Additional information about this event',
-      created_by: null,
-      details: {},
-      eventable: {},
-    },
-  ],
 }
 
 const mockPersonCardComponent = {

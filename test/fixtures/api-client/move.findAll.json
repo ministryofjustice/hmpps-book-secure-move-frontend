@@ -19,7 +19,8 @@
         "move_agreed": null,
         "move_agreed_by": null,
         "date_from": null,
-        "date_to": null
+        "date_to": null,
+        "is_lockout": false
       },
       "relationships": {
         "supplier": {
@@ -88,7 +89,8 @@
         "move_agreed": null,
         "move_agreed_by": null,
         "date_from": null,
-        "date_to": null
+        "date_to": null,
+        "is_lockout": false
       },
       "relationships": {
         "supplier": {
@@ -157,7 +159,8 @@
         "move_agreed": null,
         "move_agreed_by": null,
         "date_from": null,
-        "date_to": null
+        "date_to": null,
+        "is_lockout": false
       },
       "relationships": {
         "supplier": {
@@ -226,7 +229,8 @@
         "move_agreed": null,
         "move_agreed_by": null,
         "date_from": null,
-        "date_to": null
+        "date_to": null,
+        "is_lockout": false
       },
       "relationships": {
         "supplier": {
@@ -295,7 +299,8 @@
         "move_agreed": null,
         "move_agreed_by": null,
         "date_from": null,
-        "date_to": null
+        "date_to": null,
+        "is_lockout": false
       },
       "relationships": {
         "supplier": {
