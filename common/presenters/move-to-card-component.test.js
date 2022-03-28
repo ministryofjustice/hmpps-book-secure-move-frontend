@@ -300,9 +300,7 @@ describe('Presenters', function () {
 
     context('with lockout enabled', function () {
       beforeEach(function () {
-        transformedResponse = moveToCardComponent({
-          showIsALockout: true,
-        })(mockLockoutMove)
+        transformedResponse = moveToCardComponent()(mockLockoutMove)
       })
 
       it('should call profile to card component correctly', function () {

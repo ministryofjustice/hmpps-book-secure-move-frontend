@@ -9,7 +9,6 @@ function moveToCardComponent({
   showMeta = true,
   showTags = true,
   showStatus = true,
-  showIsALockout = false,
   showToLocation = false,
   showFromLocation = false,
   hrefSuffix = '',
@@ -45,10 +44,6 @@ function moveToCardComponent({
       })
     }
 
-    if (move.is_lockout) {
-      showIsALockout = true
-    }
-
     const showStatusBadge =
       showStatus && !excludedBadgeStatuses.includes(status) && !isCompact
     const statusBadge = showStatusBadge
@@ -77,8 +72,8 @@ function moveToCardComponent({
 
     return {
       ...personCardComponent,
+      isLockout: move.is_lockout,
       status: statusBadge,
-      isLockout: showIsALockout,
       classes: isCompact
         ? `app-card--compact ${personCardComponent.classes || ''}`
         : personCardComponent.classes || '',
