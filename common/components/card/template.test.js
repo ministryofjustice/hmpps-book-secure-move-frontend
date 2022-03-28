@@ -235,7 +235,7 @@ describe('Card component', function () {
         'card',
         examples['with isLockout param']
       )
-      const $warningText = $('.card-warning-text')
+      const $warningText = $('.govuk-warning-text')
 
       expect($warningText.length).to.equal(1)
       expect($warningText.text()).to.contain('Prison lockout')
