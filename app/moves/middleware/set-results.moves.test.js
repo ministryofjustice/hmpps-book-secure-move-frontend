@@ -8,7 +8,6 @@ const mockActiveMoves = [
   { id: '3', foo: 'bar', status: 'completed' },
   { id: '4', fizz: 'buzz', status: 'completed' },
 ]
-
 const mockBodyKey = 'outgoing'
 const mockLocationKey = 'from_location'
 const errorStub = new Error('Problem')
