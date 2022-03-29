@@ -5,6 +5,10 @@ const getEventClassification = event => {
     return classification
   }
 
+  if (eventType === 'PersonMoveDeathInCustody') {
+    return 'default'
+  }
+
   return classification && classification !== 'default'
     ? classification
     : undefined
