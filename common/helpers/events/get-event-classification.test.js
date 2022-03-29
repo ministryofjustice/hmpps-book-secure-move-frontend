@@ -24,6 +24,11 @@ describe('Helpers', function () {
       event_type: 'PerPropertyChange',
       classification: 'default',
     }
+    const mockEventWithMoveDeathInCustodyEventType = {
+      id: 'eventId',
+      details: 'details',
+      event_type: 'PersonMoveDeathInCustody',
+    }
 
     describe('#getEventClassification', function () {
       let classification
@@ -83,6 +88,19 @@ describe('Helpers', function () {
         })
 
         it('should return expected classification', function () {
+          classification
+          expect(classification).to.deep.equal('default')
+        })
+      })
+
+      context('when event_type is PersonMoveDeathInCustody', function () {
+        beforeEach(function () {
+          classification = getEventClassification(
+            mockEventWithMoveDeathInCustodyEventType
+          )
+        })
+
+        it('should return default classification', function () {
           classification
           expect(classification).to.deep.equal('default')
         })

@@ -362,7 +362,7 @@
     "description": ""
   },
   "PersonMoveDeathInCustody": {
-    "flag": "red",
+    "flag": "grey",
     "heading": "Death in custody",
     "description": "{{supplier_personnel_numbers, oxfordJoin}} reported a death in custody at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
   },
