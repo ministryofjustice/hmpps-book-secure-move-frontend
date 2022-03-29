@@ -6,6 +6,7 @@ const mockMove = {
   id: '12345',
   reference: 'AB12FS45',
   status: 'requested',
+  is_lockout: false,
   profile: {
     person: {
       _fullname: 'Name, Full',
@@ -20,6 +21,27 @@ const mockMove = {
     title: 'Snaresbrook Court',
   },
 }
+
+const mockLockoutMove = {
+  id: '12345',
+  reference: 'AB12FS45',
+  status: 'requested',
+  is_lockout: true,
+  profile: {
+    person: {
+      _fullname: 'Name, Full',
+      prison_number: 'A1234BC',
+      police_national_computer: 'A1BC2D/E3',
+    },
+  },
+  to_location: {
+    title: 'Pentonville',
+  },
+  from_location: {
+    title: 'Snaresbrook Court',
+  },
+}
+
 const mockPersonCardComponent = {
   href: '/move/12345',
   title: 'Name, Full',
@@ -78,6 +100,7 @@ describe('Presenters', function () {
               status: {
                 text: '__translated__',
               },
+              isLockout: false,
               caption: undefined,
               tags: [{ items: 'moveToImportantEventsTagListComponent' }],
             })
@@ -270,6 +293,40 @@ describe('Presenters', function () {
           classes: 'app-card--compact ',
           status: undefined,
           caption: undefined,
+          isLockout: false,
+        })
+      })
+    })
+
+    context('with lockout enabled', function () {
+      beforeEach(function () {
+        transformedResponse = moveToCardComponent()(mockLockoutMove)
+      })
+
+      it('should call profile to card component correctly', function () {
+        expect(profileToCardComponentItemStub).to.be.calledWithExactly({
+          profile: mockMove.profile,
+          href: '/move/12345',
+          reference: 'AB12FS45',
+        })
+        expect(profileToCardComponentStub).to.be.calledWithExactly({
+          locationType: undefined,
+          meta: [],
+          showImage: false,
+          showMeta: false,
+          showTags: false,
+        })
+      })
+      it('should contain correct output', function () {
+        expect(transformedResponse).to.deep.equal({
+          ...mockPersonCardComponent,
+          classes: '',
+          status: {
+            text: '__translated__',
+          },
+          tags: [{ items: 'moveToImportantEventsTagListComponent' }],
+          caption: undefined,
+          isLockout: true,
         })
       })
     })
@@ -305,6 +362,7 @@ describe('Presenters', function () {
           classes: 'app-card--compact ',
           status: undefined,
           caption: undefined,
+          isLockout: false,
         })
       })
     })
@@ -332,6 +390,7 @@ describe('Presenters', function () {
             classes: '',
             status: undefined,
             caption: undefined,
+            isLockout: false,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
@@ -367,6 +426,7 @@ describe('Presenters', function () {
             classes: `app-card--compact ${mockClasses}`,
             status: undefined,
             caption: undefined,
+            isLockout: false,
           })
         })
       })
@@ -380,6 +440,7 @@ describe('Presenters', function () {
           expect(transformedResponse).to.deep.equal({
             ...mockPersonCardComponent,
             classes: mockClasses,
+            isLockout: false,
             status: {
               text: '__translated__',
             },

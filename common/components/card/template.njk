@@ -1,6 +1,7 @@
 {% from "tag/macro.njk" import appTag %}
 {% from "moj/components/badge/macro.njk" import mojBadge %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% set headingLevel = params.headingLevel if params.headingLevel else 2 %}
 
@@ -68,5 +69,15 @@
     {% if params.insetText %}
       {{ govukInsetText(params.insetText) }}
     {% endif %}
+
+    {% if params.isLockout %}
+      <div class="govuk-!-padding-top-3">
+        {{ govukWarningText({
+          text: t("moves::is_lockout"),
+          iconFallbackText: "Warning"
+        }) }}
+      </div>
+    {% endif %}
+
   </div>
 </div>

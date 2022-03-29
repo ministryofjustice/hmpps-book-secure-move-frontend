@@ -228,4 +228,17 @@ describe('Card component', function () {
       expect($insetText.text()).to.contain('A message about this card')
     })
   })
+
+  context('with isLockout param', function () {
+    it('should render warning text component', function () {
+      const $ = renderComponentHtmlToCheerio(
+        'card',
+        examples['with isLockout param']
+      )
+      const $warningText = $('.govuk-warning-text')
+
+      expect($warningText.length).to.equal(1)
+      expect($warningText.text()).to.contain('Prison lockout')
+    })
+  })
 })
