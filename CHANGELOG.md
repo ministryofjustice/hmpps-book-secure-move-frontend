@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.111.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.110.0...v2.111.0) (2022-03-30)
+
+
+### Features
+
+* Add lockout warning element when a move is locked out ([5953df2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5953df2667ed5e98478f686893e13be3d22c2453))
+* If event_type is PersonMoveDeathInCustody use app-tag--inactive ([e745e28](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/e745e2847fd9eab6f3e82a9a06df12803c1c2642))
+
 ## [2.110.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.109.1...v2.110.0) (2022-03-23)
 
 
