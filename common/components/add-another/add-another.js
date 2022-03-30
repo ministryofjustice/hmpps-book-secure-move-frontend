@@ -17,12 +17,17 @@ MOJFrontend.AddAnother.prototype.onRemoveButtonClick = function (e) {
 
 MOJFrontend.AddAnother.prototype.updateAttributes = function (index, item) {
   item.find('[data-name]').each(function (i, el) {
+    var originalId = el.id
+
     const $el = $(el)
     el.name = $el.attr('data-name').replace(/%index%/, index)
     el.id = $el.attr('data-id').replace(/%index%/, index)
 
     // Book a secure move changes to this method from here
-    const label = $el.siblings('label')[0] || $el.parents('label')[0]
+    const label =
+      $el.siblings('label')[0] ||
+      $el.parents('label')[0] ||
+      item.find('[for="' + originalId + '"]')[0]
 
     if (label) {
       label.htmlFor = el.id
