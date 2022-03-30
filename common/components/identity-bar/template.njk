@@ -12,6 +12,18 @@
           {{ params.heading.html | safe if params.heading.html else params.heading.text }}
         </h1>
 
+        {% if params.journeys | length %}
+          <p class="app-identity-bar__summary">
+            {% for journey in params.journeys %}
+              {% if loop.first %}
+                {{ t("moves::detail.page_heading_summary", journey) | safe }}
+              {% else %}
+                <br />{{ t("moves::detail.page_heading_summary_and", journey) | safe }}
+              {% endif %}
+            {% endfor %}
+          </p>
+        {% endif %}
+
         {% if params.summary.html or params.summary.text %}
           <p class="app-identity-bar__summary">
             {{ params.summary.html | safe if params.summary.html else params.summary.text }}

@@ -8,6 +8,7 @@ const {
   setMoveWithEvents,
   setPersonEscortRecord,
   setYouthRiskAssessment,
+  setJourneys,
 } = require('../../middleware')
 
 const {
@@ -17,6 +18,7 @@ const {
 } = require('./controllers')
 const {
   localsActions,
+  localsIdentityBarJourneys,
   localsIdentityBar,
   localsMessageBanner,
   localsMoveDetails,
@@ -39,10 +41,12 @@ router.use(/\/(timeline|warnings).*/, setMoveWithEvents)
 router.use(breadcrumbs.setHome())
 router.use(setPersonEscortRecord)
 router.use(setYouthRiskAssessment)
+router.use(setJourneys)
 router.use(setBreadcrumb)
 router.use(localsUrls)
 router.use(localsActions)
 router.use(localsIdentityBar)
+router.use(localsIdentityBarJourneys)
 router.use(localsMessageBanner)
 router.use(localsMoveDetails)
 router.use(localsPersonSummary)
