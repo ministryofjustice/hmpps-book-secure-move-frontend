@@ -156,11 +156,16 @@ E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
 E2E_BASE_URL:      ${E2E_BASE_URL}
 `)
 
-if (args.video && args.max_processes > 1) {
-  process.stdout.write('⚠️  Max processes set to 1 as video capture enabled\n')
+// ffmpeg is memory hungry so we can't have too many instances of it running
+if (args.video && args.max_processes > 8) {
+  process.stdout.write(
+    '⚠️  Max processes capped to 8 as video capture is enabled\n'
+  )
 }
 
-const maxProcesses = args.video ? 1 : args.max_processes
+const maxProcesses = args.video
+  ? Math.min(args.max_processes, 8)
+  : args.max_processes
 const debugOnFail = args.debug ? '--debug-on-fail' : ''
 
 if (debugOnFail) {
@@ -247,7 +252,7 @@ const runTests = async () => {
     await concurrently(testcafeRuns, {
       maxProcesses,
       killOthers,
-    })
+    }).result
   } catch (e) {
     process.exit(1)
   }
