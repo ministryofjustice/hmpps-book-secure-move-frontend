@@ -12,6 +12,7 @@ describe('Move view app', function () {
             id: '12345',
             reference: 'ABCDEF',
           },
+          session: {},
         }
         res = {
           breadcrumb: sinon.spy(),
@@ -29,8 +30,15 @@ describe('Move view app', function () {
           middleware(req, res, nextSpy)
         })
 
-        it('should set breadcrumb', function () {
-          expect(res.breadcrumb).to.calledOnceWithExactly({
+        it('should set master breadcrumb', function () {
+          expect(res.breadcrumb).to.calledWithExactly({
+            text: 'Results',
+            href: '/moves',
+          })
+        })
+
+        it('should set detail breadcrumb', function () {
+          expect(res.breadcrumb).to.calledWithExactly({
             text: 'DOE, JOHN (ABCDEF)',
             href: '/base-url',
           })
@@ -47,8 +55,15 @@ describe('Move view app', function () {
           middleware(req, res, nextSpy)
         })
 
+        it('should set master breadcrumb', function () {
+          expect(res.breadcrumb).to.calledWithExactly({
+            text: 'Results',
+            href: '/moves',
+          })
+        })
+
         it('should set breadcrumb', function () {
-          expect(res.breadcrumb).to.calledOnceWithExactly({
+          expect(res.breadcrumb).to.calledWithExactly({
             text: 'ABCDEF',
             href: '/base-url',
           })
@@ -65,8 +80,65 @@ describe('Move view app', function () {
           middleware(req, res, nextSpy)
         })
 
-        it('should set breadcrumb', function () {
-          expect(res.breadcrumb).not.to.be.called
+        it('should set master breadcrumb', function () {
+          expect(res.breadcrumb).to.calledOnceWithExactly({
+            text: 'Results',
+            href: '/moves',
+          })
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with outgoing dashboard', function () {
+        beforeEach(function () {
+          req.session.movesUrl = '/moves/outgoing'
+          middleware(req, res, nextSpy)
+        })
+
+        it('should set master breadcrumb', function () {
+          expect(res.breadcrumb).to.calledWithExactly({
+            text: 'Outgoing moves',
+            href: '/moves/outgoing',
+          })
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with incoming dashboard', function () {
+        beforeEach(function () {
+          req.session.movesUrl = '/moves/incoming'
+          middleware(req, res, nextSpy)
+        })
+
+        it('should set master breadcrumb', function () {
+          expect(res.breadcrumb).to.calledWithExactly({
+            text: 'Incoming moves',
+            href: '/moves/incoming',
+          })
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('with single requests dashboard', function () {
+        beforeEach(function () {
+          req.session.movesUrl = '/moves/requested'
+          middleware(req, res, nextSpy)
+        })
+
+        it('should set master breadcrumb', function () {
+          expect(res.breadcrumb).to.calledWithExactly({
+            text: 'Single requests',
+            href: '/moves/requested',
+          })
         })
 
         it('should call next', function () {
