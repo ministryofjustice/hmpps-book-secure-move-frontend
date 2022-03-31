@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.112.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.111.0...v2.112.0) (2022-03-31)
+
+
+### Features
+
+* Add breadcrumb to dashboard for move ([9fe19c6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9fe19c6d1749b6626631bce3acd4566695633ac5))
+* Order important events most recent first ([9999c44](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/9999c4483370bf72e611de4a5e568ed0df549af5))
+
+
+### Bug Fixes
+
+* Ensure label is found when adding another ([79e57ca](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/79e57cac9319b58ca06f84d4c6db1e278e27a8f0))
+
 ## [2.111.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.110.0...v2.111.0) (2022-03-30)
 
 
