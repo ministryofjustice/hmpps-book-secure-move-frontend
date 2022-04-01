@@ -266,18 +266,30 @@ export async function generateMove(profile, options = {}, overrides = {}) {
   const fromLocationType = options.from_location_type || 'police'
   const toLocationType = options.to_location_type || 'court'
   const moveType = options.move_type || 'court_appearance'
-  const fromLocationId = await getRandomLocation(fromLocationType, {
-    shouldHaveSupplier: true,
-  })
   const move = {
     profile,
-    from_location: fromLocationId,
-    to_location: await getRandomLocation(toLocationType, {
-      filter: l => l.id !== fromLocationId,
-    }),
     move_type: moveType,
     date: formatDate(new Date(), 'yyyy-MM-dd'),
     ...overrides,
+  }
+
+  if (!overrides.from_location) {
+    const fromLocationOptions = { shouldHaveSupplier: true }
+
+    if (overrides.to_location) {
+      fromLocationOptions.filter = l => l.id !== overrides.to_location
+    }
+
+    move.from_location = await getRandomLocation(
+      fromLocationType,
+      fromLocationOptions
+    )
+  }
+
+  if (!overrides.to_location) {
+    move.to_location = await getRandomLocation(toLocationType, {
+      filter: l => l.id !== move.from_location,
+    })
   }
 
   const noToLocation = ['prison_recall', 'video_remand']
