@@ -19,7 +19,9 @@ users.forEach(user => {
     await t.useRole(user.role).navigateTo(home)
     await createCourtMove({
       moveOverrides: {
-        from_location: await getRandomLocation('police', true),
+        from_location: await getRandomLocation('police', {
+          shouldHaveSupplier: true,
+        }),
       },
     })
   })

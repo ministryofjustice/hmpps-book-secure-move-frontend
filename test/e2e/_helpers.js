@@ -228,7 +228,7 @@ export async function createProfileFixture(personId, overrides = {}) {
  */
 export async function getRandomLocation(
   locationType,
-  shouldHaveSupplier = false
+  { shouldHaveSupplier = false, filter }
 ) {
   let locations
 
@@ -238,10 +238,15 @@ export async function getRandomLocation(
     locations = await referenceDataService.getLocations()
   }
 
-  const locationIds = locations
+  locations = locations
     .filter(filterDisabled)
     .filter(l => (shouldHaveSupplier ? l.suppliers.length > 0 : true))
-    .map(({ id }) => id)
+
+  if (filter) {
+    locations = locations.filter(filter)
+  }
+
+  const locationIds = locations.map(({ id }) => id)
 
   return faker.random.arrayElement(locationIds)
 }
@@ -261,11 +266,15 @@ export async function generateMove(profile, options = {}, overrides = {}) {
   const fromLocationType = options.from_location_type || 'police'
   const toLocationType = options.to_location_type || 'court'
   const moveType = options.move_type || 'court_appearance'
-
+  const fromLocationId = await getRandomLocation(fromLocationType, {
+    shouldHaveSupplier: true,
+  })
   const move = {
     profile,
-    from_location: await getRandomLocation(fromLocationType, true),
-    to_location: await getRandomLocation(toLocationType),
+    from_location: fromLocationId,
+    to_location: await getRandomLocation(toLocationType, {
+      filter: l => l.id !== fromLocationId,
+    }),
     move_type: moveType,
     date: formatDate(new Date(), 'yyyy-MM-dd'),
     ...overrides,
@@ -313,8 +322,8 @@ export async function createMoveFixture({
         moveType: response.move_type,
         additionalInformation: response.additional_information,
         [`${response.move_type}_comments`]: response.additional_information,
-        fromLocation: response.to_location
-          ? response.to_location.title
+        fromLocation: response.from_location
+          ? response.from_location.title
           : undefined,
         toLocation: response.to_location
           ? response.to_location.title
