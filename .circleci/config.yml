@@ -241,8 +241,11 @@ jobs:
           path: reports
       - store_artifacts:
           path: reports
+      - run:
+          name: Compress Coverage
+          command: tar -cvzf coverage.tar coverage
       - store_artifacts:
-          path: coverage
+          path: coverage.tar
       - *notify_slack_on_failure
 
   end-to-end-test:
