@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.113.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.112.0...v2.113.0) (2022-04-04)
+
+
+### Features
+
+* Update identity bar at relevant points in the move ([b8cfc5e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b8cfc5e9f9de62a88af335690b5ef91218458926))
+
 ## [2.112.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.111.0...v2.112.0) (2022-03-31)
 
 
