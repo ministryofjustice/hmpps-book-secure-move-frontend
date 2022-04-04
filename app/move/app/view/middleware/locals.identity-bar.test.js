@@ -31,6 +31,7 @@ describe('Move view app', function () {
             reference: 'AB1234XY',
             date: '2020-10-07',
             status: 'requested',
+            is_lockout: false,
             profile: {
               person: {
                 _fullname: 'DOE, JOHN',

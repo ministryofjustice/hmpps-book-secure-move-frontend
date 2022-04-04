@@ -110,6 +110,7 @@
     "page_caption": "Move for",
     "page_heading": "{{-name}} ({{-reference}})",
     "page_heading_summary": "From <strong>{{ fromLocation }}</strong> to <strong>{{ toLocation }}</strong> on <strong>{{ date }}</strong>",
+    "page_heading_summary_and": "and from <strong>{{ fromLocation }}</strong> to <strong>{{ toLocation }}</strong> on <strong>{{ date }}</strong>",
     "page_heading_summary_proposed": "From <strong>{{ fromLocation }}</strong> to <strong>{{ toLocation }}",
     "page_title": "Move for {{-name}}",
     "court_hearings": {

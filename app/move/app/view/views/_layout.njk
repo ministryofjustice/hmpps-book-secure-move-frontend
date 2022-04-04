@@ -28,6 +28,17 @@
     {{ appIdentityBar(identityBar) }}
   {% endblock %}
 
+  {% if moveIsLockout %}
+    <div class="govuk-!-margin-bottom-6 prison-lockout-banner">
+      <div class="prison-lockout-banner-content">
+        {{ govukWarningText({
+          text: t("moves::is_lockout"),
+          iconFallbackText: "Warning"
+        }) }}
+      </div>
+    </div>
+  {% endif %}
+
   {% block contentContainer %}
   <div class="govuk-grid-row">
 

@@ -6,6 +6,7 @@ function localsMoveDetails(req, res, next) {
   const moveDetails = presenters.moveToMetaListComponent(move)
 
   res.locals.moveDetails = moveDetails
+  res.locals.moveIsLockout = move.is_lockout
 
   next()
 }

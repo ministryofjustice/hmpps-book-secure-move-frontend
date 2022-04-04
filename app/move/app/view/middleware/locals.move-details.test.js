@@ -13,6 +13,7 @@ describe('Move view app', function () {
           move: {
             id: '12345',
             foo: 'bar',
+            is_lockout: false,
           },
         }
         res = {
@@ -36,7 +37,9 @@ describe('Move view app', function () {
           moveDetails: {
             id: '12345',
             foo: 'bar',
+            is_lockout: false,
           },
+          moveIsLockout: false,
         })
       })
 
