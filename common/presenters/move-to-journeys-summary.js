@@ -1,17 +1,17 @@
 const filters = require('../../config/nunjucks/filters')
 
-const presentMoveOrJourney = moveOrJourney => ({
+const presentMoveOrJourney = (moveOrJourney, formatDate) => ({
   context: moveOrJourney.status,
-  date: filters.formatDate(moveOrJourney.date),
+  date: formatDate(moveOrJourney.date),
   fromLocation: moveOrJourney.from_location?.title,
   toLocation: moveOrJourney.to_location?.title,
 })
 
-const presentLockout = move => [
+const presentLockout = (move, formatDate) => [
   {
     fromLocation: move.from_location?.title,
     toLocation: '(awaiting destination)',
-    date: filters.formatDate(move.date),
+    date: formatDate(move.date),
   },
   {
     fromLocation: '(awaiting location)',
@@ -20,15 +20,15 @@ const presentLockout = move => [
   },
 ]
 
-module.exports = (move, journeys) => {
+module.exports = (move, journeys, { formatDate = filters.formatDate } = {}) => {
   const hasJourneysOnDifferentDay =
     journeys.filter(({ date }) => date !== move.date).length !== 0
 
   if (hasJourneysOnDifferentDay) {
-    return journeys.map(journey => presentMoveOrJourney(journey))
+    return journeys.map(journey => presentMoveOrJourney(journey, formatDate))
   } else if (move.is_lockout) {
-    return presentLockout(move)
+    return presentLockout(move, formatDate)
   } else {
-    return [presentMoveOrJourney(move)]
+    return [presentMoveOrJourney(move, formatDate)]
   }
 }
