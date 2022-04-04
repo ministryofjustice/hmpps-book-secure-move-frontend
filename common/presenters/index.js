@@ -23,6 +23,7 @@ const moveToCardComponent = require('./move-to-card-component')
 const moveToIdentityBarActions = require('./move-to-identity-bar-actions')
 const moveToImportantEventsTagListComponent = require('./move-to-important-events-tag-list-component')
 const moveToInTransitEventsPanelList = require('./move-to-in-transit-events-panel-list')
+const moveToJourneysSummary = require('./move-to-journeys-summary')
 const moveToMetaListComponent = require('./move-to-meta-list-component')
 const moveToSummaryListComponent = require('./move-to-summary-list-component')
 const moveToTimelineComponent = require('./move-to-timeline-component')
@@ -67,6 +68,7 @@ module.exports = {
   moveToIdentityBarActions,
   moveToImportantEventsTagListComponent,
   moveToInTransitEventsPanelList,
+  moveToJourneysSummary,
   moveToMessageBannerComponent,
   moveToMetaListComponent,
   moveToSummaryListComponent,
