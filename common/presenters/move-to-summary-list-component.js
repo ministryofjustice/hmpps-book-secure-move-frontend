@@ -26,7 +26,7 @@ function moveToSummaryListComponent(
   const { id: moveId, time_due: timeDue, profile } = move
 
   const journeysSummary = moveToJourneysSummary(move, journeys, {
-    formatDate: filters.formatDateWithDay,
+    formatDate: filters.formatDateWithRelativeDay,
   })
 
   const rows = [

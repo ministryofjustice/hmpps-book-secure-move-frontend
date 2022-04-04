@@ -44,7 +44,7 @@ describe('Presenters', function () {
 
     beforeEach(function () {
       timezoneMock.register('UTC')
-      sinon.stub(filters, 'formatDateWithDay').returnsArg(0)
+      sinon.stub(filters, 'formatDateWithRelativeDay').returnsArg(0)
       sinon.stub(filters, 'formatTime').returnsArg(0)
       sinon.stub(i18n, 't').returnsArg(0)
     })
@@ -114,7 +114,7 @@ describe('Presenters', function () {
 
       describe('date', function () {
         it('should format date', function () {
-          expect(filters.formatDateWithDay).to.be.calledWithExactly(
+          expect(filters.formatDateWithRelativeDay).to.be.calledWithExactly(
             mockMove.date
           )
         })
