@@ -1,5 +1,4 @@
 const presenters = require('../../../../../common/presenters')
-const filters = require('../../../../../config/nunjucks/filters')
 
 const middleware = require('./locals.identity-bar')
 
@@ -21,7 +20,9 @@ describe('Move view app', function () {
         sinon
           .stub(presenters, 'moveToIdentityBarActions')
           .returns('_moveToIdentityBarActions_')
-        sinon.stub(filters, 'formatDate').returnsArg(0)
+        sinon
+          .stub(presenters, 'moveToJourneysSummary')
+          .returns('_moveToJourneysSummary_')
       })
 
       context('by default', function () {
@@ -43,8 +44,9 @@ describe('Move view app', function () {
             to_location: {
               title: 'HMP Brixton',
             },
-            foo: 'bar',
           }
+
+          req.journeys = []
 
           middleware(req, res, nextSpy)
         })
@@ -64,28 +66,19 @@ describe('Move view app', function () {
             )
             expect(req.t).not.to.be.calledWithExactly('awaiting_person')
           })
-
-          it('should translate summary', function () {
-            expect(req.t).to.be.calledWithExactly(
-              'moves::detail.page_heading_summary',
-              {
-                context: 'requested',
-                fromLocation: 'Guildford Custody Suite',
-                toLocation: 'HMP Brixton',
-                date: '2020-10-07',
-              }
-            )
-          })
-        })
-
-        it('should format date', function () {
-          expect(filters.formatDate).to.be.calledWithExactly('2020-10-07')
         })
 
         it('should call actions presenter', function () {
           expect(
             presenters.moveToIdentityBarActions
           ).to.be.calledOnceWithExactly(req.move, { canAccess: req.canAccess })
+        })
+
+        it('should call journeys presenter', function () {
+          expect(presenters.moveToJourneysSummary).to.be.calledOnceWithExactly(
+            req.move,
+            req.journeys
+          )
         })
 
         it('should set identity bar on locals', function () {
@@ -98,9 +91,7 @@ describe('Move view app', function () {
             heading: {
               html: 'moves::detail.page_heading',
             },
-            summary: {
-              html: 'moves::detail.page_heading_summary',
-            },
+            journeys: '_moveToJourneysSummary_',
           })
         })
 
@@ -143,18 +134,6 @@ describe('Move view app', function () {
               }
             )
             expect(req.t).to.be.calledWithExactly('awaiting_person')
-          })
-
-          it('should translate summary', function () {
-            expect(req.t).to.be.calledWithExactly(
-              'moves::detail.page_heading_summary',
-              {
-                context: 'requested',
-                fromLocation: 'Guildford Custody Suite',
-                toLocation: 'HMP Brixton',
-                date: '2020-10-07',
-              }
-            )
           })
         })
 
@@ -197,18 +176,6 @@ describe('Move view app', function () {
               }
             )
             expect(req.t).to.be.calledWithExactly('awaiting_person')
-          })
-
-          it('should translate summary proposed', function () {
-            expect(req.t).to.be.calledWithExactly(
-              'moves::detail.page_heading_summary',
-              {
-                context: 'proposed',
-                fromLocation: 'Guildford Custody Suite',
-                toLocation: 'HMP Brixton',
-                date: null,
-              }
-            )
           })
         })
 
