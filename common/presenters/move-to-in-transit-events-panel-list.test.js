@@ -15,6 +15,7 @@ describe('Presenters', function () {
         {
           classification: 'incident',
           occurred_at: '2020-01-01',
+          supplier: 'ABC',
         },
         {
           classification: 'incident',
@@ -31,14 +32,22 @@ describe('Presenters', function () {
       panelList = moveToInTransitEventsPanelList(move)
     })
 
-    it('should return panels for incident events', function () {
+    it('should return panels for incident and lockout events', function () {
       expect(panelList).to.deep.equal({
         context: 'framework',
         count: 2,
         isCompleted: true,
         key: 'in-transit-events',
         name: 'In transit information',
-        panels: ['panel', 'panel'],
+        groupedPanels: [
+          {
+            panels: ['panel'],
+          },
+          {
+            heading: 'Lockout events',
+            panels: ['panel'],
+          },
+        ],
       })
     })
   })
