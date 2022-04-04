@@ -18,7 +18,6 @@ const {
 } = require('./controllers')
 const {
   localsActions,
-  localsIdentityBarJourneys,
   localsIdentityBar,
   localsMessageBanner,
   localsMoveDetails,
@@ -46,7 +45,6 @@ router.use(setBreadcrumb)
 router.use(localsUrls)
 router.use(localsActions)
 router.use(localsIdentityBar)
-router.use(localsIdentityBarJourneys)
 router.use(localsMessageBanner)
 router.use(localsMoveDetails)
 router.use(localsPersonSummary)

@@ -1,14 +1,13 @@
 const presenters = require('../../../../../common/presenters')
-const filters = require('../../../../../config/nunjucks/filters')
 
 function localsIdentityCard(req, res, next) {
-  const { canAccess, move } = req
+  const { canAccess, move, journeys } = req
 
   if (!move) {
     return next()
   }
 
-  const identityBar = {
+  res.locals.identityBar = {
     actions: presenters.moveToIdentityBarActions(move, { canAccess }),
     classes: 'sticky',
     caption: {
@@ -20,17 +19,8 @@ function localsIdentityCard(req, res, next) {
         reference: move.reference,
       }),
     },
-    summary: {
-      html: req.t('moves::detail.page_heading_summary', {
-        context: move.status,
-        fromLocation: move.from_location?.title,
-        toLocation: move.to_location?.title,
-        date: filters.formatDate(move.date),
-      }),
-    },
+    journeys: presenters.moveToJourneysSummary(move, journeys),
   }
-
-  res.locals.identityBar = identityBar
 
   next()
 }
