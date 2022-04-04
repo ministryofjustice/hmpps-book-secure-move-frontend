@@ -18,7 +18,7 @@
               {% if loop.first %}
                 {{ t("moves::detail.page_heading_summary", journey) | safe }}
               {% else %}
-                <br />{{ t("moves::detail.page_heading_summary_and", journey) | safe }}
+                {{ t("moves::detail.page_heading_summary_and", journey) | safe }}
               {% endif %}
             {% endfor %}
           </p>
