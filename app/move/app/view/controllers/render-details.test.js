@@ -53,6 +53,7 @@ describe('Move view app', function () {
             id: '12345',
             move_type: 'prison_transfer',
           },
+          journeys: [],
           t: sinon.stub().returnsArg(0),
         }
         res = {
@@ -132,7 +133,7 @@ describe('Move view app', function () {
           it('should call moveToSummaryListComponent', function () {
             expect(
               presenters.moveToSummaryListComponent
-            ).to.be.calledOnceWithExactly(req.move, {
+            ).to.be.calledOnceWithExactly(req.move, req.journeys, {
               updateUrls: mockUpdateUrls,
               canAccess: req.canAccess,
             })

@@ -14,7 +14,7 @@ function _filterCourtMoves(move) {
 }
 
 function renderDetails(req, res) {
-  const { canAccess, move } = req
+  const { canAccess, move, journeys } = req
   const hasPersonEscortRecord = !isNil(move?.profile?.person_escort_record)
   const hasProfile = !isNil(move?.profile)
   const { assessment_answers: assessmentAnswers = [] } = move.profile || {}
@@ -23,7 +23,7 @@ function renderDetails(req, res) {
   const updateUrls = moveHelpers.getUpdateUrls(move, canAccess)
   const updateLinks = mapValues(updateUrls, moveHelpers.mapUpdateLink)
 
-  const moveSummary = presenters.moveToSummaryListComponent(move, {
+  const moveSummary = presenters.moveToSummaryListComponent(move, journeys, {
     updateUrls,
     canAccess,
   })
