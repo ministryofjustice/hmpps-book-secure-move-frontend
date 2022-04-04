@@ -21,11 +21,17 @@ const presentLockout = (move, formatDate) => [
 ]
 
 module.exports = (move, journeys, { formatDate = filters.formatDate } = {}) => {
+  const filteredJourneys = journeys.filter(
+    ({ state }) => state !== 'rejected' && state !== 'cancelled'
+  )
+
   const hasJourneysOnDifferentDay =
-    journeys.filter(({ date }) => date !== move.date).length !== 0
+    filteredJourneys.filter(({ date }) => date !== move.date).length !== 0
 
   if (hasJourneysOnDifferentDay) {
-    return journeys.map(journey => presentMoveOrJourney(journey, formatDate))
+    return filteredJourneys.map(journey =>
+      presentMoveOrJourney(journey, formatDate)
+    )
   } else if (move.is_lockout) {
     return presentLockout(move, formatDate)
   } else {
