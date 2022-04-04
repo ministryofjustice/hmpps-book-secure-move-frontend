@@ -11,7 +11,20 @@
       text: t("assessment::section_incomplete")
     }) }}
   {% elif assessment.count > 0 %}
-    {% if assessment.panels %}
+    {% if assessment.groupedPanels %}
+      {% for groupedPanel in assessment.groupedPanels %}
+        {% if groupedPanel.heading %}
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-top-2">
+            {{ groupedPanel.heading }}
+          </h3>
+        {% endif %}
+        {% if groupedPanel.panels %}
+          {% for panel in groupedPanel.panels %}
+            {{ appPanel(panel) }}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    {% elif assessment.panels %}
       {% for panel in assessment.panels %}
         {{ appPanel(panel) }}
       {% endfor %}
@@ -72,7 +85,6 @@
     </div>
 
     {% if warnings.sections | length %}
-
       {% for section in warnings.sections %}
         <section class="app-!-position-relative govuk-!-margin-top-7">
           <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
@@ -84,7 +96,6 @@
           {{ renderAssessmentComponent(section) }}
         </section>
       {% endfor %}
-
     {% endif %}
   {% else %}
     {{ govukInsetText({

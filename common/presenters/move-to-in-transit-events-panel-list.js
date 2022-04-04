@@ -1,16 +1,36 @@
 const eventToTimelinePanel = require('./event-to-timeline-panel')
 
-function toPanelList(events, move) {
-  const panels = events.map(event => eventToTimelinePanel(event, move))
+function toPanelList(lockoutEvents, otherEvents, move) {
+  const lockoutPanels = lockoutEvents.map(event =>
+    eventToTimelinePanel(event, move)
+  )
+  const otherPanels = otherEvents.map(event =>
+    eventToTimelinePanel(event, move)
+  )
 
-  return {
+  const panelList = {
     key: 'in-transit-events',
     name: 'In transit information',
     isCompleted: true,
-    count: panels.length,
+    count: lockoutPanels.length + otherPanels.length,
     context: 'framework',
-    panels: panels,
   }
+
+  if (lockoutPanels.length) {
+    panelList.groupedPanels = [
+      {
+        panels: otherPanels,
+      },
+      {
+        heading: 'Lockout events',
+        panels: lockoutPanels,
+      },
+    ]
+  } else {
+    panelList.panels = otherPanels
+  }
+
+  return panelList
 }
 
 module.exports = function (move = {}) {
@@ -25,5 +45,8 @@ module.exports = function (move = {}) {
       occurredAtA > occurredAtB ? -1 : 1
     )
 
-  return toPanelList(importantEvents, move)
+  const lockoutEvents = importantEvents.filter(({ supplier }) => !supplier)
+  const otherEvents = importantEvents.filter(({ supplier }) => !!supplier)
+
+  return toPanelList(lockoutEvents, otherEvents, move)
 }
