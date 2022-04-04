@@ -4,11 +4,14 @@ const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 const mapUpdateLink = require('../helpers/move/map-update-link')
 
+const moveToJourneysSummary = require('./move-to-journeys-summary')
+
 /**
  * Convert a move into the structure required to render
  * as a `govukSummaryList` component
  *
  * @param {Object} move - the move to format
+ * @param {Object} journeys - the move's journeys
  *
  * @param {Object} [options] - config options for the presenter
  * @param {Object} [options.updateUrls={}] - object containing URLs for each edit step
@@ -16,18 +19,15 @@ const mapUpdateLink = require('../helpers/move/map-update-link')
  * @returns {Object} - a move formatted as a `govukSummaryList` component
  */
 function moveToSummaryListComponent(
-  {
-    id: moveId,
-    date,
-    time_due: timeDue,
-    move_type: moveType,
-    from_location: fromLocation,
-    to_location: toLocation,
-    profile,
-  } = {},
+  move = {},
+  journeys = [],
   { updateUrls = {}, canAccess = () => false } = {}
 ) {
-  const pickup = fromLocation?.title
+  const { id: moveId, time_due: timeDue, profile } = move
+
+  const journeysSummary = moveToJourneysSummary(move, journeys, {
+    formatDate: filters.formatDateWithDay,
+  })
 
   const rows = [
     {
@@ -35,7 +35,7 @@ function moveToSummaryListComponent(
         text: i18n.t('fields::from_location.label'),
       },
       value: {
-        text: pickup,
+        text: journeysSummary[0].fromLocation,
       },
     },
     {
@@ -43,7 +43,7 @@ function moveToSummaryListComponent(
         text: i18n.t('fields::to_location.label'),
       },
       value: {
-        text: pickup ? toLocation?.title : undefined,
+        text: journeysSummary.map(({ toLocation }) => toLocation).join(' and '),
       },
       updateJourneyKey: 'move',
     },
@@ -52,7 +52,7 @@ function moveToSummaryListComponent(
         text: i18n.t('fields::date_custom.label'),
       },
       value: {
-        text: filters.formatDateWithDay(date),
+        text: journeysSummary.map(({ date }) => date).join(' to '),
       },
       updateJourneyKey: 'date',
     },

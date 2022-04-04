@@ -26,6 +26,18 @@ const mockMove = {
   },
 }
 
+const mockJourneys = [
+  {
+    date: '2019-06-09',
+    from_location: {
+      title: 'HMP Leeds',
+    },
+    to_location: {
+      title: 'Barrow in Furness County Court',
+    },
+  },
+]
+
 describe('Presenters', function () {
   describe('#moveToSummaryListComponent()', function () {
     let transformedResponse
@@ -56,7 +68,7 @@ describe('Presenters', function () {
 
     context('when provided with a mock move object', function () {
       beforeEach(function () {
-        transformedResponse = moveToSummaryListComponent(mockMove)
+        transformedResponse = moveToSummaryListComponent(mockMove, mockJourneys)
       })
 
       describe('response', function () {
@@ -115,13 +127,16 @@ describe('Presenters', function () {
 
     context('with prison recall move type', function () {
       beforeEach(function () {
-        transformedResponse = moveToSummaryListComponent({
-          ...mockMove,
-          move_type: 'prison_recall',
-          to_location: {
-            title: 'Prison recall',
+        transformedResponse = moveToSummaryListComponent(
+          {
+            ...mockMove,
+            move_type: 'prison_recall',
+            to_location: {
+              title: 'Prison recall',
+            },
           },
-        })
+          mockJourneys
+        )
       })
 
       describe('response', function () {
@@ -139,13 +154,16 @@ describe('Presenters', function () {
 
     context('with video remand move type', function () {
       beforeEach(function () {
-        transformedResponse = moveToSummaryListComponent({
-          ...mockMove,
-          move_type: 'video_remand',
-          to_location: {
-            title: 'Video remand',
+        transformedResponse = moveToSummaryListComponent(
+          {
+            ...mockMove,
+            move_type: 'video_remand',
+            to_location: {
+              title: 'Video remand',
+            },
           },
-        })
+          mockJourneys
+        )
       })
 
       describe('response', function () {
@@ -177,9 +195,13 @@ describe('Presenters', function () {
           },
         }
 
-        transformedResponse = moveToSummaryListComponent(mockMove, {
-          updateUrls: mockUpdateUrls,
-        })
+        transformedResponse = moveToSummaryListComponent(
+          mockMove,
+          mockJourneys,
+          {
+            updateUrls: mockUpdateUrls,
+          }
+        )
       })
 
       it('should map update links', function () {
@@ -231,6 +253,7 @@ describe('Presenters', function () {
               youth_risk_assessment: {},
             },
           },
+          mockJourneys,
           { canAccess }
         )
       })
@@ -261,6 +284,7 @@ describe('Presenters', function () {
               person_escort_record: {},
             },
           },
+          mockJourneys,
           { canAccess }
         )
       })

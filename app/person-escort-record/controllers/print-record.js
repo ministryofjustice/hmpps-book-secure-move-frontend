@@ -23,7 +23,7 @@ function _checkResponse({ responses = [], key, expectedValue }) {
 }
 
 function printRecord(req, res) {
-  const { personEscortRecord = {}, move } = req
+  const { personEscortRecord = {}, move, journeys } = req
   const profile = move?.profile || personEscortRecord?.profile
   const reference = move?.reference
   const framework = personEscortRecord?._framework
@@ -32,7 +32,7 @@ function printRecord(req, res) {
   const moveType = move?.move_type
   const fullname = profile?.person?._fullname
   const imageUrl = profile?.person?._image_url
-  const moveSummary = presenters.moveToSummaryListComponent(move)
+  const moveSummary = presenters.moveToSummaryListComponent(move, journeys)
   const personalDetailsSummary = presenters.personToSummaryListComponent(
     profile?.person
   )
