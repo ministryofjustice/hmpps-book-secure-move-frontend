@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.114.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.113.0...v2.114.0) (2022-04-05)
+
+
+### Features
+
+* Show journey summaries in move details ([1e3ca5e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1e3ca5e2e6964acd507e8d4072f7e70f79568d1b))
+* Show lockout events in their own section ([7a227f5](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/7a227f59e678d04722a631e78c9aac9f30118cd6))
+
+
+### Bug Fixes
+
+* Ensure only active journeys are considered ([0b91411](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0b91411e72ec050b3168be701f576abc1eeb8fcc))
+* Use relative date format for move summary ([329641f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/329641f29daaa123ef1dc8be080ce5ca593d1df5))
+
 ## [2.113.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.112.0...v2.113.0) (2022-04-04)
 
 
