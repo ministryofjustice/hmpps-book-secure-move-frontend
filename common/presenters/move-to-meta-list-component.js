@@ -1,4 +1,4 @@
-const { isNil } = require('lodash')
+const { get, isNil } = require('lodash')
 
 const moveAgreedField = require('../../app/move/app/new/fields/move-agreed')
 const componentService = require('../../common/services/component')
@@ -23,7 +23,11 @@ const moveToJourneysSummary = require('./move-to-journeys-summary')
 function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
   const {
     _vehicleRegistration,
+    date,
+    date_from: dateFrom,
+    date_to: dateTo,
     move_type: moveType,
+    to_location: toLocation,
     additional_information: additionalInfo,
     prison_transfer_reason: prisonTransferReason,
     move_agreed: moveAgreed,
@@ -31,6 +35,8 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
     reference,
     status,
   } = move || {}
+  const destinationTitle = get(toLocation, 'title', 'Unknown')
+  const destinationId = get(toLocation, 'id')
   const useLabel = ['prison_recall', 'video_remand']
   const destinationSuffix =
     additionalInfo && moveType === 'prison_recall' ? ` — ${additionalInfo}` : ''
@@ -68,10 +74,8 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
 
   const destinationLabel = useLabel.includes(moveType)
     ? `${i18n.t(`fields::move_type.items.${moveType}.label`, {
-        context: 'with_location',
-        location: journeysSummary
-          .map(({ toLocation }) => toLocation)
-          .join(' and '),
+        context: destinationId ? 'with_location' : '',
+        location: destinationTitle,
       })}`
     : journeysSummary.map(({ toLocation }) => toLocation).join(' and ')
 
@@ -117,6 +121,22 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
         text: journeysSummary.map(({ date }) => date).join(' to '),
       },
       action: 'date',
+    },
+    {
+      key: {
+        text: i18n.t('fields::date_from.label'),
+      },
+      value: {
+        text: date ? undefined : filters.formatDateWithRelativeDay(dateFrom),
+      },
+    },
+    {
+      key: {
+        text: i18n.t('fields::date_to.label'),
+      },
+      value: {
+        text: date ? undefined : filters.formatDateWithRelativeDay(dateTo),
+      },
     },
     {
       key: {

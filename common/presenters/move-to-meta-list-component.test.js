@@ -125,7 +125,7 @@ describe('Presenters', function () {
         })
 
         it('should translate correct number of times', function () {
-          expect(i18n.t).to.be.callCount(11)
+          expect(i18n.t).to.be.callCount(13)
         })
       })
 
@@ -172,6 +172,140 @@ describe('Presenters', function () {
         })
       })
     })
+
+    context('with only `date from`', function () {
+      const mockMove = {
+        date_from: '2020-05-01',
+      }
+      let transformedResponse
+
+      beforeEach(function () {
+        transformedResponse = moveToMetaListComponent(mockMove, [])
+      })
+
+      describe('response', function () {
+        it('should contain correct key ordering', function () {
+          const keys = transformedResponse.items.map(
+            item => item.key.text || item.key.html
+          )
+          expect(keys).deep.equal(['fields::date_from.label'])
+        })
+
+        it('should contain date_from date', function () {
+          const values = transformedResponse.items.map(
+            item => item.value.text || item.value.html
+          )
+          expect(values).deep.equal(['2020-05-01'])
+        })
+      })
+    })
+
+    context('with both `date from` and `date to`', function () {
+      const mockMove = {
+        date_from: '2020-05-01',
+        date_to: '2020-05-10',
+      }
+      let transformedResponse
+
+      beforeEach(function () {
+        transformedResponse = moveToMetaListComponent(mockMove, [])
+      })
+
+      describe('response', function () {
+        it('should contain correct key ordering', function () {
+          const keys = transformedResponse.items.map(
+            item => item.key.text || item.key.html
+          )
+          expect(keys).deep.equal([
+            'fields::date_from.label',
+            'fields::date_to.label',
+          ])
+        })
+
+        it('should contain both dates', function () {
+          const values = transformedResponse.items.map(
+            item => item.value.text || item.value.html
+          )
+          expect(values).deep.equal(['2020-05-01', '2020-05-10'])
+        })
+      })
+    })
+
+    context('with all dates', function () {
+      const mockMove = {
+        date_from: '2020-05-01',
+        date_to: '2020-05-10',
+        date: '2020-06-01',
+      }
+      let transformedResponse
+
+      beforeEach(function () {
+        transformedResponse = moveToMetaListComponent(mockMove, [])
+      })
+
+      describe('response', function () {
+        it('should contain correct key ordering', function () {
+          const keys = transformedResponse.items.map(
+            item => item.key.text || item.key.html
+          )
+          expect(keys).deep.equal(['fields::date_type.label'])
+        })
+
+        it('should only contain move date', function () {
+          const values = transformedResponse.items.map(
+            item => item.value.text || item.value.html
+          )
+          expect(values).deep.equal(['2020-06-01'])
+        })
+      })
+    })
+
+    context(
+      'with prison recall move type and without to_location',
+      function () {
+        const mockAdditionalInformation =
+          'Some additional information about this move'
+        let transformedResponse
+
+        beforeEach(function () {
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              to_location: null,
+              move_type: 'prison_recall',
+              additional_information: mockAdditionalInformation,
+            },
+            []
+          )
+        })
+
+        it('should contain correct key', function () {
+          const keys = transformedResponse.items.map(
+            item => item.key.text || item.key.html
+          )
+          expect(keys).to.include('fields::move_type.short_label')
+        })
+
+        it('should contain correct value', function () {
+          const values = transformedResponse.items.map(
+            item => item.value.text || item.value.html
+          )
+          expect(values).to.include(
+            'fields::move_type.items.prison_recall.label — Some additional information about this move'
+          )
+        })
+
+        it('should call translation correctly', function () {
+          expect(i18n.t).to.be.calledWithExactly(
+            'fields::move_type.items.prison_recall.label',
+            {
+              context: '',
+              location: 'Unknown',
+            }
+          )
+        })
+      }
+    )
 
     context('when provided with updateUrls', function () {
       let transformedResponse
