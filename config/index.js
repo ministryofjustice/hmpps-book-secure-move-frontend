@@ -20,6 +20,9 @@ const CONTENTFUL_ACCESS_TOKEN = process.env.CONTENTFUL_ACCESS_TOKEN
 const CONTENTFUL_HOST = process.env.CONTENTFUL_HOST
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
+const SUPPORT_LINK = IS_PRODUCTION
+  ? 'https://support.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move'
+  : 'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move'
 const SERVER_HOST = process.env.HEROKU_APP_NAME
   ? `${process.env.HEROKU_APP_NAME}.herokuapp.com`
   : process.env.SERVER_HOST
@@ -73,6 +76,7 @@ module.exports = {
   IS_PRODUCTION,
   SESSION,
   AUTH_EXPIRY_MARGIN: process.env.AUTH_EXPIRY_MARGIN || 5 * 60, // 5 minutes
+  SUPPORT_LINK,
   SERVER_HOST,
   PORT: process.env.PORT || 3000,
   LOG_LEVEL: process.env.LOG_LEVEL || (IS_DEV ? 'debug' : 'error'),

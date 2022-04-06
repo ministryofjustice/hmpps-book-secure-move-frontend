@@ -8,7 +8,7 @@ const {
   FEEDBACK_URL,
   SUPPORT_EMAIL,
   FEATURE_FLAGS,
-  IS_PRODUCTION,
+  SUPPORT_LINK,
 } = require('../')
 const { mountpath: componentsUrl } = require('../../app/components')
 const i18n = require('../i18n')
@@ -17,16 +17,13 @@ const { manifest: manifestPath } = require('../paths')
 
 let webpackManifest = {}
 
-const supportLink = IS_PRODUCTION
-  ? 'https://support.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move'
-  : 'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move'
 const footerItems = [
   {
     href: '/whats-new',
     text: "What's new",
   },
   {
-    href: supportLink,
+    href: SUPPORT_LINK,
     text: 'Support',
   },
   {
