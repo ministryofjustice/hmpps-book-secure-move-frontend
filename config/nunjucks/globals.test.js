@@ -19,7 +19,7 @@ describe('Nunjucks globals', function () {
         globals = proxyquire('./globals', {
           '../': {
             ENABLE_COMPONENTS_LIBRARY: true,
-            SUPPORT_LINK:
+            SUPPORT_URL:
               'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move',
           },
         })
@@ -52,7 +52,7 @@ describe('Nunjucks globals', function () {
         globals = proxyquire('./globals', {
           '../': {
             ENABLE_COMPONENTS_LIBRARY: false,
-            SUPPORT_LINK:
+            SUPPORT_URL:
               'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move',
           },
         })
