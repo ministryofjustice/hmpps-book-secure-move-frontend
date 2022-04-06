@@ -8,7 +8,7 @@ const {
   FEEDBACK_URL,
   SUPPORT_EMAIL,
   FEATURE_FLAGS,
-  SUPPORT_LINK,
+  SUPPORT_URL,
 } = require('../')
 const { mountpath: componentsUrl } = require('../../app/components')
 const i18n = require('../i18n')
@@ -23,7 +23,7 @@ const footerItems = [
     text: "What's new",
   },
   {
-    href: SUPPORT_LINK,
+    href: SUPPORT_URL,
     text: 'Support',
   },
   {
