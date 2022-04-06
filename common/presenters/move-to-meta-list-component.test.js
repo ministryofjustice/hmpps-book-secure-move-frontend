@@ -262,7 +262,17 @@ describe('Presenters', function () {
             item => item.value.text || item.value.html
           )
           expect(values).to.include(
-            'Barrow in Furness County Court — Some additional information about this move'
+            'fields::move_type.items.prison_recall.label — Some additional information about this move'
+          )
+        })
+
+        it('should call translation correctly', function () {
+          expect(i18n.t).to.be.calledWithExactly(
+            'fields::move_type.items.prison_recall.label',
+            {
+              context: 'with_location',
+              location: 'Barrow in Furness County Court',
+            }
           )
         })
       })
@@ -292,6 +302,9 @@ describe('Presenters', function () {
           )
           expect(values).to.not.include(
             'fields::move_type.items.video_remand.label — Some additional information about this move'
+          )
+          expect(values).to.include(
+            'fields::move_type.items.video_remand.label'
           )
         })
       })

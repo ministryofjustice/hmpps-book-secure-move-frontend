@@ -31,6 +31,7 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
     reference,
     status,
   } = move || {}
+  const useLabel = ['prison_recall', 'video_remand']
   const destinationSuffix =
     additionalInfo && moveType === 'prison_recall' ? ` — ${additionalInfo}` : ''
   const prisonTransferReasonTitle = prisonTransferReason
@@ -55,9 +56,8 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
     text: i18n.t(`statuses::${status}`),
   })
 
-  if (!move || !journeys) {
+  if (!move) {
     return {
-      classes: 'govuk-!-font-size-16',
       items: [],
     }
   }
@@ -65,6 +65,15 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
   const journeysSummary = moveToJourneysSummary(move, journeys, {
     formatDate: filters.formatDateWithRelativeDay,
   })
+
+  const destinationLabel = useLabel.includes(moveType)
+    ? `${i18n.t(`fields::move_type.items.${moveType}.label`, {
+        context: 'with_location',
+        location: journeysSummary
+          .map(({ toLocation }) => toLocation)
+          .join(' and '),
+      })}`
+    : journeysSummary.map(({ toLocation }) => toLocation).join(' and ')
 
   const items = [
     {
@@ -96,9 +105,7 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
         text: i18n.t('fields::move_type.short_label'),
       },
       value: {
-        text:
-          journeysSummary.map(({ toLocation }) => toLocation).join(' and ') +
-          destinationSuffix,
+        text: moveType ? destinationLabel + destinationSuffix : undefined,
       },
       action: 'move',
     },
