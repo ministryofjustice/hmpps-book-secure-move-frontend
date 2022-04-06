@@ -26,12 +26,12 @@ const footerItems = [
     text: "What's new",
   },
   {
-    href: '/help/accessibility-statement',
-    text: 'Accessibility statement',
-  },
-  {
     href: supportLink,
     text: 'Support',
+  },
+  {
+    href: '/help/accessibility-statement',
+    text: 'Accessibility statement',
   },
   {
     href: ENABLE_COMPONENTS_LIBRARY ? componentsUrl : undefined,
