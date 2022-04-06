@@ -8,6 +8,7 @@ const {
   FEEDBACK_URL,
   SUPPORT_EMAIL,
   FEATURE_FLAGS,
+  IS_PRODUCTION,
 } = require('../')
 const { mountpath: componentsUrl } = require('../../app/components')
 const i18n = require('../i18n')
@@ -15,6 +16,10 @@ const logger = require('../logger')
 const { manifest: manifestPath } = require('../paths')
 
 let webpackManifest = {}
+
+const supportLink = IS_PRODUCTION
+  ? 'https://support.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move'
+  : 'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move'
 const footerItems = [
   {
     href: '/whats-new',
@@ -23,6 +28,10 @@ const footerItems = [
   {
     href: '/help/accessibility-statement',
     text: 'Accessibility statement',
+  },
+  {
+    href: supportLink,
+    text: 'Support',
   },
   {
     href: ENABLE_COMPONENTS_LIBRARY ? componentsUrl : undefined,

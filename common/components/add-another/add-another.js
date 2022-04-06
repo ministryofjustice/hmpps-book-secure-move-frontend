@@ -17,7 +17,7 @@ MOJFrontend.AddAnother.prototype.onRemoveButtonClick = function (e) {
 
 MOJFrontend.AddAnother.prototype.updateAttributes = function (index, item) {
   item.find('[data-name]').each(function (i, el) {
-    var originalId = el.id
+    const originalId = el.id
 
     const $el = $(el)
     el.name = $el.attr('data-name').replace(/%index%/, index)
