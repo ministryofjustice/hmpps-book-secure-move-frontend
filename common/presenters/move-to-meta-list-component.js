@@ -1,4 +1,4 @@
-const { get, isNil } = require('lodash')
+const { isNil } = require('lodash')
 
 const moveAgreedField = require('../../app/move/app/new/fields/move-agreed')
 const componentService = require('../../common/services/component')
@@ -6,26 +6,24 @@ const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 const mapUpdateLink = require('../helpers/move/map-update-link')
 
+const moveToJourneysSummary = require('./move-to-journeys-summary')
+
 /**
  * Convert a move into the structure required to render
  * as a `appMetaList` component
  *
  * @param {Object} move - the move to format
- *
+ * @param {Object} journeys - the move's journeys
+
  * @param {Object} [options] - config options for the presenter
  * @param {Object} [options.updateUrls={}] - object containing URLs for each edit step
  *
  * @returns {Object} - a move formatted as a `appMetaList` component
  */
-function moveToMetaListComponent(move, { updateUrls = {} } = {}) {
+function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
   const {
     _vehicleRegistration,
-    date,
-    date_from: dateFrom,
-    date_to: dateTo,
     move_type: moveType,
-    from_location: fromLocation,
-    to_location: toLocation,
     additional_information: additionalInfo,
     prison_transfer_reason: prisonTransferReason,
     move_agreed: moveAgreed,
@@ -33,15 +31,6 @@ function moveToMetaListComponent(move, { updateUrls = {} } = {}) {
     reference,
     status,
   } = move || {}
-  const destinationTitle = get(toLocation, 'title', 'Unknown')
-  const destinationId = get(toLocation, 'id')
-  const useLabel = ['prison_recall', 'video_remand']
-  const destinationLabel = useLabel.includes(moveType)
-    ? `${i18n.t(`fields::move_type.items.${moveType}.label`, {
-        context: destinationId ? 'with_location' : '',
-        location: destinationTitle,
-      })}`
-    : destinationTitle
   const destinationSuffix =
     additionalInfo && moveType === 'prison_recall' ? ` — ${additionalInfo}` : ''
   const prisonTransferReasonTitle = prisonTransferReason
@@ -66,6 +55,17 @@ function moveToMetaListComponent(move, { updateUrls = {} } = {}) {
     text: i18n.t(`statuses::${status}`),
   })
 
+  if (!move || !journeys) {
+    return {
+      classes: 'govuk-!-font-size-16',
+      items: [],
+    }
+  }
+
+  const journeysSummary = moveToJourneysSummary(move, journeys, {
+    formatDate: filters.formatDateWithRelativeDay,
+  })
+
   const items = [
     {
       key: {
@@ -88,7 +88,7 @@ function moveToMetaListComponent(move, { updateUrls = {} } = {}) {
         text: i18n.t('fields::from_location.short_label'),
       },
       value: {
-        text: get(fromLocation, 'title'),
+        text: journeysSummary[0].fromLocation,
       },
     },
     {
@@ -96,7 +96,9 @@ function moveToMetaListComponent(move, { updateUrls = {} } = {}) {
         text: i18n.t('fields::move_type.short_label'),
       },
       value: {
-        text: moveType ? destinationLabel + destinationSuffix : undefined,
+        text:
+          journeysSummary.map(({ toLocation }) => toLocation).join(' and ') +
+          destinationSuffix,
       },
       action: 'move',
     },
@@ -105,25 +107,9 @@ function moveToMetaListComponent(move, { updateUrls = {} } = {}) {
         text: i18n.t('fields::date_type.label'),
       },
       value: {
-        text: filters.formatDateWithRelativeDay(date),
+        text: journeysSummary.map(({ date }) => date).join(' to '),
       },
       action: 'date',
-    },
-    {
-      key: {
-        text: i18n.t('fields::date_from.label'),
-      },
-      value: {
-        text: date ? undefined : filters.formatDateWithRelativeDay(dateFrom),
-      },
-    },
-    {
-      key: {
-        text: i18n.t('fields::date_to.label'),
-      },
-      value: {
-        text: date ? undefined : filters.formatDateWithRelativeDay(dateTo),
-      },
     },
     {
       key: {

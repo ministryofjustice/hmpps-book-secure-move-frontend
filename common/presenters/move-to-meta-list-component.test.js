@@ -13,6 +13,7 @@ const moveToMetaListComponent = proxyquire('./move-to-meta-list-component', {
 describe('Presenters', function () {
   describe('#moveToMetaListComponent()', function () {
     let mockMove
+    let mockJourneys
 
     beforeEach(function () {
       timezoneMock.register('UTC')
@@ -43,6 +44,18 @@ describe('Presenters', function () {
           title: 'Barrow in Furness County Court',
         },
       }
+
+      mockJourneys = [
+        {
+          date: '2019-06-09',
+          from_location: {
+            title: 'HMP Leeds',
+          },
+          to_location: {
+            title: 'Barrow in Furness County Court',
+          },
+        },
+      ]
     })
 
     afterEach(function () {
@@ -53,7 +66,7 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove)
+        transformedResponse = moveToMetaListComponent(mockMove, mockJourneys)
       })
 
       describe('response', function () {
@@ -112,7 +125,7 @@ describe('Presenters', function () {
         })
 
         it('should translate correct number of times', function () {
-          expect(i18n.t).to.be.callCount(13)
+          expect(i18n.t).to.be.callCount(11)
         })
       })
 
@@ -160,93 +173,6 @@ describe('Presenters', function () {
       })
     })
 
-    context('with only `date from`', function () {
-      const mockMove = {
-        date_from: '2020-05-01',
-      }
-      let transformedResponse
-
-      beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      describe('response', function () {
-        it('should contain correct key ordering', function () {
-          const keys = transformedResponse.items.map(
-            item => item.key.text || item.key.html
-          )
-          expect(keys).deep.equal(['fields::date_from.label'])
-        })
-
-        it('should contain date_from date', function () {
-          const values = transformedResponse.items.map(
-            item => item.value.text || item.value.html
-          )
-          expect(values).deep.equal(['2020-05-01'])
-        })
-      })
-    })
-
-    context('with both `date from` and `date to`', function () {
-      const mockMove = {
-        date_from: '2020-05-01',
-        date_to: '2020-05-10',
-      }
-      let transformedResponse
-
-      beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      describe('response', function () {
-        it('should contain correct key ordering', function () {
-          const keys = transformedResponse.items.map(
-            item => item.key.text || item.key.html
-          )
-          expect(keys).deep.equal([
-            'fields::date_from.label',
-            'fields::date_to.label',
-          ])
-        })
-
-        it('should contain both dates', function () {
-          const values = transformedResponse.items.map(
-            item => item.value.text || item.value.html
-          )
-          expect(values).deep.equal(['2020-05-01', '2020-05-10'])
-        })
-      })
-    })
-
-    context('with all dates', function () {
-      const mockMove = {
-        date_from: '2020-05-01',
-        date_to: '2020-05-10',
-        date: '2020-06-01',
-      }
-      let transformedResponse
-
-      beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove)
-      })
-
-      describe('response', function () {
-        it('should contain correct key ordering', function () {
-          const keys = transformedResponse.items.map(
-            item => item.key.text || item.key.html
-          )
-          expect(keys).deep.equal(['fields::date_type.label'])
-        })
-
-        it('should only contain move date', function () {
-          const values = transformedResponse.items.map(
-            item => item.value.text || item.value.html
-          )
-          expect(values).deep.equal(['2020-06-01'])
-        })
-      })
-    })
-
     context('when provided with updateUrls', function () {
       let transformedResponse
       let mockUpdateUrls
@@ -263,7 +189,7 @@ describe('Presenters', function () {
           },
         }
 
-        transformedResponse = moveToMetaListComponent(mockMove, {
+        transformedResponse = moveToMetaListComponent(mockMove, mockJourneys, {
           updateUrls: mockUpdateUrls,
         })
       })
@@ -314,11 +240,14 @@ describe('Presenters', function () {
 
       context('with prison recall move type', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_type: 'prison_recall',
-            additional_information: mockAdditionalInformation,
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              move_type: 'prison_recall',
+              additional_information: mockAdditionalInformation,
+            },
+            mockJourneys
+          )
         })
 
         it('should contain correct key', function () {
@@ -333,68 +262,21 @@ describe('Presenters', function () {
             item => item.value.text || item.value.html
           )
           expect(values).to.include(
-            'fields::move_type.items.prison_recall.label — Some additional information about this move'
-          )
-        })
-
-        it('should call translation correctly', function () {
-          expect(i18n.t).to.be.calledWithExactly(
-            'fields::move_type.items.prison_recall.label',
-            {
-              context: 'with_location',
-              location: 'Barrow in Furness County Court',
-            }
+            'Barrow in Furness County Court — Some additional information about this move'
           )
         })
       })
 
-      context(
-        'with prison recall move type and without to_location',
-        function () {
-          beforeEach(function () {
-            transformedResponse = moveToMetaListComponent({
-              ...mockMove,
-              to_location: null,
-              move_type: 'prison_recall',
-              additional_information: mockAdditionalInformation,
-            })
-          })
-
-          it('should contain correct key', function () {
-            const keys = transformedResponse.items.map(
-              item => item.key.text || item.key.html
-            )
-            expect(keys).to.include('fields::move_type.short_label')
-          })
-
-          it('should contain correct value', function () {
-            const values = transformedResponse.items.map(
-              item => item.value.text || item.value.html
-            )
-            expect(values).to.include(
-              'fields::move_type.items.prison_recall.label — Some additional information about this move'
-            )
-          })
-
-          it('should call translation correctly', function () {
-            expect(i18n.t).to.be.calledWithExactly(
-              'fields::move_type.items.prison_recall.label',
-              {
-                context: '',
-                location: 'Unknown',
-              }
-            )
-          })
-        }
-      )
-
       context('with video remand move type', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_type: 'video_remand',
-            additional_information: mockAdditionalInformation,
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              move_type: 'video_remand',
+              additional_information: mockAdditionalInformation,
+            },
+            mockJourneys
+          )
         })
 
         it('should contain correct key', function () {
@@ -411,9 +293,6 @@ describe('Presenters', function () {
           expect(values).to.not.include(
             'fields::move_type.items.video_remand.label — Some additional information about this move'
           )
-          expect(values).to.include(
-            'fields::move_type.items.video_remand.label'
-          )
         })
       })
 
@@ -421,14 +300,17 @@ describe('Presenters', function () {
         const mockPrisonTransferReason = 'Parole'
 
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_type: 'prison_transfer',
-            additional_information: mockAdditionalInformation,
-            prison_transfer_reason: {
-              title: mockPrisonTransferReason,
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              move_type: 'prison_transfer',
+              additional_information: mockAdditionalInformation,
+              prison_transfer_reason: {
+                title: mockPrisonTransferReason,
+              },
             },
-          })
+            mockJourneys
+          )
         })
 
         it('should contain correct key', function () {
@@ -452,10 +334,13 @@ describe('Presenters', function () {
 
       context('with other move type', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            additional_information: mockAdditionalInformation,
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              additional_information: mockAdditionalInformation,
+            },
+            mockJourneys
+          )
         })
 
         it('should contain correct key', function () {
@@ -481,10 +366,14 @@ describe('Presenters', function () {
       context('with `true` value', function () {
         context('without name', function () {
           beforeEach(function () {
-            transformedResponse = moveToMetaListComponent({
-              ...mockMove,
-              move_agreed: true,
-            })
+            transformedResponse = moveToMetaListComponent(
+              {
+                ...mockMove,
+                ...mockJourneys,
+                move_agreed: true,
+              },
+              mockJourneys
+            )
           })
 
           it('should contain agreement status key', function () {
@@ -516,11 +405,14 @@ describe('Presenters', function () {
 
         context('with name', function () {
           beforeEach(function () {
-            transformedResponse = moveToMetaListComponent({
-              ...mockMove,
-              move_agreed: true,
-              move_agreed_by: 'Jon Doe',
-            })
+            transformedResponse = moveToMetaListComponent(
+              {
+                ...mockMove,
+                move_agreed: true,
+                move_agreed_by: 'Jon Doe',
+              },
+              mockJourneys
+            )
           })
 
           it('should contain agreement status key', function () {
@@ -553,11 +445,15 @@ describe('Presenters', function () {
 
       context('with `false` value', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_agreed: false,
-            move_agreed_by: 'Jon Doe',
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              ...mockJourneys,
+              move_agreed: false,
+              move_agreed_by: 'Jon Doe',
+            },
+            mockJourneys
+          )
         })
 
         it('should contain agreement status key', function () {
@@ -589,11 +485,15 @@ describe('Presenters', function () {
 
       context('with status that matches `yes` from field', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_agreed: 'true',
-            move_agreed_by: 'Jon Doe',
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              ...mockJourneys,
+              move_agreed: 'true',
+              move_agreed_by: 'Jon Doe',
+            },
+            mockJourneys
+          )
         })
 
         it('should contain agreement status key', function () {
