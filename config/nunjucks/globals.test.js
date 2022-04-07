@@ -19,6 +19,8 @@ describe('Nunjucks globals', function () {
         globals = proxyquire('./globals', {
           '../': {
             ENABLE_COMPONENTS_LIBRARY: true,
+            SUPPORT_URL:
+              'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move',
           },
         })
       })
@@ -28,6 +30,10 @@ describe('Nunjucks globals', function () {
           {
             href: '/whats-new',
             text: "What's new",
+          },
+          {
+            href: 'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move',
+            text: 'Support',
           },
           {
             href: '/help/accessibility-statement',
@@ -46,6 +52,8 @@ describe('Nunjucks globals', function () {
         globals = proxyquire('./globals', {
           '../': {
             ENABLE_COMPONENTS_LIBRARY: false,
+            SUPPORT_URL:
+              'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move',
           },
         })
       })
@@ -55,6 +63,10 @@ describe('Nunjucks globals', function () {
           {
             href: '/whats-new',
             text: "What's new",
+          },
+          {
+            href: 'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move',
+            text: 'Support',
           },
           {
             href: '/help/accessibility-statement',

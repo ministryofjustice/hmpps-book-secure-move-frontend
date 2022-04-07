@@ -8,6 +8,7 @@ const {
   FEEDBACK_URL,
   SUPPORT_EMAIL,
   FEATURE_FLAGS,
+  SUPPORT_URL,
 } = require('../')
 const { mountpath: componentsUrl } = require('../../app/components')
 const i18n = require('../i18n')
@@ -15,10 +16,15 @@ const logger = require('../logger')
 const { manifest: manifestPath } = require('../paths')
 
 let webpackManifest = {}
+
 const footerItems = [
   {
     href: '/whats-new',
     text: "What's new",
+  },
+  {
+    href: SUPPORT_URL,
+    text: 'Support',
   },
   {
     href: '/help/accessibility-statement',
