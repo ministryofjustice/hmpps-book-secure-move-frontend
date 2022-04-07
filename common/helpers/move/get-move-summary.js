@@ -6,7 +6,7 @@ function getMoveSummary(move, opts) {
     return {}
   }
 
-  const moveSummary = moveToMetaListComponent(move, opts)
+  const moveSummary = moveToMetaListComponent(move, [], opts)
   // `move.person` caters for sessionData within form wizard journeys
   const person = move.person || move?.profile?.person
   const personMetaList = personToMetaListComponent(person)
