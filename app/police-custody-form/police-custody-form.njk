@@ -1,6 +1,6 @@
 {% extends "layouts/base.njk" %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
 {% block pageTitle %}
   Add lockout events
@@ -33,7 +33,7 @@
         }) }}
 
         {% set riskViolence %}
-          {{ govukInput({
+          {{ govukTextarea({
             id: "event-risk-violence",
             name: "event-risk-violence",
             type: "text",
@@ -48,7 +48,7 @@
         {% endset -%}
 
         {% set riskCreatedOrUsedAWeapon %}
-          {{ govukInput({
+          {{ govukTextarea({
             id: "event-create-or-use-weapon",
             name: "event-create-or-use-weapon",
             type: "text",
@@ -63,7 +63,7 @@
         {% endset -%}
 
         {% set riskRestrictedItemFound %}
-          {{ govukInput({
+          {{ govukTextarea({
             id: "event-restricted-item-found",
             name: "event-restricted-item-found",
             type: "text",
@@ -78,7 +78,7 @@
         {% endset -%}
 
         {% set riskSelfHarmOrSuicide %}
-          {{ govukInput({
+          {{ govukTextarea({
             id: "event-self-harm-or-suicide",
             name: "event-self-harm-or-suicide",
             type: "text",
@@ -93,7 +93,7 @@
         {% endset -%}
 
         {% set riskEscapeOrAttemptedEscape %}
-          {{ govukInput({
+          {{ govukTextarea({
             id: "event-escape-attempted-escape",
             name: "event-escape-attempted-escape",
             type: "text",
@@ -108,7 +108,7 @@
         {% endset -%}
 
         {% set riskUseOfForce %}
-          {{ govukInput({
+          {{ govukTextarea({
             id: "event-use-of-force",
             name: "event-use-of-force",
             type: "text",
