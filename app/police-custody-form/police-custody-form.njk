@@ -31,11 +31,12 @@
         {{ govukInsetText({
           text: "For each event include the date, time, and what happened. You should include as much detail as possible."
         }) }}
+        <div class="govuk-hint govuk-!-padding-bottom-2"> Select all that apply.</div>
 
         {% set riskViolence %}
           {{ govukTextarea({
-            id: "event-risk-violence",
-            name: "event-risk-violence",
+            id: "violence",
+            name: "violence",
             type: "text",
             classes: "govuk-!-width-two-thirds",
             hint: {
@@ -49,8 +50,8 @@
 
         {% set riskCreatedOrUsedAWeapon %}
           {{ govukTextarea({
-            id: "event-create-or-use-weapon",
-            name: "event-create-or-use-weapon",
+            id: "create-or-use-weapon",
+            name: "create-or-use-weapon",
             type: "text",
             classes: "govuk-!-width-two-thirds",
             hint: {
@@ -64,8 +65,8 @@
 
         {% set riskRestrictedItemFound %}
           {{ govukTextarea({
-            id: "event-restricted-item-found",
-            name: "event-restricted-item-found",
+            id: "restricted-item-found",
+            name: "restricted-item-found",
             type: "text",
             classes: "govuk-!-width-two-thirds",
             hint: {
@@ -79,8 +80,8 @@
 
         {% set riskSelfHarmOrSuicide %}
           {{ govukTextarea({
-            id: "event-self-harm-or-suicide",
-            name: "event-self-harm-or-suicide",
+            id: "self-harm-or-suicide",
+            name: "self-harm-or-suicide",
             type: "text",
             classes: "govuk-!-width-two-thirds",
             hint: {
@@ -94,8 +95,8 @@
 
         {% set riskEscapeOrAttemptedEscape %}
           {{ govukTextarea({
-            id: "event-escape-attempted-escape",
-            name: "event-escape-attempted-escape",
+            id: "escape-attempted-escape",
+            name: "escape-attempted-escape",
             type: "text",
             classes: "govuk-!-width-two-thirds",
             hint: {
@@ -109,8 +110,8 @@
 
         {% set riskUseOfForce %}
           {{ govukTextarea({
-            id: "event-use-of-force",
-            name: "event-use-of-force",
+            id: "use-of-force",
+            name: "use-of-force",
             type: "text",
             classes: "govuk-!-width-two-thirds",
             hint: {
@@ -122,12 +123,10 @@
           }) }}
         {% endset -%}
 
-        <div class="govuk-hint govuk-!-padding-bottom-2"> Select all that apply.</div>
-
         <h3 class="govuk-heading-m">Risk</h3>
         {{ govukCheckboxes({
-          idPrefix: "event",
-          name: "event",
+          idPrefix: "risk-event",
+          name: "risk-event",
           items: [
             {
               value: "violence",
@@ -179,8 +178,33 @@
             }
           ]
         }) }}
+
         <h3 class="govuk-heading-m">Health</h3>
-          
+        {% set healthMedicalAttention %}
+          {{ govukTextarea({
+            id: "medical-attention",
+            name: "medical-attention",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {{ govukCheckboxes({
+          idPrefix: "medical-event",
+          name: "medical-event",
+          items: [
+            {
+              value: "medical-attention",
+              text: "Medical attention received",
+              conditional: {
+                html: healthMedicalAttention
+              }
+            }
+          ]
+        }) }}
           
       </div>
 
