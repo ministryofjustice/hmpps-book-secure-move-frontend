@@ -7,6 +7,7 @@ function localsMoveDetails(req, res, next) {
 
   res.locals.moveDetails = moveDetails
   res.locals.moveIsLockout = move.is_lockout
+  res.locals.moveId = move.id
 
   next()
 }

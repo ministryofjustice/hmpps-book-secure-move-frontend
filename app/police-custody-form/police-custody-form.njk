@@ -1,0 +1,216 @@
+{% extends "layouts/base.njk" %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% block pageTitle %}
+  Add lockout events
+{% endblock %}
+
+{% macro _sidebarSection(borderTopClasses = true, borderBottomClasses = true) %}
+  {% set top = "app-border-top-2 app-border--blue govuk-!-padding-top-3" if borderTopClasses else "" %}
+  {% set bottom = "govuk-!-margin-bottom-7" if borderBottomClasses else "govuk-!-margin-bottom-2" %}
+
+  <section class="{{ top }} {{ bottom }}">
+    {{ caller() if caller }}
+  </section>
+{% endmacro %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      Add lockout events
+    </h1>
+  </header>  
+
+  {% block contentContainer %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds govuk-!-margin-bottom-6">
+        <p class='govuk-body'>Use this form to record any events that happen while
+          this person is in police custody.
+        </p>
+        {{ govukInsetText({
+          text: "For each event include the date, time, and what happened. You should include as much detail as possible."
+        }) }}
+
+        {% set riskViolence %}
+          {{ govukInput({
+            id: "event-risk-violence",
+            name: "event-risk-violence",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            hint: {
+              text: "Include who was involved."
+            },
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {% set riskCreatedOrUsedAWeapon %}
+          {{ govukInput({
+            id: "event-create-or-use-weapon",
+            name: "event-create-or-use-weapon",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            hint: {
+              text: "Include how and where the weapon was found. If known, include when it was used."
+            },
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {% set riskRestrictedItemFound %}
+          {{ govukInput({
+            id: "event-restricted-item-found",
+            name: "event-restricted-item-found",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            hint: {
+              text: "Include how and where the resticted item was found. If known, include where it came from."
+            },
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {% set riskSelfHarmOrSuicide %}
+          {{ govukInput({
+            id: "event-self-harm-or-suicide",
+            name: "event-self-harm-or-suicide",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            hint: {
+              text: "Include any known reasons or triggers."
+            },
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {% set riskEscapeOrAttemptedEscape %}
+          {{ govukInput({
+            id: "event-escape-attempted-escape",
+            name: "event-escape-attempted-escape",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            hint: {
+              text: "Include how they escaped or attempted to escape."
+            },
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {% set riskUseOfForce %}
+          {{ govukInput({
+            id: "event-use-of-force",
+            name: "event-use-of-force",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            hint: {
+              text: "Include who was involved, why force was used, and the type of force used."
+            },
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        <div class="govuk-hint govuk-!-padding-bottom-2"> Select all that apply.</div>
+
+        <h3 class="govuk-heading-m">Risk</h3>
+        {{ govukCheckboxes({
+          idPrefix: "event",
+          name: "event",
+          items: [
+            {
+              value: "violence",
+              text: "Violence",
+              conditional: {
+                html: riskViolence
+              }
+            },
+            {
+              value: "created-or-used-a-weapon",
+              text: "Created or used a weapon",
+              conditional: {
+                html: riskCreatedOrUsedAWeapon
+              }
+            },
+            {
+              value: "restricted-item-found",
+              text: "Restricted item found",
+              hint: {
+                text: "For example concealed drugs, mobile phones or SIM cards."
+              },
+              conditional: {
+                html: riskCreatedOrUsedAWeapon
+              }
+            },
+            {
+              value: "self-harm-or-suicide",
+              text: "Self-harm or suicide",
+              hint: {
+                text: "Including attempted or statements of intent."
+              },
+              conditional: {
+                html: riskSelfHarmOrSuicide
+              }
+            },
+            {
+              value: "escape-or-attempted-escape",
+              text: "Escape or attempted escape",
+              conditional: {
+                html: riskEscapeOrAttemptedEscape
+              }
+            },
+            {
+              value: "use-of-force",
+              text: "Use of force",
+              conditional: {
+                html: riskUseOfForce
+              }
+            }
+          ]
+        }) }}
+        <h3 class="govuk-heading-m">Health</h3>
+          
+          
+      </div>
+
+      <aside class="govuk-grid-column-one-third">
+        {% block contentSidebar %}
+
+          {% call _sidebarSection({ first: true }) %}
+            {% include "includes/person-summary.njk" %}
+          {% endcall %}
+
+          {% call _sidebarSection(borderBottomClasses = false) %}
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+            {{ t("moves::move_details") }}
+          </h3>
+
+          {{ appMetaList(moveDetails) }}
+
+          <p class="govuk-!-margin-top-3 govuk-!-margin-bottom-0 govuk-!-font-size-16">
+            <a href="{{ urls.move.details }}#tabs">
+              {{ t("actions::view_or_edit_move_details") }}
+            </a>
+          </p>
+        {% endcall %}
+
+        {% endblock %}
+      </aside>
+
+    </div>
+  {% endblock %}
+
+{% endblock %}
+
+

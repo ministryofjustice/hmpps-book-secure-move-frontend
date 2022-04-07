@@ -39,6 +39,7 @@ describe('Move view app', function () {
             foo: 'bar',
             is_lockout: false,
           },
+          moveId: '12345',
           moveIsLockout: false,
         })
       })
