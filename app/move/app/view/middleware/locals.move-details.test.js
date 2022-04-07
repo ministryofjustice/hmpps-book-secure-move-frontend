@@ -15,6 +15,7 @@ describe('Move view app', function () {
             foo: 'bar',
             is_lockout: false,
           },
+          journeys: [],
         }
         res = {
           locals: {},
@@ -28,7 +29,8 @@ describe('Move view app', function () {
 
       it('should call presenter', function () {
         expect(presenters.moveToMetaListComponent).to.be.calledOnceWithExactly(
-          req.move
+          req.move,
+          req.journeys
         )
       })
 

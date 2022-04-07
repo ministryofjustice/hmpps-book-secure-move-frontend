@@ -13,6 +13,7 @@ const moveToMetaListComponent = proxyquire('./move-to-meta-list-component', {
 describe('Presenters', function () {
   describe('#moveToMetaListComponent()', function () {
     let mockMove
+    let mockJourneys
 
     beforeEach(function () {
       timezoneMock.register('UTC')
@@ -43,6 +44,18 @@ describe('Presenters', function () {
           title: 'Barrow in Furness County Court',
         },
       }
+
+      mockJourneys = [
+        {
+          date: '2019-06-09',
+          from_location: {
+            title: 'HMP Leeds',
+          },
+          to_location: {
+            title: 'Barrow in Furness County Court',
+          },
+        },
+      ]
     })
 
     afterEach(function () {
@@ -53,7 +66,7 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove)
+        transformedResponse = moveToMetaListComponent(mockMove, mockJourneys)
       })
 
       describe('response', function () {
@@ -167,7 +180,7 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove)
+        transformedResponse = moveToMetaListComponent(mockMove, [])
       })
 
       describe('response', function () {
@@ -195,7 +208,7 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove)
+        transformedResponse = moveToMetaListComponent(mockMove, [])
       })
 
       describe('response', function () {
@@ -227,7 +240,7 @@ describe('Presenters', function () {
       let transformedResponse
 
       beforeEach(function () {
-        transformedResponse = moveToMetaListComponent(mockMove)
+        transformedResponse = moveToMetaListComponent(mockMove, [])
       })
 
       describe('response', function () {
@@ -263,7 +276,7 @@ describe('Presenters', function () {
           },
         }
 
-        transformedResponse = moveToMetaListComponent(mockMove, {
+        transformedResponse = moveToMetaListComponent(mockMove, mockJourneys, {
           updateUrls: mockUpdateUrls,
         })
       })
@@ -314,11 +327,14 @@ describe('Presenters', function () {
 
       context('with prison recall move type', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_type: 'prison_recall',
-            additional_information: mockAdditionalInformation,
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              move_type: 'prison_recall',
+              additional_information: mockAdditionalInformation,
+            },
+            mockJourneys
+          )
         })
 
         it('should contain correct key', function () {
@@ -352,12 +368,15 @@ describe('Presenters', function () {
         'with prison recall move type and without to_location',
         function () {
           beforeEach(function () {
-            transformedResponse = moveToMetaListComponent({
-              ...mockMove,
-              to_location: null,
-              move_type: 'prison_recall',
-              additional_information: mockAdditionalInformation,
-            })
+            transformedResponse = moveToMetaListComponent(
+              {
+                ...mockMove,
+                to_location: null,
+                move_type: 'prison_recall',
+                additional_information: mockAdditionalInformation,
+              },
+              []
+            )
           })
 
           it('should contain correct key', function () {
@@ -390,11 +409,14 @@ describe('Presenters', function () {
 
       context('with video remand move type', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_type: 'video_remand',
-            additional_information: mockAdditionalInformation,
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              move_type: 'video_remand',
+              additional_information: mockAdditionalInformation,
+            },
+            mockJourneys
+          )
         })
 
         it('should contain correct key', function () {
@@ -421,14 +443,17 @@ describe('Presenters', function () {
         const mockPrisonTransferReason = 'Parole'
 
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_type: 'prison_transfer',
-            additional_information: mockAdditionalInformation,
-            prison_transfer_reason: {
-              title: mockPrisonTransferReason,
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              move_type: 'prison_transfer',
+              additional_information: mockAdditionalInformation,
+              prison_transfer_reason: {
+                title: mockPrisonTransferReason,
+              },
             },
-          })
+            mockJourneys
+          )
         })
 
         it('should contain correct key', function () {
@@ -452,10 +477,13 @@ describe('Presenters', function () {
 
       context('with other move type', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            additional_information: mockAdditionalInformation,
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              additional_information: mockAdditionalInformation,
+            },
+            mockJourneys
+          )
         })
 
         it('should contain correct key', function () {
@@ -481,10 +509,13 @@ describe('Presenters', function () {
       context('with `true` value', function () {
         context('without name', function () {
           beforeEach(function () {
-            transformedResponse = moveToMetaListComponent({
-              ...mockMove,
-              move_agreed: true,
-            })
+            transformedResponse = moveToMetaListComponent(
+              {
+                ...mockMove,
+                move_agreed: true,
+              },
+              mockJourneys
+            )
           })
 
           it('should contain agreement status key', function () {
@@ -516,11 +547,14 @@ describe('Presenters', function () {
 
         context('with name', function () {
           beforeEach(function () {
-            transformedResponse = moveToMetaListComponent({
-              ...mockMove,
-              move_agreed: true,
-              move_agreed_by: 'Jon Doe',
-            })
+            transformedResponse = moveToMetaListComponent(
+              {
+                ...mockMove,
+                move_agreed: true,
+                move_agreed_by: 'Jon Doe',
+              },
+              mockJourneys
+            )
           })
 
           it('should contain agreement status key', function () {
@@ -553,11 +587,14 @@ describe('Presenters', function () {
 
       context('with `false` value', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_agreed: false,
-            move_agreed_by: 'Jon Doe',
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              move_agreed: false,
+              move_agreed_by: 'Jon Doe',
+            },
+            mockJourneys
+          )
         })
 
         it('should contain agreement status key', function () {
@@ -589,11 +626,14 @@ describe('Presenters', function () {
 
       context('with status that matches `yes` from field', function () {
         beforeEach(function () {
-          transformedResponse = moveToMetaListComponent({
-            ...mockMove,
-            move_agreed: 'true',
-            move_agreed_by: 'Jon Doe',
-          })
+          transformedResponse = moveToMetaListComponent(
+            {
+              ...mockMove,
+              move_agreed: 'true',
+              move_agreed_by: 'Jon Doe',
+            },
+            mockJourneys
+          )
         })
 
         it('should contain agreement status key', function () {
