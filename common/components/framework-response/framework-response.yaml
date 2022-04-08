@@ -19,6 +19,10 @@ params:
     type: string
     required: false
     description: Determines if the value shown has been prefilled. If true, will link to the question URL with review text
+  - name: assessmentStatus
+    type: string
+    required: false
+    description: Determines if the question should be modifyable.
 
 examples:
   - name: string

@@ -270,6 +270,40 @@ describe('Framework Response component', function () {
     })
   })
 
+  context('with completed assessment', function () {
+    const example = examples['unanswered question']
+
+    beforeEach(function () {
+      sinon.stub(i18n, 't').returnsArg(0)
+
+      const $ = renderComponentHtmlToCheerio('framework-response', {
+        ...example,
+        assessmentStatus: 'completed',
+      })
+      $component = $('body')
+    })
+
+    it('should render a parent span', function () {
+      expect($component.children().first().get(0).tagName).to.equal('span')
+    })
+
+    it('should contain correct classes', function () {
+      expect($component.children().first().attr('class')).to.equal(
+        'app-secondary-text-colour'
+      )
+    })
+
+    it('should translate text', function () {
+      expect(i18n.t).to.be.calledOnceWithExactly('empty_response')
+    })
+
+    it('should contain correct text', function () {
+      expect($component.children().first().text().trim()).to.equal(
+        'empty_response'
+      )
+    })
+  })
+
   context('with prefilled answer', function () {
     const example = examples['prefilled question']
 
