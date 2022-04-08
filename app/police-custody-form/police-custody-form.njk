@@ -1,6 +1,5 @@
 {% extends "layouts/base.njk" %}
-{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 {% block pageTitle %}
   Add lockout events
@@ -123,7 +122,13 @@
           }) }}
         {% endset -%}
 
-        <h3 class="govuk-heading-m">Risk</h3>
+        {% call govukFieldset({
+          legend: {
+            text: "Risk",
+            classes: "govuk-fieldset__legend--m"
+          }
+        }) %}
+
         {{ govukCheckboxes({
           idPrefix: "risk-event",
           name: "risk-event",
@@ -178,6 +183,7 @@
             }
           ]
         }) }}
+        {% endcall %}
 
         {% set healthMedicalAttention %}
           {{ govukTextarea({
@@ -190,8 +196,66 @@
             }
           }) }}
         {% endset -%}
+
+        {% set healthSubstanceAbuse %}
+          {{ govukTextarea({
+            id: "substance-abuse",
+            name: "substance-abuse",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {% set healthMedicationGiven %}
+          {{ govukTextarea({
+            id: "medication-given",
+            name: "medication-given",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            label: {
+              html:"<b>Give details</b>"
+            },
+            hint: {
+              html: 
+              "
+              <p>For each medication, include:</p>
+              <ul class='govuk-list govuk-list--bullet'>
+                <li>name</li>
+                <li>how it is given</li>
+                <li>dosage</li>
+                <li>frequency</li>
+                <li>time last given</li>
+                <li>time next given</li>
+                <li>if it is needed while moving</li>
+                <li>who is carrying it</li>
+              </ul>
+              "
+            }
+          }) }}
+        {% endset -%}
+
+        {% set healthChangeInMood %}
+          {{ govukTextarea({
+            id: "change-in-mood",
+            name: "change-in-mood",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
         
-        <h3 class="govuk-heading-m">Health</h3>
+        {% call govukFieldset({
+          legend: {
+            text: "Health",
+            classes: "govuk-fieldset__legend--m"
+          }
+        }) %}
+
         {{ govukCheckboxes({
           idPrefix: "medical-event",
           name: "medical-event",
@@ -202,10 +266,133 @@
               conditional: {
                 html: healthMedicalAttention
               }
+            },
+            {
+              value: "substance-abuse",
+              text: "Signs of drug or alcohol abuse or withdrawal",
+              conditional: {
+                html: healthSubstanceAbuse
+              }
+            },
+            {
+              value: "medication-given",
+              text: "Medication given",
+              conditional: {
+                html: healthMedicationGiven
+              }
+            },
+            {
+              value: "change-in-mood",
+              text: "Obvious changes in mood, behaviour or signs of mental health issues",
+              hint: {
+                text: "For example, if they seem withdrawn or non-communicative, refuse meals or show any other behaviour that suggests heightened risk."
+              },
+              conditional: {
+                html: healthChangeInMood
+              }
             }
           ]
         }) }}
-          
+        {% endcall %}
+
+        {% set propertyChange %}
+          {{ govukTextarea({
+            id: "property-change",
+            name: "property-change",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            hint: {
+              text: "Include new bag seal numbers."
+            },
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {% call govukFieldset({
+          legend: {
+            text: "Property",
+            classes: "govuk-fieldset__legend--m"
+          }
+        }) %}
+
+        {{ govukCheckboxes({
+          idPrefix: "property-event",
+          name: "property-event",
+          items: [
+            {
+              value: "property-change",
+              text: "Property change",
+              conditional: {
+                html: propertyChange
+              }
+            }
+          ]
+        }) }}
+        {% endcall %}
+
+        {% set otherDeath %}
+          {{ govukTextarea({
+            id: "death",
+            name: "death",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {% set otherAnyOtherEvents %}
+          {{ govukTextarea({
+            id: "other-events",
+            name: "other-events",
+            type: "text",
+            classes: "govuk-!-width-two-thirds",
+            label: {
+              html:"<b>Give details</b>"
+            }
+          }) }}
+        {% endset -%}
+
+        {% call govukFieldset({
+          legend: {
+            text: "Other",
+            classes: "govuk-fieldset__legend--m"
+          }
+        }) %}
+
+        {{ govukCheckboxes({
+          idPrefix: "other-event",
+          name: "other-event",
+          items: [
+            {
+              value: "death",
+              text: "Death in custody",
+              conditional: {
+                html: otherDeath
+              }
+            },
+            {
+              value: "other-events",
+              text: "Any other events",
+              conditional: {
+                html: otherAnyOtherEvents
+              }
+            }
+          ]
+        }) }}
+        {% endcall %}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            preventDoubleClick: true,
+            text: "Save events"
+          }) }}
+
+          <a href="/move/{{moveId}}/warnings" class="govuk-link">Cancel</a>
+        </div>
       </div>
 
       <aside class="govuk-grid-column-one-third">
