@@ -55,6 +55,7 @@ function frameworkFieldToSummaryListRow(stepUrl) {
       responded: response.responded === true,
       prefilled: response.prefilled === true,
       questionUrl: `${stepUrl}#${id}`,
+      assessmentStatus: response.assessment?.status,
     }
 
     if ((response.nomis_mappings || []).length > 0) {
