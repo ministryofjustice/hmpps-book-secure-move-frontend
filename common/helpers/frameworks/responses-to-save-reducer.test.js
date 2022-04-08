@@ -356,6 +356,30 @@ describe('Helpers', function () {
             ],
             expectedValue: [],
           },
+          {
+            testName: 'with empty but optional field',
+            formValues: {
+              question: null,
+            },
+            responses: [
+              {
+                id: '1',
+                question: {
+                  key: 'question',
+                  response_type: 'object::followup_comment',
+                },
+                _question: {
+                  validate: [],
+                },
+              },
+            ],
+            expectedValue: [
+              {
+                id: '1',
+                value: {},
+              },
+            ],
+          },
         ]
 
         testCases.forEach(test => {
