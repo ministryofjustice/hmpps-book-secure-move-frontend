@@ -1,16 +1,14 @@
 // NPM dependencies
 const router = require('express').Router({ mergeParams: true })
 
+const policeCustodyFormController = require('./controllers')
+
 // Define routes
 router.get('/', (req, res) => {
   res.render('police-custody-form/police-custody-form')
 })
 
-router.post('/', function (req, res) {
-  const moveId = req.body.moveId
-
-  res.redirect(`move/${moveId}/warnings`)
-})
+router.post('/', policeCustodyFormController.addEvents)
 
 // Export
 module.exports = {
