@@ -35,8 +35,8 @@
         <form method="post" action="/police-custody-form">
           {% set riskViolence %}
             {{ govukTextarea({
-              id: "violent-event",
-              name: "violent-event",
+              id: "PerViolentDangerous",
+              name: "PerViolentDangerous",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               hint: {
@@ -50,8 +50,8 @@
 
           {% set riskCreatedOrUsedAWeapon %}
             {{ govukTextarea({
-              id: "create-or-use-weapon",
-              name: "create-or-use-weapon",
+              id: "PerWeapons",
+              name: "PerWeapons",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               hint: {
@@ -65,8 +65,8 @@
 
           {% set riskRestrictedItemFound %}
             {{ govukTextarea({
-              id: "restricted-item-found",
-              name: "restricted-item-found",
+              id: "PerConcealed",
+              name: "PerConcealed",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               hint: {
@@ -80,8 +80,8 @@
 
           {% set riskSelfHarmOrSuicide %}
             {{ govukTextarea({
-              id: "self-harm-or-suicide",
-              name: "self-harm-or-suicide",
+              id: "PerSelfHarm",
+              name: "PerSelfHarm",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               hint: {
@@ -95,8 +95,8 @@
 
           {% set riskEscapeOrAttemptedEscape %}
             {{ govukTextarea({
-              id: "escape-attempted-escape",
-              name: "escape-attempted-escape",
+              id: "PerEscape",
+              name: "PerEscape",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               hint: {
@@ -110,8 +110,8 @@
 
           {% set riskUseOfForce %}
             {{ govukTextarea({
-              id: "use-of-force",
-              name: "use-of-force",
+              id: "PersonMoveUsedForce",
+              name: "PersonMoveUsedForce",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               hint: {
@@ -131,25 +131,25 @@
           }) %}
 
           {{ govukCheckboxes({
-            idPrefix: "event",
-            name: "event",
+            idPrefix: "events",
+            name: "events",
             items: [
               {
-                value: "violent-event",
+                value: "PerViolentDangerous",
                 text: "Violence",
                 conditional: {
                   html: riskViolence
                 }
               },
               {
-                value: "created-or-used-a-weapon",
+                value: "PerWeapons",
                 text: "Created or used a weapon",
                 conditional: {
                   html: riskCreatedOrUsedAWeapon
                 }
               },
               {
-                value: "restricted-item-found",
+                value: "PerConcealed",
                 text: "Restricted item found",
                 hint: {
                   text: "For example concealed drugs, mobile phones or SIM cards."
@@ -159,7 +159,7 @@
                 }
               },
               {
-                value: "self-harm-or-suicide",
+                value: "PerSelfHarm",
                 text: "Self-harm or suicide",
                 hint: {
                   text: "Including attempted or statements of intent."
@@ -169,14 +169,14 @@
                 }
               },
               {
-                value: "escape-or-attempted-escape",
+                value: "PerEscape",
                 text: "Escape or attempted escape",
                 conditional: {
                   html: riskEscapeOrAttemptedEscape
                 }
               },
               {
-                value: "use-of-force",
+                value: "PersonMoveUsedForce",
                 text: "Use of force",
                 conditional: {
                   html: riskUseOfForce
@@ -188,8 +188,8 @@
 
           {% set healthMedicalAttention %}
             {{ govukTextarea({
-              id: "medical-attention",
-              name: "medical-attention",
+              id: "PerMedicalAid",
+              name: "PerMedicalAid",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               label: {
@@ -200,8 +200,8 @@
 
           {% set healthSubstanceAbuse %}
             {{ govukTextarea({
-              id: "substance-abuse",
-              name: "substance-abuse",
+              id: "PerMedicalDrugsAlcohol",
+              name: "PerMedicalDrugsAlcohol",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               label: {
@@ -212,8 +212,8 @@
 
           {% set healthMedicationGiven %}
             {{ govukTextarea({
-              id: "medication-given",
-              name: "medication-given",
+              id: "PerMedicalAid",
+              name: "PerMedicalAid",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               label: {
@@ -240,8 +240,8 @@
 
           {% set healthChangeInMood %}
             {{ govukTextarea({
-              id: "change-in-mood",
-              name: "change-in-mood",
+              id: "PerMedicalMentalHealth",
+              name: "PerMedicalMentalHealth",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               label: {
@@ -258,32 +258,32 @@
           }) %}
 
           {{ govukCheckboxes({
-            idPrefix: "event",
-            name: "event",
+            idPrefix: "events",
+            name: "events",
             items: [
               {
-                value: "medical-attention",
+                value: "PerMedicalAid",
                 text: "Medical attention received",
                 conditional: {
                   html: healthMedicalAttention
                 }
               },
               {
-                value: "substance-abuse",
+                value: "PerMedicalDrugsAlcohol",
                 text: "Signs of drug or alcohol abuse or withdrawal",
                 conditional: {
                   html: healthSubstanceAbuse
                 }
               },
               {
-                value: "medication-given",
+                value: "PerMedicalAid",
                 text: "Medication given",
                 conditional: {
                   html: healthMedicationGiven
                 }
               },
               {
-                value: "change-in-mood",
+                value: "PerMedicalMentalHealth",
                 text: "Obvious changes in mood, behaviour or signs of mental health issues",
                 hint: {
                   text: "For example, if they seem withdrawn or non-communicative, refuse meals or show any other behaviour that suggests heightened risk."
@@ -298,8 +298,8 @@
 
           {% set propertyChange %}
             {{ govukTextarea({
-              id: "property-change",
-              name: "property-change",
+              id: "PerPropertyChange",
+              name: "PerPropertyChange",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               hint: {
@@ -319,11 +319,11 @@
           }) %}
 
           {{ govukCheckboxes({
-            idPrefix: "event",
-            name: "event",
+            idPrefix: "events",
+            name: "events",
             items: [
               {
-                value: "property-change",
+                value: "PerPropertyChange",
                 text: "Property change",
                 conditional: {
                   html: propertyChange
@@ -335,8 +335,8 @@
 
           {% set otherDeath %}
             {{ govukTextarea({
-              id: "death-event",
-              name: "death-event",
+              id: "PersonMoveDeathInCustody",
+              name: "PersonMoveDeathInCustody",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               label: {
@@ -347,8 +347,8 @@
 
           {% set otherAnyOtherEvents %}
             {{ govukTextarea({
-              id: "other-events",
-              name: "other-events",
+              id: "PerGeneric",
+              name: "PerGeneric",
               type: "text",
               classes: "govuk-!-width-two-thirds",
               label: {
@@ -365,18 +365,18 @@
           }) %}
 
           {{ govukCheckboxes({
-            idPrefix: "event",
-            name: "event",
+            idPrefix: "events",
+            name: "events",
             items: [
               {
-                value: "death-event",
+                value: "PersonMoveDeathInCustody",
                 text: "Death in custody",
                 conditional: {
                   html: otherDeath
                 }
               },
               {
-                value: "other-event",
+                value: "PerGeneric",
                 text: "Any other events",
                 conditional: {
                   html: otherAnyOtherEvents

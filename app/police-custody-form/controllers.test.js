@@ -4,12 +4,15 @@ describe('Police Custody Form controllers', function () {
   describe('#addEvents', function () {
     let mockReq, mockRes
     const moveId = '12232552242'
+    const lockoutEvents = []
 
     beforeEach(function () {
       mockReq = {
         body: {
           moveId: moveId,
+          lockoutEvents,
         },
+        user: {},
       }
       mockRes = {
         redirect: sinon.stub(),
