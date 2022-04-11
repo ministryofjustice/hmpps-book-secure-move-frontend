@@ -610,7 +610,7 @@ describe('Services', function () {
                 classes: 'govuk-label--s',
               },
               validate: [],
-              classes: '',
+              classes: 'govuk-input--width-20',
               rows: undefined,
               descendants: undefined,
               itemName: undefined,
