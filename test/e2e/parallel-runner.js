@@ -180,7 +180,7 @@ const video = args.video
   ? "--video artifacts/videos --video-options failedOnly=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.mp4'"
   : ''
 
-const allTests = glob.sync('test/e2e/*.test.js')
+const allTests = glob.sync('test/e2e/**/*.test.js')
 let tests = args.test || allTests
 
 const envSkip = (E2E_SKIP || '').split(',')
@@ -247,8 +247,8 @@ const runTests = async () => {
     await concurrently(testcafeRuns, {
       maxProcesses,
       killOthers,
-    })
-  } catch (e) {
+    }).result
+  } catch {
     process.exit(1)
   }
 }

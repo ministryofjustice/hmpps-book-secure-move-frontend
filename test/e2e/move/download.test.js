@@ -1,7 +1,7 @@
-import { deleteCsvDownloads, waitForCsvDownloadFilePaths } from './_helpers'
-import { policeUser, prisonUser, stcUser, supplierUser } from './_roles'
-import { movesByDay } from './_routes'
-import { movesDashboardPage } from './pages'
+import { deleteCsvDownloads, waitForCsvDownloadFilePaths } from '../_helpers'
+import { policeUser, prisonUser, stcUser, supplierUser } from '../_roles'
+import { movesByDay } from '../_routes'
+import { movesDashboardPage } from '../pages'
 
 const users = [
   {

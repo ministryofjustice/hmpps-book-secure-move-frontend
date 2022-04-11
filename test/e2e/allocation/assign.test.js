@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe'
 
-import { createPersonFixture } from './_helpers'
-import { ocaUser, pmuUser } from './_roles'
-import { allocation, newAllocation } from './_routes'
-import { allocationJourney, createMovePage, page } from './pages/'
+import { createPersonFixture } from '../_helpers'
+import { ocaUser, pmuUser } from '../_roles'
+import { allocation, newAllocation } from '../_routes'
+import { allocationJourney, createMovePage, page } from '../pages'
 
 fixture('Assign a person to an allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)

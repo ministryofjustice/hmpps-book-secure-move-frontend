@@ -1,12 +1,11 @@
 import { ClientFunction } from 'testcafe'
 
-import frameworksService from '../../common/services/frameworks'
-
-import { fillInPersonEscortRecord } from './_helpers'
-import { createCourtMove } from './_move'
-import { personEscortRecordUser } from './_roles'
-import { home, getMove } from './_routes'
-import { moveDetailPage, confirmPersonEscortRecordPage } from './pages'
+import frameworksService from '../../../common/services/frameworks'
+import { fillInPersonEscortRecord } from '../_helpers'
+import { createCourtMove } from '../_move'
+import { personEscortRecordUser } from '../_roles'
+import { home, getMove } from '../_routes'
+import { moveDetailPage, confirmPersonEscortRecordPage } from '../pages'
 
 const latestFramework = frameworksService.getPersonEscortRecord()
 const numberOfSections = Object.keys(latestFramework.sections).length
