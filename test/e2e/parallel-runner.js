@@ -224,7 +224,7 @@ const testcafeRuns = testBuckets.map((test, index) => {
     : ''
   const command = `node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
-  )} ${color} ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
+  )} ${color} --retry-test-pages ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
   return {
     name,
     command,
