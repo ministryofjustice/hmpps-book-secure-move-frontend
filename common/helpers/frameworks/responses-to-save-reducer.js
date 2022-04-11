@@ -55,7 +55,7 @@ function responsesToSaveReducer(values = {}) {
       responseValue = value
     }
 
-    if (responseValue) {
+    if (responseValue || !hasValidation) {
       accumulator.push(
         pickBy({
           id,
