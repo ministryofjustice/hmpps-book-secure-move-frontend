@@ -2,6 +2,14 @@ const controller = require('./controllers')
 
 describe('Police Custody Form controllers', function () {
   describe('#addEvents', function () {
+    const moveService = {
+      getById: sinon.stub(),
+    }
+
+    const eventService = {
+      postEvents: sinon.stub(),
+    }
+
     let mockReq, mockRes
     const moveId = '12232552242'
     const lockoutEvents = []
@@ -14,14 +22,15 @@ describe('Police Custody Form controllers', function () {
         },
         user: {},
       }
+      mockReq.services = { move: moveService, event: eventService }
       mockRes = {
         redirect: sinon.stub(),
       }
     })
 
     context('when save is successful', function () {
-      beforeEach(function () {
-        controller.addEvents(mockReq, mockRes)
+      beforeEach(async function () {
+        await controller.addEvents(mockReq, mockRes)
       })
 
       it('should redirect to the timeline/events page for that move', function () {
