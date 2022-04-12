@@ -1,10 +1,9 @@
 const restClient = require('../lib/api-client/rest-client')
 
 const BaseService = require('./base')
-
 class EventService extends BaseService {
-  isPerEvent(event) {
-    const perEvents = [
+  postEvents(lockoutEvents, move, user) {
+    const PER_EVENTS = [
       'PerViolentDangerous',
       'PerWeapons',
       'PerConcealed',
@@ -16,15 +15,11 @@ class EventService extends BaseService {
       'PerPropertyChange',
       'PerGeneric',
     ]
-    return perEvents.includes(event)
-  }
+    const PERSON_MOVE_EVENTS = [
+      'PersonMoveUsedForce',
+      'PersonMoveDeathInCustody',
+    ]
 
-  isPersonMoveEvent(event) {
-    const personMoveEvents = ['PersonMoveUsedForce', 'PersonMoveDeathInCustody']
-    return personMoveEvents.includes(event)
-  }
-
-  postEvents(lockoutEvents, move, user) {
     const todaysDate = new Date()
     const events = []
 
@@ -37,11 +32,11 @@ class EventService extends BaseService {
 
       const eventDescription = lockoutEvents[event]
 
-      if (this.isPerEvent(event)) {
+      if (PER_EVENTS.includes(event)) {
         type = 'person_escort_records'
         relationshipsId = move.profile.person_escort_record.id
         supplierPersonnelNumber = 'supplier_personnel_number'
-      } else if (this.isPersonMoveEvent(event)) {
+      } else if (PERSON_MOVE_EVENTS.includes(event)) {
         type = 'moves'
         relationshipsId = move.id
         supplierPersonnelNumber = 'supplier_personnel_numbers'
