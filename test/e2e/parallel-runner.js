@@ -1,5 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-process-env */
+const fs = require('fs')
+
 const concurrently = require('concurrently')
 const glob = require('glob')
 const yargs = require('yargs')
@@ -222,7 +224,15 @@ const testcafeRuns = testBuckets.map((test, index) => {
   const reporter = args.reporter
     ? `--reporter spec,xunit:reports/testcafe/results-chrome__${name}.xml`
     : ''
-  const command = `node_modules/.bin/testcafe ${agent} ${test.join(
+  const command = `SERVER_HOST=localhost:${
+    3000 + index
+  } E2E_BASE_URL=http://localhost:${
+    3000 + index
+  } AUTH_PROVIDER_URL=http://localhost:${
+    3999 + index
+  } NOMIS_ELITE2_API_URL=http://localhost:${
+    3999 + index
+  } node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
   )} ${color} --retry-test-pages ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
   return {
@@ -246,14 +256,49 @@ if (args.n) {
   process.exit()
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+function killCommands(commands) {
+  return Promise.all(commands.map(c => c.kill()))
+}
+
 const runTests = async () => {
+  const serverCommandStrings = testBuckets.map(
+    (_, i) =>
+      `PORT=${3000 + i} AUTH_PROVIDER_URL=http://localhost:${
+        3999 + i
+      } SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
+        3000 + i
+      } NOMIS_ELITE2_API_URL=http://localhost:${3999 + i} node start.js`
+  )
+  const authCommandStrings = testBuckets.map(
+    (_, i) =>
+      ` SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
+        3000 + i
+      } MOCK_AUTH_PORT=${3999 + i} node mocks/auth-server.js`
+  )
+  const { commands: serverCommands } = concurrently(
+    serverCommandStrings.concat(authCommandStrings),
+    {
+      maxProcesses: maxProcesses * 2,
+      killOthers,
+      outputStream: fs.createWriteStream('/dev/null'),
+    }
+  )
+  await sleep(5000)
+
   try {
     await concurrently(testcafeRuns, {
       maxProcesses,
       killOthers,
     }).result
   } catch {
+    await killCommands(serverCommands)
     process.exit(1)
+  } finally {
+    await killCommands(serverCommands)
   }
 }
 
