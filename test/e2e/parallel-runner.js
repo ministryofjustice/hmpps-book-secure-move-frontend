@@ -59,6 +59,48 @@ const E2E_FAIL_FAST = getEnvVar('E2E_FAIL_FAST')
 const E2E_BASE_URL = getEnvVar('E2E_BASE_URL')
 const E2E_VIDEO = getEnvVar('E2E_VIDEO')
 
+// TODO: calculate these weights automatically based on previous runs
+// This is a map of estimated test run times, used to balance the e2e processes.
+const testWeights = {
+  '#smoke.test.js': 160,
+  'allocation/assign.test.js': 70.8,
+  'allocation/cancel.test.js': 59.1,
+  'allocation/new.test.js': 48.9,
+  'allocation/remove-move.test.js': 35.4,
+  'date-select.test.js': 57.5,
+  'move/dashboard.test.js': 47.2,
+  'move/download.test.js': 78.6,
+  'move/new/police/to-court.test.js': 193,
+  'move/new/police/to-prison-recall.test.js': 65.7,
+  'move/new/prison/to-court.test.js': 52.9,
+  'move/new/prison/to-prison.test.js': 85.4,
+  'move/new/stc/to-court.test.js': 43.5,
+  'move/new/stc/to-hospital.test.js': 41.2,
+  'move/new/stc/to-prison.test.js': 42.7,
+  'move/new/stc/to-sch.test.js': 38,
+  'move/outgoing/multiple.test.js': 14.2,
+  'move/timeline.test.js': 7.6,
+  'move/update/forbidden.test.js': 27,
+  'move/update/police/existing.test.js': 21.3,
+  'move/update/police/to-court.test.js': 249.7,
+  'move/update/police/to-prison-recall.test.js': 15.6,
+  'move/update/sch/existing.test.js': 26.1,
+  'move/update/sch/to-court.test.js': 152.6,
+  'move/update/sch/to-hospital.test.js': 11.4,
+  'move/update/sch/to-prison.test.js': 8.4,
+  'move/update/sch/to-sch.test.js': 8.8,
+  'move/update/sch/to-stc.test.js': 8.6,
+  'move/update/stc/existing.test.js': 11.7,
+  'move/update/stc/to-court.test.js': 24.6,
+  'move/update/stc/to-hospital.test.js': 17.6,
+  'move/update/stc/to-prison.test.js': 5.1,
+  'move/update/stc/to-sch.test.js': 4.9,
+  'move/update/stc/to-stc.test.js': 8.5,
+  'person-escort-record/new.test.js': 183.9,
+  'population/dashboard.test.js': 9.5,
+  'population/edit.test.js': 10.1,
+}
+
 const args = yargs
   .usage(
     `
@@ -210,14 +252,31 @@ ${
 }
 `)
 
-const testBuckets = tests.reduce((memo, value, index) => {
-  if (index < maxProcesses) {
-    memo.push([])
-  }
+const testPools = Array(maxProcesses)
+  .fill()
+  .map(() => ({ testTime: 0, tests: [] }))
 
-  memo[index % maxProcesses].push(value)
-  return memo
-}, [])
+const testsWithWeights = allTests
+  .map(test => {
+    const weight = testWeights[test.substr(9)] || 0
+
+    if (weight === 0) {
+      process.stdout.write(
+        `Test '${test} has no weight and therefore cannot be balanced.`
+      )
+    }
+
+    return { test, weight }
+  })
+  .sort((a, b) => b.weight - a.weight)
+
+testsWithWeights.forEach(({ test, weight }) => {
+  const lightestPool = testPools.sort((a, b) => a.testTime - b.testTime)[0]
+  lightestPool.testTime += weight
+  lightestPool.tests.push(test)
+})
+
+const testBuckets = testPools.map(pool => pool.tests)
 
 const testcafeRuns = testBuckets.map((test, index) => {
   const name = `run-${index + 1}`
