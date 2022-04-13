@@ -39,7 +39,9 @@
             }) }}
           </div>
           <div class="govuk-grid-column-one-third">
-            <a href="/move/{{moveId}}/police-custody-form" class="govuk-button prison-lockout-banner-button">Add events</a>
+            {% if MoveLodgingEnded == false %}
+              <a href="/move/{{moveId}}/police-custody-form" class="govuk-button prison-lockout-banner-button">Add events</a>
+            {% endif %}   
           </div>
         </div>
       </div>
