@@ -256,7 +256,7 @@ const testPools = Array(maxProcesses)
   .fill()
   .map(() => ({ testTime: 0, tests: [] }))
 
-const testsWithWeights = allTests
+const testsWithWeights = tests
   .map(test => {
     const weight = testWeights[test.substr(9)] || 0
 
@@ -276,7 +276,9 @@ testsWithWeights.forEach(({ test, weight }) => {
   lightestPool.tests.push(test)
 })
 
-const testBuckets = testPools.map(pool => pool.tests)
+const testBuckets = testPools
+  .map(pool => pool.tests)
+  .filter(tests => tests.length)
 
 const testcafeRuns = testBuckets.map((test, index) => {
   const name = `run-${index + 1}`
@@ -320,7 +322,7 @@ function sleep(ms) {
 }
 
 function killCommands(commands) {
-  return Promise.all(commands.map(c => c.kill()))
+  return concurrently([`kill ${commands.map(c => c.pid).join(' ')}`]).result
 }
 
 const runTests = async () => {
@@ -334,15 +336,14 @@ const runTests = async () => {
   )
   const authCommandStrings = testBuckets.map(
     (_, i) =>
-      ` SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
+      `SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
         3000 + i
       } MOCK_AUTH_PORT=${3999 + i} node mocks/auth-server.js`
   )
+
   const { commands: serverCommands } = concurrently(
     serverCommandStrings.concat(authCommandStrings),
     {
-      maxProcesses: maxProcesses * 2,
-      killOthers,
       outputStream: fs.createWriteStream('/dev/null'),
     }
   )
@@ -350,7 +351,6 @@ const runTests = async () => {
 
   try {
     await concurrently(testcafeRuns, {
-      maxProcesses,
       killOthers,
     }).result
   } catch {
@@ -358,6 +358,7 @@ const runTests = async () => {
     process.exit(1)
   } finally {
     await killCommands(serverCommands)
+    process.exit()
   }
 }
 
