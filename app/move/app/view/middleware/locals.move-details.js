@@ -2,10 +2,11 @@ const presenters = require('../../../../../common/presenters')
 
 function localsMoveDetails(req, res, next) {
   const { move } = req
-  let moveLodgingStarted
-  let moveLodgingEnded
 
   const moveDetails = presenters.moveToMetaListComponent(move)
+
+  let moveLodgingStarted
+  let moveLodgingEnded
 
   res.locals.moveDetails = moveDetails
   res.locals.moveIsLockout = move.is_lockout
