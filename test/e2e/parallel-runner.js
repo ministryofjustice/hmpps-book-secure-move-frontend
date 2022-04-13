@@ -295,7 +295,7 @@ const testcafeRuns = testBuckets.map((test, index) => {
     3999 + index
   } node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
-  )} ${color} --retry-test-pages ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
+  )} ${color} --retry-test-pages --quarantine-mode ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
   return {
     name,
     command,
