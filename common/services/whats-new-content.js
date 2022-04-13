@@ -10,6 +10,8 @@ const {
 } = require('../../config')
 const { DATE_FORMATS } = require('../../config/index')
 
+const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
+
 const options = {
   renderMark: {
     [MARKS.BOLD]: text => `<strong>${text}</strong>`,
@@ -36,6 +38,7 @@ const options = {
       `<a class="govuk-link" href="${node.data.uri}">${next(node.content)}</a>`,
   },
 }
+
 const service = {
   client: contentful.createClient({
     host: CONTENTFUL_HOST,
@@ -55,10 +58,14 @@ const service = {
       date: service.formatDate(date),
     }))
 
-    const formattedBannerContent = {
-      title: entries[0].title,
-      body: entries[0].briefBannerText,
-      date: service.formatDate(entries[0].date),
+    let formattedBannerContent = null
+
+    if (new Date() - entries[0].date <= TWO_WEEKS) {
+      formattedBannerContent = {
+        title: entries[0].title,
+        body: entries[0].briefBannerText,
+        date: service.formatDate(entries[0].date),
+      }
     }
 
     return {
