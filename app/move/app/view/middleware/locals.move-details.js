@@ -14,9 +14,11 @@ function localsMoveDetails(req, res, next) {
 
   move.important_events.forEach(event => {
     if (event.event_type === 'MoveLodgingStart') {
-      return (moveLodgingStarted = true)((moveLodgingEnded = false))
+      moveLodgingStarted = true
+      moveLodgingEnded = false
     } else if (event.event_type === 'MoveLodgingEnd') {
-      return (moveLodgingStarted = false)((moveLodgingEnded = true))
+      moveLodgingStarted = false
+      moveLodgingEnded = true
     }
   })
 
