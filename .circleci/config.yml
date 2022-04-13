@@ -250,7 +250,8 @@ jobs:
 
   end-to-end-test:
     <<: *circle_container
-    resource_class: xlarge
+    resource_class: medium
+    parallelism: 8
     steps:
       - checkout
       - browser-tools/install-browser-tools
@@ -262,22 +263,12 @@ jobs:
           name: Build assets and frameworks
           command: npm run build
       - run:
-          name: Check whether to use mock server
-          command: |
-            if [ -n "$E2E_MOCK_AUTH" ]; then
-              echo "export AUTH_PROVIDER_URL='http://localhost:3999'" >> $BASH_ENV
-              echo "export NOMIS_ELITE2_API_URL='http://localhost:3999'" >> $BASH_ENV
-              source $BASH_ENV
-            fi
-      - run:
           name: Run E2E tests (same instance)
           environment:
             REDIS_URL: ""
-            SERVER_HOST: localhost:3000
-            E2E_BASE_URL: http://localhost:3000
             NODE_OPTIONS: --max-old-space-size=12288
           command: |
-            npm run test-e2e:ci
+            npm run test-e2e -- --test $(circleci tests glob "test/e2e/**/*.test.js" | circleci tests split --split-by=timings)
       - store_test_results:
           path: reports/testcafe
       - store_artifacts:

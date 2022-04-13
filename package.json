@@ -285,7 +285,6 @@
     "test": "NODE_ENV=test LOG_LEVEL=silent mocha './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js'",
     "test-e2e": "node test/e2e/parallel-runner.js",
     "test-e2e:browserstack:ie": "testcafe 'browserstack:IE@11.0:Windows 10' test/e2e/*.test.js",
-    "test-e2e:ci": "npm run test-e2e --",
     "test-e2e:local": "E2E_BASE_URL='' npm run test-e2e -- --debug --reporter false",
     "test-e2e:local:api": "E2E_BASE_URL='' npm run test-e2e -- --reporter false --skip test/e2e/move.new.stc.test.js --skip test/e2e/move.update.stc.test.js",
     "update": "ncu --upgrade",
