@@ -73,7 +73,7 @@ describe('Event Service', function () {
           recorded_at: '2022-04-13T10:00:39.986Z',
           notes: 'An assault occurred',
           details: {
-            supplier_personnel_number: ['MRUSERNAME'],
+            police_personnel_number: ['MRUSERNAME'],
             fault_classification: 'investigation',
             reported_at: '2022-04-13T10:00:39.986Z',
             advised_at: '2022-04-13T10:00:39.986Z',
@@ -105,7 +105,7 @@ describe('Event Service', function () {
           recorded_at: '2022-04-13T10:00:39.986Z',
           notes: 'There was a death',
           details: {
-            supplier_personnel_numbers: ['MRUSERNAME'],
+            police_personnel_numbers: ['MRUSERNAME'],
             fault_classification: 'investigation',
             reported_at: '2022-04-13T10:00:39.986Z',
             advised_at: '2022-04-13T10:00:39.986Z',

@@ -5,25 +5,16 @@ function localsMoveDetails(req, res, next) {
 
   const moveDetails = presenters.moveToMetaListComponent(move)
 
-  let moveLodgingStarted
-  let moveLodgingEnded
-
   res.locals.moveDetails = moveDetails
   res.locals.moveIsLockout = move.is_lockout
   res.locals.moveId = move.id
 
-  move.important_events.forEach(event => {
-    if (event.event_type === 'MoveLodgingStart') {
-      moveLodgingStarted = true
-      moveLodgingEnded = false
-    } else if (event.event_type === 'MoveLodgingEnd') {
-      moveLodgingStarted = false
-      moveLodgingEnded = true
-    }
-  })
-
-  res.locals.moveLodgingEnded = moveLodgingStarted
-  res.locals.moveLodgingEnded = moveLodgingEnded
+  res.locals.moveLodgingStarted = move.important_events.some(
+    ({ event_type: eventType }) => eventType === 'MoveLodgingStart'
+  )
+  res.locals.moveLodgingEnded = move.important_events.some(
+    ({ event_type: eventType }) => eventType === 'MoveLodgingEnd'
+  )
 
   next()
 }

@@ -35,6 +35,7 @@ describe('Move view app', function () {
 
       it('should set move details on locals', function () {
         expect(res.locals).to.be.deep.equal({
+          moveLodgingStarted: false,
           moveLodgingEnded: true,
           moveDetails: {
             id: '12345',
