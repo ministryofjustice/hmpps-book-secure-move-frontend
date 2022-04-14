@@ -60,12 +60,10 @@ const service = {
     )
 
     const latestContent = entries.items[0]
-    const latestContentTitle = latestContent.fields.title
     const latestContentBannerText = latestContent.fields.briefBannerText
 
     return {
       bannerContent: {
-        title: latestContentTitle,
         body: latestContentBannerText,
         date: service.formatDate(latestContent.fields.date),
       },
