@@ -29,9 +29,11 @@ const options = {
         node.content
       )}</h3>`,
     [BLOCKS.HEADING_4]: (node, next) =>
-      `<h4 class="govuk-heading-s">${next(node.content)}</h4>`,
+      `<h4 class="govuk-heading-m">${next(node.content)}</h4>`,
     [BLOCKS.UL_LIST]: (node, next) =>
       `<ul class="govuk-list govuk-list--bullet">${next(node.content)}</ul>`,
+    [BLOCKS.OL_LIST]: (node, next) =>
+      `<ol class="govuk-list govuk-list--number">${next(node.content)}</ol>`,
     [BLOCKS.PARAGRAPH]: (node, next) =>
       `<p class="govuk-body">${next(node.content)}</p>`,
     [INLINES.HYPERLINK]: (node, next) =>
@@ -62,7 +64,6 @@ const service = {
 
     if (new Date() - entries[0].date <= TWO_WEEKS) {
       formattedBannerContent = {
-        title: entries[0].title,
         body: entries[0].briefBannerText,
         date: service.formatDate(entries[0].date),
       }

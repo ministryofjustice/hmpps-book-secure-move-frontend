@@ -11,6 +11,5 @@ params:
 examples:
   - name: default
     data:
-      title: 'Title Here'
       date: '4th March 2022'
       body: 'Some random banner text'
