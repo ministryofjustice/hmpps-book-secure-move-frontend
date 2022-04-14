@@ -1,9 +1,8 @@
 {
-  "assertionTimeout": 10000,
-  "selectorTimeout": 20000,
-  "pageLoadTimeout": 60000,
-  "pageRequestTimeout": 60000,
-
+  "assertionTimeout": 20000,
+  "selectorTimeout": 30000,
+  "pageLoadTimeout": 90000,
+  "pageRequestTimeout": 90000,
   "retryTestPages": true,
   "hostname": "localhost"
 }

@@ -10,6 +10,8 @@ const {
 } = require('../../config')
 const { DATE_FORMATS } = require('../../config/index')
 
+const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
+
 const options = {
   renderMark: {
     [MARKS.BOLD]: text => `<strong>${text}</strong>`,
@@ -38,6 +40,7 @@ const options = {
       `<a class="govuk-link" href="${node.data.uri}">${next(node.content)}</a>`,
   },
 }
+
 const service = {
   client: contentful.createClient({
     host: CONTENTFUL_HOST,
@@ -45,37 +48,49 @@ const service = {
     accessToken: CONTENTFUL_ACCESS_TOKEN,
   }),
   fetch: async () => {
-    const entries = await service.client.getEntries()
+    const entries = await service.fetchEntries()
 
-    if (!entries.items?.length) {
+    if (entries.length === 0) {
       return null
     }
 
-    const formattedEntries = entries.items.map(
-      ({ fields: { title, body, date } }) => ({
-        title,
-        body: service.convertToHTMLFormat(body),
-        date: service.formatDate(date),
-      })
-    )
+    const formattedEntries = entries.map(({ title, body, date }) => ({
+      title,
+      body: service.convertToHTMLFormat(body),
+      date: service.formatDate(date),
+    }))
 
-    const latestContent = entries.items[0]
-    const latestContentBannerText = latestContent.fields.briefBannerText
+    let formattedBannerContent = null
+
+    if (new Date() - entries[0].date <= TWO_WEEKS) {
+      formattedBannerContent = {
+        body: entries[0].briefBannerText,
+        date: service.formatDate(entries[0].date),
+      }
+    }
 
     return {
-      bannerContent: {
-        body: latestContentBannerText,
-        date: service.formatDate(latestContent.fields.date),
-      },
+      bannerContent: formattedBannerContent,
       posts: formattedEntries,
     }
   },
-  convertToHTMLFormat: contentBody => {
-    return documentToHtmlString(contentBody, options)
+  fetchEntries: async () => {
+    const entries = await service.client.getEntries()
+
+    if (!entries.items?.length) {
+      return []
+    }
+
+    return entries.items.map(
+      ({ fields: { title, body, briefBannerText, date } }) => ({
+        title,
+        body,
+        briefBannerText,
+        date: new Date(date),
+      })
+    )
   },
-  formatDate: date => {
-    const newDate = new Date(date)
-    return format(newDate, DATE_FORMATS.WITH_MONTH)
-  },
+  convertToHTMLFormat: body => documentToHtmlString(body, options),
+  formatDate: date => format(date, DATE_FORMATS.WITH_MONTH),
 }
 module.exports = service
