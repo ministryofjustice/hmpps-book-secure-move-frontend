@@ -269,6 +269,9 @@ jobs:
             NODE_OPTIONS: --max-old-space-size=12288
           command: |
             npm run test-e2e -- --test $(circleci tests glob "test/e2e/**/*.test.js" | circleci tests split --split-by=timings)
+      - run:
+          name: Convert testcafe reports to relative path
+          command: sed -i 's/\/home\/circleci\/project\///g' reports/testcafe/*.xml
       - store_test_results:
           path: reports/testcafe
       - store_artifacts:
