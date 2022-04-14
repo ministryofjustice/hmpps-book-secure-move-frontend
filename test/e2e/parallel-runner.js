@@ -1,5 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-process-env */
+const fs = require('fs')
+
 const concurrently = require('concurrently')
 const glob = require('glob')
 const yargs = require('yargs')
@@ -156,11 +158,15 @@ E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
 E2E_BASE_URL:      ${E2E_BASE_URL}
 `)
 
-if (args.video && args.max_processes > 1) {
-  process.stdout.write('⚠️  Max processes set to 1 as video capture enabled\n')
+if (args.video && args.max_processes > 8) {
+  process.stdout.write(
+    '⚠️  Max processes capped to 8 as video capture is enabled\n'
+  )
 }
 
-const maxProcesses = args.video ? 1 : args.max_processes
+const maxProcesses = args.video
+  ? Math.min(args.max_processes, 8)
+  : args.max_processes
 const debugOnFail = args.debug ? '--debug-on-fail' : ''
 
 if (debugOnFail) {
@@ -180,7 +186,7 @@ const video = args.video
   ? "--video artifacts/videos --video-options failedOnly=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.mp4'"
   : ''
 
-const allTests = glob.sync('test/e2e/*.test.js')
+const allTests = glob.sync('test/e2e/**/*.test.js')
 let tests = args.test || allTests
 
 const envSkip = (E2E_SKIP || '').split(',')
@@ -216,11 +222,19 @@ const testBuckets = tests.reduce((memo, value, index) => {
 const testcafeRuns = testBuckets.map((test, index) => {
   const name = `run-${index + 1}`
   const reporter = args.reporter
-    ? `--reporter spec,xunit:reports/testcafe/results-chrome__${name}.xml`
+    ? `--reporter spec,xunit:reports/testcafe/results-${agent}__${name}.xml`
     : ''
-  const command = `node_modules/.bin/testcafe ${agent} ${test.join(
+  const command = `SERVER_HOST=localhost:${
+    3000 + index
+  } E2E_BASE_URL=http://localhost:${
+    3000 + index
+  } AUTH_PROVIDER_URL=http://localhost:${
+    3999 + index
+  } NOMIS_ELITE2_API_URL=http://localhost:${
+    3999 + index
+  } node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
-  )} ${color} ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
+  )} ${color} --retry-test-pages --quarantine-mode ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
   return {
     name,
     command,
@@ -242,14 +256,54 @@ if (args.n) {
   process.exit()
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+function killCommands(commands) {
+  return concurrently([`kill ${commands.map(c => c.pid).join(' ')}`]).result
+}
+
 const runTests = async () => {
+  const serverCommandStrings = testBuckets.map(
+    (_, i) =>
+      `PORT=${3000 + i} AUTH_PROVIDER_URL=http://localhost:${
+        3999 + i
+      } SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
+        3000 + i
+      } NOMIS_ELITE2_API_URL=http://localhost:${3999 + i} node start.js`
+  )
+  const authCommandStrings = testBuckets.map(
+    (_, i) =>
+      `SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
+        3000 + i
+      } MOCK_AUTH_PORT=${3999 + i} node mocks/auth-server.js`
+  )
+
+  const { commands: serverCommands } = concurrently(
+    serverCommandStrings.concat(authCommandStrings),
+    {
+      outputStream: fs.createWriteStream('/dev/null'),
+    }
+  )
+  await sleep(5000)
+
   try {
     await concurrently(testcafeRuns, {
-      maxProcesses,
       killOthers,
-    })
-  } catch (e) {
+    }).result
+  } catch {
+    try {
+      await killCommands(serverCommands)
+    } catch {}
+
     process.exit(1)
+  } finally {
+    try {
+      await killCommands(serverCommands)
+    } catch {}
+
+    process.exit()
   }
 }
 

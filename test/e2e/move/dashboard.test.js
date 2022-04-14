@@ -1,7 +1,7 @@
-import { createMove, createCourtMove } from './_move'
-import { policeUser, courtUser } from './_roles'
-import { home, incomingMoves, outgoingMoves } from './_routes'
-import { page, movesDashboardPage } from './pages'
+import { createMove, createCourtMove } from '../_move'
+import { policeUser, courtUser } from '../_roles'
+import { home, incomingMoves, outgoingMoves } from '../_routes'
+import { page, movesDashboardPage } from '../pages'
 
 fixture('Moves dashboards')
 

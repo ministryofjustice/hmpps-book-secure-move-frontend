@@ -1,9 +1,8 @@
 import { Selector } from 'testcafe'
 
-import { E2E } from '../../config'
-
-import { outgoingMoves, home } from './_routes'
-import { page } from './pages'
+import { E2E } from '../../../../config'
+import { outgoingMoves, home } from '../../_routes'
+import { page } from '../../pages'
 
 fixture('Multiple Windows').page(home)
 

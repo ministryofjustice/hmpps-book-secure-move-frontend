@@ -108,6 +108,8 @@ app.use('*', (req, res, next) => {
   res.send(`Received ${JSON.stringify({ url, query, body }, 2, null)}`)
 })
 
-app.listen(3999, () => {
-  process.stdout.write('Mock auth server running on port 3999')
+// eslint-disable-next-line no-process-env
+const port = process.env.MOCK_AUTH_PORT || 3999
+app.listen(port, () => {
+  process.stdout.write(`Mock auth server running on port ${port}`)
 })

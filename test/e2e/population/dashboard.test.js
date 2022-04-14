@@ -1,6 +1,6 @@
-import { pmuUserWithRegions } from './_roles'
-import { populationDashboard } from './_routes'
-import { populationDashboardPage, populationWeeklyPage } from './pages'
+import { pmuUserWithRegions } from '../_roles'
+import { populationDashboard } from '../_routes'
+import { populationDashboardPage, populationWeeklyPage } from '../pages'
 
 fixture('Population dashboards').beforeEach(async t => {
   await t.useRole(pmuUserWithRegions).navigateTo(populationDashboard)

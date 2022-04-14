@@ -1,6 +1,6 @@
-import { pmuUser } from './_roles'
-import { newAllocation } from './_routes'
-import { allocationJourney } from './pages/'
+import { pmuUser } from '../_roles'
+import { newAllocation } from '../_routes'
+import { allocationJourney } from '../pages'
 
 fixture('New PMU allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)

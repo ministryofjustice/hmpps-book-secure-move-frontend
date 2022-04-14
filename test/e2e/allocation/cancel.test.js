@@ -1,8 +1,8 @@
 import { ClientFunction } from 'testcafe'
 
-import { pmuUser } from './_roles'
-import { newAllocation } from './_routes'
-import { allocationJourney, page } from './pages/'
+import { pmuUser } from '../_roles'
+import { newAllocation } from '../_routes'
+import { allocationJourney, page } from '../pages'
 
 fixture('Cancel allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)
