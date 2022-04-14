@@ -1,6 +1,11 @@
+const { format } = require('date-fns')
 const sinon = require('sinon')
 
+const { DATE_FORMATS } = require('../../config')
+
 const whatsNewContentService = require('./whats-new-content')
+
+const todaysDate = new Date()
 
 const mockedResponse = {
   items: [
@@ -143,7 +148,7 @@ const mockedResponse = {
           ],
         },
         briefBannerText: 'Some text briefly explaining the changes.',
-        date: '2022-03-04T00:00+00:00',
+        date: todaysDate.toISOString(),
       },
     },
   ],
@@ -181,7 +186,9 @@ describe('whatsNewContentService Service', function () {
     })
     it('returns the formatted date', async function () {
       const formattedEntries = await whatsNewContentService.fetch()
-      expect(formattedEntries.posts[0].date).to.equal('4 March 2022')
+      expect(formattedEntries.posts[0].date).to.equal(
+        format(todaysDate, DATE_FORMATS.WITH_MONTH)
+      )
     })
   })
 
