@@ -39,7 +39,7 @@
         {{ govukInsetText({
           text: "For each event include the date, time, and what happened. You should include as much detail as possible."
         }) }}
-        <div class="govuk-hint govuk-!-padding-bottom-2"> Select all that apply.</div>
+        <div class="govuk-hint govuk-!-padding-bottom-2"> Select all that apply</div>
 
         <form method="post" action="/police-custody-form">
           {% set riskViolence %}
@@ -47,7 +47,7 @@
               id: "PerViolentDangerous",
               name: "PerViolentDangerous",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               hint: {
                 text: "Include who was involved."
               },
@@ -62,7 +62,7 @@
               id: "PerWeapons",
               name: "PerWeapons",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               hint: {
                 text: "Include how and where the weapon was found. If known, include when it was used."
               },
@@ -77,7 +77,7 @@
               id: "PerConcealed",
               name: "PerConcealed",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               hint: {
                 text: "Include how and where the resticted item was found. If known, include where it came from."
               },
@@ -92,7 +92,7 @@
               id: "PerSelfHarm",
               name: "PerSelfHarm",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               hint: {
                 text: "Include any known reasons or triggers."
               },
@@ -107,7 +107,7 @@
               id: "PerEscape",
               name: "PerEscape",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               hint: {
                 text: "Include how they escaped or attempted to escape."
               },
@@ -122,7 +122,7 @@
               id: "PersonMoveUsedForce",
               name: "PersonMoveUsedForce",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               hint: {
                 text: "Include who was involved, why force was used, and the type of force used."
               },
@@ -133,6 +133,7 @@
           {% endset -%}
 
           {% call govukFieldset({
+            classes: "govuk-!-padding-bottom-2",
             legend: {
               text: "Risk",
               classes: "govuk-fieldset__legend--m"
@@ -200,7 +201,7 @@
               id: "PerMedicalAid",
               name: "PerMedicalAid",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               label: {
                 html:"<b>Give details</b>"
               }
@@ -212,7 +213,7 @@
               id: "PerMedicalDrugsAlcohol",
               name: "PerMedicalDrugsAlcohol",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               label: {
                 html:"<b>Give details</b>"
               }
@@ -224,7 +225,7 @@
               id: "PerMedicalAid",
               name: "PerMedicalAid",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               label: {
                 html:"<b>Give details</b>"
               },
@@ -252,7 +253,7 @@
               id: "PerMedicalMentalHealth",
               name: "PerMedicalMentalHealth",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               label: {
                 html:"<b>Give details</b>"
               }
@@ -260,6 +261,7 @@
           {% endset -%}
           
           {% call govukFieldset({
+            classes: "govuk-!-padding-bottom-2",
             legend: {
               text: "Health",
               classes: "govuk-fieldset__legend--m"
@@ -310,7 +312,7 @@
               id: "PerPropertyChange",
               name: "PerPropertyChange",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               hint: {
                 text: "Include new bag seal numbers."
               },
@@ -321,6 +323,7 @@
           {% endset -%}
 
           {% call govukFieldset({
+            classes: "govuk-!-padding-bottom-2",
             legend: {
               text: "Property",
               classes: "govuk-fieldset__legend--m"
@@ -347,7 +350,7 @@
               id: "PersonMoveDeathInCustody",
               name: "PersonMoveDeathInCustody",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               label: {
                 html:"<b>Give details</b>"
               }
@@ -359,7 +362,7 @@
               id: "PerGeneric",
               name: "PerGeneric",
               type: "text",
-              classes: "govuk-!-width-two-thirds",
+              classes: "govuk-input--width-20",
               label: {
                 html:"<b>Give details</b>"
               }
@@ -367,6 +370,7 @@
           {% endset -%}
 
           {% call govukFieldset({
+            classes: "govuk-!-padding-bottom-2",
             legend: {
               text: "Other",
               classes: "govuk-fieldset__legend--m"
