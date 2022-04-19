@@ -53,7 +53,7 @@ describe('Event Service', function () {
     const move = {
       id: '12345-1213144-24343',
       type: 'moves',
-      from_location: {
+      to_location: {
         id: '1235-2513453223-423523523',
       },
       profile: {

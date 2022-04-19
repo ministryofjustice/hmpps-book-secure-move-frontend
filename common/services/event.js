@@ -67,7 +67,7 @@ class EventService extends BaseService {
               },
               location: {
                 data: {
-                  id: `${move.from_location.id}`,
+                  id: `${move.to_location.id}`,
                   type: 'locations',
                 },
               },
