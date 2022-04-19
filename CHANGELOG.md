@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.116.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.115.1...v2.116.0) (2022-04-19)
+
+
+### Features
+
+* Hide banner after 2 weeks ([4846038](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/484603870201b577d1e0d44ac2c068c07ee6b05d))
+* Update stylings for whats new page and banner ([1163a62](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1163a62b4fe62ec48e94f6b7031f8f40a5125343))
+
+
+### Bug Fixes
+
+* Make Contentful optional for development ([00ee1bc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/00ee1bc603448a2d0deaaa23a6ec8e5f970ad0db))
+
 ### [2.115.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.115.0...v2.115.1) (2022-04-13)
 
 ## [2.115.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.114.0...v2.115.0) (2022-04-12)
