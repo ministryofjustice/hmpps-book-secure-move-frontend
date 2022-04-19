@@ -1,0 +1,437 @@
+{% extends "layouts/base.njk" %}
+{% from "govuk/components/fieldset/macro.njk"  import govukFieldset %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: Back,
+    classes: "govuk-!-margin-bottom-5",
+    href: "/move/" + moveId + "/warnings"
+  }) }}
+{% endblock %}
+
+{% block pageTitle %}
+  Add lockout events
+{% endblock %}
+
+{% macro _sidebarSection(borderTopClasses = true, borderBottomClasses = true) %}
+  {% set top = "app-border-top-2 app-border--blue govuk-!-padding-top-3" if borderTopClasses else "" %}
+  {% set bottom = "govuk-!-margin-bottom-7" if borderBottomClasses else "govuk-!-margin-bottom-2" %}
+
+  <section class="{{ top }} {{ bottom }}">
+    {{ caller() if caller }}
+  </section>
+{% endmacro %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      Add lockout events
+    </h1>
+  </header>  
+
+  {% block contentContainer %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds govuk-!-margin-bottom-6">
+        <p class='govuk-body'>Use this form to record any events that happen while
+          this person is in police custody.
+        </p>
+        {{ govukInsetText({
+          text: "For each event include the date, time, and what happened. You should include as much detail as possible."
+        }) }}
+        <div class="govuk-hint govuk-!-padding-bottom-2"> Select all that apply</div>
+
+        <form method="post" action="/police-custody-form">
+          {% set riskViolence %}
+            {{ govukTextarea({
+              id: "PerViolentDangerous",
+              name: "PerViolentDangerous",
+              type: "text",
+              classes: "govuk-input--width-20",
+              hint: {
+                text: "Include who was involved."
+              },
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% set riskCreatedOrUsedAWeapon %}
+            {{ govukTextarea({
+              id: "PerWeapons",
+              name: "PerWeapons",
+              type: "text",
+              classes: "govuk-input--width-20",
+              hint: {
+                text: "Include how and where the weapon was found. If known, include when it was used."
+              },
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% set riskRestrictedItemFound %}
+            {{ govukTextarea({
+              id: "PerConcealed",
+              name: "PerConcealed",
+              type: "text",
+              classes: "govuk-input--width-20",
+              hint: {
+                text: "Include how and where the resticted item was found. If known, include where it came from."
+              },
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% set riskSelfHarmOrSuicide %}
+            {{ govukTextarea({
+              id: "PerSelfHarm",
+              name: "PerSelfHarm",
+              type: "text",
+              classes: "govuk-input--width-20",
+              hint: {
+                text: "Include any known reasons or triggers."
+              },
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% set riskEscapeOrAttemptedEscape %}
+            {{ govukTextarea({
+              id: "PerEscape",
+              name: "PerEscape",
+              type: "text",
+              classes: "govuk-input--width-20",
+              hint: {
+                text: "Include how they escaped or attempted to escape."
+              },
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% set riskUseOfForce %}
+            {{ govukTextarea({
+              id: "PersonMoveUsedForce",
+              name: "PersonMoveUsedForce",
+              type: "text",
+              classes: "govuk-input--width-20",
+              hint: {
+                text: "Include who was involved, why force was used, and the type of force used."
+              },
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% call govukFieldset({
+            classes: "govuk-!-padding-bottom-2",
+            legend: {
+              text: "Risk",
+              classes: "govuk-fieldset__legend--m"
+            }
+          }) %}
+
+          {{ govukCheckboxes({
+            idPrefix: "events",
+            name: "events",
+            items: [
+              {
+                value: "PerViolentDangerous",
+                text: "Violence",
+                conditional: {
+                  html: riskViolence
+                }
+              },
+              {
+                value: "PerWeapons",
+                text: "Created or used a weapon",
+                conditional: {
+                  html: riskCreatedOrUsedAWeapon
+                }
+              },
+              {
+                value: "PerConcealed",
+                text: "Restricted item found",
+                hint: {
+                  text: "For example concealed drugs, mobile phones or SIM cards."
+                },
+                conditional: {
+                  html: riskRestrictedItemFound
+                }
+              },
+              {
+                value: "PerSelfHarm",
+                text: "Self-harm or suicide",
+                hint: {
+                  text: "Including attempted or statements of intent."
+                },
+                conditional: {
+                  html: riskSelfHarmOrSuicide
+                }
+              },
+              {
+                value: "PerEscape",
+                text: "Escape or attempted escape",
+                conditional: {
+                  html: riskEscapeOrAttemptedEscape
+                }
+              },
+              {
+                value: "PersonMoveUsedForce",
+                text: "Use of force",
+                conditional: {
+                  html: riskUseOfForce
+                }
+              }
+            ]
+          }) }}
+          {% endcall %}
+
+          {% set healthMedicalAttention %}
+            {{ govukTextarea({
+              id: "PerMedicalAid",
+              name: "PerMedicalAid",
+              type: "text",
+              classes: "govuk-input--width-20",
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% set healthSubstanceAbuse %}
+            {{ govukTextarea({
+              id: "PerMedicalDrugsAlcohol",
+              name: "PerMedicalDrugsAlcohol",
+              type: "text",
+              classes: "govuk-input--width-20",
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% set healthMedicationGiven %}
+            {{ govukTextarea({
+              id: "PerMedicalAid",
+              name: "PerMedicalAid",
+              type: "text",
+              classes: "govuk-input--width-20",
+              label: {
+                html:"<b>Give details</b>"
+              },
+              hint: {
+                html: 
+                "
+                <p>For each medication, include:</p>
+                <ul class='govuk-list govuk-list--bullet'>
+                  <li>name</li>
+                  <li>how it is given</li>
+                  <li>dosage</li>
+                  <li>frequency</li>
+                  <li>time last given</li>
+                  <li>time next given</li>
+                  <li>if it is needed while moving</li>
+                  <li>who is carrying it</li>
+                </ul>
+                "
+              }
+            }) }}
+          {% endset -%}
+
+          {% set healthChangeInMood %}
+            {{ govukTextarea({
+              id: "PerMedicalMentalHealth",
+              name: "PerMedicalMentalHealth",
+              type: "text",
+              classes: "govuk-input--width-20",
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+          
+          {% call govukFieldset({
+            classes: "govuk-!-padding-bottom-2",
+            legend: {
+              text: "Health",
+              classes: "govuk-fieldset__legend--m"
+            }
+          }) %}
+
+          {{ govukCheckboxes({
+            idPrefix: "events",
+            name: "events",
+            items: [
+              {
+                value: "PerMedicalAid",
+                text: "Medical attention received",
+                conditional: {
+                  html: healthMedicalAttention
+                }
+              },
+              {
+                value: "PerMedicalDrugsAlcohol",
+                text: "Signs of drug or alcohol abuse or withdrawal",
+                conditional: {
+                  html: healthSubstanceAbuse
+                }
+              },
+              {
+                value: "PerMedicalAid",
+                text: "Medication given",
+                conditional: {
+                  html: healthMedicationGiven
+                }
+              },
+              {
+                value: "PerMedicalMentalHealth",
+                text: "Obvious changes in mood, behaviour or signs of mental health issues",
+                hint: {
+                  text: "For example, if they seem withdrawn or non-communicative, refuse meals or show any other behaviour that suggests heightened risk."
+                },
+                conditional: {
+                  html: healthChangeInMood
+                }
+              }
+            ]
+          }) }}
+          {% endcall %}
+
+          {% set propertyChange %}
+            {{ govukTextarea({
+              id: "PerPropertyChange",
+              name: "PerPropertyChange",
+              type: "text",
+              classes: "govuk-input--width-20",
+              hint: {
+                text: "Include new bag seal numbers."
+              },
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% call govukFieldset({
+            classes: "govuk-!-padding-bottom-2",
+            legend: {
+              text: "Property",
+              classes: "govuk-fieldset__legend--m"
+            }
+          }) %}
+
+          {{ govukCheckboxes({
+            idPrefix: "events",
+            name: "events",
+            items: [
+              {
+                value: "PerPropertyChange",
+                text: "Property change",
+                conditional: {
+                  html: propertyChange
+                }
+              }
+            ]
+          }) }}
+          {% endcall %}
+
+          {% set otherDeath %}
+            {{ govukTextarea({
+              id: "PersonMoveDeathInCustody",
+              name: "PersonMoveDeathInCustody",
+              type: "text",
+              classes: "govuk-input--width-20",
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% set otherAnyOtherEvents %}
+            {{ govukTextarea({
+              id: "PerGeneric",
+              name: "PerGeneric",
+              type: "text",
+              classes: "govuk-input--width-20",
+              label: {
+                html:"<b>Give details</b>"
+              }
+            }) }}
+          {% endset -%}
+
+          {% call govukFieldset({
+            classes: "govuk-!-padding-bottom-2",
+            legend: {
+              text: "Other",
+              classes: "govuk-fieldset__legend--m"
+            }
+          }) %}
+
+          {{ govukCheckboxes({
+            idPrefix: "events",
+            name: "events",
+            items: [
+              {
+                value: "PersonMoveDeathInCustody",
+                text: "Death in custody",
+                conditional: {
+                  html: otherDeath
+                }
+              },
+              {
+                value: "PerGeneric",
+                text: "Any other events",
+                conditional: {
+                  html: otherAnyOtherEvents
+                }
+              }
+            ]
+          }) }}
+          {% endcall %}
+
+          <div class="govuk-button-group">
+            {{ govukButton({
+              preventDoubleClick: true,
+              type: submit,
+              text: "Save events"
+            }) }}
+             <input type="hidden" id="moveId" name="moveId" value="{{moveId}}">
+            <a href="/move/{{moveId}}/warnings" class="govuk-link">Cancel</a>
+        </div>
+        </form>
+      </div>
+
+      <aside class="govuk-grid-column-one-third">
+        {% block contentSidebar %}
+
+          {% call _sidebarSection({ first: true }) %}
+            {% include "includes/person-summary.njk" %}
+          {% endcall %}
+
+          {% call _sidebarSection(borderBottomClasses = false) %}
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+            {{ t("moves::move_details") }}
+          </h3>
+
+          {{ appMetaList(moveDetails) }}
+        {% endcall %}
+
+        {% endblock %}
+      </aside>
+
+    </div>
+  {% endblock %}
+
+{% endblock %}
+
+
