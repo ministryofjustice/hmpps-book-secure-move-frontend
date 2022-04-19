@@ -5,6 +5,7 @@ const policeCustodyFormController = require('./controllers')
 
 // Define routes
 router.get('/', (req, res) => {
+  delete res.breadcrumb
   res.render('police-custody-form/police-custody-form')
 })
 

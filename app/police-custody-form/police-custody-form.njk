@@ -1,5 +1,14 @@
 {% extends "layouts/base.njk" %}
-{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/fieldset/macro.njk"  import govukFieldset %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: Back,
+    classes: "govuk-!-margin-bottom-5",
+    href: "/move/" + moveId + "/warnings"
+  }) }}
+{% endblock %}
 
 {% block pageTitle %}
   Add lockout events
