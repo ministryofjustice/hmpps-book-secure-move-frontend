@@ -1,12 +1,14 @@
 const { flatten, kebabCase, pickBy } = require('lodash')
 
 function responsesToSaveReducer(values = {}) {
-  return (accumulator, { id, question }) => {
+  return (accumulator, { id, question, _question: { validate } = {} }) => {
     const { key: fieldName, response_type: responseType } = question
     const value = values[fieldName]
     let responseValue
 
-    if (!value) {
+    const hasValidation = validate ? validate.length !== 0 : true
+
+    if (!value && hasValidation) {
       return accumulator
     }
 
@@ -53,7 +55,7 @@ function responsesToSaveReducer(values = {}) {
       responseValue = value
     }
 
-    if (responseValue) {
+    if (responseValue || !hasValidation) {
       accumulator.push(
         pickBy({
           id,

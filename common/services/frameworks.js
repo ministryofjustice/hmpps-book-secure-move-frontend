@@ -134,7 +134,9 @@ const frameworksService = {
       component,
       itemName,
       rows: display.rows,
-      classes: inputWidthClasses[display.character_width] || '',
+      classes:
+        inputWidthClasses[display.character_width] ||
+        (type === 'text' ? 'govuk-input--width-20' : ''),
       descendants: questions,
       id: key,
       name: key,

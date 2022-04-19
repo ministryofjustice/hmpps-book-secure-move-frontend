@@ -36,6 +36,7 @@ describe('Move helpers', function () {
         it('should get the move summary', function () {
           expect(moveToMetaListComponent).to.be.calledOnceWithExactly(
             mockMove,
+            [],
             { foo: 'bar' }
           )
         })
@@ -77,6 +78,7 @@ describe('Move helpers', function () {
         it('should get the move summary', function () {
           expect(moveToMetaListComponent).to.be.calledOnceWithExactly(
             mockMove,
+            [],
             { foo: 'bar' }
           )
         })
@@ -111,6 +113,7 @@ describe('Move helpers', function () {
         it('should get the move summary', function () {
           expect(moveToMetaListComponent).to.be.calledOnceWithExactly(
             mockMove,
+            [],
             { foo: 'bar' }
           )
         })

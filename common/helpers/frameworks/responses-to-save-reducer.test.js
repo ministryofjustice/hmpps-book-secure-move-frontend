@@ -356,6 +356,53 @@ describe('Helpers', function () {
             ],
             expectedValue: [],
           },
+          {
+            testName: 'with empty but optional radio field',
+            formValues: {
+              question: null,
+            },
+            responses: [
+              {
+                id: '1',
+                question: {
+                  key: 'question',
+                  response_type: 'object::followup_comment',
+                },
+                _question: {
+                  validate: [],
+                },
+              },
+            ],
+            expectedValue: [
+              {
+                id: '1',
+                value: {},
+              },
+            ],
+          },
+          {
+            testName: 'with empty but optional string field',
+            formValues: {
+              question: '',
+            },
+            responses: [
+              {
+                id: '1',
+                question: {
+                  key: 'question',
+                  response_type: 'string',
+                },
+                _question: {
+                  validate: [],
+                },
+              },
+            ],
+            expectedValue: [
+              {
+                id: '1',
+              },
+            ],
+          },
         ]
 
         testCases.forEach(test => {

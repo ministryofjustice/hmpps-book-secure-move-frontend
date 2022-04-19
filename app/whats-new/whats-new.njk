@@ -12,10 +12,11 @@
   </header>
 
   <p class="govuk-!-margin-bottom-5">
-    The latest updates and improvements to Book a Secure Move.
+    The latest updates and improvements to Book a secure move.
   </p>
 
   {% for post in posts %}
+  <div class="govuk-!-padding-bottom-7"> 
     <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
       {{ post.date }}
     </h2>
@@ -24,5 +25,6 @@
       {{ post.title }}
     </h3>
     {{ post.body | safe }}
+  </div>
   {% endfor %}
 {% endblock %}

@@ -1,4 +1,4 @@
-{% if params.responded %}
+{% if params.responded or params.assessmentStatus === 'completed' or params.assessmentStatus === 'confirmed' %}
   {% if params.value and params.valueType %}
     {% if params.valueType === 'object::followup_comment' %}
       <p class="govuk-!-font-size-16">

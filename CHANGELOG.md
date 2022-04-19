@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.116.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.115.1...v2.116.0) (2022-04-19)
+
+
+### Features
+
+* Hide banner after 2 weeks ([4846038](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/484603870201b577d1e0d44ac2c068c07ee6b05d))
+* Update stylings for whats new page and banner ([1163a62](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1163a62b4fe62ec48e94f6b7031f8f40a5125343))
+
+
+### Bug Fixes
+
+* Make Contentful optional for development ([00ee1bc](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/00ee1bc603448a2d0deaaa23a6ec8e5f970ad0db))
+
+### [2.115.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.115.0...v2.115.1) (2022-04-13)
+
+## [2.115.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.114.0...v2.115.0) (2022-04-12)
+
+
+### Features
+
+* Add support footer link ([542ec86](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/542ec8640d18e4a5cb1dd61d01a5caadeffaf1f3))
+* Reduce default field length ([2212c5e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2212c5e6f8cad602b2c404abb4bab1153077036f))
+* Update side pannel with lockout information ([d09d28f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d09d28f58a54a61a1817a7bb7efa26971013c452))
+
+
+### Bug Fixes
+
+* Allow optional radio responses to go to API ([4190811](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4190811408528391749a303f1ece4c6f67397d0c))
+* Allow optional string responses to go to API ([232a9af](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/232a9af15be099bb0bc2af17c055cddf2920a88f))
+* Consider assessment status when showing framework responses ([8828550](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8828550a27665bc548909078bca5d0ecfea733f1))
+
 ## [2.114.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.113.0...v2.114.0) (2022-04-05)
 
 

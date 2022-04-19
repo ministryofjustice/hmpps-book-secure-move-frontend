@@ -36,7 +36,7 @@ describe('Whats new banner component', function () {
 
     it('should render title tag and content', function () {
       expect($component.html()).to.contain(
-        '<h1 class="govuk-heading-l">Title Here</h1>'
+        'h1 class="govuk-heading-l">What\'s new</h1>'
       )
     })
 
