@@ -29,6 +29,7 @@ class EventService extends BaseService {
         let type
         let relationshipsId
         let policePersonnelNumber
+        let eventableType
 
         const eventDescription = lockoutEvents[event]
 
@@ -36,10 +37,17 @@ class EventService extends BaseService {
           type = 'person_escort_records'
           relationshipsId = move.profile.person_escort_record.id
           policePersonnelNumber = 'police_personnel_number'
+          eventableType = event
         } else if (personMoveEvents.includes(event)) {
           type = 'moves'
           relationshipsId = move.id
           policePersonnelNumber = 'police_personnel_numbers'
+          eventableType = event
+        } else if (event === 'PerMedicalAid1' || event === 'PerMedicalAid2') {
+          type = 'person_escort_records'
+          relationshipsId = move.profile.person_escort_record.id
+          policePersonnelNumber = 'police_personnel_number'
+          eventableType = 'PerMedicalAid'
         }
 
         const payload = {
@@ -56,7 +64,7 @@ class EventService extends BaseService {
                 advised_at: todaysDate.toISOString(),
                 advised_by: user.username,
               },
-              event_type: event,
+              event_type: eventableType,
             },
             relationships: {
               eventable: {
