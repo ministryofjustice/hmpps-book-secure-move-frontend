@@ -324,6 +324,10 @@ function filesize(str) {
   })
 }
 
+function containsElement(array = [], element) {
+  return array.includes(element)
+}
+
 module.exports = {
   ...mojFilters,
   formatDate,
@@ -342,4 +346,5 @@ module.exports = {
   pluralize,
   oxfordJoin,
   filesize,
+  containsElement,
 }

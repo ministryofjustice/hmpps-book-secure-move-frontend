@@ -16,6 +16,9 @@ describe('Police Custody Form controllers', function () {
 
     beforeEach(function () {
       mockReq = {
+        session: {
+          errors: null,
+        },
         body: {
           moveId: moveId,
           lockoutEvents,
