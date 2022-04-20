@@ -141,7 +141,7 @@
           }) %}
 
           {{ govukCheckboxes({
-            idPrefix: "events",
+            idPrefix: "riskEvents",
             name: "events",
             items: [
               {
@@ -198,8 +198,8 @@
 
           {% set healthMedicalAttention %}
             {{ govukTextarea({
-              id: "PerMedicalAid",
-              name: "PerMedicalAid",
+              id: "PerMedicalAid1",
+              name: "PerMedicalAid1",
               type: "text",
               classes: "govuk-input--width-20",
               label: {
@@ -222,8 +222,8 @@
 
           {% set healthMedicationGiven %}
             {{ govukTextarea({
-              id: "PerMedicalAid",
-              name: "PerMedicalAid",
+              id: "PerMedicalAid2",
+              name: "PerMedicalAid2",
               type: "text",
               classes: "govuk-input--width-20",
               label: {
@@ -269,11 +269,11 @@
           }) %}
 
           {{ govukCheckboxes({
-            idPrefix: "events",
+            idPrefix: "healthEvents",
             name: "events",
             items: [
               {
-                value: "PerMedicalAid",
+                value: "PerMedicalAid1",
                 text: "Medical attention received",
                 conditional: {
                   html: healthMedicalAttention
@@ -287,7 +287,7 @@
                 }
               },
               {
-                value: "PerMedicalAid",
+                value: "PerMedicalAid2",
                 text: "Medication given",
                 conditional: {
                   html: healthMedicationGiven
@@ -331,7 +331,7 @@
           }) %}
 
           {{ govukCheckboxes({
-            idPrefix: "events",
+            idPrefix: "propEvents",
             name: "events",
             items: [
               {
@@ -378,7 +378,7 @@
           }) %}
 
           {{ govukCheckboxes({
-            idPrefix: "events",
+            idPrefix: "Otherevents",
             name: "events",
             items: [
               {
