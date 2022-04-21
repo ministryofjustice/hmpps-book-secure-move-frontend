@@ -325,7 +325,9 @@ function filesize(str) {
 }
 
 function containsElement(array = [], element) {
-  return array.includes(element)
+  if (array.some(e => e.error === element)) {
+    return true
+  }
 }
 
 module.exports = {
