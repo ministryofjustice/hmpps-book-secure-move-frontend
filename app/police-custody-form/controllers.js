@@ -44,17 +44,7 @@ exports.addEvents = async function (req, res) {
 }
 
 function mapErrorMessages(errors) {
-  const mappedErrorsWithMessages = []
-
-  errors.forEach(error => {
-    const message = EVENT_ERROR_MESSAGES[error]
-
-    if (!message) {
-      return
-    }
-
-    mappedErrorsWithMessages.push({ error, message })
-  })
-
-  return mappedErrorsWithMessages
+  return errors
+    .map(error => ({ error, message: EVENT_ERROR_MESSAGES[error] }))
+    .filter(e => e.message)
 }
