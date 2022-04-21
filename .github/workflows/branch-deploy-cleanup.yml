@@ -1,0 +1,59 @@
+name: Branch Based Deploy Cleanup
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ECR_ENDPOINT: ${{ secrets.ECR_ENDPOINT }}
+  KUBE_CACERT: ${{ secrets.KUBE_CACERT }}
+  KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+  KUBE_NAME: ${{ secrets.KUBE_NAME }}
+  KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+  KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
+
+  GITHUB_TEAM_NAME_SLUG: book-a-secure-move
+
+jobs:
+  setup-build-publish-deploy:
+    name: Cleanup Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR number
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "PR_NUMBER=${PR_NUMBER}" >> $GITHUB_ENV
+
+      - name: Authenticate with cluster
+        run: |
+          echo -n $KUBE_CACERT | base64 -d > ./ca.crt
+          kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
+          kubectl config set-credentials circleci --token=${KUBE_TOKEN}
+          kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=circleci --namespace=${KUBE_NAMESPACE}
+          kubectl config use-context ${KUBE_CLUSTER}
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ENDPOINT
+
+      - name: Delete docker image from ECR
+        env:
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+        run: |
+          aws ecr batch-delete-image --repository-name "${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}" --image-ids imageTag="pr-${PR_NUMBER}.latest"
+      
+      - name: Delete kube configs
+        env:
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+        run: |
+          kubectl delete configmap hmpps-book-secure-move-frontend-configmap-pr-$PR_NUMBER
+          kubectl delete ingress hmpps-book-secure-move-frontend-ingress-pr-$PR_NUMBER
+          kubectl delete service hmpps-book-secure-move-frontend-service-pr-$PR_NUMBER
+          kubectl delete deployment hmpps-book-secure-move-frontend-deployment-pr-$PR_NUMBER
