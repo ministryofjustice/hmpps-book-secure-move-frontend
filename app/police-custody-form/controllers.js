@@ -22,9 +22,9 @@ exports.addEvents = async function (req, res) {
   const user = req.user
   const move = await req.services.move.getById(moveId)
 
-  const errors = (lockoutEvents.events || []).filter(
-    e => lockoutEvents[e] === ''
-  )
+  const errors = [lockoutEvents.events || []]
+    .flat()
+    .filter(e => lockoutEvents[e] === '')
 
   if (lockoutEvents.events === undefined || errors.length > 0) {
     const mappedErrors = mapErrorMessages(errors)
