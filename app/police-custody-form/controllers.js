@@ -1,31 +1,39 @@
+const EVENT_ERROR_MESSAGES = {
+  PerViolentDangerous: 'Enter details of any violence that has taken place',
+  PerWeapons: 'Enter details of weapons created or used',
+  PerConcealed: 'Enter details of restricted or concealed items',
+  PerSelfHarm: 'Enter details of self-harm or suicide',
+  PerEscape: 'Enter details of escape or attempted escape',
+  PersonMoveUsedForce: 'Enter details of force used',
+  PerMedicalAid1: 'Enter details of medical attention received',
+  PerMedicalDrugsAlcohol:
+    'Enter details of any signs of drug or alcohol abuse or withdrawal',
+  PerMedicalAid2: 'Enter details of any medication given',
+  PerMedicalMentalHealth:
+    'Enter details of changes in mood, behaviour or signs of mental health issues',
+  PerPropertyChange: 'Enter details of property changes',
+  PersonMoveDeathInCustody: 'Enter details of death in custody',
+  PerGeneric: 'Enter details of any other events',
+}
+
 exports.addEvents = async function (req, res) {
   const moveId = req.body.moveId
   const lockoutEvents = req.body
   const user = req.user
   const move = await req.services.move.getById(moveId)
 
-  if (lockoutEvents.events === undefined) {
-    req.session.showErrorsSummary = true
-    return res.redirect(`move/${moveId}/police-custody-form`)
-  }
+  const errors = (lockoutEvents.events || []).filter(
+    e => lockoutEvents[e] === ''
+  )
 
-  const submittedLockoutEvents = []
-  const errors = []
-
-  submittedLockoutEvents.push(lockoutEvents.events)
-
-  submittedLockoutEvents.flat().forEach(event => {
-    if (lockoutEvents[event] === '') {
-      errors.push(event)
-    }
-  })
-
-  if (errors.length > 0) {
+  if (lockoutEvents.events === undefined || errors.length > 0) {
     const mappedErrors = mapErrorMessages(errors)
-
     req.session.showErrorsSummary = true
-    req.session.errors = mappedErrors
-    req.session.formData = req.body
+
+    if (errors.length > 0) {
+      req.session.errors = mappedErrors
+      req.session.formData = req.body
+    }
 
     return res.redirect(`move/${moveId}/police-custody-form`)
   }
@@ -39,88 +47,13 @@ function mapErrorMessages(errors) {
   const mappedErrorsWithMessages = []
 
   errors.forEach(error => {
-    switch (error) {
-      case 'PerViolentDangerous':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of any violence that has taken place',
-        })
-        break
-      case 'PerWeapons':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of weapons created or used',
-        })
-        break
-      case 'PerConcealed':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of restricted or concealed items',
-        })
-        break
-      case 'PerSelfHarm':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of self-harm or suicide',
-        })
-        break
-      case 'PerEscape':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of escape or attempted escape',
-        })
-        break
-      case 'PersonMoveUsedForce':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of force used',
-        })
-        break
-      case 'PerMedicalAid1':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of medical attention received',
-        })
-        break
-      case 'PerMedicalDrugsAlcohol':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message:
-            'Enter details of any signs of drug or alcohol abuse or withdrawal',
-        })
-        break
-      case 'PerMedicalAid2':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of any medication given',
-        })
-        break
-      case 'PerMedicalMentalHealth':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message:
-            'Enter details of changes in mood, behaviour or signs of mental health issues',
-        })
-        break
-      case 'PerPropertyChange':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of property changes',
-        })
-        break
-      case 'PersonMoveDeathInCustody':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of death in custody',
-        })
-        break
-      case 'PerGeneric':
-        mappedErrorsWithMessages.push({
-          error: error,
-          message: 'Enter details of any other events',
-        })
-        break
+    const message = EVENT_ERROR_MESSAGES[error]
+
+    if (!message) {
+      return
     }
+
+    mappedErrorsWithMessages.push({ error, message })
   })
 
   return mappedErrorsWithMessages
