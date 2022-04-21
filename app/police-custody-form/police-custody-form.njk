@@ -1,6 +1,8 @@
 {% extends "layouts/base.njk" %}
 {% from "govuk/components/fieldset/macro.njk"  import govukFieldset %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 
 {% block beforeContent %}
   {{ govukBackLink({
@@ -24,6 +26,34 @@
 {% endmacro %}
 
 {% block content %}
+
+  {% if formErrors and showErrorsSummary %}
+    <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+      <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem with this page</h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          {% for error in formErrors %}
+            <li>
+              <a href="#{{error.error}}">{{error.message}}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if showErrorsSummary and not formErrors %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem with this page",
+      errorList: [
+        {
+          text: "Select any events that happened during police custody",
+          href: "#select-all-apply"
+        }
+      ]
+    }) }}
+  {% endif %}
+
   <header>
     <h1 class="govuk-heading-xl">
       Add lockout events
@@ -36,101 +66,237 @@
         <p class='govuk-body'>Use this form to record any events that happen while
           this person is in police custody.
         </p>
+
         {{ govukInsetText({
+          id: "select-all-apply",
           text: "For each event include the date, time, and what happened. You should include as much detail as possible."
         }) }}
-        <div class="govuk-hint govuk-!-padding-bottom-2"> Select all that apply</div>
+
+        <div class="govuk-hint govuk-!-padding-bottom-0"> Select all that apply</div>
+
+        {% if showErrorsSummary and not formErrors %}
+          {{ govukErrorMessage({
+            text: "Select any events that happened during police custody",
+            classes: "govuk-!-padding-bottom-2"
+          }) }}
+        {% endif %}
 
         <form method="post" action="/police-custody-form">
-          {% set riskViolence %}
-            {{ govukTextarea({
-              id: "PerViolentDangerous",
-              name: "PerViolentDangerous",
-              type: "text",
-              classes: "govuk-input--width-20",
-              hint: {
-                text: "Include who was involved."
-              },
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerViolentDangerous') %}
+            {% set riskViolence %}
+              {{ govukTextarea({
+                id: "PerViolentDangerous",
+                name: "PerViolentDangerous",
+                type: "text",
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include who was involved."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of any violence that has taken place"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set riskViolence %}
+              {{ govukTextarea({
+                id: "PerViolentDangerous",
+                name: "PerViolentDangerous",
+                type: "text",
+                value: formData.PerViolentDangerous if formData.PerViolentDangerous,
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include who was involved."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
-          {% set riskCreatedOrUsedAWeapon %}
-            {{ govukTextarea({
-              id: "PerWeapons",
-              name: "PerWeapons",
-              type: "text",
-              classes: "govuk-input--width-20",
-              hint: {
-                text: "Include how and where the weapon was found. If known, include when it was used."
-              },
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerWeapons') %}
+            {% set riskCreatedOrUsedAWeapon %}
+              {{ govukTextarea({
+                id: "PerWeapons",
+                name: "PerWeapons",
+                type: "text",
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include how and where the weapon was found. If known, include when it was used."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of weapons created or used"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set riskCreatedOrUsedAWeapon %}
+              {{ govukTextarea({
+                id: "PerWeapons",
+                name: "PerWeapons",
+                type: "text",
+                value: formData.PerWeapons if formData.PerWeapons,
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include how and where the weapon was found. If known, include when it was used."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
-          {% set riskRestrictedItemFound %}
-            {{ govukTextarea({
-              id: "PerConcealed",
-              name: "PerConcealed",
-              type: "text",
-              classes: "govuk-input--width-20",
-              hint: {
-                text: "Include how and where the resticted item was found. If known, include where it came from."
-              },
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerConcealed') %}
+            {% set riskRestrictedItemFound %}
+              {{ govukTextarea({
+                id: "PerConcealed",
+                name: "PerConcealed",
+                type: "text",
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include how and where the restricted item was found. If known, include where it came from."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of restricted or concealed items"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set riskRestrictedItemFound %}
+              {{ govukTextarea({
+                id: "PerConcealed",
+                name: "PerConcealed",
+                type: "text",
+                value: formData.PerConcealed if formData.PerConcealed,
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include how and where the restricted item was found. If known, include where it came from."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
-          {% set riskSelfHarmOrSuicide %}
-            {{ govukTextarea({
-              id: "PerSelfHarm",
-              name: "PerSelfHarm",
-              type: "text",
-              classes: "govuk-input--width-20",
-              hint: {
-                text: "Include any known reasons or triggers."
-              },
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerSelfHarm') %}
+            {% set riskSelfHarmOrSuicide %}
+              {{ govukTextarea({
+                id: "PerSelfHarm",
+                name: "PerSelfHarm",
+                type: "text",
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include any known reasons or triggers."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of self-harm or suicide"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set riskSelfHarmOrSuicide %}
+              {{ govukTextarea({
+                id: "PerSelfHarm",
+                name: "PerSelfHarm",
+                type: "text",
+                value: formData.PerSelfHarm if formData.PerSelfHarm,
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include any known reasons or triggers."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
-          {% set riskEscapeOrAttemptedEscape %}
-            {{ govukTextarea({
-              id: "PerEscape",
-              name: "PerEscape",
-              type: "text",
-              classes: "govuk-input--width-20",
-              hint: {
-                text: "Include how they escaped or attempted to escape."
-              },
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerEscape') %}
+            {% set riskEscapeOrAttemptedEscape %}
+              {{ govukTextarea({
+                id: "PerEscape",
+                name: "PerEscape",
+                type: "text",
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include how they escaped or attempted to escape."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of escape or attempted escape"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set riskEscapeOrAttemptedEscape %}
+              {{ govukTextarea({
+                id: "PerEscape",
+                name: "PerEscape",
+                type: "text",
+                value: formData.PerEscape if formData.PerEscape,
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include how they escaped or attempted to escape."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
-          {% set riskUseOfForce %}
-            {{ govukTextarea({
-              id: "PersonMoveUsedForce",
-              name: "PersonMoveUsedForce",
-              type: "text",
-              classes: "govuk-input--width-20",
-              hint: {
-                text: "Include who was involved, why force was used, and the type of force used."
-              },
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PersonMoveUsedForce') %}
+            {% set riskUseOfForce %}
+              {{ govukTextarea({
+                id: "PersonMoveUsedForce",
+                name: "PersonMoveUsedForce",
+                type: "text",
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include who was involved, why force was used, and the type of force used."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of force used"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set riskUseOfForce %}
+              {{ govukTextarea({
+                id: "PersonMoveUsedForce",
+                name: "PersonMoveUsedForce",
+                type: "text",
+                value: formData.PersonMoveUsedForce if formData.PersonMoveUsedForce,
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include who was involved, why force was used, and the type of force used."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
           {% call govukFieldset({
             classes: "govuk-!-padding-bottom-2",
@@ -147,6 +313,7 @@
               {
                 value: "PerViolentDangerous",
                 text: "Violence",
+                checked: 'true' if formErrors | containsElement('PerViolentDangerous') or formData.PerViolentDangerous,
                 conditional: {
                   html: riskViolence
                 }
@@ -154,6 +321,7 @@
               {
                 value: "PerWeapons",
                 text: "Created or used a weapon",
+                checked: 'true' if formErrors | containsElement('PerWeapons') or formData.PerWeapons,
                 conditional: {
                   html: riskCreatedOrUsedAWeapon
                 }
@@ -161,8 +329,10 @@
               {
                 value: "PerConcealed",
                 text: "Restricted item found",
+                checked: 'true' if formErrors | containsElement('PerConcealed') or formData.PerConcealed,
                 hint: {
-                  text: "For example concealed drugs, mobile phones or SIM cards."
+                  text: "For example, concealed drugs, mobile phones or SIM cards.",
+                  classes: "govuk-!-padding-bottom-3"
                 },
                 conditional: {
                   html: riskRestrictedItemFound
@@ -171,8 +341,10 @@
               {
                 value: "PerSelfHarm",
                 text: "Self-harm or suicide",
+                checked: 'true' if formErrors | containsElement('PerSelfHarm') or formData.PerSelfHarm,
                 hint: {
-                  text: "Including attempted or statements of intent."
+                  text: "Including attempted or statements of intent.",
+                  classes: "govuk-!-padding-bottom-3"
                 },
                 conditional: {
                   html: riskSelfHarmOrSuicide
@@ -181,6 +353,7 @@
               {
                 value: "PerEscape",
                 text: "Escape or attempted escape",
+                checked: 'true' if formErrors | containsElement('PerEscape') or formData.PerEscape,
                 conditional: {
                   html: riskEscapeOrAttemptedEscape
                 }
@@ -188,6 +361,7 @@
               {
                 value: "PersonMoveUsedForce",
                 text: "Use of force",
+                checked: 'true' if formErrors | containsElement('PersonMoveUsedForce') or formData.PersonMoveUsedForce,
                 conditional: {
                   html: riskUseOfForce
                 }
@@ -196,70 +370,158 @@
           }) }}
           {% endcall %}
 
-          {% set healthMedicalAttention %}
-            {{ govukTextarea({
-              id: "PerMedicalAid1",
-              name: "PerMedicalAid1",
-              type: "text",
-              classes: "govuk-input--width-20",
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerMedicalAid1') %}
+            {% set healthMedicalAttention %}
+              {{ govukTextarea({
+                id: "PerMedicalAid1",
+                name: "PerMedicalAid1",
+                type: "text",
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of medical attention received"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set healthMedicalAttention %}
+              {{ govukTextarea({
+                id: "PerMedicalAid1",
+                name: "PerMedicalAid1",
+                type: "text",
+                value: formData.PerMedicalAid1 if formData.PerMedicalAid1,
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
-          {% set healthSubstanceAbuse %}
-            {{ govukTextarea({
-              id: "PerMedicalDrugsAlcohol",
-              name: "PerMedicalDrugsAlcohol",
-              type: "text",
-              classes: "govuk-input--width-20",
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerMedicalDrugsAlcohol') %}
+            {% set healthSubstanceAbuse %}
+              {{ govukTextarea({
+                id: "PerMedicalDrugsAlcohol",
+                name: "PerMedicalDrugsAlcohol",
+                type: "text",
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of any signs of drug or alcohol abuse or withdrawal"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set healthSubstanceAbuse %}
+              {{ govukTextarea({
+                id: "PerMedicalDrugsAlcohol",
+                name: "PerMedicalDrugsAlcohol",
+                type: "text",
+                value: formData.PerMedicalDrugsAlcohol if formData.PerMedicalDrugsAlcohol,
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
-          {% set healthMedicationGiven %}
-            {{ govukTextarea({
-              id: "PerMedicalAid2",
-              name: "PerMedicalAid2",
-              type: "text",
-              classes: "govuk-input--width-20",
-              label: {
-                html:"<b>Give details</b>"
-              },
-              hint: {
-                html: 
-                "
-                <p>For each medication, include:</p>
-                <ul class='govuk-list govuk-list--bullet'>
-                  <li>name</li>
-                  <li>how it is given</li>
-                  <li>dosage</li>
-                  <li>frequency</li>
-                  <li>time last given</li>
-                  <li>time next given</li>
-                  <li>if it is needed while moving</li>
-                  <li>who is carrying it</li>
-                </ul>
-                "
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerMedicalAid2') %}
+            {% set healthMedicationGiven %}
+              {{ govukTextarea({
+                id: "PerMedicalAid2",
+                name: "PerMedicalAid2",
+                type: "text",
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                hint: {
+                  html: 
+                  "
+                  <p>For each medication, include:</p>
+                  <ul class='govuk-list govuk-list--bullet'>
+                    <li>name</li>
+                    <li>how it is given</li>
+                    <li>dosage</li>
+                    <li>frequency</li>
+                    <li>time last given</li>
+                    <li>time next given</li>
+                    <li>if it is needed while moving</li>
+                    <li>who is carrying it</li>
+                  </ul>
+                  "
+                },
+                errorMessage: {
+                  text: "Enter details of any medication given"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set healthMedicationGiven %}
+              {{ govukTextarea({
+                id: "PerMedicalAid2",
+                name: "PerMedicalAid2",
+                type: "text",
+                value: formData.PerMedicalAid2 if formData.PerMedicalAid2,
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                hint: {
+                  html: 
+                  "
+                  <p>For each medication, include:</p>
+                  <ul class='govuk-list govuk-list--bullet'>
+                    <li>name</li>
+                    <li>how it is given</li>
+                    <li>dosage</li>
+                    <li>frequency</li>
+                    <li>time last given</li>
+                    <li>time next given</li>
+                    <li>if it is needed while moving</li>
+                    <li>who is carrying it</li>
+                  </ul>
+                  "
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
-          {% set healthChangeInMood %}
-            {{ govukTextarea({
-              id: "PerMedicalMentalHealth",
-              name: "PerMedicalMentalHealth",
-              type: "text",
-              classes: "govuk-input--width-20",
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
-          
+          {% if formErrors | containsElement('PerMedicalMentalHealth') %}
+            {% set healthChangeInMood %}
+              {{ govukTextarea({
+                id: "PerMedicalMentalHealth",
+                name: "PerMedicalMentalHealth",
+                type: "text",
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of changes in mood, behaviour or signs of mental health issues"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set healthChangeInMood %}
+              {{ govukTextarea({
+                id: "PerMedicalMentalHealth",
+                name: "PerMedicalMentalHealth",
+                type: "text",
+                value: formData.PerMedicalMentalHealth if formData.PerMedicalMentalHealth,
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
+
           {% call govukFieldset({
             classes: "govuk-!-padding-bottom-2",
             legend: {
@@ -275,6 +537,7 @@
               {
                 value: "PerMedicalAid1",
                 text: "Medical attention received",
+                checked: 'true' if formErrors | containsElement('PerMedicalAid1') or formData.PerMedicalAid1,
                 conditional: {
                   html: healthMedicalAttention
                 }
@@ -282,6 +545,7 @@
               {
                 value: "PerMedicalDrugsAlcohol",
                 text: "Signs of drug or alcohol abuse or withdrawal",
+                checked: 'true' if formErrors | containsElement('PerMedicalDrugsAlcohol') or formData.PerMedicalDrugsAlcohol,
                 conditional: {
                   html: healthSubstanceAbuse
                 }
@@ -289,6 +553,7 @@
               {
                 value: "PerMedicalAid2",
                 text: "Medication given",
+                checked: 'true' if formErrors | containsElement('PerMedicalAid2') or formData.PerMedicalAid2,
                 conditional: {
                   html: healthMedicationGiven
                 }
@@ -296,8 +561,10 @@
               {
                 value: "PerMedicalMentalHealth",
                 text: "Obvious changes in mood, behaviour or signs of mental health issues",
+                checked: 'true' if formErrors | containsElement('PerMedicalMentalHealth') or formData.PerMedicalMentalHealth,
                 hint: {
-                  text: "For example, if they seem withdrawn or non-communicative, refuse meals or show any other behaviour that suggests heightened risk."
+                  text: "For example, if they seem withdrawn or non-communicative, refuse meals or show any other behaviour that suggests heightened risk.",
+                  classes: "govuk-!-padding-bottom-3"
                 },
                 conditional: {
                   html: healthChangeInMood
@@ -307,20 +574,42 @@
           }) }}
           {% endcall %}
 
-          {% set propertyChange %}
-            {{ govukTextarea({
-              id: "PerPropertyChange",
-              name: "PerPropertyChange",
-              type: "text",
-              classes: "govuk-input--width-20",
-              hint: {
-                text: "Include new bag seal numbers."
-              },
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerPropertyChange') %}
+            {% set propertyChange %}
+              {{ govukTextarea({
+                id: "PerPropertyChange",
+                name: "PerPropertyChange",
+                type: "text",
+                value: formData.PerPropertyChange if formData.PerPropertyChange,
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include new bag seal numbers."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of property changes"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set propertyChange %}
+              {{ govukTextarea({
+                id: "PerPropertyChange",
+                name: "PerPropertyChange",
+                type: "text",
+                value: formData.PerPropertyChange if formData.PerPropertyChange,
+                classes: "govuk-input--width-20",
+                hint: {
+                  text: "Include new bag seal numbers."
+                },
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
           {% call govukFieldset({
             classes: "govuk-!-padding-bottom-2",
@@ -337,6 +626,7 @@
               {
                 value: "PerPropertyChange",
                 text: "Property change",
+                checked: 'true' if formErrors | containsElement('PerPropertyChange') or formData.PerPropertyChange,
                 conditional: {
                   html: propertyChange
                 }
@@ -345,29 +635,65 @@
           }) }}
           {% endcall %}
 
-          {% set otherDeath %}
-            {{ govukTextarea({
-              id: "PersonMoveDeathInCustody",
-              name: "PersonMoveDeathInCustody",
-              type: "text",
-              classes: "govuk-input--width-20",
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PersonMoveDeathInCustody') %}
+            {% set otherDeath %}
+              {{ govukTextarea({
+                id: "PersonMoveDeathInCustody",
+                name: "PersonMoveDeathInCustody",
+                type: "text",
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of death in custody"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set otherDeath %}
+              {{ govukTextarea({
+                id: "PersonMoveDeathInCustody",
+                name: "PersonMoveDeathInCustody",
+                type: "text",
+                value: formData.PersonMoveDeathInCustody if formData.PersonMoveDeathInCustody,
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
-          {% set otherAnyOtherEvents %}
-            {{ govukTextarea({
-              id: "PerGeneric",
-              name: "PerGeneric",
-              type: "text",
-              classes: "govuk-input--width-20",
-              label: {
-                html:"<b>Give details</b>"
-              }
-            }) }}
-          {% endset -%}
+          {% if formErrors | containsElement('PerGeneric') %}
+            {% set otherAnyOtherEvents %}
+              {{ govukTextarea({
+                id: "PerGeneric",
+                name: "PerGeneric",
+                type: "text",
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                },
+                errorMessage: {
+                  text: "Enter details of any other events"
+                }
+              }) }}
+            {% endset -%}
+          {% else %}
+            {% set otherAnyOtherEvents %}
+              {{ govukTextarea({
+                id: "PerGeneric",
+                name: "PerGeneric",
+                type: "text",
+                value: formData.PerGeneric if formData.PerGeneric,
+                classes: "govuk-input--width-20",
+                label: {
+                  html:"<b>Give details</b>"
+                }
+              }) }}
+            {% endset -%}
+          {% endif %}
 
           {% call govukFieldset({
             classes: "govuk-!-padding-bottom-2",
@@ -384,6 +710,7 @@
               {
                 value: "PersonMoveDeathInCustody",
                 text: "Death in custody",
+                checked: 'true' if formErrors | containsElement('PersonMoveDeathInCustody') or formData.PersonMoveDeathInCustody,
                 conditional: {
                   html: otherDeath
                 }
@@ -391,6 +718,7 @@
               {
                 value: "PerGeneric",
                 text: "Any other events",
+                checked: 'true' if formErrors | containsElement('PerGeneric') or formData.PerGeneric,
                 conditional: {
                   html: otherAnyOtherEvents
                 }
