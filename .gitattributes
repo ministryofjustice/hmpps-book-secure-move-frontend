@@ -1,0 +1,1 @@
+branch-deploy.env filter=git-crypt diff=git-crypt
