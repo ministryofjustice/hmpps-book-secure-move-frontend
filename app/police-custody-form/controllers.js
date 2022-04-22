@@ -28,10 +28,8 @@ exports.addEvents = async function (req, res) {
 }
 
 function mapErrorMessages(errors) {
-  return errors
-    .map(error => ({
-      error,
-      message: i18n.t(`police-custody-form-errors::${error}`),
-    }))
-    .filter(e => e.message)
+  return errors.map(error => ({
+    error,
+    message: i18n.t(`police-custody-form-errors::${error}`),
+  }))
 }
