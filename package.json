@@ -214,7 +214,7 @@
     "eslint-plugin-mocha": "10.0.4",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-promise": "5.1.1",
+    "eslint-plugin-promise": "6.0.0",
     "eslint-plugin-testcafe": "0.2.1",
     "finepack": "2.10.14",
     "git-authors-cli": "1.0.39",
