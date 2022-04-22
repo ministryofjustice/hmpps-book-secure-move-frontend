@@ -23,6 +23,13 @@ exports.addEvents = async function (req, res) {
 
   await req.services.event.postEvents(lockoutEvents, move, journeys, user)
 
+  const fullName = move.profile.person._fullname
+
+  req.flash('success', {
+    title: req.t('messages::events_added.heading'),
+    content: req.t('messages::events_added.content', { fullName }),
+  })
+
   return res.redirect(`/move/${moveId}/timeline`)
 }
 

@@ -14,8 +14,15 @@ describe('Police Custody Form controllers', function () {
 
     context('when save is successful', function () {
       const mockReq = {
+        t: sinon.stub().returnsArg(0),
+        flash: sinon.stub(),
         move: {
           id: '12232552242',
+          profile: {
+            person: {
+              _fullname: 'Barry, Garlow',
+            },
+          },
         },
         body: {
           events: ['PerViolentDangerous'],
@@ -36,6 +43,13 @@ describe('Police Custody Form controllers', function () {
         expect(mockRes.redirect).to.be.calledOnceWithExactly(
           '/move/12232552242/timeline'
         )
+      })
+
+      it('should render the success flash banner', function () {
+        expect(mockReq.flash).to.have.been.calledWithExactly('success', {
+          title: 'messages::events_added.heading',
+          content: 'messages::events_added.content',
+        })
       })
     })
 
