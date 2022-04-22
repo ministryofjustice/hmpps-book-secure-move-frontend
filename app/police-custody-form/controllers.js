@@ -1,11 +1,9 @@
 const i18n = require('../../config/i18n')
 
 exports.addEvents = async function (req, res) {
+  const { user, move, journeys } = req
   const lockoutEvents = req.body
-  const user = req.user
-  const move = req.move
-  const moveId = req.move.id
-  const journeys = req.journeys
+  const moveId = move.id
 
   const errors = [lockoutEvents.events || []]
     .flat()
