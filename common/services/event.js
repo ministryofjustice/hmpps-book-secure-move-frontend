@@ -18,7 +18,7 @@ const perEvents = [
 const personMoveEvents = ['PersonMoveUsedForce', 'PersonMoveDeathInCustody']
 
 class EventService extends BaseService {
-  postEvents(lockoutEvents, move, user) {
+  postEvents(lockoutEvents, move, journeys, user) {
     const todaysDate = new Date()
     const events = []
 
@@ -75,7 +75,7 @@ class EventService extends BaseService {
               },
               location: {
                 data: {
-                  id: `${move.to_location.id}`,
+                  id: `${journeys[0].to_location.id}`,
                   type: 'locations',
                 },
               },

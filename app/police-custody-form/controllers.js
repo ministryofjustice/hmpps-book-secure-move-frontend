@@ -1,10 +1,9 @@
 const i18n = require('../../config/i18n')
 
 exports.addEvents = async function (req, res) {
+  const { user, move, journeys } = req
   const lockoutEvents = req.body
-  const user = req.user
-  const move = req.move
-  const moveId = req.move.id
+  const moveId = move.id
 
   const errors = [lockoutEvents.events || []]
     .flat()
@@ -22,7 +21,7 @@ exports.addEvents = async function (req, res) {
     return res.render('police-custody-form/police-custody-form')
   }
 
-  await req.services.event.postEvents(lockoutEvents, move, user)
+  await req.services.event.postEvents(lockoutEvents, move, journeys, user)
 
   return res.redirect(`/move/${moveId}/timeline`)
 }
