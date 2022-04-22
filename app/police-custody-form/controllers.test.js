@@ -17,6 +17,9 @@ describe('Police Custody Form controllers', function () {
         move: {
           id: '12232552242',
         },
+        session: {
+          successBanner: undefined,
+        },
         body: {
           events: ['PerViolentDangerous'],
         },

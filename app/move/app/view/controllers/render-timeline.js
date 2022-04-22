@@ -18,7 +18,17 @@ function renderTimeline(req, res) {
     timeline,
   }
 
+  const fullName = move.profile.person._fullname
+
+  if (req.session.successBanner) {
+    req.flash('success', {
+      title: req.t('messages::events_added.heading'),
+      content: req.t('messages::events_added.content', { fullName }),
+    })
+  }
+
   res.render('move/app/view/views/timeline', locals)
+  delete req.session.successBanner
 }
 
 module.exports = renderTimeline

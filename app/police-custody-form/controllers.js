@@ -23,6 +23,7 @@ exports.addEvents = async function (req, res) {
 
   await req.services.event.postEvents(lockoutEvents, move, journeys, user)
 
+  req.session.successBanner = true
   return res.redirect(`/move/${moveId}/timeline`)
 }
 
