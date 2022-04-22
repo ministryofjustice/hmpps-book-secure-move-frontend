@@ -5,6 +5,7 @@ exports.addEvents = async function (req, res) {
   const user = req.user
   const move = req.move
   const moveId = req.move.id
+  const journeys = req.journeys
 
   const errors = [lockoutEvents.events || []]
     .flat()
@@ -22,7 +23,7 @@ exports.addEvents = async function (req, res) {
     return res.render('police-custody-form/police-custody-form')
   }
 
-  await req.services.event.postEvents(lockoutEvents, move, user)
+  await req.services.event.postEvents(lockoutEvents, move, journeys, user)
 
   return res.redirect(`/move/${moveId}/timeline`)
 }

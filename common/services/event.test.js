@@ -63,6 +63,15 @@ describe('Event Service', function () {
       },
     }
 
+    const journeys = [
+      {
+        id: '12313-34342-1313',
+        to_location: {
+          id: '12131-12312-21312',
+        },
+      },
+    ]
+
     const user = { username: 'MRUSERNAME' }
 
     const mockedPERPayload = {
@@ -90,7 +99,7 @@ describe('Event Service', function () {
           },
           location: {
             data: {
-              id: '1235-2513453223-423523523',
+              id: journeys[0].to_location.id,
               type: 'locations',
             },
           },
@@ -122,7 +131,7 @@ describe('Event Service', function () {
           },
           location: {
             data: {
-              id: '1235-2513453223-423523523',
+              id: journeys[0].to_location.id,
               type: 'locations',
             },
           },
@@ -132,7 +141,12 @@ describe('Event Service', function () {
 
     context('with a PER_EVENTS lockout event', function () {
       beforeEach(async function () {
-        await eventService.postEvents(perMocklockoutEvents, move, user)
+        await eventService.postEvents(
+          perMocklockoutEvents,
+          move,
+          journeys,
+          user
+        )
       })
 
       it('will call the api client /events route by the number of events in mocklockoutEvents.events array', function () {
@@ -149,7 +163,12 @@ describe('Event Service', function () {
 
     context('with a PERSON_MOVE_EVENTS lockout event', function () {
       beforeEach(async function () {
-        await eventService.postEvents(personMoveMocklockoutEvents, move, user)
+        await eventService.postEvents(
+          personMoveMocklockoutEvents,
+          move,
+          journeys,
+          user
+        )
       })
 
       it('will be called with the correct payload for a PERSON_MOVE_EVENTS', function () {
