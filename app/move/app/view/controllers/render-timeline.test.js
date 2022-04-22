@@ -13,11 +13,6 @@ describe('Move view app', function () {
         req = {
           move: {
             id: '12345',
-            profile: {
-              person: {
-                _fullname: 'Barry, Garlow',
-              },
-            },
           },
           session: {
             successBanner: undefined,
@@ -55,11 +50,6 @@ describe('Move view app', function () {
       context('with rejected single request', function () {
         beforeEach(function () {
           req.move = {
-            profile: {
-              person: {
-                _fullname: 'Barry, Garlow',
-              },
-            },
             status: 'cancelled',
             cancellation_reason: 'rejected',
             timeline_events: [

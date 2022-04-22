@@ -73,6 +73,6 @@
   },
   "events_added": {
     "heading": "Lockout events added successfully",
-    "content": "You have added new lockout events for <b>{{fullName}}</b>. You can view the details in the <a href='#tab-history-of-events' class='govuk-link'>history of events</a>."
+    "content": "You have added new lockout events for <strong>{{fullName}}</strong>. You can view the details in the <a href='#tab-history-of-events' class='govuk-link'>history of events</a>."
   }
 }

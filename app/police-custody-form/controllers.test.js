@@ -14,11 +14,15 @@ describe('Police Custody Form controllers', function () {
 
     context('when save is successful', function () {
       const mockReq = {
+        t: sinon.stub().returnsArg(0),
+        flash: sinon.stub(),
         move: {
           id: '12232552242',
-        },
-        session: {
-          successBanner: undefined,
+          profile: {
+            person: {
+              _fullname: 'Barry, Garlow',
+            },
+          },
         },
         body: {
           events: ['PerViolentDangerous'],
