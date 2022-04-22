@@ -14,9 +14,6 @@ describe('Move view app', function () {
           move: {
             id: '12345',
           },
-          session: {
-            successBanner: undefined,
-          },
           t: sinon.stub().returnsArg(0),
         }
         res = {
