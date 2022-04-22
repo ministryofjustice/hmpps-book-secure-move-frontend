@@ -81,7 +81,7 @@
           }) }}
         {% endif %}
 
-        <form method="post" action="/police-custody-form">
+        <form method="post" action="/move/{{moveId}}/police-custody-form">
           {% if formErrors | containsElement('PerViolentDangerous') %}
             {% set riskViolence %}
               {{ govukTextarea({

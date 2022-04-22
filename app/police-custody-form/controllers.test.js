@@ -2,28 +2,30 @@ const controller = require('./controllers')
 
 describe('Police Custody Form controllers', function () {
   describe('#addEvents', function () {
-    const moveService = {
-      getById: sinon.stub(),
-    }
-
     const eventService = {
       postEvents: sinon.stub(),
     }
 
+    const locals = {
+      showErrorsSummary: undefined,
+      formErrors: undefined,
+      formData: undefined,
+    }
+
     context('when save is successful', function () {
       const mockReq = {
-        session: {
-          errors: null,
+        move: {
+          id: '12232552242',
         },
         body: {
-          moveId: '12232552242',
           events: ['PerViolentDangerous'],
         },
         user: {},
       }
-      mockReq.services = { move: moveService, event: eventService }
+      mockReq.services = { event: eventService }
       const mockRes = {
         redirect: sinon.stub(),
+        locals: locals,
       }
 
       beforeEach(async function () {
@@ -32,49 +34,46 @@ describe('Police Custody Form controllers', function () {
 
       it('should redirect to the timeline/events page for that move', function () {
         expect(mockRes.redirect).to.be.calledOnceWithExactly(
-          'move/12232552242/timeline'
+          '/move/12232552242/timeline'
         )
       })
     })
 
     context('when no events are chosen', function () {
       const mockReq = {
-        session: {
-          errors: null,
-          showErrorsSummary: undefined,
+        move: {
+          id: '12232552242',
         },
         body: {
-          moveId: '12232552242',
           events: undefined,
         },
         user: {},
       }
-      mockReq.services = { move: moveService, event: eventService }
+      mockReq.services = { event: eventService }
       const mockRes = {
-        redirect: sinon.stub(),
+        render: sinon.stub(),
+        locals: locals,
       }
 
       beforeEach(async function () {
         await controller.addEvents(mockReq, mockRes)
       })
 
-      it('should redirect back to the police custody form to fill in the form', function () {
-        expect(mockRes.redirect).to.be.calledOnceWithExactly(
-          'move/12232552242/police-custody-form'
+      it('should render the police custody form to fill in the form', function () {
+        expect(mockRes.render).to.be.calledOnceWithExactly(
+          'police-custody-form/police-custody-form'
         )
       })
 
       it('sets the req.session.showErrorsSummary to true', function () {
-        expect(mockReq.session.showErrorsSummary).to.be.true
+        expect(mockRes.locals.showErrorsSummary).to.be.true
       })
     })
 
     context('when there are form errors', function () {
       const mockReq = {
-        session: {
-          errors: [],
-          showErrorsSummary: undefined,
-          formData: null,
+        move: {
+          id: '12232552242',
         },
         body: {
           events: ['PerViolentDangerous', 'PerGeneric'],
@@ -91,44 +90,46 @@ describe('Police Custody Form controllers', function () {
           PerPropertyChange: '',
           PersonMoveDeathInCustody: '',
           PerGeneric: '',
-          moveId: '12232552242',
         },
         user: {},
       }
-      mockReq.services = { move: moveService, event: eventService }
+      mockReq.services = { event: eventService }
 
       const mockRes = {
-        redirect: sinon.stub(),
+        render: sinon.stub(),
+        locals: locals,
       }
 
       beforeEach(async function () {
         await controller.addEvents(mockReq, mockRes)
       })
 
-      it('should redirect back to the police custody form to fill in the form', function () {
-        expect(mockRes.redirect).to.be.calledOnceWithExactly(
-          'move/12232552242/police-custody-form'
+      it('should render the police custody form to fill in the form', function () {
+        expect(mockRes.render).to.be.calledOnceWithExactly(
+          'police-custody-form/police-custody-form'
         )
       })
 
       it('sets the req.session.showErrorsSummary to true', function () {
-        expect(mockReq.session.showErrorsSummary).to.be.true
+        expect(mockRes.locals.showErrorsSummary).to.be.true
       })
 
       it('sets the req.session.errors error and message for the view', function () {
-        expect(mockReq.session.errors[0].error).to.be.eq('PerViolentDangerous')
-        expect(mockReq.session.errors[0].message).to.be.eq(
+        expect(mockRes.locals.formErrors[0].error).to.be.eq(
+          'PerViolentDangerous'
+        )
+        expect(mockRes.locals.formErrors[0].message).to.be.eq(
           'Enter details of any violence that has taken place'
         )
 
-        expect(mockReq.session.errors[1].error).to.be.eq('PerGeneric')
-        expect(mockReq.session.errors[1].message).to.be.eq(
+        expect(mockRes.locals.formErrors[1].error).to.be.eq('PerGeneric')
+        expect(mockRes.locals.formErrors[1].message).to.be.eq(
           'Enter details of any other events'
         )
       })
 
       it('sets the req.session.formData to prepopulate for fields', function () {
-        expect(mockReq.session.formData).to.be.eq(mockReq.body)
+        expect(mockRes.locals.formData).to.be.eq(mockReq.body)
       })
     })
   })
