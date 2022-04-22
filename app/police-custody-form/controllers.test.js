@@ -44,6 +44,13 @@ describe('Police Custody Form controllers', function () {
           '/move/12232552242/timeline'
         )
       })
+
+      it('should render the success flash banner', function () {
+        expect(mockReq.flash).to.have.been.calledWithExactly('success', {
+          title: 'messages::events_added.heading',
+          content: 'messages::events_added.content',
+        })
+      })
     })
 
     context('when no events are chosen', function () {
