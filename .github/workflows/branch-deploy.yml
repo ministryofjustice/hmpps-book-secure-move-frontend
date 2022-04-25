@@ -30,8 +30,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Get PR number
-        run: export PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+      - name: Set port
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          export PORT=$((BASE_PORT + (PR_NUMBER % 100)))
+          echo $PORT
 
       - name: Authenticate with cluster
         run: |
@@ -40,6 +43,4 @@ jobs:
           kubectl config set-credentials circleci --token=${KUBE_TOKEN}
           kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=circleci --namespace=${KUBE_NAMESPACE}
           kubectl config use-context ${KUBE_CLUSTER}
-          kubectl get pods
-          echo ${BASE_PORT + (PR_NUMBER % 100)}
 
