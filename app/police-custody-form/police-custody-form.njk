@@ -7,7 +7,7 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: Back,
-    classes: "govuk-!-margin-bottom-5",
+    classes: "govuk-!-margin-bottom-2",
     href: "/move/" + moveId + "/warnings"
   }) }}
 {% endblock %}
@@ -90,6 +90,7 @@
                 type: "text",
                 classes: "govuk-input--width-20",
                 hint: {
+                  classes: "govuk-!-margin-bottom-1",
                   text: "Include who was involved."
                 },
                 label: {
@@ -126,6 +127,7 @@
                 type: "text",
                 classes: "govuk-input--width-20",
                 hint: {
+                  classes: "govuk-!-margin-bottom-1",
                   text: "Include how and where the weapon was found. If known, include when it was used."
                 },
                 label: {
@@ -162,6 +164,7 @@
                 type: "text",
                 classes: "govuk-input--width-20",
                 hint: {
+                  classes: "govuk-!-margin-bottom-1",
                   text: "Include how and where the restricted item was found. If known, include where it came from."
                 },
                 label: {
@@ -198,6 +201,7 @@
                 type: "text",
                 classes: "govuk-input--width-20",
                 hint: {
+                  classes: "govuk-!-margin-bottom-1",
                   text: "Include any known reasons or triggers."
                 },
                 label: {
@@ -234,6 +238,7 @@
                 type: "text",
                 classes: "govuk-input--width-20",
                 hint: {
+                  classes: "govuk-!-margin-bottom-1",
                   text: "Include how they escaped or attempted to escape."
                 },
                 label: {
@@ -270,6 +275,7 @@
                 type: "text",
                 classes: "govuk-input--width-20",
                 hint: {
+                  classes: "govuk-!-margin-bottom-1",
                   text: "Include who was involved, why force was used, and the type of force used."
                 },
                 label: {
@@ -323,7 +329,8 @@
                 text: "Created or used a weapon",
                 checked: 'true' if formErrors | containsElement('PerWeapons') or formData.PerWeapons,
                 conditional: {
-                  html: riskCreatedOrUsedAWeapon
+                  html: riskCreatedOrUsedAWeapon,
+                  classes: "govuk-!-padding-bottom-1"
                 }
               },
               {
@@ -332,7 +339,7 @@
                 checked: 'true' if formErrors | containsElement('PerConcealed') or formData.PerConcealed,
                 hint: {
                   text: "For example, concealed drugs, mobile phones or SIM cards.",
-                  classes: "govuk-!-padding-bottom-3"
+                  classes: "govuk-!-padding-bottom-1"
                 },
                 conditional: {
                   html: riskRestrictedItemFound
@@ -344,7 +351,7 @@
                 checked: 'true' if formErrors | containsElement('PerSelfHarm') or formData.PerSelfHarm,
                 hint: {
                   text: "Including attempted or statements of intent.",
-                  classes: "govuk-!-padding-bottom-3"
+                  classes: "govuk-!-padding-bottom-1"
                 },
                 conditional: {
                   html: riskSelfHarmOrSuicide
@@ -444,7 +451,7 @@
                   html: 
                   "
                   <p>For each medication, include:</p>
-                  <ul class='govuk-list govuk-list--bullet'>
+                  <ul class='govuk-list govuk-list--bullet govuk-!-margin-bottom-1'>
                     <li>name</li>
                     <li>how it is given</li>
                     <li>dosage</li>
@@ -564,7 +571,7 @@
                 checked: 'true' if formErrors | containsElement('PerMedicalMentalHealth') or formData.PerMedicalMentalHealth,
                 hint: {
                   text: "For example, if they seem withdrawn or non-communicative, refuse meals or show any other behaviour that suggests heightened risk.",
-                  classes: "govuk-!-padding-bottom-3"
+                  classes: "govuk-!-padding-bottom-1"
                 },
                 conditional: {
                   html: healthChangeInMood
@@ -583,6 +590,7 @@
                 value: formData.PerPropertyChange if formData.PerPropertyChange,
                 classes: "govuk-input--width-20",
                 hint: {
+                  classes: "govuk-!-margin-bottom-1",
                   text: "Include new bag seal numbers."
                 },
                 label: {
