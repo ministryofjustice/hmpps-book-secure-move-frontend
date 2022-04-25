@@ -1,0 +1,45 @@
+# This workflow will build a docker container, publish it to IBM Container Registry, and deploy it to IKS when there is a push to the main branch.
+#
+# To configure this workflow:
+#
+# 1. Ensure that your repository contains a Dockerfile
+# 2. Setup secrets in your repository by going to settings: Create ICR_NAMESPACE and IBM_CLOUD_API_KEY
+# 3. Change the values for the IBM_CLOUD_REGION, REGISTRY_HOSTNAME, IMAGE_NAME, IKS_CLUSTER, DEPLOYMENT_NAME, and PORT
+
+name: Branch Based Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  BASE_PORT: 3100
+  KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+  KUBE_CACERT: ${{ secrets.KUBE_CACERT }}
+  KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
+  KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+  KUBE_NAME: ${{ secrets.KUBE_NAME }}
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get PR number
+        run: export PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+
+      - name: Authenticate with cluster
+        run: |
+          echo -n $KUBE_CACERT | base64 -d > ./ca.crt
+          kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
+          kubectl config set-credentials circleci --token=${KUBE_TOKEN}
+          kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=circleci --namespace=${KUBE_NAMESPACE}
+          kubectl config use-context ${KUBE_CLUSTER}
+          kubectl get pods
+          echo ${BASE_PORT + (PR_NUMBER % 100)}
+
