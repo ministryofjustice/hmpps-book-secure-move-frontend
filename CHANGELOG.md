@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.117.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.116.0...v2.117.0) (2022-04-25)
+
+
+### Features
+
+* Add dynamic error messaging to police custody form ([b1a28e1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/b1a28e14fb68740e507cf6e30a3fa765ebde402f))
+* Add errors to police custody form ([c53e645](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c53e645b03215cd76842b0879536af3528e19760))
+* Add police custody form ([26955e8](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/26955e8f24c8a0eb7b34ff59f61516e5c78ad2fb))
+* Remove the WHATS_NEW_BANNER feature flag ([0d4eba2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0d4eba20a3fc7b262f17d96305208739d89500b0))
+* Show success flash banner when events successfully posted ([caa2aa4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/caa2aa4c2cea733ab377b812ffbd7eec3a5477d8))
+
 ## [2.116.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.115.1...v2.116.0) (2022-04-19)
 
 
