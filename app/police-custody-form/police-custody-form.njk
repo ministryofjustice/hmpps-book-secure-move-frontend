@@ -339,7 +339,7 @@
                 checked: 'true' if formErrors | containsElement('PerConcealed') or formData.PerConcealed,
                 hint: {
                   text: "For example, concealed drugs, mobile phones or SIM cards.",
-                  classes: "govuk-!-padding-bottom-2"
+                  classes: "govuk-!-padding-bottom-1"
                 },
                 conditional: {
                   html: riskRestrictedItemFound
@@ -351,7 +351,7 @@
                 checked: 'true' if formErrors | containsElement('PerSelfHarm') or formData.PerSelfHarm,
                 hint: {
                   text: "Including attempted or statements of intent.",
-                  classes: "govuk-!-padding-bottom-2"
+                  classes: "govuk-!-padding-bottom-1"
                 },
                 conditional: {
                   html: riskSelfHarmOrSuicide
@@ -571,7 +571,7 @@
                 checked: 'true' if formErrors | containsElement('PerMedicalMentalHealth') or formData.PerMedicalMentalHealth,
                 hint: {
                   text: "For example, if they seem withdrawn or non-communicative, refuse meals or show any other behaviour that suggests heightened risk.",
-                  classes: "govuk-!-padding-bottom-2"
+                  classes: "govuk-!-padding-bottom-1"
                 },
                 conditional: {
                   html: healthChangeInMood
