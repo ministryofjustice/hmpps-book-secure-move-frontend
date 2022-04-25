@@ -18,6 +18,7 @@ exports.addEvents = async function (req, res) {
       res.locals.formData = req.body
     }
 
+    delete res.breadcrumb
     return res.render('police-custody-form/police-custody-form')
   }
 
