@@ -67,13 +67,16 @@ jobs:
         env:
           PR_NUMBER: ${{ env.PR_NUMBER }}
         run: |
-          export DOCKER_IMAGE_URL="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}:pr-${PR_NUMBER}.latest"
+          DOCKER_IMAGE_URL="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}:pr-${PR_NUMBER}.latest"
+          echo "DOCKER_IMAGE_URL=${DOCKER_IMAGE_URL}" >> $GITHUB_ENV
+
           docker tag app $DOCKER_IMAGE_URL
           docker push $DOCKER_IMAGE_URL
       
       - name: Upload kube configs
         env:
           PR_NUMBER: ${{ env.PR_NUMBER }}
+          DOCKER_IMAGE_URL: ${{ env.DOCKER_IMAGE_URL }}
         run: |
           sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy-ingress.yml
           sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy-service.yml
