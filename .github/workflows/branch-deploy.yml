@@ -29,6 +29,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Check $BASH_ENV
+        run: |
+          echo ${BASH_ENV: -5}
 
       - run: echo hello > testartifact.txt
       - uses: actions/upload-artifact@v3
