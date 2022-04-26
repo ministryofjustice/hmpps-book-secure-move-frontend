@@ -77,6 +77,6 @@ jobs:
           sed -i 's/\\{PR_NUMBER\\}/$PR_NUMBER/g' .github/branch-deploy-deployment.yml
           sed -i 's/\\{DOCKER_IMAGE_URL\\}/$DOCKER_IMAGE_URL/g' .github/branch-deploy-deployment.yml
 
-          kubectl apply .github/branch-deploy-ingress.yml
-          kubectl apply .github/branch-deploy-service.yml
-          kubectl apply .github/branch-deploy-deployment.yml
+          kubectl apply -f .github/branch-deploy-ingress.yml
+          kubectl apply -f .github/branch-deploy-service.yml
+          kubectl apply -f .github/branch-deploy-deployment.yml
