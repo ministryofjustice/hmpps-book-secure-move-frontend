@@ -47,9 +47,7 @@ jobs:
         env:
           PR_NUMBER: ${{ env.PR_NUMBER }}
         run: |
-          DOCKER_IMAGE_URL="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}:pr-${PR_NUMBER}.latest"
-
-          aws ecr batch-delete-image --image-ids imageTag="$DOCKER_IMAGE_URL"
+          aws ecr batch-delete-image --repository-name $GITHUB_TEAM_NAME_SLUG --image-ids imageTag="pr-${PR_NUMBER}.latest"
       
       - name: Delete kube configs
         env:
