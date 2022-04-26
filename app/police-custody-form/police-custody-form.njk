@@ -377,11 +377,11 @@
           }) }}
           {% endcall %}
 
-          {% if formErrors | containsElement('PerMedicalAid1') %}
+          {% if formErrors | containsElement('PerMedicalAid') %}
             {% set healthMedicalAttention %}
               {{ govukTextarea({
-                id: "PerMedicalAid1",
-                name: "PerMedicalAid1",
+                id: "PerMedicalAid",
+                name: "PerMedicalAid",
                 type: "text",
                 classes: "govuk-input--width-20",
                 label: {
@@ -395,10 +395,10 @@
           {% else %}
             {% set healthMedicalAttention %}
               {{ govukTextarea({
-                id: "PerMedicalAid1",
-                name: "PerMedicalAid1",
+                id: "PerMedicalAid",
+                name: "PerMedicalAid",
                 type: "text",
-                value: formData.PerMedicalAid1 if formData.PerMedicalAid1,
+                value: formData.PerMedicalAid if formData.PerMedicalAid,
                 classes: "govuk-input--width-20",
                 label: {
                   html:"<b>Give details</b>"
@@ -437,11 +437,11 @@
             {% endset -%}
           {% endif %}
 
-          {% if formErrors | containsElement('PerMedicalAid2') %}
+          {% if formErrors | containsElement('PerMedicalMedication') %}
             {% set healthMedicationGiven %}
               {{ govukTextarea({
-                id: "PerMedicalAid2",
-                name: "PerMedicalAid2",
+                id: "PerMedicalMedication",
+                name: "PerMedicalMedication",
                 type: "text",
                 classes: "govuk-input--width-20",
                 label: {
@@ -471,10 +471,10 @@
           {% else %}
             {% set healthMedicationGiven %}
               {{ govukTextarea({
-                id: "PerMedicalAid2",
-                name: "PerMedicalAid2",
+                id: "PerMedicalMedication",
+                name: "PerMedicalMedication",
                 type: "text",
-                value: formData.PerMedicalAid2 if formData.PerMedicalAid2,
+                value: formData.PerMedicalMedication if formData.PerMedicalMedication,
                 classes: "govuk-input--width-20",
                 label: {
                   html:"<b>Give details</b>"
@@ -542,9 +542,9 @@
             name: "events",
             items: [
               {
-                value: "PerMedicalAid1",
+                value: "PerMedicalAid",
                 text: "Medical attention received",
-                checked: 'true' if formErrors | containsElement('PerMedicalAid1') or formData.PerMedicalAid1,
+                checked: 'true' if formErrors | containsElement('PerMedicalAid') or formData.PerMedicalAid,
                 conditional: {
                   html: healthMedicalAttention
                 }
@@ -558,9 +558,9 @@
                 }
               },
               {
-                value: "PerMedicalAid2",
+                value: "PerMedicalMedication",
                 text: "Medication given",
-                checked: 'true' if formErrors | containsElement('PerMedicalAid2') or formData.PerMedicalAid2,
+                checked: 'true' if formErrors | containsElement('PerMedicalMedication') or formData.PerMedicalMedication,
                 conditional: {
                   html: healthMedicationGiven
                 }

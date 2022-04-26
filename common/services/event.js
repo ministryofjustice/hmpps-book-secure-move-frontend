@@ -11,6 +11,7 @@ const perEvents = [
   'PerMedicalAid',
   'PerMedicalDrugsAlcohol',
   'PerMedicalMentalHealth',
+  'PerMedicalMedication',
   'PerPropertyChange',
   'PerGeneric',
 ]
@@ -43,11 +44,6 @@ class EventService extends BaseService {
           relationshipsId = move.id
           policePersonnelNumber = 'police_personnel_numbers'
           eventableType = event
-        } else if (event === 'PerMedicalAid1' || event === 'PerMedicalAid2') {
-          type = 'person_escort_records'
-          relationshipsId = move.profile.person_escort_record.id
-          policePersonnelNumber = 'police_personnel_number'
-          eventableType = 'PerMedicalAid'
         }
 
         const payload = {
