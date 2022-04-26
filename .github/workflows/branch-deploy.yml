@@ -37,8 +37,8 @@ jobs:
 
       - name: Build docker image
         run: |
-          echo "export PR_NUMBER=\"$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')\"" >> $GITHUB_ENV
-          source $GITHUB_ENV
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "export PR_NUMBER=\"${PR_NUMBER}\"" >> $GITHUB_ENV
 
           export BUILD_DATE=$(date -Is)
           docker build \
@@ -64,12 +64,16 @@ jobs:
           aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ENDPOINT
 
       - name: Push docker image to ECR
+        env:
+          PR_NUMBER: ${{ env.PR_NUMBER }}
         run: |
           export DOCKER_IMAGE_URL="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}:pr-${PR_NUMBER}.latest"
           docker tag app $DOCKER_IMAGE_URL
           docker push $DOCKER_IMAGE_URL
       
       - name: Upload kube configs
+        env:
+          PR_NUMBER: ${{ env.PR_NUMBER }}
         run: |
           sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy-ingress.yml
           sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy-service.yml
