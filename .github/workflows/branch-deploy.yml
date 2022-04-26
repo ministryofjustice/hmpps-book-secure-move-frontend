@@ -38,7 +38,7 @@ jobs:
       - name: Build docker image
         run: |
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-          echo "export PR_NUMBER=\"${PR_NUMBER}\"" >> $GITHUB_ENV
+          echo "PR_NUMBER=${PR_NUMBER}" >> $GITHUB_ENV
 
           export BUILD_DATE=$(date -Is)
           docker build \
