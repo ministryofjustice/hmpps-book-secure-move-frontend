@@ -29,6 +29,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+
+      - run: echo hello > testartifact.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: testartifact.txt
+
       - name: Authenticate with cluster
         run: |
           echo -n $KUBE_CACERT | base64 -d > ./ca.crt
