@@ -1,13 +1,23 @@
 {% extends "layouts/base.njk" %}
 
 {% block pageTitle %}
-  What's new
+  What’s new
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: t("actions::back"),
+    href: "/",
+    attributes: {
+      onclick: "history.back(); return false"
+    }
+  }) }}
 {% endblock %}
 
 {% block content %}
   <header>
     <h1 class="govuk-heading-xl govuk-!-margin-top-1 govuk-!-margin-bottom-6">
-      What's new
+      What’s new
     </h1>
   </header>
 
@@ -16,15 +26,16 @@
   </p>
 
   {% for post in posts %}
-  <div class="govuk-!-padding-bottom-7"> 
-    <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
-      {{ post.date }}
-    </h2>
-    <hr>
-    <h3 class="govuk-heading-l govuk-!-margin-top-5">
-      {{ post.title }}
-    </h3>
-    {{ post.body | safe }}
-  </div>
+    <div class="govuk-!-padding-bottom-7">
+      <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
+        {{ post.date }}
+      </h2>
+
+      <hr>
+
+      <h3 class="govuk-heading-l govuk-!-margin-top-5">{{ post.title }}</h3>
+
+      {{ post.body | safe }}
+    </div>
   {% endfor %}
 {% endblock %}
