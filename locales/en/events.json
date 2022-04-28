@@ -252,6 +252,41 @@
     "heading": "Crossdeck move",
     "description": "Drop off by {{supplier.name}}"
   },
+  "PerViolentDangerous": {
+    "heading": "Violent Or Dangerous",
+    "description": "{{notes}}"
+  },
+  "PerWeapons": {
+    "heading": "Created or used weapons",
+    "description": "{{notes}}"
+  },
+  "PerConcealed": {
+    "heading": "Concealed items",
+    "description": "{{notes}}"
+  },
+  "PerEscape": {
+    "heading": "Escape",
+    "description": "{{notes}}"
+  },
+  "PerSelfHarm": {
+    "heading": "Self-harm",
+    "description": "{{notes}}"
+  },
+  "PerMedicalDrugsAlcohol": {
+    "flag": "medical",
+    "heading": "Drugs or Alcohol",
+    "description": "{{notes}}"
+  },
+  "PerMedicalMentalHealth": {
+    "flag": "medical",
+    "heading": "Mental Health",
+    "description": "{{notes}}"
+  },
+  "PerMedicalMedication": {
+    "flag": "medical",
+    "heading": "Medication",
+    "description": "{{notes}}"
+  },
   "PerCourtAllDocumentationProvidedToSupplier": {
     "heading": "Documentation provided to supplier",
     "description": "$t(events::PerCourtAllDocumentationProvidedToSupplier.select_subtype) made available to supplier personnel at {{court_location.title}}",
@@ -326,12 +361,14 @@
   },
   "PerGeneric": {
     "heading": "{{move.supplier.name}} has logged a generic event note",
+    "heading_without_supplier": "Generic lockout event added",
     "description": "{{notes}}"
   },
   "PerMedicalAid": {
     "flag": "medical",
     "heading": "Medical attention",
     "description": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} at {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} at {{treated_at, formatTime}} $t(events::PerMedicalAid.select_location)",
+    "description_without_supplier": "{{notes}}",
     "select_location": "$t(events::PerMedicalAid.location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
     "location_vehicle": "at {{location.title}}",
     "location_vehicle_true": "inside the vehicle {{vehicle_reg}}"
@@ -355,7 +392,8 @@
   "PersonMoveAssault": {
     "flag": "red",
     "heading": "Assault occurred",
-    "description": "{{supplier_personnel_numbers, oxfordJoin}} reported an assault event at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
+    "description": "{{supplier_personnel_numbers, oxfordJoin}} reported an assault event at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)",
+    "description_without_supplier": "{{police_personnel_numbers, oxfordJoin}} reported an assault event at {{reported_at, formatTime}} at {{location.title}}<br>{{notes}}<br>$t(events::select_incident_vehicle)"
   },
   "PersonMoveBookedIntoReceivingEstablishment": {
     "heading": "$t(events::person) booked into {{location.title}}",
@@ -364,7 +402,8 @@
   "PersonMoveDeathInCustody": {
     "flag": "grey",
     "heading": "Death in custody",
-    "description": "{{supplier_personnel_numbers, oxfordJoin}} reported a death in custody at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)"
+    "description": "{{supplier_personnel_numbers, oxfordJoin}} reported a death in custody at {{reported_at, formatTime}} at {{location.title}}<br>$t(events::select_fault_classification)<br>$t(events::select_incident_vehicle)",
+    "description_without_supplier": "{{police_personnel_numbers, oxfordJoin}} reported a death in custody at {{reported_at, formatTime}} at {{location.title}}<br>{{notes}}<br>$t(events::select_incident_vehicle)"
   },
   "PersonMoveMajorIncidentOther": {
     "flag": "red",
@@ -404,7 +443,8 @@
   "PersonMoveUsedForce": {
     "flag": "red",
     "heading": "Used force",
-    "description": "{{move.supplier.name}} staff {{supplier_personnel_numbers}} used force on $t(events::person) <br>The incident was reported at {{reported_at, formatTime}} <br>$t(events::select_fault_classification)"
+    "description": "{{move.supplier.name}} staff {{supplier_personnel_numbers}} used force on $t(events::person) <br>The incident was reported at {{reported_at, formatTime}} <br>$t(events::select_fault_classification)",
+    "description_without_supplier": "Police staff {{police_personnel_numbers}} used force on $t(events::person) <br>The incident was reported at {{reported_at, formatTime}} <br>{{notes}}"
   },
   "PersonMoveVehicleBrokeDown": {
     "heading": "Supplier vehicle breakdown",
