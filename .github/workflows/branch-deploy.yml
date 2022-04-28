@@ -24,6 +24,55 @@ jobs:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     steps:
+      - id: create_deployment
+        name: Create deployment
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GH_TOKEN}}
+          script: |
+            return (await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: '${{ github.head_ref }}',
+              transient_environment: true,
+              required_contexts: [],
+              environment: "booksecuremove-pr-${{ github.event.number }}"
+            })).data.id
+
+      - name: Update deployment
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GH_TOKEN}}
+          script: |
+            github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.create_deployment.outputs.result }},
+              state: 'in_progress'
+            });
+
+      - name: Delete deployments
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GH_TOKEN}}
+          script: |
+            const deployments = (await github.rest.repos.listDeployments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              environment: "booksecuremove-pr-${{ github.event.number }}"
+            })).data;
+
+            await Promise.all(deployments.map((d) => {
+              if (d.id == ${{ steps.create_deployment.outputs.result }}) return;
+
+              return github.rest.repos.createDeploymentStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                deployment_id: d.id,
+                state: 'inactive'
+              });
+            }).filter(d=>d));
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -79,15 +128,17 @@ jobs:
           kubectl apply -f .github/branch-deploy/service.yml
           kubectl apply -f .github/branch-deploy/deployment.yml
           kubectl apply -f .github/branch-deploy/ingress.yml
-            
-      - name: Comment on PR
+
+      - name: Update deployment
         uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GH_TOKEN}}
           script: |
-            github.rest.issues.createComment({
-              issue_number: ${{ github.event.number }},
+            github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ':rocket: PR Preview successfully deployed at https://hmpps-book-secure-move-frontend-pr-${{ github.event.number }}.apps.live-1.cloud-platform.service.justice.gov.uk'
-            })
+              deployment_id: ${{ steps.create_deployment.outputs.result }},
+              state: 'success',
+              environment_url: 'https://hmpps-book-secure-move-frontend-pr-${{ github.event.number }}.apps.live-1.cloud-platform.service.justice.gov.uk'
+            });
+

@@ -52,3 +52,23 @@ jobs:
           kubectl delete ingress hmpps-book-secure-move-frontend-ingress-pr-$PR_NUMBER
           kubectl delete service hmpps-book-secure-move-frontend-service-pr-$PR_NUMBER
           kubectl delete deployment hmpps-book-secure-move-frontend-deployment-pr-$PR_NUMBER
+
+      - name: Delete deployments
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GH_TOKEN}}
+          script: |
+            const deployments = (await github.rest.repos.listDeployments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              environment: "booksecuremove-pr-${{ github.event.number }}"
+            })).data;
+
+            await Promise.all(deployments.map((d) => {
+              return github.rest.repos.createDeploymentStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                deployment_id: d.id,
+                state: 'inactive'
+              });
+            }));
