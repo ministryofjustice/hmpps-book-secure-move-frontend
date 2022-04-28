@@ -74,7 +74,7 @@ describe('Presenters', function () {
       describe('response', function () {
         it('should contain correct rows', function () {
           expect(transformedResponse).to.have.property('rows')
-          expect(transformedResponse.rows.length).to.equal(4)
+          expect(transformedResponse.rows.length).to.equal(5)
         })
 
         it('should order items correctly', function () {
@@ -84,6 +84,7 @@ describe('Presenters', function () {
             'fields::to_location.label',
             'fields::date_custom.label',
             'fields::time_due.label',
+            'assessment::handover_status.heading',
           ])
         })
 
@@ -94,6 +95,7 @@ describe('Presenters', function () {
             mockMove.to_location.title,
             mockMove.date,
             mockMove.time_due,
+            undefined,
           ])
         })
 
@@ -147,6 +149,7 @@ describe('Presenters', function () {
             'Prison recall',
             mockMove.date,
             mockMove.time_due,
+            undefined,
           ])
         })
       })
@@ -174,6 +177,7 @@ describe('Presenters', function () {
             'Video remand',
             mockMove.date,
             mockMove.time_due,
+            undefined,
           ])
         })
       })
@@ -221,7 +225,7 @@ describe('Presenters', function () {
 
       it('should contain correct number of items', function () {
         expect(transformedResponse).to.have.property('rows')
-        expect(transformedResponse.rows.length).to.equal(4)
+        expect(transformedResponse.rows.length).to.equal(5)
       })
 
       it('should contain correct actions', function () {
@@ -234,6 +238,7 @@ describe('Presenters', function () {
           {
             items: [mockUpdateUrls.date],
           },
+          undefined,
           undefined,
         ])
       })
@@ -261,10 +266,19 @@ describe('Presenters', function () {
       describe('response', function () {
         it('should contain a link to the PER', function () {
           const html =
-            transformedResponse.rows[transformedResponse.rows.length - 1].value
+            transformedResponse.rows[transformedResponse.rows.length - 2].value
               .html
           expect(html).to.equal(
             '<ul class="govuk-list govuk-!-font-size-16"><li><a class="govuk-link" href="/move/abc/youth-risk-assessment">youth_risk_assessment</a></li></ul>'
+          )
+        })
+
+        it('should contain a link to the handover', function () {
+          const html =
+            transformedResponse.rows[transformedResponse.rows.length - 1].value
+              .html
+          expect(html).to.equal(
+            '<ul class="govuk-list govuk-!-font-size-16"><li>assessment::handover_status.text_awaiting</li></ul>'
           )
         })
       })
@@ -292,10 +306,19 @@ describe('Presenters', function () {
       describe('response', function () {
         it('should contain a link to the PER', function () {
           const html =
-            transformedResponse.rows[transformedResponse.rows.length - 1].value
+            transformedResponse.rows[transformedResponse.rows.length - 2].value
               .html
           expect(html).to.equal(
             '<ul class="govuk-list govuk-!-font-size-16"><li><a class="govuk-link" href="/move/abc/person-escort-record">person_escort_record</a></li></ul>'
+          )
+        })
+
+        it('should contain a link to the handover', function () {
+          const html =
+            transformedResponse.rows[transformedResponse.rows.length - 1].value
+              .html
+          expect(html).to.equal(
+            '<ul class="govuk-list govuk-!-font-size-16"><li>assessment::handover_status.text_awaiting</li></ul>'
           )
         })
       })

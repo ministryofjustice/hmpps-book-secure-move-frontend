@@ -44,6 +44,7 @@ const addImportantEvents = data => {
     data.important_events = data.timeline_events.filter(
       ({ event_type: eventType, classification }) =>
         eventType === 'PerPropertyChange' ||
+        eventType === 'PerHandover' ||
         (classification && classification !== 'default')
     )
   }
