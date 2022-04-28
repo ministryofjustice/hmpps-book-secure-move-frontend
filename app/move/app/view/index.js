@@ -4,7 +4,6 @@ const router = require('express').Router({ mergeParams: true })
 const { uuidRegex } = require('../../../../common/helpers/url')
 const breadcrumbs = require('../../../../common/middleware/breadcrumbs')
 const {
-  setMove,
   setMoveWithEvents,
   setPersonEscortRecord,
   setYouthRiskAssessment,
@@ -32,12 +31,8 @@ router.get('/', (req, res) => res.redirect(`${req.baseUrl}/warnings`))
 
 // Define shared middleware
 
-// For all non-timeline/warning routes use standard move middleware
-router.use(/\/((?!timeline|warnings).)*/, setMove)
-// For all timeline/warning route use move events middleware
-router.use(/\/(timeline|warnings).*/, setMoveWithEvents)
-
 router.use(breadcrumbs.setHome())
+router.use(setMoveWithEvents)
 router.use(setPersonEscortRecord)
 router.use(setYouthRiskAssessment)
 router.use(setJourneys)
