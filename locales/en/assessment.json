@@ -76,5 +76,10 @@
     "dispatching_officer": "Dispatching officer",
     "receiving_officer": "Receiving officer",
     "warning_text": "Once you handover this person, you will no longer be able to update their Person Escort Record"
+  },
+  "handover_status": {
+    "heading": "Handover status",
+    "text_awaiting": "Awaiting handover from {{location}}",
+    "text_recorded": "Handover recorded at {{location}}"
   }
 }
