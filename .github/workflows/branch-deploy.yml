@@ -27,14 +27,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Get PR number
-        run: |
-          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-          echo "PR_NUMBER=${PR_NUMBER}" >> $GITHUB_ENV
-
       - name: Build docker image
         env:
-          PR_NUMBER: ${{ env.PR_NUMBER }}
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           export BUILD_DATE=$(date -Is)
           docker build \
@@ -61,7 +56,7 @@ jobs:
 
       - name: Push docker image to ECR
         env:
-          PR_NUMBER: ${{ env.PR_NUMBER }}
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           DOCKER_IMAGE_URL="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}:pr-${PR_NUMBER}.latest"
           echo "DOCKER_IMAGE_URL=${DOCKER_IMAGE_URL}" >> $GITHUB_ENV
@@ -71,19 +66,19 @@ jobs:
       
       - name: Upload kube configs
         env:
-          PR_NUMBER: ${{ env.PR_NUMBER }}
+          PR_NUMBER: ${{ github.event.number }}
           DOCKER_IMAGE_URL: ${{ env.DOCKER_IMAGE_URL }}
         run: |
           sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy/config-map.yml
-          sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy/ingress.yml
           sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy/service.yml
           sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy/deployment.yml
+          sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy/ingress.yml
           sed -i "s>{DOCKER_IMAGE_URL}>$DOCKER_IMAGE_URL>g" .github/branch-deploy/deployment.yml
 
           kubectl apply -f .github/branch-deploy/config-map.yml
-          kubectl apply -f .github/branch-deploy/ingress.yml
           kubectl apply -f .github/branch-deploy/service.yml
           kubectl apply -f .github/branch-deploy/deployment.yml
+          kubectl apply -f .github/branch-deploy/ingress.yml
             
       - name: Comment on PR
         uses: actions/github-script@v6
@@ -94,5 +89,5 @@ jobs:
               issue_number: ${{ github.event.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ':rocket: PR Preview successfully deployed at https://hmpps-book-secure-move-frontend-pr-${{ env.PR_NUMBER }}.apps.live-1.cloud-platform.service.justice.gov.uk'
+              body: ':rocket: PR Preview successfully deployed at https://hmpps-book-secure-move-frontend-pr-${{ github.event.number }}.apps.live-1.cloud-platform.service.justice.gov.uk'
             })
