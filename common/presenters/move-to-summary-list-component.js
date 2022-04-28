@@ -4,6 +4,7 @@ const i18n = require('../../config/i18n')
 const filters = require('../../config/nunjucks/filters')
 const mapUpdateLink = require('../helpers/move/map-update-link')
 
+const moveToHandoversSummary = require('./move-to-handovers-summary')
 const moveToJourneysSummary = require('./move-to-journeys-summary')
 
 /**
@@ -89,6 +90,31 @@ function moveToSummaryListComponent(
         html:
           '<ul class="govuk-list govuk-!-font-size-16">' +
           assessmentLinks.map(link => `<li>${link}</li>`).join('') +
+          '</ul>',
+      },
+    })
+  }
+
+  const handoversSummary = moveToHandoversSummary(move, journeys)
+
+  if (handoversSummary.length) {
+    const links = handoversSummary.map(({ recorded, event, location }) => {
+      if (recorded) {
+        return `<a class="govuk-link" href="timeline#${event}">${i18n.t(
+          'assessment::handover_status.text_recorded',
+          { location }
+        )}</a>`
+      } else {
+        return i18n.t('assessment::handover_status.text_awaiting', { location })
+      }
+    })
+
+    rows.push({
+      key: { text: i18n.t('assessment::handover_status.heading') },
+      value: {
+        html:
+          '<ul class="govuk-list govuk-!-font-size-16">' +
+          links.map(link => `<li>${link}</li>`).join('') +
           '</ul>',
       },
     })
