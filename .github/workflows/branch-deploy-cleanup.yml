@@ -26,11 +26,6 @@ jobs:
     name: Cleanup Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR number
-        run: |
-          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-          echo "PR_NUMBER=${PR_NUMBER}" >> $GITHUB_ENV
-
       - name: Authenticate with cluster
         run: |
           echo -n $KUBE_CACERT | base64 -d > ./ca.crt
@@ -45,13 +40,13 @@ jobs:
 
       - name: Delete docker image from ECR
         env:
-          PR_NUMBER: ${{ env.PR_NUMBER }}
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           aws ecr batch-delete-image --repository-name "${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}" --image-ids imageTag="pr-${PR_NUMBER}.latest"
       
       - name: Delete kube configs
         env:
-          PR_NUMBER: ${{ env.PR_NUMBER }}
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           kubectl delete configmap hmpps-book-secure-move-frontend-configmap-pr-$PR_NUMBER
           kubectl delete ingress hmpps-book-secure-move-frontend-ingress-pr-$PR_NUMBER
