@@ -440,7 +440,8 @@
   },
   "PersonMoveUsedForce": {
     "flag": "red",
-    "heading": "Used force"
+    "heading": "Used force",
+    "description": "{{notes}}"
   },
   "PersonMoveVehicleBrokeDown": {
     "heading": "Supplier vehicle breakdown",
