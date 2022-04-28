@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: hmpps-book-secure-move-frontend-ingress-pr-{PR_NUMBER}
+  namespace: hmpps-book-secure-move-frontend-staging
+  annotations:
+    nginx.ingress.kubernetes.io/custom-http-errors: "502,504" #default is 413,502,503,504
+    external-dns.alpha.kubernetes.io/set-identifier: hmpps-book-secure-move-frontend-ingress-pr-{PR_NUMBER}-hmpps-book-secure-move-frontend-staging-green
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+spec:
+  tls:
+  - hosts:
+    - hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.live-1.cloud-platform.service.justice.gov.uk
+  rules:
+  - host: hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.live-1.cloud-platform.service.justice.gov.uk
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hmpps-book-secure-move-frontend-service-pr-{PR_NUMBER}
+          servicePort: 80

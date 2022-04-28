@@ -1,0 +1,98 @@
+name: Branch Based Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ECR_ENDPOINT: ${{ secrets.ECR_ENDPOINT }}
+  KUBE_CACERT: ${{ secrets.KUBE_CACERT }}
+  KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+  KUBE_NAME: ${{ secrets.KUBE_NAME }}
+  KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+  KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
+
+  GITHUB_TEAM_NAME_SLUG: book-a-secure-move
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get PR number
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          echo "PR_NUMBER=${PR_NUMBER}" >> $GITHUB_ENV
+
+      - name: Build docker image
+        env:
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+        run: |
+          export BUILD_DATE=$(date -Is)
+          docker build \
+            --label build.git.sha=$GITHUB_SHA \
+            --label build.git.branch=$GITHUB_HEAD_REF \
+            --label build.date=$BUILD_DATE \
+            --build-arg APP_BUILD_DATE=$BUILD_DATE \
+            --build-arg APP_BUILD_TAG=$PR_NUMBER \
+            --build-arg APP_GIT_COMMIT=$GITHUB_SHA \
+            --build-arg APP_BUILD_BRANCH=$GITHUB_HEAD_REF \
+            -t app .
+
+      - name: Authenticate with cluster
+        run: |
+          echo -n $KUBE_CACERT | base64 -d > ./ca.crt
+          kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
+          kubectl config set-credentials circleci --token=${KUBE_TOKEN}
+          kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=circleci --namespace=${KUBE_NAMESPACE}
+          kubectl config use-context ${KUBE_CLUSTER}
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ENDPOINT
+
+      - name: Push docker image to ECR
+        env:
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+        run: |
+          DOCKER_IMAGE_URL="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}:pr-${PR_NUMBER}.latest"
+          echo "DOCKER_IMAGE_URL=${DOCKER_IMAGE_URL}" >> $GITHUB_ENV
+
+          docker tag app $DOCKER_IMAGE_URL
+          docker push $DOCKER_IMAGE_URL
+      
+      - name: Upload kube configs
+        env:
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+          DOCKER_IMAGE_URL: ${{ env.DOCKER_IMAGE_URL }}
+        run: |
+          sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy/config-map.yml
+          sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy/ingress.yml
+          sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy/service.yml
+          sed -i "s/{PR_NUMBER}/$PR_NUMBER/g" .github/branch-deploy/deployment.yml
+          sed -i "s>{DOCKER_IMAGE_URL}>$DOCKER_IMAGE_URL>g" .github/branch-deploy/deployment.yml
+
+          kubectl apply -f .github/branch-deploy/config-map.yml
+          kubectl apply -f .github/branch-deploy/ingress.yml
+          kubectl apply -f .github/branch-deploy/service.yml
+          kubectl apply -f .github/branch-deploy/deployment.yml
+            
+      - name: Comment on PR
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.GH_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: ${{ github.event.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ':rocket: PR Preview successfully deployed at https://hmpps-book-secure-move-frontend-pr-${{ env.PR_NUMBER }}.apps.live-1.cloud-platform.service.justice.gov.uk'
+            })

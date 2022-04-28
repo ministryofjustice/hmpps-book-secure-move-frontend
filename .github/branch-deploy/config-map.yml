@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hmpps-book-secure-move-frontend-configmap-pr-{PR_NUMBER}
+  namespace: hmpps-book-secure-move-frontend-staging
+data:
+  API_AUTH_PATH: "/oauth/token"
+  API_BASE_URL: "https://hmpps-book-secure-move-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk"
+  API_HEALTHCHECK_PATH: "/ping.xml"
+  API_PATH: "/api"
+  API_VERSION: "2"
+  API_TIMEOUT: "60000"
+  AUTH_PROVIDER_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk"
+  CONTENTFUL_HOST: "preview.contentful.com"
+  FEEDBACK_URL: "#"
+  PERSON_ESCORT_RECORD_FEEDBACK_URL: "#"
+  GOOGLE_ANALYTICS_ID: "UA-106741063-10"
+  LOG_LEVEL: "debug"
+  NODE_ENV: "production"
+  NOMIS_ELITE2_API_URL: "https://api-dev.prison.service.justice.gov.uk"
+  PROMETHEUS_MOUNTPATH: "/metrics"
+  SENTRY_ENVIRONMENT: "staging"
+  SERVER_HOST: "hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.live-1.cloud-platform.service.justice.gov.uk"
+  SUPPORT_EMAIL: "fakeemail@fakedomain"
+  ENABLE_COMPONENTS_LIBRARY: "true"
+  FEATURE_FLAG_POPULATION_DASHBOARD: "true"
+  FEATURE_FLAG_GOT: "true"
+  FEATURE_FLAG_MOVE_PREVIEW: "true"
+  ORDNANCE_MAP_API_URL: "https://api.os.uk"
+  ENABLE_DEVELOPMENT_TOOLS: "true"
