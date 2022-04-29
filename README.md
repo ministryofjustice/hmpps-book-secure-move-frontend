@@ -2,8 +2,6 @@
 
 [![CircleCI](https://circleci.com/gh/ministryofjustice/hmpps-book-secure-move-frontend.svg?style=svg)](https://circleci.com/gh/ministryofjustice/hmpps-book-secure-move-frontend)
 [![Coverage Status](https://coveralls.io/repos/github/ministryofjustice/hmpps-book-secure-move-frontend/badge.svg)](https://coveralls.io/github/ministryofjustice/hmpps-book-secure-move-frontend)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/93a7ea86058dc9d2f2dc/test_coverage)](https://codeclimate.com/github/ministryofjustice/hmpps-book-secure-move-frontend/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/93a7ea86058dc9d2f2dc/maintainability)](https://codeclimate.com/github/ministryofjustice/hmpps-book-secure-move-frontend/maintainability)
 
 Book a secure move is part of the HMPPS Prisoner Escort and Custody
 Service (PECS) programme.
