@@ -218,25 +218,9 @@ jobs:
           name: Lint the code
           command: npm run circle:lint
       - run:
-          name: Setup Code Climate test-reporter
-          # download test reporter as a static binary
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-0.8.0-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-      - run:
-          name: Notify CodeClimate before build
-          command: |
-            ./cc-test-reporter before-build
-          when: always
-      - run:
           name: Run unit tests
           command: |
             npm run circle:coverage
-      - run:
-          name: Upload coverage to CodeClimate
-          command: |
-            ./cc-test-reporter after-build
-          when: always
       - store_test_results:
           path: reports
       - store_artifacts:
