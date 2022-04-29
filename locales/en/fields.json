@@ -501,7 +501,7 @@
   },
   "handover_dispatching_officer": {
     "label": "Full name of the dispatching officer",
-    "error_message": "Enter full name of the dispatching officer"
+    "error_message": "Enter the full name of the dispatching officer"
   },
   "handover_dispatching_officer_id": {
     "label": "ID of the dispatching officer"
