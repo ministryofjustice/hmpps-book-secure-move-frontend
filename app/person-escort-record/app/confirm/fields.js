@@ -84,6 +84,7 @@ const handoverReceivingOfficerContact = {
 }
 const handoverReceivingOrganisation = {
   name: 'handover_receiving_organisation',
+  id: 'handover_receiving_organisation',
   component: 'govukRadios',
   fieldset: {
     legend: {
@@ -119,6 +120,7 @@ const handoverOtherOganisation = {
 const handoverTime = {
   validate: 'required',
   name: 'handover_occurred_at',
+  id: 'handover_occurred_at',
   component: 'govukRadios',
   fieldset: {
     legend: {

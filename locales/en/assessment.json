@@ -67,15 +67,15 @@
   },
   "prefilled_message": "This answer needs to be reviewed",
   "handover": {
-    "heading": "Handover",
+    "heading": "Record handover",
     "before_handover": {
       "heading": "Before you handover",
-      "content": "Check that you have:\n\n- <a href=\"{{ per_href }}\">reviewed the Person Escort Record</a> and the information is up to date\n- confirmed the correct person is being moved\n- completed the correct level of search\n- communicated risk and health information with receiving officer"
+      "content": "Check that you have:\n\n- <a href=\"{{ per_href }}\">reviewed the Person Escort Record</a> and the information is up to date\n- confirmed the correct person is being moved\n- completed the correct level of search\n- communicated risk and health information with the receiving officer"
     },
     "not_fit_to_travel": "If this person is not fit to travel you must <a href=\"{{cancel_href}}\" class=\"app-link--destructive\">cancel this move</a>",
     "dispatching_officer": "Dispatching officer",
     "receiving_officer": "Receiving officer",
-    "warning_text": "Once you handover this person, you will no longer be able to update their Person Escort Record"
+    "warning_text": "Once you've confirmed handover for this person, you will no longer be able to update their Person Escort Record."
   },
   "handover_status": {
     "heading": "Handover status",

@@ -469,7 +469,7 @@
   },
   "confirm_handover": {
     "label": "Check this box to confirm that all the above tasks have been completed",
-    "error_message": "You must provide confirmation"
+    "error_message": "You must provide confirmation that all handover tasks have been completed"
   },
   "confirm_youth_risk_assessment": {
     "label": "Check this box to confirm that, to the best your knowledge, all information provided in the assessment is correct",
@@ -500,25 +500,30 @@
     "label": "Usable capacity"
   },
   "handover_dispatching_officer": {
-    "label": "Full name of dispatching officer"
+    "label": "Full name of the dispatching officer",
+    "error_message": "Enter the full name of the dispatching officer"
   },
   "handover_dispatching_officer_id": {
-    "label": "ID of dispatching officer"
+    "label": "ID of the dispatching officer"
   },
   "handover_dispatching_officer_contact": {
-    "label": "Contact number of dispatching officer"
+    "label": "Contact number of the dispatching officer",
+    "error_message": "Enter the contact number of the dispatching officer"
   },
   "handover_receiving_officer": {
-    "label": "Full name of receiving officer"
+    "label": "Full name of the receiving officer",
+    "error_message": "Enter the full name of the receiving officer"
   },
   "handover_receiving_officer_id": {
-    "label": "ID of receiving officer"
+    "label": "ID of the receiving officer"
   },
   "handover_receiving_officer_contact": {
-    "label": "Contact number of receiving officer"
+    "label": "Contact number of the receiving officer",
+    "error_message": "Enter the contact number of the receiving officer"
   },
   "handover_receiving_organisation": {
-    "label": "Organisation of receiving officer",
+    "label": "Organisation of the receiving officer",
+    "error_message": "Enter the organisation of the receiving officer",
     "items": {
       "supplier": {
         "label": "Supplier"
@@ -533,6 +538,7 @@
   },
   "handover_occurred_at": {
     "label": "Handover time",
+    "error_message": "Enter the time handover happened",
     "items": {
       "now": {
         "label": "Now"
