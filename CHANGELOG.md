@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.118.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.118.1...v2.118.2) (2022-04-29)
+
+
+### Bug Fixes
+
+* Ensure important events is an array ([dce126d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/dce126dacab8f1d5e9a1362b95ad1944366dc462))
+
 ### [2.118.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.118.0...v2.118.1) (2022-04-29)
 
 ## [2.118.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.117.2...v2.118.0) (2022-04-29)
