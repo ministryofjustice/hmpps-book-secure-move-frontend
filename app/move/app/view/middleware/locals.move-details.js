@@ -9,10 +9,12 @@ function localsMoveDetails(req, res, next) {
   res.locals.moveIsLockout = move.is_lockout
   res.locals.moveId = move.id
 
-  res.locals.moveLodgingStarted = move.important_events.some(
+  const importantEvents = move.important_events || {}
+
+  res.locals.moveLodgingStarted = importantEvents.some(
     ({ event_type: eventType }) => eventType === 'MoveLodgingStart'
   )
-  res.locals.moveLodgingEnded = move.important_events.some(
+  res.locals.moveLodgingEnded = importantEvents.some(
     ({ event_type: eventType }) => eventType === 'MoveLodgingEnd'
   )
 
