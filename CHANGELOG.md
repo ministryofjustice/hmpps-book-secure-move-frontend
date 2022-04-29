@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.118.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.117.2...v2.118.0) (2022-04-29)
+
+
+### Features
+
+* Add back button to "What's new" page ([c0650eb](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c0650ebc0c45600b9063735eb0b59e42f24b8f4a))
+* Add moveToHandoversSummary ([d7bb7b9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d7bb7b940f9007e60d147c4ab0e975e1c8800294))
+* Show handover details in move details tab ([3e4f0f1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/3e4f0f19d636f6b73b1a7dcad228c6bc1c00d8ae))
+
+
+### Bug Fixes
+
+* Handle when move has no important events ([1dad52f](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/1dad52f650046ad371be97ee8e95a88132d87ee3))
+
 ### [2.117.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.117.1...v2.117.2) (2022-04-26)
 
 ### [2.117.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.117.0...v2.117.1) (2022-04-25)
