@@ -39,7 +39,8 @@ module.exports = function (move = {}) {
   const importantEvents = timelineEvents
     .filter(
       ({ event_type: eventType, classification }) =>
-        eventType === 'PerPropertyChange' || classification === 'incident'
+        eventType === 'PerPropertyChange' ||
+        ['incident', 'medical'].includes(classification)
     )
     .sort(({ occurred_at: occurredAtA }, { occurred_at: occurredAtB }) =>
       occurredAtA > occurredAtB ? -1 : 1

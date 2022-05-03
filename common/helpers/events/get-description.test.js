@@ -11,6 +11,7 @@ describe('Helpers', function () {
         aDetail: 'details',
         journey: { vehicle: { registration: 'fallback reg' } },
       },
+      supplier: '12341-12312132',
     }
 
     beforeEach(function () {
