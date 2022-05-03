@@ -56,22 +56,39 @@ jobs:
         with:
           github-token: ${{secrets.GH_TOKEN}}
           script: |
-            const deployments = (await github.rest.repos.listDeployments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              environment: "booksecuremove-pr-${{ github.event.number }}"
-            })).data;
-
-            await Promise.all(deployments.map((d) => {
-              if (d.id == ${{ steps.create_deployment.outputs.result }}) return;
-
-              return github.rest.repos.createDeploymentStatus({
+            let deployments = (
+              await github.rest.repos.listDeployments({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                deployment_id: d.id,
-                state: 'inactive'
-              });
-            }).filter(d=>d));
+                environment: "booksecuremove-pr-${{ github.event.number }}",
+              })
+            ).data.filter(d => d.id != ${{ steps.create_deployment.outputs.result }});
+
+            deployments = (await Promise.all(
+              deployments.map(async (d) => {
+                const lastState = (
+                  await github.rest.repos.listDeploymentStatuses({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    deployment_id: d.id,
+                  })
+                ).data[0].state;
+                if (lastState == "inactive") return;
+
+                return d;
+              })
+            )).filter(d => d);
+
+            await Promise.all(
+              deployments.map(d => {
+                return github.rest.repos.createDeploymentStatus({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  deployment_id: d.id,
+                  state: "inactive",
+                });
+              })
+            );
 
       - name: Checkout
         uses: actions/checkout@v3
