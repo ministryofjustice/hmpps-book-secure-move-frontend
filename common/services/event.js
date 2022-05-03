@@ -55,7 +55,6 @@ class EventService extends BaseService {
               notes: eventDescription,
               details: {
                 [policePersonnelNumber]: [user.username],
-                fault_classification: 'investigation',
                 reported_at: todaysDate.toISOString(),
                 advised_at: todaysDate.toISOString(),
                 advised_by: user.username,

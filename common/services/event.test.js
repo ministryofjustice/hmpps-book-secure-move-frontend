@@ -83,7 +83,6 @@ describe('Event Service', function () {
           notes: 'An assault occurred',
           details: {
             police_personnel_number: ['MRUSERNAME'],
-            fault_classification: 'investigation',
             reported_at: '2022-04-13T10:00:39.986Z',
             advised_at: '2022-04-13T10:00:39.986Z',
             advised_by: 'MRUSERNAME',
@@ -115,7 +114,6 @@ describe('Event Service', function () {
           notes: 'There was a death',
           details: {
             police_personnel_numbers: ['MRUSERNAME'],
-            fault_classification: 'investigation',
             reported_at: '2022-04-13T10:00:39.986Z',
             advised_at: '2022-04-13T10:00:39.986Z',
             advised_by: 'MRUSERNAME',

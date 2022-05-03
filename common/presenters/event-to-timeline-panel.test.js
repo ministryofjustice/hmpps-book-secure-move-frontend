@@ -7,6 +7,7 @@ describe('Presenters', function () {
       classification: 'incident',
       event_type: 'eventType',
       occurred_at: '2020-01-01T10:00:00Z',
+      supplier: '12341-12312132',
     }
 
     const move = { id: 'move' }
