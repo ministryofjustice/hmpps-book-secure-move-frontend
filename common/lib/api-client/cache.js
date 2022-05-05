@@ -2,7 +2,7 @@ const LRU = require('lru-cache')
 
 const redisStore = require('../../../config/redis-store')
 
-const lruCache = new LRU()
+const lruCache = new LRU({ max: 1000 })
 
 async function get(key, useRedisCache = false) {
   let data
