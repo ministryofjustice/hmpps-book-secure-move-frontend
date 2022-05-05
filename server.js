@@ -246,6 +246,7 @@ app.use(
           'www.google-analytics.com',
           'api.os.uk',
           'data: blob:',
+          'images.ctfassets.net',
         ],
         fontSrc: ["'self'", 'fonts.googleapis.com'],
         styleSrc: ["'self'", "'unsafe-inline'", 'cdn.jsdelivr.net'],
