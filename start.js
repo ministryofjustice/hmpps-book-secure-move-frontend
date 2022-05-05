@@ -2,58 +2,61 @@ const http = require('http')
 
 const { PORT } = require('./config')
 const logger = require('./config/logger')
-const app = require('./server')
 
-// eslint-disable-next-line no-process-env
-process.env.TZ = 'Europe/London'
+;(async () => {
+  const app = await require('./server')()
 
-/**
- * Get port from config and store in Express.
- */
-app.set('port', PORT)
+  // eslint-disable-next-line no-process-env
+  process.env.TZ = 'Europe/London'
 
-/**
- * Create HTTP server.
- */
-const server = http.createServer(app)
+  /**
+   * Get port from config and store in Express.
+   */
+  app.set('port', PORT)
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-server.listen(PORT)
-server.on('error', onError)
-server.on('listening', onListening)
+  /**
+   * Create HTTP server.
+   */
+  const server = http.createServer(app)
 
-const logMessage = {
-  EACCES: 'requires elevated privileges',
-  EADDRINUSE: 'is already in use',
-}
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+  server.listen(PORT)
+  server.on('error', onError)
+  server.on('listening', onListening)
 
-/**
- * Event listener for HTTP server "error" event.
- */
-function onError(error) {
-  if (error.syscall !== 'listen') {
+  const logMessage = {
+    EACCES: 'requires elevated privileges',
+    EADDRINUSE: 'is already in use',
+  }
+
+  /**
+   * Event listener for HTTP server "error" event.
+   */
+  function onError(error) {
+    if (error.syscall !== 'listen') {
+      throw error
+    }
+
+    // handle specific listen errors with friendly messages
+
+    if (logMessage[error.code]) {
+      const bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT
+      logger.error(`${bind} ${logMessage[error.code]}`)
+      process.exit(1)
+    }
+
     throw error
   }
 
-  // handle specific listen errors with friendly messages
+  /**
+   * Event listener for HTTP server "listening" event.
+   */
+  function onListening() {
+    const addr = server.address()
+    const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
 
-  if (logMessage[error.code]) {
-    const bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT
-    logger.error(`${bind} ${logMessage[error.code]}`)
-    process.exit(1)
+    logger.info(`Listening on ${bind}`)
   }
-
-  throw error
-}
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-function onListening() {
-  const addr = server.address()
-  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
-
-  logger.info(`Listening on ${bind}`)
-}
+})()

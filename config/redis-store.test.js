@@ -8,14 +8,17 @@ function MockRedisStore(opts = {}) {
 
 MockRedisStore.prototype.init = opts => this
 
+const mockClient = {
+  connect: sinon.stub(),
+}
 const mockRedisClient = {
-  createClient: sinon.stub().returns('mockClient'),
+  createClient: sinon.stub().returns(mockClient),
 }
 const mockRedisConfig = {
   url: 'redis://defaultuser:defaultpassword@host.com/0',
 }
 const mockStoreOptions = {
-  client: 'mockClient',
+  client: mockClient,
 }
 const errorStub = sinon.stub()
 const retryStrategyStub = sinon.stub()
@@ -49,8 +52,8 @@ describe('Redis store', function () {
       })
 
       context('on first call', function () {
-        beforeEach(function () {
-          store = redisStore()
+        beforeEach(async function () {
+          store = await redisStore()
         })
 
         it('should create a new store with default options', function () {
@@ -58,10 +61,9 @@ describe('Redis store', function () {
             ...mockRedisConfig,
             logErrors: errorStub,
             retry_strategy: retryStrategyStub,
+            legacyMode: true,
           })
-          expect(bluebird.promisifyAll).to.be.calledOnceWithExactly(
-            'mockClient'
-          )
+          expect(bluebird.promisifyAll).to.be.calledOnceWithExactly(mockClient)
           expect(MockRedisStore.prototype.init).to.be.calledOnceWithExactly(
             mockStoreOptions
           )
@@ -74,8 +76,8 @@ describe('Redis store', function () {
       })
 
       context('on second call', function () {
-        beforeEach(function () {
-          store = redisStore()
+        beforeEach(async function () {
+          store = await redisStore()
         })
 
         it('should not create new client', function () {
@@ -89,8 +91,8 @@ describe('Redis store', function () {
       })
 
       context('on further calls', function () {
-        beforeEach(function () {
-          store = redisStore()
+        beforeEach(async function () {
+          store = await redisStore()
         })
 
         it('should not create new client', function () {
@@ -107,6 +109,7 @@ describe('Redis store', function () {
     context('with options', function () {
       const mockOptions = {
         url: 'redis://user:password@host.com/0',
+        legacyMode: true,
       }
       let store
 
@@ -127,17 +130,15 @@ describe('Redis store', function () {
       })
 
       context('on first call', function () {
-        beforeEach(function () {
-          store = redisStore(mockOptions)
+        beforeEach(async function () {
+          store = await redisStore(mockOptions)
         })
 
         it('should create a new store with default options', function () {
           expect(mockRedisClient.createClient).to.be.calledWithExactly(
             mockOptions
           )
-          expect(bluebird.promisifyAll).to.be.calledOnceWithExactly(
-            'mockClient'
-          )
+          expect(bluebird.promisifyAll).to.be.calledOnceWithExactly(mockClient)
           expect(MockRedisStore.prototype.init).to.be.calledOnceWithExactly(
             mockStoreOptions
           )
@@ -147,8 +148,8 @@ describe('Redis store', function () {
       })
 
       context('on second call', function () {
-        beforeEach(function () {
-          store = redisStore(mockOptions)
+        beforeEach(async function () {
+          store = await redisStore(mockOptions)
         })
 
         it('should not create new client', function () {
@@ -162,8 +163,8 @@ describe('Redis store', function () {
       })
 
       context('on further calls', function () {
-        beforeEach(function () {
-          store = redisStore(mockOptions)
+        beforeEach(async function () {
+          store = await redisStore(mockOptions)
         })
 
         it('should not create new client', function () {

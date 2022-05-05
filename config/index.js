@@ -38,16 +38,20 @@ const SESSION = {
 }
 const REDIS = {}
 
-if (process.env.REDIS_URL || process.env.REDIS_HOST) {
+if (process.env.REDIS_URL) {
   REDIS.SESSION = {
     url: process.env.REDIS_URL,
-    host: process.env.REDIS_HOST,
-    auth_pass: process.env.REDIS_AUTH_TOKEN,
-    db: SESSION.DB,
-    tls: process.env.REDIS_AUTH_TOKEN
-      ? { checkServerIdentity: () => undefined }
-      : null,
-    ttl: SESSION.TTL / 1000, // convert nanoseconds to seconds
+  }
+} else if (process.env.REDIS_HOST) {
+  REDIS.SESSION = {
+    socket: {
+      host: process.env.REDIS_HOST,
+      tls: !!process.env.REDIS_AUTH_TOKEN,
+      rejectUnauthorized: false,
+      keepAlive: SESSION.TTL / 1000, // convert nanoseconds to seconds
+    },
+    database: SESSION.DB,
+    password: process.env.REDIS_AUTH_TOKEN,
   }
 }
 

@@ -48,19 +48,17 @@ module.exports = [
   },
   {
     name: 'redis',
-    healthcheck: () => {
+    healthcheck: async () => {
       if (redisStore) {
-        return new Promise((resolve, reject) => {
-          const result = redisStore().client.ping()
+        const result = (await redisStore()).client.ping()
 
-          if (!result) {
-            reject(new Error('No connection'))
-          }
+        if (!result) {
+          throw new Error('No connection')
+        }
 
-          resolve('OK')
-        })
+        return 'OK'
       } else {
-        return Promise.resolve('NOT RUNNING')
+        return 'NOT RUNNING'
       }
     },
   },

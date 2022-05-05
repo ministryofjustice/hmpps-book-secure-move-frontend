@@ -15,12 +15,13 @@ const defaultOptions = {
 
 let store
 
-module.exports = function redisStore(options = defaultOptions) {
+module.exports = async function redisStore(options = defaultOptions) {
   if (store) {
     return store
   }
 
-  const client = redis.createClient(options)
+  const client = redis.createClient({ ...options, legacyMode: true })
+  await client.connect()
   bluebird.promisifyAll(client)
 
   store = new RedisStore({ client })
