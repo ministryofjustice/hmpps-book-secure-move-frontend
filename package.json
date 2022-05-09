@@ -180,7 +180,7 @@
     "qs": "6.10.3",
     "redis": "3.1.2",
     "response-time": "2.3.2",
-    "retry-axios": "2.6.0",
+    "retry-axios": "3.0.0",
     "semver-sort": "1.0.0",
     "serve-favicon": "2.5.0",
     "sticky-sidebar": "3.3.1",
