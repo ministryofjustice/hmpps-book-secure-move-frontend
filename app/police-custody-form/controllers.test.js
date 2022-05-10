@@ -41,7 +41,7 @@ describe('Police Custody Form controllers', function () {
 
       it('should redirect to the timeline/events page for that move', function () {
         expect(mockRes.redirect).to.be.calledOnceWithExactly(
-          '/move/12232552242/timeline'
+          '/move/12232552242'
         )
       })
 
