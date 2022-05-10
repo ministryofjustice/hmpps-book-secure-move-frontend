@@ -103,15 +103,10 @@ describe('#locationToPopulationTableComponent()', function () {
   beforeEach(function () {
     sinon.stub(i18n, 't').returnsArg(0)
     i18n.t.resetHistory()
-
-    const mockDate = new Date('2020-06-07')
-    this.clock = sinon.useFakeTimers(mockDate.getTime())
   })
 
   afterEach(function () {
     i18n.t.restore()
-
-    this.clock.restore()
   })
 
   describe('locationsToPopulationTable', function () {
@@ -269,10 +264,16 @@ describe('#locationToPopulationTableComponent()', function () {
       beforeEach(function () {
         i18n.t.resetHistory()
 
+        this.clock = sinon.useFakeTimers(new Date('2020-06-07').getTime())
+
         output = locationsToPopulationTable({
           startDate: new Date('2020-06-01'),
           focusDate: new Date('2020-06-04'),
         })(mockGroupedLocations)
+      })
+
+      afterEach(function () {
+        this.clock.restore()
       })
 
       context('with no options', function () {
