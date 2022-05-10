@@ -74,6 +74,7 @@ describe('', function () {
         now: 1483228800000,
       })
       testTimer = timer()
+      clock.restore()
       clock = sinon.useFakeTimers({
         now: 1483228800023,
       })
