@@ -31,7 +31,7 @@ exports.addEvents = async function (req, res) {
     content: req.t('messages::events_added.content', { fullName }),
   })
 
-  return res.redirect(`/move/${moveId}/timeline`)
+  return res.redirect(`/move/${moveId}`)
 }
 
 function mapErrorMessages(errors) {
