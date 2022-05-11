@@ -45,6 +45,8 @@ const addImportantEvents = data => {
       ({ event_type: eventType, classification }) =>
         eventType === 'PerPropertyChange' ||
         eventType === 'PerHandover' ||
+        eventType === 'MoveLodgingStart' ||
+        eventType === 'MoveLodgingEnd' ||
         (classification && classification !== 'default')
     )
   }
