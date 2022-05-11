@@ -10,12 +10,13 @@ class HandoverController extends ConfirmAssessmentController {
 
   middlewareLocals() {
     super.middlewareLocals()
-    this.use(this.setMoveId)
+    this.use(this.setMoveDetails)
     this.use(this.setBreadcrumb)
   }
 
-  setMoveId(req, res, next) {
+  setMoveDetails(req, res, next) {
     res.locals.moveId = req.move.id
+    res.locals.moveIsLockout = req.move.is_lockout
     next()
   }
 
