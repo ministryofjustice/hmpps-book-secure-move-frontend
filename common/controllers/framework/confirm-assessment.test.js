@@ -106,8 +106,9 @@ describe('Framework controllers', function () {
         })
       })
 
-      context('with confirmed status', function () {
+      context('with confirmed status and is a PER', function () {
         beforeEach(function () {
+          mockReq.assessment.framework = { name: 'person-escort-record' }
           mockReq.assessment.status = 'confirmed'
           controller.checkStatus(mockReq, mockRes, nextSpy)
         })
@@ -121,24 +122,20 @@ describe('Framework controllers', function () {
         })
       })
 
-      context(
-        'with confirmed status and handover_occurred_at set',
-        function () {
-          beforeEach(function () {
-            mockReq.assessment.status = 'confirmed'
-            mockReq.assessment.handover_occurred_at = '123'
-            controller.checkStatus(mockReq, mockRes, nextSpy)
-          })
+      context('with confirmed status and is not a PER', function () {
+        beforeEach(function () {
+          mockReq.assessment.status = 'confirmed'
+          controller.checkStatus(mockReq, mockRes, nextSpy)
+        })
 
-          it('should redirect to move', function () {
-            expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
-          })
+        it('should redirect to move', function () {
+          expect(mockRes.redirect).to.be.calledOnceWithExactly('/move/12345')
+        })
 
-          it('should not call next', function () {
-            expect(nextSpy).not.to.be.called
-          })
-        }
-      )
+        it('should not call next', function () {
+          expect(nextSpy).not.to.be.called
+        })
+      })
     })
 
     describe('#saveValues', function () {

@@ -436,6 +436,9 @@ describe('Person Escort Record controllers', function () {
               confirm: sinon.stub().resolves({}),
             },
           },
+          session: {
+            currentLocation: { id: 'abc' },
+          },
         }
       })
 
@@ -461,6 +464,7 @@ describe('Person Escort Record controllers', function () {
             receivingOfficerId: '456',
             receivingOfficerContact: '088888',
             receivingOrganisation: 'Serco',
+            locationId: 'abc',
           })
         })
 

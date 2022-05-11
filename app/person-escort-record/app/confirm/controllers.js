@@ -119,6 +119,8 @@ class HandoverController extends ConfirmAssessmentController {
         handover_receiving_organisation: receivingOrganisation,
       } = values
 
+      const locationId = req.session?.currentLocation?.id
+
       await req.services.personEscortRecord.confirm(req.assessment.id, {
         handoverOccurredAt,
         dispatchingOfficer,
@@ -128,6 +130,7 @@ class HandoverController extends ConfirmAssessmentController {
         receivingOfficerId,
         receivingOfficerContact,
         receivingOrganisation,
+        locationId,
       })
 
       next()

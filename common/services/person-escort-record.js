@@ -29,6 +29,7 @@ class PersonEscortRecordService extends BaseService {
       receivingOfficerId,
       receivingOfficerContact,
       receivingOrganisation,
+      locationId,
     } = {}
   ) {
     if (!id) {
@@ -43,6 +44,7 @@ class PersonEscortRecordService extends BaseService {
       receiving_officer_id: receivingOfficerId,
       receiving_officer_contact: receivingOfficerContact,
       receiving_organisation: receivingOrganisation,
+      location_id: locationId,
     })
 
     return this.apiClient
