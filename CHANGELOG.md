@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.119.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.119.0...v2.119.1) (2022-05-11)
+
+
+### Bug Fixes
+
+* Fix HTML syntax for images from Contentful ([0e75c4e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/0e75c4e87359d0d55afb17b28c003f2eaea68071))
+* Redirect users to move page after filling ([decb331](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/decb331a5c17e49bf42fd816da38b40d505f88dd))
+
 ## [2.119.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.118.3...v2.119.0) (2022-05-05)
 
 
