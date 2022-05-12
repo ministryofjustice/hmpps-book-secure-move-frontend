@@ -10,3 +10,14 @@ img {
   display: inline-block;
   max-width: 100%;
 }
+
+figure {
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+figure > img {
+  border: 1px solid $govuk-border-colour;
+  text-align: center;
+  width: 100%;
+}
