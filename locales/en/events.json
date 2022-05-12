@@ -153,7 +153,7 @@
   },
   "MoveLodgingStart": {
     "heading": "Lodging started",
-    "description": "$t(events::person)  temporarily lodged at {{location.title}} $t(events::MoveLodgingStart.select_reason) $t(events::select_authorised_by)",
+    "description": "$t(events::person) temporarily lodged at {{location.title}} $t(events::MoveLodgingStart.select_reason) $t(events::select_authorised_by)",
     "select_reason": "$t(events::MoveLodgingStart.reason, {\"context\": \"{{reason}}\"})",
     "reason": "",
     "reason_overnight_lodging": "due to an overnight lodging",
@@ -456,11 +456,13 @@
     "description": "All information in this Person Escort Record was confirmed"
   },
   "PerHandover": {
-    "heading": "Person handed over",
-    "description": "This person was handed over $t(events::PerHandover.receiving, {\"context\": \"{{receiving_officer, exists}}\"}) $t(events::PerHandover.dispatching, {\"context\": \"{{dispatching_officer, exists}}\"})",
-    "receiving_true": "to <strong>{{receiving_officer}} ({{receiving_officer_id}}), {{receiving_organisation}}</strong>",
+    "heading": "Handover recorded",
+    "description": "$t(events::person) was handed over $t(events::PerHandover.location, {\"context\": \"{{location, exists}}\"}) $t(events::PerHandover.dispatching, {\"context\": \"{{dispatching_officer, exists}}\"}) $t(events::PerHandover.receiving, {\"context\": \"{{receiving_officer, exists}}\"})",
+    "location_true": "at {{location.title}}",
+    "location_false": "",
+    "receiving_true": "to {{receiving_officer}} ({{receiving_officer_id}}) of {{receiving_organisation}}",
     "receiving_false": "",
-    "dispatching_true": "by <strong>{{dispatching_officer}} ({{dispatching_officer_id}})</strong>",
+    "dispatching_true": "by {{dispatching_officer}} ({{dispatching_officer_id}})",
     "dispatching_false": ""
   }
 }
