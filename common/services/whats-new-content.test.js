@@ -231,23 +231,23 @@ describe('whatsNewContentService Service', function () {
     })
 
     it('returns the formatted body', async function () {
-      const formattedEntries = await whatsNewContentService.fetch()
+      const formattedEntries = await whatsNewContentService.fetchAll()
       expect(formattedEntries.posts[0].body).to.equal(
         '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="govuk-heading-m govuk-!-margin-top-4"><em>Test heading 3.</em></h3><h4 class="govuk-heading-s govuk-!-margin-top-3">Test heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul><ol class="govuk-list govuk-list--number"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ol><figure class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>'
       )
     })
     it('returns the content title', async function () {
-      const formattedEntries = await whatsNewContentService.fetch()
+      const formattedEntries = await whatsNewContentService.fetchAll()
       expect(formattedEntries.posts[0].title).to.equal('Whats new today!')
     })
     it('returns the banner text', async function () {
-      const formattedEntries = await whatsNewContentService.fetch()
+      const formattedEntries = await whatsNewContentService.fetchAll()
       expect(formattedEntries.bannerContent.body).to.equal(
         'Some text briefly explaining the changes.'
       )
     })
     it('returns the formatted date', async function () {
-      const formattedEntries = await whatsNewContentService.fetch()
+      const formattedEntries = await whatsNewContentService.fetchAll()
       expect(formattedEntries.posts[0].date).to.equal(
         format(todaysDate, DATE_FORMATS.WITH_MONTH)
       )
@@ -259,7 +259,7 @@ describe('whatsNewContentService Service', function () {
       sinon
         .stub(whatsNewContentService.client, 'getEntries')
         .resolves(emptyMockedResponse)
-      const formattedEntries = await whatsNewContentService.fetch()
+      const formattedEntries = await whatsNewContentService.fetchAll()
       expect(formattedEntries).to.equal(null)
     })
   })
@@ -269,7 +269,7 @@ describe('whatsNewContentService Service', function () {
       sinon
         .stub(whatsNewContentService.client, 'getEntries')
         .resolves(emptyMockedResponse)
-      const response = await whatsNewContentService.fetch()
+      const response = await whatsNewContentService.fetchAll()
       expect(response).to.equal(null)
     })
   })

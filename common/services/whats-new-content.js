@@ -12,7 +12,7 @@ const { DATE_FORMATS } = require('../../config/index')
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
 
-const options = {
+const OPTIONS = {
   renderMark: {
     [MARKS.BOLD]: text => `<strong>${text}</strong>`,
     [MARKS.ITALIC]: text => `<em>${text}</em>`,
@@ -57,25 +57,23 @@ const service = {
     space: CONTENTFUL_SPACE_ID,
     accessToken: CONTENTFUL_ACCESS_TOKEN,
   }),
-  fetch: async () => {
-    const entries = await service.fetchEntries()
+  fetchAll: async () => {
+    const entries = await service.client.getEntries()
 
-    if (entries.length === 0) {
+    if (!entries.items?.length) {
       return null
     }
 
-    const formattedEntries = entries.map(({ title, body, date }) => ({
-      title,
-      body: service.convertToHTMLFormat(body),
-      date: service.formatDate(date),
-    }))
+    const formattedEntries = entries.items.map(entry =>
+      service.formatEntry(entry)
+    )
 
     let formattedBannerContent = null
 
-    if (new Date() - entries[0].date <= TWO_WEEKS) {
+    if (new Date() - new Date(entries.items[0].fields.date) <= TWO_WEEKS) {
       formattedBannerContent = {
-        body: entries[0].briefBannerText,
-        date: service.formatDate(entries[0].date),
+        body: formattedEntries[0].briefBannerText,
+        date: formattedEntries[0].date,
       }
     }
 
@@ -84,23 +82,12 @@ const service = {
       posts: formattedEntries,
     }
   },
-  fetchEntries: async () => {
-    const entries = await service.client.getEntries()
-
-    if (!entries.items?.length) {
-      return []
-    }
-
-    return entries.items.map(
-      ({ fields: { title, body, briefBannerText, date } }) => ({
-        title,
-        body,
-        briefBannerText,
-        date: new Date(date),
-      })
-    )
-  },
-  convertToHTMLFormat: body => documentToHtmlString(body, options),
-  formatDate: date => format(date, DATE_FORMATS.WITH_MONTH),
+  formatEntry: ({ fields: { title, body, briefBannerText, date } }) => ({
+    title,
+    body: documentToHtmlString(body, OPTIONS),
+    briefBannerText,
+    date: format(new Date(date), DATE_FORMATS.WITH_MONTH),
+  }),
 }
+
 module.exports = service

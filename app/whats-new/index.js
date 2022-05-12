@@ -8,7 +8,7 @@ router.get('/', async (req, res, next) => {
   let content
 
   try {
-    content = await whatsNewContentService.fetch()
+    content = await whatsNewContentService.fetchAll()
   } catch (e) {
     return next(e)
   }
