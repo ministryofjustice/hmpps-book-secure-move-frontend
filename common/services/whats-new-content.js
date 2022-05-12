@@ -91,8 +91,13 @@ const service = {
 
     return service.formatEntry(entry)
   },
-  formatEntry: ({ fields: { title, body, briefBannerText, date } }) => ({
+  formatEntry: ({
+    sys: { id },
+    fields: { title, summary, body, briefBannerText, date },
+  }) => ({
+    id,
     title,
+    summary: documentToHtmlString(summary, OPTIONS),
     body: documentToHtmlString(body, OPTIONS),
     briefBannerText,
     date: format(new Date(date), DATE_FORMATS.WITH_MONTH),
