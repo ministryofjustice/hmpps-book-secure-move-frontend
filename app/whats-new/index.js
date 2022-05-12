@@ -1,31 +1,17 @@
 const router = require('express').Router()
 
-const whatsNewContentService = require('../../common/services/whats-new-content')
+const breadcrumbs = require('../../common/middleware/breadcrumbs')
 
-router.get('/', async (req, res, next) => {
-  let content
+const { fetchAll, fetchOne, setBreadcrumb } = require('./middleware')
 
-  try {
-    content = await whatsNewContentService.fetchAll()
-  } catch (e) {
-    return next(e)
-  }
+router.use(breadcrumbs.setHome())
 
-  res.render('whats-new/whats-new', {
-    posts: content.posts,
-  })
+router.get('/', fetchAll, setBreadcrumb, (req, res) => {
+  res.render('whats-new/whats-new')
 })
 
-router.get('/:id', async (req, res, next) => {
-  let post
-
-  try {
-    post = await whatsNewContentService.fetchOne(req.params.id)
-  } catch (e) {
-    return next(e)
-  }
-
-  res.render('whats-new/detail', { post })
+router.get('/:id', fetchOne, setBreadcrumb, (req, res) => {
+  res.render('whats-new/detail')
 })
 
 module.exports = { router, mountpath: '/whats-new' }
