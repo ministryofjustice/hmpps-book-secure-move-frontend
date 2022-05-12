@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.120.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.119.1...v2.120.0) (2022-05-12)
+
+
+### Features
+
+* Improve image asset rendering ([96718c3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/96718c38187097eaf905f98ff826de62636dfcf5))
+
+
+### Bug Fixes
+
+* Re-structure Contentful headings ([5cd0637](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5cd0637d94aeca5681461614da917cb662d30e4d))
+
 ### [2.119.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.119.0...v2.119.1) (2022-05-11)
 
 
