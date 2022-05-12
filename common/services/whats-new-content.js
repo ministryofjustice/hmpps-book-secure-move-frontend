@@ -45,7 +45,7 @@ const options = {
         target: { fields },
       },
     }) =>
-      `<figure class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"><img src="https:${fields.file.url}" alt="${fields.description}" /><figcaption class="govuk-body govuk-!-text-align-centre">${fields.title}</figcaption></figure>`,
+      `<figure class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"><img src="https:${fields.file.url}" alt="${fields.description}" /></figure>`,
     [INLINES.HYPERLINK]: (node, next) =>
       `<a class="govuk-link" href="${node.data.uri}">${next(node.content)}</a>`,
   },
