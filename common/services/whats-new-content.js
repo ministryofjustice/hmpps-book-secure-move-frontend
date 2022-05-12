@@ -15,13 +15,15 @@ const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
 const options = {
   renderMark: {
     [MARKS.BOLD]: text => `<strong>${text}</strong>`,
-    [MARKS.ITALIC]: text => `<i>${text}</i>`,
+    [MARKS.ITALIC]: text => `<em>${text}</em>`,
   },
   renderNode: {
     [BLOCKS.HEADING_1]: (node, next) =>
-      `<h1 class="govuk-heading-l">${next(node.content)}</h1>`,
+      `<h1 class="govuk-heading-xl govuk-!-margin-top-6">${next(
+        node.content
+      )}</h1>`,
     [BLOCKS.HEADING_2]: (node, next) =>
-      `<h2 class="govuk-heading-s govuk-!-margin-top-5">${next(
+      `<h2 class="govuk-heading-l govuk-!-margin-top-5">${next(
         node.content
       )}</h2>`,
     [BLOCKS.HEADING_3]: (node, next) =>
@@ -29,15 +31,21 @@ const options = {
         node.content
       )}</h3>`,
     [BLOCKS.HEADING_4]: (node, next) =>
-      `<h4 class="govuk-heading-m">${next(node.content)}</h4>`,
+      `<h4 class="govuk-heading-s govuk-!-margin-top-3">${next(
+        node.content
+      )}</h4>`,
     [BLOCKS.UL_LIST]: (node, next) =>
       `<ul class="govuk-list govuk-list--bullet">${next(node.content)}</ul>`,
     [BLOCKS.OL_LIST]: (node, next) =>
       `<ol class="govuk-list govuk-list--number">${next(node.content)}</ol>`,
     [BLOCKS.PARAGRAPH]: (node, next) =>
       `<p class="govuk-body">${next(node.content)}</p>`,
-    [BLOCKS.EMBEDDED_ASSET]: node =>
-      `<img src="https:${node.data.target.fields.file.url}" height="${node.data.target.fields.file.details.image.height}" width="${node.data.target.fields.file.details.image.width}" alt="${node.data.target.fields.description}" />`,
+    [BLOCKS.EMBEDDED_ASSET]: ({
+      data: {
+        target: { fields },
+      },
+    }) =>
+      `<figure class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"><img src="https:${fields.file.url}" alt="${fields.description}" /><figcaption class="govuk-body govuk-!-text-align-centre">${fields.title}</figcaption></figure>`,
     [INLINES.HYPERLINK]: (node, next) =>
       `<a class="govuk-link" href="${node.data.uri}">${next(node.content)}</a>`,
   },

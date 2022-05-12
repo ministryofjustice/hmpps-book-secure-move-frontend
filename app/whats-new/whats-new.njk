@@ -27,13 +27,13 @@
 
   {% for post in posts %}
     <div class="govuk-!-padding-bottom-7">
-      <h2 class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
+      <p class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
         {{ post.date }}
-      </h2>
+      </p>
 
       <hr>
 
-      <h3 class="govuk-heading-l govuk-!-margin-top-5">{{ post.title }}</h3>
+      <h2 class="govuk-heading-l govuk-!-margin-top-5">{{ post.title }}</h2>
 
       {{ post.body | safe }}
     </div>
