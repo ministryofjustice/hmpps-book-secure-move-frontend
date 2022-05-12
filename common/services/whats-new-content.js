@@ -82,6 +82,15 @@ const service = {
       posts: formattedEntries,
     }
   },
+  fetchOne: async id => {
+    const entry = await service.client.getEntry(id)
+
+    if (!entry) {
+      return null
+    }
+
+    return service.formatEntry(entry)
+  },
   formatEntry: ({ fields: { title, body, briefBannerText, date } }) => ({
     title,
     body: documentToHtmlString(body, OPTIONS),
