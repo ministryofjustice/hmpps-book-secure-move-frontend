@@ -11,13 +11,5 @@
     </h1>
   </header>
 
-  <div class="govuk-!-padding-bottom-7">
-    <p class="govuk-heading-m govuk-!-margin-top-4 govuk-!-margin-bottom-5">
-      {{ entry.date }}
-    </p>
-
-    <hr>
-
-    {{ entry.body | safe }}
-  </div>
+  {{ entry.body | safe }}
 {% endblock %}
