@@ -1,9 +1,7 @@
-// Dependencies
 const router = require('express').Router()
 
 const whatsNewContentService = require('../../common/services/whats-new-content')
 
-// Define routes
 router.get('/', async (req, res, next) => {
   let content
 
@@ -18,8 +16,16 @@ router.get('/', async (req, res, next) => {
   })
 })
 
-// Export
-module.exports = {
-  router,
-  mountpath: '/whats-new',
-}
+router.get('/:id', async (req, res, next) => {
+  let post
+
+  try {
+    post = await whatsNewContentService.fetchOne(req.params.id)
+  } catch (e) {
+    return next(e)
+  }
+
+  res.render('whats-new/detail', { post })
+})
+
+module.exports = { router, mountpath: '/whats-new' }
