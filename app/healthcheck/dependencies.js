@@ -50,7 +50,7 @@ module.exports = [
     name: 'redis',
     healthcheck: async () => {
       if (redisStore) {
-        const result = (await redisStore()).client.ping()
+        const result = (await redisStore()).client.v4.ping()
 
         if (!result) {
           throw new Error('No connection')
