@@ -129,7 +129,7 @@ jobs:
 
           docker tag app $DOCKER_IMAGE_URL
           docker push $DOCKER_IMAGE_URL
-      
+
       - name: Upload kube configs
         env:
           PR_NUMBER: ${{ github.event.number }}
@@ -145,6 +145,8 @@ jobs:
           kubectl apply -f .github/branch-deploy/service.yml
           kubectl apply -f .github/branch-deploy/deployment.yml
           kubectl apply -f .github/branch-deploy/ingress.yml
+
+          kubectl rollout restart deployment "hmpps-book-secure-move-frontend-deployment-pr-${PR_NUMBER}"
 
       - name: Update deployment
         uses: actions/github-script@v6
