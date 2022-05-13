@@ -38,7 +38,7 @@ describe('Person Escort Record controllers', function () {
         sinon.stub(ConfirmAssessmentController.prototype, 'middlewareLocals')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'setBreadcrumb')
-        sinon.stub(controller, 'setMoveId')
+        sinon.stub(controller, 'setMoveDetails')
 
         controller.middlewareLocals()
       })
@@ -54,9 +54,9 @@ describe('Person Escort Record controllers', function () {
         )
       })
 
-      it('should call set move ID', function () {
+      it('should call set move details', function () {
         expect(controller.use).to.have.been.calledWithExactly(
-          controller.setMoveId
+          controller.setMoveDetails
         )
       })
 
@@ -184,12 +184,17 @@ describe('Person Escort Record controllers', function () {
         mockRes = {
           locals: {},
         }
-        controller.setMoveId(mockReq, mockRes, nextSpy)
+        controller.setMoveDetails(mockReq, mockRes, nextSpy)
       })
 
       it('should set move ID', function () {
         expect(mockRes.locals).to.have.property('moveId')
         expect(mockRes.locals.moveId).to.equal('12345')
+      })
+
+      it('should set move is lockout', function () {
+        expect(mockRes.locals).to.have.property('moveIsLockout')
+        expect(mockRes.locals.moveIsLockout).to.equal(undefined)
       })
 
       it('should call next without error', function () {
@@ -431,6 +436,9 @@ describe('Person Escort Record controllers', function () {
               confirm: sinon.stub().resolves({}),
             },
           },
+          session: {
+            currentLocation: { id: 'abc' },
+          },
         }
       })
 
@@ -456,6 +464,7 @@ describe('Person Escort Record controllers', function () {
             receivingOfficerId: '456',
             receivingOfficerContact: '088888',
             receivingOrganisation: 'Serco',
+            locationId: 'abc',
           })
         })
 

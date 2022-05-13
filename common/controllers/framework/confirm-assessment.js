@@ -16,10 +16,11 @@ class ConfirmAssessmentController extends FormWizardController {
 
   checkStatus(req, res, next) {
     const moveId = req.move?.id
+
     const isAllowed =
       req?.assessment?.status === 'completed' ||
-      (req?.assessment?.status === 'confirmed' &&
-        !req.assessment.handover_occurred_at)
+      (req?.assessment?.framework?.name === 'person-escort-record' &&
+        req?.assessment?.status === 'confirmed')
 
     if (isAllowed) {
       return next()

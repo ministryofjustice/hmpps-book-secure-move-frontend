@@ -10,12 +10,13 @@ class HandoverController extends ConfirmAssessmentController {
 
   middlewareLocals() {
     super.middlewareLocals()
-    this.use(this.setMoveId)
+    this.use(this.setMoveDetails)
     this.use(this.setBreadcrumb)
   }
 
-  setMoveId(req, res, next) {
+  setMoveDetails(req, res, next) {
     res.locals.moveId = req.move.id
+    res.locals.moveIsLockout = req.move.is_lockout
     next()
   }
 
@@ -118,6 +119,8 @@ class HandoverController extends ConfirmAssessmentController {
         handover_receiving_organisation: receivingOrganisation,
       } = values
 
+      const locationId = req.session?.currentLocation?.id
+
       await req.services.personEscortRecord.confirm(req.assessment.id, {
         handoverOccurredAt,
         dispatchingOfficer,
@@ -127,6 +130,7 @@ class HandoverController extends ConfirmAssessmentController {
         receivingOfficerId,
         receivingOfficerContact,
         receivingOrganisation,
+        locationId,
       })
 
       next()

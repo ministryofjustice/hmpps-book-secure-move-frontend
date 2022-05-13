@@ -20,6 +20,7 @@ const frameworkToTaskListComponent = require('./framework-to-task-list-component
 const moveToMessageBannerComponent = require('./message-banner/move-to-message-banner-component')
 const moveToAdditionalInfoListComponent = require('./move-to-additional-info-list-component')
 const moveToCardComponent = require('./move-to-card-component')
+const moveToHandoversSummary = require('./move-to-handovers-summary')
 const moveToIdentityBarActions = require('./move-to-identity-bar-actions')
 const moveToImportantEventsTagListComponent = require('./move-to-important-events-tag-list-component')
 const moveToInTransitEventsPanelList = require('./move-to-in-transit-events-panel-list')
@@ -65,6 +66,7 @@ module.exports = {
   movesToTableComponent,
   moveToAdditionalInfoListComponent,
   moveToCardComponent,
+  moveToHandoversSummary,
   moveToIdentityBarActions,
   moveToImportantEventsTagListComponent,
   moveToInTransitEventsPanelList,

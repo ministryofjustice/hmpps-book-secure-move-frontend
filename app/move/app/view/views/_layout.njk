@@ -32,16 +32,23 @@
     <div class="govuk-!-margin-bottom-6 prison-lockout-banner">
       <div class="govuk-width-container prison-lockout-banner-content">
         <div class="govuk-grid-row">
-          <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-grid-column-one-half">
             {{ govukWarningText({
               text: t("moves::is_lockout"),
               iconFallbackText: "Warning"
             }) }}
           </div>
-          <div class="govuk-grid-column-one-third">
-            {% if moveLodgingStarted and not moveLodgingEnded %}
-              <a href="/move/{{moveId}}/police-custody-form" class="govuk-button prison-lockout-banner-button">Add events</a>
-            {% endif %}   
+
+          <div class="govuk-grid-column-one-half govuk-!-text-align-right">
+            {% if moveLodgingStarted %}
+              {% if not moveLodgingEnded and (not moveLockoutHandover or not moveLockoutHandover.recorded) %}
+                <a href="/move/{{moveId}}/police-custody-form" class="govuk-button">Add events</a>
+              {% endif %}
+
+              {% if moveLockoutHandover and not moveLockoutHandover.recorded %}
+                <a href="/move/{{moveId}}/person-escort-record/confirm" class="govuk-button">Record handover</a>
+              {% endif %}
+            {% endif %}
           </div>
         </div>
       </div>
