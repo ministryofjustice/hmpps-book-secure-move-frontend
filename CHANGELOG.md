@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.121.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.120.1...v2.121.0) (2022-05-16)
+
+
+### Features
+
+* Customise record handover form for lockouts ([d0a5b35](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d0a5b35616fef7db593cd0e3ee3c5d5751fa9989))
+* Improve content for the handover event ([acd2cb6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/acd2cb652a24d85589a5997eedb20fb32c6b3955))
+* Improve how images are rendered from Contentful ([480c8a6](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/480c8a699c6ec52114f6fa9bb2462a3e867413c9))
+* Send location when recording a handover ([af41688](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/af41688cd9a0dc76affecd5bbe88f44cf69989f9))
+* Show record handover button for lockouts ([5532e88](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5532e88971848e0d77ed60174c4624068d851d7a))
+
+
+### Bug Fixes
+
+* Exclude certain events from tags list ([63ad625](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/63ad625066ed7895b0cd3ce3565c35ed79c8f78b))
+* Restart deployment after branch based apply ([972423b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/972423bfc53ed31f4cb4ade10bb44c50a584a3d0))
+
 ### [2.120.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.120.0...v2.120.1) (2022-05-12)
 
 ## [2.120.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.119.1...v2.120.0) (2022-05-12)
