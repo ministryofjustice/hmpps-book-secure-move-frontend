@@ -243,7 +243,7 @@
     "sinon": "14.0.0",
     "sinon-chai": "3.7.0",
     "standard": "17.0.0",
-    "standard-version": "9.3.2",
+    "standard-version": "9.5.0",
     "terser-webpack-plugin": "5.3.1",
     "testcafe": "1.18.6",
     "testcafe-browser-provider-browserstack": "1.13.2",
