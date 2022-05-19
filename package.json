@@ -192,7 +192,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.17.12",
-    "@babel/preset-env": "7.17.12",
+    "@babel/preset-env": "7.18.0",
     "@commitlint/cli": "17.0.0",
     "@commitlint/config-conventional": "17.0.0",
     "@ffmpeg-installer/ffmpeg": "1.1.0",
