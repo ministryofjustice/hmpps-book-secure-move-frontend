@@ -23,6 +23,8 @@ jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
       - id: create_deployment
         name: Create deployment
