@@ -25,6 +25,8 @@ jobs:
   setup-build-publish-deploy:
     name: Cleanup Deploy
     runs-on: ubuntu-latest
+    permissions:
+      deployments: write
     steps:
       - name: Authenticate with cluster
         run: |
