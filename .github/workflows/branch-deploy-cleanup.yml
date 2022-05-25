@@ -25,6 +25,8 @@ jobs:
   setup-build-publish-deploy:
     name: Cleanup Deploy
     runs-on: ubuntu-latest
+    permissions:
+      deployments: write
     steps:
       - name: Authenticate with cluster
         run: |
@@ -56,7 +58,7 @@ jobs:
       - name: Delete deployments
         uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.GH_TOKEN}}
+          github-token: ${{github.token}}
           script: |
             let deployments = (
               await github.rest.repos.listDeployments({
