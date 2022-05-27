@@ -5,6 +5,8 @@ const getDescription = event => {
   details.vehicle_reg =
     details.vehicle_reg || details.journey?.vehicle?.registration
 
+  populatePerCompletionUsers(details)
+
   if (supplier === null) {
     details.context = 'without_supplier'
   }
@@ -18,5 +20,35 @@ const getDescription = event => {
   // and not insert additional space without having to make the <br> conditional
   return description
 }
+
+const populatePerCompletionUsers = details => {
+  if (!details.responded_by) {
+    details.riskUsers = ''
+    details.offenceUsers = ''
+    details.healthUsers = ''
+    details.propertyUsers = ''
+    return
+  }
+
+  details.riskUsers = `by ${formatArray(
+    details.responded_by['risk-information']
+  )}`
+  details.offenceUsers = `by ${formatArray(
+    details.responded_by['offence-information']
+  )}`
+  details.healthUsers = `by ${formatArray(
+    details.responded_by['health-information']
+  )}`
+  details.propertyUsers = `by ${formatArray(
+    details.responded_by['property-information']
+  )}`
+}
+
+const formatArray = array =>
+  array
+    .filter(i => i)
+    .sort()
+    .join(', ')
+    .replace(/, ([^,]*)$/, ' and $1')
 
 module.exports = getDescription
