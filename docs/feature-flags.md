@@ -12,7 +12,7 @@ Note: There is currently no ability to dynamically change feature flags, for exa
 
 ### Configuration
 
-These environment variables are manually linked through to the rest of the app via the `config/index.js` file, using the following structure:
+These environment variables are manually linked through to the rest of the app via the `config/index.ts` file, using the following structure:
 
 ```javascript
 ...

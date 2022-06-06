@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 
 const {
   getMoveDetails,

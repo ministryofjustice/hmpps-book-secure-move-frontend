@@ -2,7 +2,7 @@ const proxyquire = require('proxyquire')
 const timezoneMock = require('timezone-mock')
 
 const componentService = require('../../common/services/component')
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 const mapUpdateLinkStub = sinon.stub().returnsArg(0)
 

@@ -1,6 +1,6 @@
 const queryString = require('qs')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 
 function getUrl(page, args) {
   const stringified = queryString.stringify(args, { arrayFormat: 'comma' })

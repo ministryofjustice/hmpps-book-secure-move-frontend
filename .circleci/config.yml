@@ -306,6 +306,9 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
+          name: Compile typescript
+          command: tsc --project ./
+      - run:
           name: Build docker image
           command: |
             export BUILD_DATE=$(date -Is) >> $BASH_ENV

@@ -1,7 +1,7 @@
 const { isToday, parseISO } = require('date-fns')
 const { isEmpty, get, groupBy, orderBy, sortBy } = require('lodash')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 const componentService = require('../services/component')
 

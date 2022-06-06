@@ -1,6 +1,6 @@
 const { find, set, cloneDeep } = require('lodash')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const frameworkNomisMappingsToPanel = require('../../presenters/framework-nomis-mappings-to-panel')
 
 function renderNomisMappingsToField(responses = []) {

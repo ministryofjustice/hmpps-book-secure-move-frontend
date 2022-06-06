@@ -1,7 +1,7 @@
 const { filter, find, orderBy, sortBy } = require('lodash')
 
 const presenters = require('../../../common/presenters')
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const filters = require('../../../config/nunjucks/filters')
 
 function _checkResponse({ responses = [], key, expectedValue }) {

@@ -1,7 +1,15 @@
-const i18n = require('../../../config/i18n')
+import i18n from '../../../config/i18n'
+import * as formatters from '../../formatters'
+import { TOptions } from 'i18next'
 
-const getDescription = event => {
-  const { event_type: eventType, details, supplier } = event
+import {Event} from '../../types/event'
+
+export function getDescription (event: Event) {
+  const {
+    event_type: eventType,
+    details,
+    supplier
+  } = event
   details.vehicle_reg =
     details.vehicle_reg || details.journey?.vehicle?.registration
 
@@ -11,17 +19,13 @@ const getDescription = event => {
     details.context = 'without_supplier'
   }
 
-  const description = i18n
-    .t(`events::${eventType}.description`, details)
-    .replace(/^(\s*<br>)+/, '')
-
   // Some strings that get added together are prefixed with a <br>.
   // This enables them to be used as the first item or where a previous string doesn't get output
   // and not insert additional space without having to make the <br> conditional
-  return description
+  return i18n.t(`events::${eventType}.description`, details as TOptions).replace(/^(\s*<br>)+/, '')
 }
 
-const populatePerCompletionUsers = details => {
+const populatePerCompletionUsers = (details: any) => {
   if (!details.responded_by) {
     details.riskUsers = ''
     details.offenceUsers = ''
@@ -30,25 +34,16 @@ const populatePerCompletionUsers = details => {
     return
   }
 
-  details.riskUsers = `by ${formatArray(
+  details.riskUsers = `by ${formatters.array(
     details.responded_by['risk-information']
   )}`
-  details.offenceUsers = `by ${formatArray(
+  details.offenceUsers = `by ${formatters.array(
     details.responded_by['offence-information']
   )}`
-  details.healthUsers = `by ${formatArray(
+  details.healthUsers = `by ${formatters.array(
     details.responded_by['health-information']
   )}`
-  details.propertyUsers = `by ${formatArray(
+  details.propertyUsers = `by ${formatters.array(
     details.responded_by['property-information']
   )}`
 }
-
-const formatArray = array =>
-  array
-    .filter(i => i)
-    .sort()
-    .join(', ')
-    .replace(/, ([^,]*)$/, ' and $1')
-
-module.exports = getDescription

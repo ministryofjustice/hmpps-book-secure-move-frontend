@@ -1,6 +1,6 @@
 const { cloneDeep, set } = require('lodash')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const componentService = require('../../services/component')
 
 const fieldHelpers = require('./')

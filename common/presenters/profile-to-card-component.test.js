@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 
 const frameworkFlagsToTagListStub = sinon.stub().returns(['1', '2', '3'])
