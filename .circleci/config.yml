@@ -215,6 +215,9 @@ jobs:
       - *install_dependencies
       - *save_cache
       - run:
+          name: Compile typescript
+          command: tsc --project ./
+      - run:
           name: Lint the code
           command: npm run circle:lint
       - run:
@@ -246,6 +249,9 @@ jobs:
       - run:
           name: Build assets and frameworks
           command: npm run build
+      - run:
+          name: Compile typescript
+          command: tsc --project ./
       - run:
           name: Run E2E tests (same instance)
           environment:
