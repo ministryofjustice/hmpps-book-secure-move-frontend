@@ -215,11 +215,11 @@ jobs:
       - *install_dependencies
       - *save_cache
       - run:
-          name: Compile typescript
-          command: npx tsc --project ./
-      - run:
           name: Lint the code
           command: npm run circle:lint
+      - run:
+          name: Compile typescript
+          command: npx tsc --project ./
       - run:
           name: Run unit tests
           command: |
@@ -305,6 +305,7 @@ jobs:
     steps:
       - checkout
       - *set_package_version
+      - *install_dependencies
       - when:
           condition: <<parameters.production>>
           steps:
