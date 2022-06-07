@@ -305,6 +305,9 @@ jobs:
     steps:
       - checkout
       - *set_package_version
+      - run:
+          name: Install NPM
+          command: apt install npm
       - *install_dependencies
       - when:
           condition: <<parameters.production>>
