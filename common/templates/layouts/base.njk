@@ -68,6 +68,7 @@
       gtag('js', new Date());
       {% block customGtagConfig %}{% endblock %}
       gtag('config', '{{ GA_ID }}')
+      gtag('set', {'user_id': '{{ USER.userId }}'}); // Set the user ID using signed-in user_id.
     </script>
   {% endif %}
 {% endblock %}
