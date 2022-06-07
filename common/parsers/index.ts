@@ -29,12 +29,10 @@ const getInternationalValue = (value: string): string => {
 }
 
 export function date (value?: Date | string): Date | undefined {
-  if (!value || !(value instanceof Date || typeof value === 'string')) {
-    return undefined
-  }
-
   if (value instanceof Date) {
     return value
+  } else if (!value || typeof value !== 'string') {
+    return undefined
   }
 
   const internationalValue = getInternationalValue(value)

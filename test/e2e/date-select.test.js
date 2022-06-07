@@ -1,6 +1,6 @@
 import * as dateFns from 'date-fns'
 
-import parsers from '../../common/parsers'
+import * as parsers from '../../common/parsers'
 
 import { fillInForm } from './_helpers'
 import { pmuUser } from './_roles'
