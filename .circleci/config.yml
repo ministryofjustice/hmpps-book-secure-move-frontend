@@ -218,6 +218,9 @@ jobs:
           name: Lint the code
           command: npm run circle:lint
       - run:
+          name: Compile typescript
+          command: npx tsc --project ./
+      - run:
           name: Run unit tests
           command: |
             npm run circle:coverage
@@ -246,6 +249,9 @@ jobs:
       - run:
           name: Build assets and frameworks
           command: npm run build
+      - run:
+          name: Compile typescript
+          command: npx tsc --project ./
       - run:
           name: Run E2E tests (same instance)
           environment:
@@ -299,12 +305,16 @@ jobs:
     steps:
       - checkout
       - *set_package_version
+      - *install_dependencies
       - when:
           condition: <<parameters.production>>
           steps:
             - *notify_slack_on_release_start
       - setup_remote_docker:
           docker_layer_caching: true
+      - run:
+          name: Compile typescript
+          command: npx tsc --project ./
       - run:
           name: Build docker image
           command: |

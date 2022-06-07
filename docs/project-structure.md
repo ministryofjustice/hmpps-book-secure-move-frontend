@@ -18,7 +18,7 @@
 
   Each folder inside this directory refers to a `module`, which can contain
 
-  - `module/index.js`
+  - `module/index.ts`
     Route configuration for the module
   - `module/controllers`
 

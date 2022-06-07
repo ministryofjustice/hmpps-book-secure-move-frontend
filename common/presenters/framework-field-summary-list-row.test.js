@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const componentService = require('../services/component')
 
 const frameworkNomisMappingsToPanelStub = sinon.stub().returns('NOMIS_HTML')

@@ -4,7 +4,7 @@ import { omit, pick } from 'lodash'
 import pluralize from 'pluralize'
 import { Selector, t } from 'testcafe'
 
-import parsers from '../../../common/parsers'
+import * as parsers from '../../../common/parsers'
 import filters from '../../../config/nunjucks/filters'
 import { fillInForm, generatePerson } from '../_helpers'
 

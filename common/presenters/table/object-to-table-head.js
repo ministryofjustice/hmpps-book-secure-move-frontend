@@ -1,7 +1,7 @@
 const { omit, pickBy } = require('lodash')
 const queryString = require('qs')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 
 function buildUrl({ sortKey }, query) {
   return queryString.stringify({

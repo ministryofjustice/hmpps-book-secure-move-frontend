@@ -1,7 +1,7 @@
 const { get } = require('lodash')
 // Using get because testcafe barfs on optional chaining
 
-const i18n = require('../../../../config/i18n')
+const i18n = require('../../../../config/i18n').default
 
 const setMissingToLocation = data => {
   if (!data.to_location) {

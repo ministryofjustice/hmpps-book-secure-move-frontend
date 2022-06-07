@@ -10,7 +10,7 @@ const {
 
 const assessmentCheckboxes = require('../../../app/move/app/new/fields/common.assessment-checkboxes')
 const explicitAssessmentAnswer = require('../../../app/move/app/new/fields/common.explicit-assessment-answer')
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const componentService = require('../../services/component')
 
 const addErrorListToErrors = require('./add-errorlist-to-errors')

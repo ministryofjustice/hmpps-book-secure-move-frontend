@@ -10,7 +10,7 @@ const frameworkNomisMappingsToPanel = proxyquire(
 )
 
 const componentService = require('../../common/services/component')
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 
 describe('#frameworkNomisMappingsToPanel', function () {

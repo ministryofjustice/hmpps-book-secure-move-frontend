@@ -1,4 +1,4 @@
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 
 const mapUpdateLink = (href, category) => {
   const categoryText = i18n.t(`moves::update_link.categories.${category}`)

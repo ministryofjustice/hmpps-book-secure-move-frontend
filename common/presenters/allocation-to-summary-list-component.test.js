@@ -1,4 +1,4 @@
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 
 const presenter = require('./allocation-to-summary-list-component')

@@ -455,6 +455,10 @@
     "heading": "Person Escort Record confirmed",
     "description": "All information in this Person Escort Record was confirmed"
   },
+  "PerCompletion": {
+    "heading": "Person Escort Record completed",
+    "description": "Risk information completed {{riskUsers}}<br>Offence information completed {{offenceUsers}}<br>Health information completed {{healthUsers}}<br>Property information completed {{propertyUsers}}"
+  },
   "PerHandover": {
     "heading": "Handover recorded",
     "description": "$t(events::person) was handed over $t(events::PerHandover.location, {\"context\": \"{{location, exists}}\"}) $t(events::PerHandover.dispatching, {\"context\": \"{{dispatching_officer, exists}}\"}) $t(events::PerHandover.receiving, {\"context\": \"{{receiving_officer, exists}}\"})",

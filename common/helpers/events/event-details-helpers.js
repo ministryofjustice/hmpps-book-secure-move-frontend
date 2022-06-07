@@ -1,6 +1,6 @@
 const pluralize = require('pluralize')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const { event: eventModel } = require('../../lib/api-client/models')
 
 const eventRelationships = Object.keys(eventModel.fields).filter(field => {

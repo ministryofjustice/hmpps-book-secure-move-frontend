@@ -1,6 +1,6 @@
 const { cloneDeep } = require('lodash')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const tablePresenters = require('../table')
 
 const {

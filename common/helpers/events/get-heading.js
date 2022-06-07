@@ -1,4 +1,4 @@
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 
 const getHeading = event => {
   const { event_type: eventType, _index, details, supplier } = event

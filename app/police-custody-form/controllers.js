@@ -1,4 +1,4 @@
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 
 exports.addEvents = async function (req, res) {
   const { user, move, journeys } = req

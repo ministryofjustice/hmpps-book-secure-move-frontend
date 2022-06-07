@@ -1,6 +1,6 @@
 const { groupBy, map, sortBy } = require('lodash')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const componentService = require('../services/component')
 
 const assessmentAnswersToMetaListComponent = require('./assessment-answers-to-meta-list-component')

@@ -1,4 +1,4 @@
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const componentService = require('../../services/component')
 
 const assessmentActions = require('./assessment-actions')

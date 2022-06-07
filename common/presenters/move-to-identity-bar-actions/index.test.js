@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const componentService = require('../../services/component')
 
 const assessmentActionsStub = sinon.stub().returns('_assessmentActions_')

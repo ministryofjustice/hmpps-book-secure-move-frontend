@@ -1,7 +1,7 @@
 const { get, omit } = require('lodash')
 const querystring = require('qs')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 
 function setfilterAllocations(items = []) {
   return async function buildFilter(req, res, next) {

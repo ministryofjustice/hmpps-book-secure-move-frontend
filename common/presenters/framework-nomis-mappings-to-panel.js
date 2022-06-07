@@ -1,5 +1,5 @@
 const componentService = require('../../common/services/component')
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 
 const assessmentAnswersToMetaListComponent = require('./assessment-answers-to-meta-list-component')
