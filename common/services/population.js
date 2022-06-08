@@ -65,7 +65,7 @@ class PopulationService extends BaseService {
     return this.apiClient
       .request(`${this.apiClient.apiUrl}/populations/new`, 'GET', {
         location_id: location,
-        date: date,
+        date,
       })
       .then(response => response.data)
   }

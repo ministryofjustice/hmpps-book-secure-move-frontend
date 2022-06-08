@@ -72,7 +72,9 @@ const getEventProperties = event => {
   const { notes, occurred_at, created_by } = event
   return {
     notes,
+    // eslint-disable-next-line camelcase
     occurred_at,
+    // eslint-disable-next-line camelcase
     created_by,
   }
 }

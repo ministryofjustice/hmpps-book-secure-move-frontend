@@ -64,7 +64,7 @@ class EventService extends BaseService {
             relationships: {
               eventable: {
                 data: {
-                  type: type,
+                  type,
                   id: relationshipsId,
                 },
               },

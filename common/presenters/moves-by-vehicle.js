@@ -55,7 +55,7 @@ module.exports = function movesByVehicle({
     if (isComplete) {
       timeHTML += componentService.getComponent('govukTag', {
         html: i18n.t('collections::labels.complete', {
-          context: context,
+          context,
         }),
         classes: 'govuk-tag--green',
       })

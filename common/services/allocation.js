@@ -111,7 +111,7 @@ class AllocationService extends BaseService {
       // by the API as resouce meta
       includeCancelled: status ? status.includes('cancelled') : false,
       filter: {
-        status: status,
+        status,
         from_locations: fromLocations.join(','),
         to_locations: toLocations.join(','),
         locations: locations.join(','),

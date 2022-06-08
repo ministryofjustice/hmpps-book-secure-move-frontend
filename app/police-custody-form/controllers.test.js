@@ -32,7 +32,7 @@ describe('Police Custody Form controllers', function () {
       mockReq.services = { event: eventService }
       const mockRes = {
         redirect: sinon.stub(),
-        locals: locals,
+        locals,
       }
 
       beforeEach(async function () {
@@ -66,7 +66,7 @@ describe('Police Custody Form controllers', function () {
       mockReq.services = { event: eventService }
       const mockRes = {
         render: sinon.stub(),
-        locals: locals,
+        locals,
       }
 
       beforeEach(async function () {
@@ -111,7 +111,7 @@ describe('Police Custody Form controllers', function () {
 
       const mockRes = {
         render: sinon.stub(),
-        locals: locals,
+        locals,
       }
 
       beforeEach(async function () {

@@ -1,6 +1,6 @@
 const path = require('path')
 
-// eslint-disable-next-line node/no-path-concat
+// eslint-disable-next-line n/no-path-concat
 const root = path.normalize(`${__dirname}/..`)
 const build = path.resolve(root, '.build')
 
