@@ -210,8 +210,8 @@ MapComponent.prototype = {
     return new Style({
       image: new CircleStyle({
         radius: 6,
-        fill: fill,
-        stroke: stroke,
+        fill,
+        stroke,
       }),
       text: this._textStyle(feature),
     })

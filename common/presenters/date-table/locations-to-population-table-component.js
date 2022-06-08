@@ -24,7 +24,7 @@ function locationsToPopulationAndTransfersTables({
   const tableConfig = cellType =>
     times(dayCount, index => {
       return dayConfig({
-        cellType: cellType,
+        cellType,
         date: addDays(startDateAsDate, index),
         populationIndex: index,
       })

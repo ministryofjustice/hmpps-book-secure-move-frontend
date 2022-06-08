@@ -77,7 +77,7 @@ function moveToCardComponent({
       classes: isCompact
         ? `app-card--compact ${personCardComponent.classes || ''}`
         : personCardComponent.classes || '',
-      caption: caption,
+      caption,
       ...(tags ? { tags } : undefined),
     }
   }

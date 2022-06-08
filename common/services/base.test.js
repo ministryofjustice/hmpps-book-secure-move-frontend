@@ -58,7 +58,7 @@ describe('Base Service', function () {
           empty_string: '',
           empty_array: [],
           empty_object: {},
-          undefined: undefined,
+          undefined,
           valid_false: false,
           valid_true: true,
           valid_string: 'foo',
