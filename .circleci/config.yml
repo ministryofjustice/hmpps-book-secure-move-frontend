@@ -307,7 +307,11 @@ jobs:
       - *set_package_version
       - run:
           name: Install NPM
-          command: apk add --update nodejs nodejs-npm
+          command: |
+            apk add --no-cache libgcc libstdc++ curl
+            curl -fLO https://github.com/oznu/alpine-node/releases/download/16.15.1/node-v16.15.1-linux-x86_64-alpine.tar.gz
+            tar -xzf node-v16.15.1-linux-x86_64-alpine.tar.gz -C /usr --strip-components=1 --no-same-owner
+            rm -rf node-v16.15.1-linux-x86_64-alpine.tar.gz
       - *install_dependencies
       - when:
           condition: <<parameters.production>>
