@@ -157,10 +157,6 @@ describe('Authentication middleware', function () {
             expect(req.session.anotherKey).to.equal('abc')
           })
 
-          it('does not copy grant property', function () {
-            expect(req.session).not.to.contain.property('grant')
-          })
-
           it('calls the next action', function () {
             expect(nextSpy).to.be.calledOnceWithExactly()
           })

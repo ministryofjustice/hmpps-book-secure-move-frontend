@@ -54,8 +54,12 @@ describe('Presenters', function () {
     })
 
     context('when event is a standard event', function () {
-      beforeEach(function () {
-        transformedResponse = eventToTimelineItemComponent(mockEvent, mockMove)
+      beforeEach(async function () {
+        transformedResponse = await eventToTimelineItemComponent(
+          'token',
+          mockEvent,
+          mockMove
+        )
       })
 
       it('should set the event details', function () {
@@ -95,6 +99,7 @@ describe('Presenters', function () {
 
       it('should get the description', function () {
         expect(eventHelpers.getDescription).to.be.calledOnceWithExactly(
+          'token',
           eventWithDetails
         )
       })
@@ -116,9 +121,13 @@ describe('Presenters', function () {
     })
 
     context('when event is an important event', function () {
-      beforeEach(function () {
+      beforeEach(async function () {
         eventHelpers.getFlag.returns({ html: 'flag html' })
-        transformedResponse = eventToTimelineItemComponent(mockEvent, mockMove)
+        transformedResponse = await eventToTimelineItemComponent(
+          'token',
+          mockEvent,
+          mockMove
+        )
       })
 
       it('should get the flag values', function () {
@@ -153,6 +162,7 @@ describe('Presenters', function () {
 
       it('should get the description', function () {
         expect(eventHelpers.getDescription).to.be.calledOnceWithExactly(
+          'token',
           eventWithDetails
         )
       })

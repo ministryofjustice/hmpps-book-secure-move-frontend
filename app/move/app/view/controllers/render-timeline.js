@@ -1,6 +1,8 @@
+const { get } = require('lodash')
+
 const presenters = require('../../../../../common/presenters')
 
-function renderTimeline(req, res) {
+async function renderTimeline(req, res) {
   const { move = {} } = req
   const { status, cancellation_reason: cancellationReason } = move
 
@@ -12,7 +14,10 @@ function renderTimeline(req, res) {
     req.move.rebook = moveRejectEvent.details.rebook
   }
 
-  const timeline = presenters.moveToTimelineComponent(move)
+  const timeline = await presenters.moveToTimelineComponent(
+    get(req.session, 'grant.response.access_token'),
+    move
+  )
 
   const locals = {
     timeline,

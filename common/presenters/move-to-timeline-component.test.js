@@ -1,6 +1,8 @@
 const proxyquire = require('proxyquire')
 
-const eventToTimelineItemComponent = sinon.stub().callsFake(val => val + val)
+const eventToTimelineItemComponent = sinon
+  .stub()
+  .callsFake((_, val) => val + val)
 
 const moveToTimelineComponent = proxyquire('./move-to-timeline-component', {
   './event-to-timeline-item-component': eventToTimelineItemComponent,
@@ -13,18 +15,20 @@ describe('Presenters', function () {
       timeline_events: ['a', 'b'],
     }
 
-    beforeEach(function () {
+    beforeEach(async function () {
       eventToTimelineItemComponent.resetHistory()
-      transformedResponse = moveToTimelineComponent(move)
+      transformedResponse = await moveToTimelineComponent('token', move)
     })
 
     it('should transform the events into items', function () {
       expect(eventToTimelineItemComponent.callCount).to.equal(2)
       expect(eventToTimelineItemComponent.firstCall).to.be.calledWithExactly(
+        'token',
         'a',
         move
       )
       expect(eventToTimelineItemComponent.secondCall).to.be.calledWithExactly(
+        'token',
         'b',
         move
       )

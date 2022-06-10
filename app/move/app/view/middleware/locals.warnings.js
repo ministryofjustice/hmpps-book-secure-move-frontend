@@ -1,8 +1,8 @@
-const { isEmpty, map, sortBy } = require('lodash')
+const { isEmpty, map, sortBy, get } = require('lodash')
 
 const presenters = require('../../../../../common/presenters')
 
-function setWarnings(req, res, next) {
+async function setWarnings(req, res, next) {
   const {
     profile,
     id: moveId,
@@ -42,7 +42,12 @@ function setWarnings(req, res, next) {
     : []
 
   if (importantEvents?.length) {
-    sections.unshift(presenters.moveToInTransitEventsPanelList(req.move))
+    sections.unshift(
+      await presenters.moveToInTransitEventsPanelList(
+        get(req.session, 'grant.response.access_token'),
+        req.move
+      )
+    )
   }
 
   res.locals.warnings = {
