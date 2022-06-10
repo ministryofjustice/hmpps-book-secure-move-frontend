@@ -2,7 +2,7 @@
   "name": "hmpps-book-secure-move-frontend",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "version": "2.121.2",
+  "version": "2.122.0",
   "main": "start.js",
   "contributors": [
     {
@@ -26,16 +26,16 @@
       "email": "ben@feedmypixel.com"
     },
     {
+      "name": "Adam Sharp",
+      "email": "adam.sharp@digital.justice.gov.uk"
+    },
+    {
       "name": "Nevelina Aleksandrova",
       "email": "nevelina.aleksandrova@digital.justice.gov.uk"
     },
     {
       "name": "georgeschena",
       "email": "georgeschena@hotmail.com"
-    },
-    {
-      "name": "Adam Sharp",
-      "email": "adam.sharp@digital.justice.gov.uk"
     },
     {
       "name": "barbaracassani",
@@ -136,10 +136,10 @@
     "concurrently": "7.2.1",
     "connect-flash": "0.1.1",
     "connect-redis": "6.1.3",
-    "contentful": "9.1.29",
+    "contentful": "9.1.32",
     "convert-hrtime": "3.0.0",
     "cookie-parser": "1.4.6",
-    "core-js": "3.22.7",
+    "core-js": "3.22.8",
     "css-minimizer-webpack-plugin": "4.0.0",
     "csurf": "1.11.0",
     "date-fns": "2.28.0",
@@ -178,7 +178,7 @@
     "path-to-regexp": "6.2.1",
     "pluralize": "8.0.0",
     "prom-client": "14.0.1",
-    "qs": "6.10.3",
+    "qs": "6.10.5",
     "redis": "4.1.0",
     "response-time": "2.3.2",
     "retry-axios": "2.6.0",
@@ -194,7 +194,7 @@
   "devDependencies": {
     "@babel/core": "7.18.2",
     "@babel/preset-env": "7.18.2",
-    "@commitlint/cli": "17.0.0",
+    "@commitlint/cli": "17.0.2",
     "@commitlint/config-conventional": "17.0.2",
     "@ffmpeg-installer/ffmpeg": "1.1.0",
     "@types/chai": "4.3.1",
@@ -234,14 +234,14 @@
     "imagemin-jpegtran": "7.0.0",
     "imagemin-optipng": "8.0.0",
     "imagemin-svgo": "10.0.1",
-    "lint-staged": "12.4.3",
+    "lint-staged": "13.0.0",
     "mini-css-extract-plugin": "2.6.0",
     "mocha": "10.0.0",
     "mocha-junit-reporter": "2.0.2",
     "mock-fs": "5.1.2",
     "nock": "13.2.4",
     "nodemon": "2.0.16",
-    "npm-check-updates": "13.0.3",
+    "npm-check-updates": "13.1.2",
     "nyc": "15.1.0",
     "open-cli": "7.0.1",
     "pinst": "3.0.0",
@@ -253,7 +253,7 @@
     "sinon-chai": "3.7.0",
     "standard": "17.0.0",
     "standard-version": "9.5.0",
-    "terser-webpack-plugin": "5.3.1",
+    "terser-webpack-plugin": "5.3.3",
     "testcafe": "1.19.0",
     "testcafe-browser-provider-browserstack": "1.13.2",
     "testcafe-reporter-xunit": "2.2.1",

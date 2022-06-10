@@ -27,7 +27,7 @@ function getFullNameNoCache(token, username) {
     })
     .then(response => response.data)
     .then(userDetails => userDetails.name)
-  // .catch(() => undefined)
+    .catch(() => undefined)
 }
 
 async function getFullName(token, username = 'me') {
