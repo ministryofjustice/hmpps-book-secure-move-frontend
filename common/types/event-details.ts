@@ -37,7 +37,12 @@ export interface EventDetails {
   rejection_reason?: string
   rebook?: boolean
   completed_at?: string
-  responded_by?: string
+  responded_by?: {
+    'risk-information'?: Array<string | undefined>
+    'offence-information'?: Array<string | undefined>
+    'health-information'?: Array<string | undefined>
+    'property-information'?: Array<string | undefined>
+  }
   confirmed_at?: string
   subtype?: string
   ended_at?: string
@@ -51,4 +56,8 @@ export interface EventDetails {
   outcome?: string
   postcode?: string
   location_description?: string
+  riskUsers?: string
+  offenceUsers?: string
+  healthUsers?: string
+  propertyUsers?: string
 }

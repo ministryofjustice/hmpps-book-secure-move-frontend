@@ -13,7 +13,7 @@ export function time (value: Date | string, format = 'HH:mm') {
   return parsedDate ? formatDate(parsedDate, format) : value
 }
 
-export function array (array: any[], useOxfordComma = false): string {
+export function array (array: any[] = [], useOxfordComma = false): string {
   const tidyArray = array
     .filter(i => i)
     .sort()

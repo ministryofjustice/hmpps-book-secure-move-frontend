@@ -3,10 +3,10 @@ const eventHelpers = require('../helpers/events')
 
 const eventToTagComponent = require('./event-to-tag-component')
 
-module.exports = (moveEvent, move) => {
+module.exports = async (token, moveEvent, move) => {
   const event = eventHelpers.setEventDetails(moveEvent, move)
   const { id, occurred_at: timestamp } = event
-  const description = eventHelpers.getDescription(event)
+  const description = await eventHelpers.getDescription(token, event)
 
   const tag = eventToTagComponent(event)
   delete tag.href

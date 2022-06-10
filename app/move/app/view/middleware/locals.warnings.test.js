@@ -85,9 +85,9 @@ describe('Move view app', function () {
         })
 
         context('with important events', function () {
-          beforeEach(function () {
+          beforeEach(async function () {
             req.move.important_events = [{ id: 10 }]
-            middleware(req, res, nextSpy)
+            await middleware(req, res, nextSpy)
           })
 
           it('should set sections variable to include important events', function () {

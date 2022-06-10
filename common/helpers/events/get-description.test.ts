@@ -32,9 +32,9 @@ describe('Helpers', () => {
       let description: string
 
       context('when fetching the description', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           i18nStub.t.onFirstCall().returns(' <br><br>description<br>more description')
-          description = getDescription(mockEvent)
+          description = await getDescription('token', mockEvent)
         })
 
         it('should get description string', () => {
