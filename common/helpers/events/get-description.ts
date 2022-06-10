@@ -29,11 +29,11 @@ export async function getDescription (token: string, event: Event) {
 }
 
 const getCompletedBy = async (token: string, usernames?: Array<string | undefined>) => {
-  if (!usernames) {
+  if (!token || !usernames) {
     return ''
   }
 
-  const fullNames = await Promise.all(usernames.filter(u => u).map(u => getFullName(token, u)))
+  const fullNames = (await Promise.all(usernames.filter(u => u).map(u => getFullName(token, u)))).filter(n => n)
   if (!fullNames.length) {
     return ''
   }
