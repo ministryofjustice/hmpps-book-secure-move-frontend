@@ -435,7 +435,7 @@ jobs:
       - run:
           name: Check dependency version change
           command: | 
-            ls
+            git diff
 workflows:
   continuous-deployment:
     jobs:
