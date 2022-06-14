@@ -428,8 +428,6 @@ jobs:
 
   dependabot-dependency-check:
     <<: *circle_container
-    env:
-      PR_AUTHOR: ${{ github.event.pull_request.user.login }}
     steps:
       - checkout
       - *set_package_version
@@ -437,7 +435,7 @@ jobs:
       - run:
           name: Check it is a dependabot PR
           command: | 
-            echo "PR author: $PR_AUTHOR"
+            echo "PR author: ${{ github.event.pull_request.user.login }}"
 workflows:
   continuous-deployment:
     jobs:
