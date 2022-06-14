@@ -194,6 +194,10 @@ aliases:
         only: /^v.*/
       branches:
         ignore: /.*/
+  - &only_dependabot_prs
+     filters:
+      branches:
+        only: /dependabot\/
   - &requires_production_approval
     requires:
       - approval
@@ -439,7 +443,7 @@ workflows:
       - dependabot-dependency-check:
           context:
             - hmpps-common-vars
-          <<: *ignore_main
+          <<: *only_dependabot_prs
           name: dependabot-dependency-check
       # Tests
       - lint-and-unit-test:
