@@ -435,7 +435,7 @@ jobs:
       - run:
           name: Check dependency version change
           command: | 
-            git diff main .circleci
+            echo "${CIRCLE_BRANCH}"
 workflows:
   continuous-deployment:
     jobs:
