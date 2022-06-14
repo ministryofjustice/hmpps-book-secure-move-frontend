@@ -433,9 +433,9 @@ jobs:
       - *set_package_version
       - *restore_cache
       - run:
-          name: Check it is a dependabot PR
+          name: Check dependency version change
           command: | 
-            echo "PR author: ${{ github.event.pull_request.user.login }}"
+            ls
 workflows:
   continuous-deployment:
     jobs:
