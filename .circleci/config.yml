@@ -435,7 +435,8 @@ jobs:
       - run:
           name: Check dependency version change
           command: | 
-            echo "${CIRCLE_BRANCH}"
+            dependcyPattern='bump(?s)(.*)from'
+            echo [[ ${CIRCLE_BRANCH} =~ $dependcyPattern ]]
 workflows:
   continuous-deployment:
     jobs:
