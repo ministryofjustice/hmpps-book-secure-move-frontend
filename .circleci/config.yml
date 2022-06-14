@@ -428,6 +428,8 @@ jobs:
 
   dependabot-dependency-check:
     <<: *circle_container
+    env:
+      PR_AUTHOR: ${{ github.event.pull_request.user.login }}
     steps:
       - checkout
       - *set_package_version
@@ -443,7 +445,7 @@ workflows:
       - dependabot-dependency-check:
           context:
             - hmpps-common-vars
-          <<: *only_dependabot_prs
+          <<: *ignore_main # I MUST CHANGE THIS BACK TO only_dependabot_prs WHEN I AM DONE
           name: dependabot-dependency-check
       # Tests
       - lint-and-unit-test:
