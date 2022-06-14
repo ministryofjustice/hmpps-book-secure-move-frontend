@@ -435,7 +435,7 @@ jobs:
       - run:
           name: Check dependency version change
           command: | 
-            git diff main package.json
+            git diff main .circleci
 workflows:
   continuous-deployment:
     jobs:
