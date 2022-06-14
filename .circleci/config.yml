@@ -435,6 +435,12 @@ jobs:
 workflows:
   continuous-deployment:
     jobs:
+      # Dependabot check
+      - dependabot-dependency-check:
+          context:
+            - hmpps-common-vars
+          <<: *ignore_main
+          name: dependabot-dependency-check
       # Tests
       - lint-and-unit-test:
           context:
