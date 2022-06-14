@@ -422,6 +422,16 @@ jobs:
           steps:
             - *notify_slack_on_release_end
 
+  dependabot-dependency-check:
+    <<: *circle_container
+    steps:
+      - checkout
+      - *set_package_version
+      - *restore_cache
+      - run:
+          name: Check it is a dependabot PR
+          run: | 
+            echo "PR author: $PR_AUTHOR"
 workflows:
   continuous-deployment:
     jobs:
