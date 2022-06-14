@@ -430,7 +430,7 @@ jobs:
       - *restore_cache
       - run:
           name: Check it is a dependabot PR
-          run: | 
+          command: | 
             echo "PR author: $PR_AUTHOR"
 workflows:
   continuous-deployment:
