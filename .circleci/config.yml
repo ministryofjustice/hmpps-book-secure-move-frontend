@@ -197,7 +197,7 @@ aliases:
   - &only_dependabot_prs
      filters:
       branches:
-        only: /dependabot\/
+        only: /dependabot\//
   - &requires_production_approval
     requires:
       - approval
