@@ -2,7 +2,7 @@
   "name": "hmpps-book-secure-move-frontend",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "version": "2.122.0",
+  "version": "2.122.1",
   "main": "start.js",
   "contributors": [
     {
@@ -26,16 +26,16 @@
       "email": "ben@feedmypixel.com"
     },
     {
+      "name": "georgeschena",
+      "email": "georgeschena@hotmail.com"
+    },
+    {
       "name": "Adam Sharp",
       "email": "adam.sharp@digital.justice.gov.uk"
     },
     {
       "name": "Nevelina Aleksandrova",
       "email": "nevelina.aleksandrova@digital.justice.gov.uk"
-    },
-    {
-      "name": "georgeschena",
-      "email": "georgeschena@hotmail.com"
     },
     {
       "name": "barbaracassani",
