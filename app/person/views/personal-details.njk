@@ -3,6 +3,15 @@
 {% block tabContent %}
   <h2 class="govuk-heading-m">
     {{ t("person::personal_details.heading") }}
+
+    {% if updateLink %}
+      <a href="{{ updateLink }}" class="govuk-link govuk-body app-!-float-right">
+        <strong>{{ t("actions::change", {
+          context: "with_visually_hidden_text",
+          text: step.pageTitle
+        }) | safe }}</strong>
+      </a>
+    {% endif %}
   </h2>
 
   {{ govukSummaryList(personalDetailsSummary) }}
