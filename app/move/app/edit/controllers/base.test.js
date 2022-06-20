@@ -147,6 +147,7 @@ describe('Move controllers', function () {
       beforeEach(function () {
         nextSpy = sinon.spy()
         req = {
+          form: { options: { route: '/personal-details' } },
           getMoveId: sinon.stub().returns('moveId'),
           move: {
             id: '12345',
@@ -195,9 +196,7 @@ describe('Move controllers', function () {
       })
 
       it('should set cancel url correctly', function () {
-        expect(req.form.options.next).to.equal(
-          '/person/12345/personal-details?move=moveId'
-        )
+        expect(req.form.options.next).to.equal('/move/moveId/details')
       })
 
       it('should call next', function () {
