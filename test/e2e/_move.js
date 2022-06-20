@@ -290,6 +290,8 @@ export async function checkUpdatePersonalDetails(options) {
 
   await createMovePage.submitForm()
 
+  await t.navigateTo(getMove(t.ctx.move.id))
+  await t.click(Selector('a').withExactText('Details'))
   await moveDetailPage.checkPersonalDetails(updatedDetails)
 }
 
@@ -326,6 +328,8 @@ export async function checkUpdatePage(
 
   await createMovePage.submitForm()
 
+  await t.navigateTo(getMove(t.ctx.move.id))
+  await t.click(Selector('a').withExactText('Details'))
   await moveDetailPage[checkMethod](updatedDetails)
 }
 
