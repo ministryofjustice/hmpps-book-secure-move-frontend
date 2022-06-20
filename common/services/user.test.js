@@ -115,7 +115,7 @@ describe('User service', function () {
           expect(getSpy.callCount).equal(2)
         })
 
-        it('does not call the API for Serco/GEOAmey', async function () {
+        it('does not hit auth for Serco/GEOAmey', async function () {
           expect(await getFullName('12345678910', 'Serco')).equal('Serco')
           expect(await getFullName('12345678910', 'GEOAmey')).equal('GEOAmey')
 
