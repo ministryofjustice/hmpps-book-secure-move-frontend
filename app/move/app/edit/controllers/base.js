@@ -37,7 +37,8 @@ class UpdateBaseController extends CreateBaseController {
   }
 
   getReturnUrl(req) {
-    return `/move/${req.getMoveId()}/details`
+    const personId = req.move.profile?.person.id
+    return `/person/${personId}/personal-details?move=${req.getMoveId()}`
   }
 
   setCancelUrl(req, res, next) {
