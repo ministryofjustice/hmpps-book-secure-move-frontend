@@ -279,6 +279,7 @@ export async function checkUpdatePagesRedirected(moveId, pages = updatePages) {
 export async function checkUpdatePersonalDetails(options) {
   const { person } = t.ctx.move
   await moveDetailPage.clickUpdateLink('personal_details')
+  await moveDetailPage.clickUpdateLink('edit_personal_details')
 
   const gender = person.gender === 'Female' ? 'Male' : 'Female'
   const updatedFields = await createMovePage.fillInPersonalDetails(
@@ -447,6 +448,7 @@ export async function checkUpdateMoveDate(date = 'Tomorrow') {
 export async function checkPoliceNationalComputerReadOnly() {
   const { person } = t.ctx.move
   await moveDetailPage.clickUpdateLink('personal_details')
+  await moveDetailPage.clickUpdateLink('edit_personal_details')
 
   const { policeNationalComputer, policeNationalComputerReadOnly } =
     createMovePage.fields
