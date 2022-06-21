@@ -186,15 +186,15 @@ function formatDateAsRelativeDay(
   formattedDateStr = DATE_FORMATS.WITH_DAY
 ) {
   if (isToday(parseISO(value))) {
-    return 'Today'
+    return 'today'
   }
 
   if (isTomorrow(parseISO(value))) {
-    return 'Tomorrow'
+    return 'tomorrow'
   }
 
   if (isYesterday(parseISO(value))) {
-    return 'Yesterday'
+    return 'yesterday'
   }
 
   return formatDate(value, formattedDateStr)
