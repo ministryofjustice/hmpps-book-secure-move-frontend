@@ -67,7 +67,9 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       {% block customGtagConfig %}{% endblock %}
-      gtag('config', '{{ GA_ID }}')
+      gtag('config', '{{ GA_ID }}', {
+        'user_id': '{{ USER.userId }}'
+      });
     </script>
   {% endif %}
 {% endblock %}

@@ -5,7 +5,7 @@ module.exports = {
     node: true,
     jquery: true,
   },
-  extends: ['prettier', 'standard'],
+  extends: ['prettier', 'standard', 'plugin:import/typescript'],
   plugins: ['prettier', 'import'],
   globals: {
     Atomics: 'readonly',

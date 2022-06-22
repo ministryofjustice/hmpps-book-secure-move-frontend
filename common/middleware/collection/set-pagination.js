@@ -1,4 +1,4 @@
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const urlHelpers = require('../../helpers/url')
 
 function setPagination(route) {

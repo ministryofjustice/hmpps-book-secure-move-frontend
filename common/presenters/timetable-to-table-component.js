@@ -1,6 +1,6 @@
 const { sortBy } = require('lodash')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 
 module.exports = function timetableToTableComponent(timetable) {

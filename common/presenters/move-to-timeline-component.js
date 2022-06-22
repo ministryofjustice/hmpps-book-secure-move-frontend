@@ -1,11 +1,15 @@
 const eventToTimelineItemComponent = require('./event-to-timeline-item-component')
 
-const moveToTimelineComponent = (move = {}) => {
+const moveToTimelineComponent = async (token, move = {}) => {
   const { timeline_events: timelineEvents = [] } = move
 
-  const items = timelineEvents
-    .map(moveEvent => eventToTimelineItemComponent(moveEvent, move))
-    .reverse()
+  const items = (
+    await Promise.all(
+      timelineEvents.map(moveEvent =>
+        eventToTimelineItemComponent(token, moveEvent, move)
+      )
+    )
+  ).reverse()
   return { items }
 }
 

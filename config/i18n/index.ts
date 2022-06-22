@@ -1,5 +1,5 @@
-const i18next = require('i18next')
-const Backend = require('i18next-sync-fs-backend')
+import i18next from 'i18next'
+import Backend from 'i18next-fs-backend'
 
 const interpolation = require('./interpolation')
 
@@ -31,13 +31,13 @@ i18next.use(Backend).init({
     'population',
     'statuses',
     'validation',
-    'youth-risk-assessment',
+    'youth-risk-assessment'
   ],
   defaultNS: 'default',
   backend: {
-    loadPath: './locales/{{lng}}/{{ns}}.json',
+    loadPath: './locales/{{lng}}/{{ns}}.json'
   },
-  interpolation,
+  interpolation
 })
 
-module.exports = i18next
+export default i18next

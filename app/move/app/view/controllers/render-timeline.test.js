@@ -8,13 +8,20 @@ describe('Move view app', function () {
       let req, res
 
       beforeEach(function () {
-        sinon.stub(presenters, 'moveToTimelineComponent').returnsArg(0)
+        sinon.stub(presenters, 'moveToTimelineComponent').returnsArg(1)
 
         req = {
           move: {
             id: '12345',
           },
           t: sinon.stub().returnsArg(0),
+          session: {
+            grant: {
+              response: {
+                access_token: 'token',
+              },
+            },
+          },
         }
         res = {
           breadcrumb: sinon.stub().returnsThis(),
@@ -23,14 +30,14 @@ describe('Move view app', function () {
       })
 
       context('by default', function () {
-        beforeEach(function () {
-          controller(req, res)
+        beforeEach(async function () {
+          await controller(req, res)
         })
 
         it('should transform the data for presentation', function () {
           expect(
             presenters.moveToTimelineComponent
-          ).to.be.calledOnceWithExactly(req.move)
+          ).to.be.calledOnceWithExactly('token', req.move)
         })
 
         it('should pass correct locals', function () {
@@ -45,7 +52,7 @@ describe('Move view app', function () {
       })
 
       context('with rejected single request', function () {
-        beforeEach(function () {
+        beforeEach(async function () {
           req.move = {
             status: 'cancelled',
             cancellation_reason: 'rejected',
@@ -58,13 +65,13 @@ describe('Move view app', function () {
               },
             ],
           }
-          controller(req, res)
+          await controller(req, res)
         })
 
         it('should transform the data for presentation', function () {
           expect(
             presenters.moveToTimelineComponent
-          ).to.be.calledOnceWithExactly(req.move)
+          ).to.be.calledOnceWithExactly('token', req.move)
         })
 
         it('should pass correct locals', function () {

@@ -28,14 +28,14 @@ const getItem = ({
   }
 }
 
-const eventToTimelineItemComponent = (moveEvent, move) => {
+const eventToTimelineItemComponent = async (token, moveEvent, move) => {
   const event = eventHelpers.setEventDetails(moveEvent, move)
   const { id, occurred_at: timestamp, created_by: createdBy } = event
   const flag = eventHelpers.getFlag(event)
   const containerClasses = eventHelpers.getContainerClasses(event)
   let heading = eventHelpers.getHeading(event)
   const labelClasses = eventHelpers.getLabelClasses(event)
-  const description = eventHelpers.getDescription(event)
+  const description = await eventHelpers.getDescription(token, event)
 
   if (flag) {
     const headerClasses = eventHelpers.getHeaderClasses(event)

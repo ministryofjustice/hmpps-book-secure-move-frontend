@@ -494,7 +494,7 @@ describe('Population controllers', function () {
             controllerInstance.stringifyValues
           ).to.have.been.calledWithExactly({
             fields: req.form.options.fields,
-            values: values,
+            values,
           })
         })
 

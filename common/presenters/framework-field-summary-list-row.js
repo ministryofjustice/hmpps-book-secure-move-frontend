@@ -1,6 +1,6 @@
 const { find, filter, flattenDeep, isEmpty } = require('lodash')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const frameworkNomisMappingsToPanel = require('../presenters/framework-nomis-mappings-to-panel')
 const componentService = require('../services/component')
 

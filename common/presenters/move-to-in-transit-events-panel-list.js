@@ -1,11 +1,11 @@
 const eventToTimelinePanel = require('./event-to-timeline-panel')
 
-function toPanelList(lockoutEvents, otherEvents, move) {
-  const lockoutPanels = lockoutEvents.map(event =>
-    eventToTimelinePanel(event, move)
+async function toPanelList(token, lockoutEvents, otherEvents, move) {
+  const lockoutPanels = await Promise.all(
+    lockoutEvents.map(event => eventToTimelinePanel(token, event, move))
   )
-  const otherPanels = otherEvents.map(event =>
-    eventToTimelinePanel(event, move)
+  const otherPanels = await Promise.all(
+    otherEvents.map(event => eventToTimelinePanel(token, event, move))
   )
 
   const panelList = {
@@ -33,7 +33,7 @@ function toPanelList(lockoutEvents, otherEvents, move) {
   return panelList
 }
 
-module.exports = function (move = {}) {
+module.exports = async function (token, move = {}) {
   const { timeline_events: timelineEvents = [] } = move
 
   const importantEvents = timelineEvents
@@ -49,5 +49,5 @@ module.exports = function (move = {}) {
   const lockoutEvents = importantEvents.filter(({ supplier }) => !supplier)
   const otherEvents = importantEvents.filter(({ supplier }) => !!supplier)
 
-  return toPanelList(lockoutEvents, otherEvents, move)
+  return await toPanelList(token, lockoutEvents, otherEvents, move)
 }

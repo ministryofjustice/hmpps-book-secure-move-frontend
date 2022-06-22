@@ -1,7 +1,7 @@
 const { get, camelCase, omitBy, isUndefined } = require('lodash')
 const querystring = require('qs')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 
 function setfilterMoves(items = [], bodyKey) {
   return async function buildFilter(req, res, next) {

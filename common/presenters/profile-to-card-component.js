@@ -1,6 +1,6 @@
 const { filter, isEmpty } = require('lodash')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 
 const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')

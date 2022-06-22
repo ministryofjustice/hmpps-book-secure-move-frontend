@@ -1,5 +1,5 @@
 const {
-  getFullname,
+  getFullName,
   getSupplierId,
   getLocations,
 } = require('../../common/services/user')
@@ -23,7 +23,7 @@ async function loadUser(accessToken) {
   } = decodeAccessToken(accessToken)
 
   const [fullname, supplierId] = await Promise.all([
-    getFullname(accessToken),
+    getFullName(accessToken),
     getSupplierId(accessToken),
   ])
 

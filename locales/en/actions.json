@@ -49,8 +49,7 @@
   "continue_assessment": "Continue $t({{context}})",
   "print_assessment": "Print $t({{context}})",
   "view_assessment": "View $t({{context}})",
-  "view_profile": "View profile",
-  "edit_profile": "Edit personal details",
+  "view_or_edit_profile": "View or change profile",
   "provide_confirmation": "Provide confirmation",
   "provide_confirmation_youth_risk_assessment": "Confirm $t({{context}})",
   "provide_confirmation_person_escort_record": "Record handover",
@@ -61,5 +60,5 @@
   "add_item_with_items": "Add another {{name}}",
   "remove_item": "Remove <span class=\"govuk-visually-hidden\">{{name}} {{index}}</span>",
   "save_and_calculate": "Save and calculate",
-  "view_or_edit_move_details": "View or edit move details"
+  "view_or_edit_move_details": "View or change move details"
 }

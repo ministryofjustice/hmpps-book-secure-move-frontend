@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire')
 
-const eventToTimelinePanel = sinon.stub().returns('panel')
+const eventToTimelinePanel = sinon.stub().resolves('panel')
 
 const moveToInTransitEventsPanelList = proxyquire(
   './move-to-in-transit-events-panel-list',
@@ -28,8 +28,8 @@ describe('Presenters', function () {
     }
 
     let panelList
-    beforeEach(function () {
-      panelList = moveToInTransitEventsPanelList(move)
+    beforeEach(async function () {
+      panelList = await moveToInTransitEventsPanelList('token', move)
     })
 
     it('should return panels for incident and lockout events', function () {

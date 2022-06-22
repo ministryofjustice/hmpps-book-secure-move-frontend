@@ -11,7 +11,7 @@ const {
   SUPPORT_URL,
 } = require('../')
 const { mountpath: componentsUrl } = require('../../app/components')
-const i18n = require('../i18n')
+const i18n = require('../i18n').default
 const logger = require('../logger')
 const { manifest: manifestPath } = require('../paths')
 

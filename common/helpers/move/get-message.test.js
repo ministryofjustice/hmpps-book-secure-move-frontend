@@ -4,7 +4,9 @@ const t = sinon.stub().returnsArg(0)
 
 const getMessage = proxyquire('./get-message', {
   '../../../config/i18n': {
-    t,
+    default: {
+      t,
+    },
   },
 })
 

@@ -10,6 +10,8 @@ axiosInstance.defaults.raxConfig = {
 }
 rax.attach(axiosInstance)
 
+const fullNameCache = {}
+
 const { AUTH_PROVIDERS, NOMIS_ELITE2_API } = require('../../config')
 const { decodeAccessToken } = require('../lib/access-token')
 
@@ -18,13 +20,28 @@ const referenceDataService = new ReferenceDataService()
 
 const getAuthHeader = token => ({ Authorization: `Bearer ${token}` })
 
-function getFullname(token) {
+function getFullNameNoCache(token, username) {
   return axiosInstance
-    .get(AUTH_PROVIDERS.hmpps.user_url, {
+    .get(AUTH_PROVIDERS.hmpps.user_url(username), {
       headers: getAuthHeader(token),
     })
     .then(response => response.data)
     .then(userDetails => userDetails.name)
+    .catch(() => undefined)
+}
+
+async function getFullName(token, username = 'me') {
+  if (username === 'Serco' || username === 'GEOAmey') {
+    return username
+  } else if (username === 'me') {
+    return getFullNameNoCache(token, username)
+  }
+
+  if (!fullNameCache[username] || !(await fullNameCache[username])) {
+    fullNameCache[username] = getFullNameNoCache(token, username)
+  }
+
+  return fullNameCache[username]
 }
 
 async function getLocations(token, supplierId, permissions) {
@@ -127,6 +144,6 @@ async function getSupplierLocations(supplierId, permissions) {
 
 module.exports = {
   getLocations,
-  getFullname,
+  getFullName,
   getSupplierId,
 }

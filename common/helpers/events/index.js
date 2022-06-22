@@ -1,5 +1,5 @@
 const getContainerClasses = require('./get-container-classes')
-const getDescription = require('./get-description')
+const { getDescription } = require('./get-description')
 const getEventClassification = require('./get-event-classification')
 const getFlag = require('./get-flag')
 const getHeaderClasses = require('./get-header-classes')

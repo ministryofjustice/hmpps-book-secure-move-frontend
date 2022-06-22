@@ -1,6 +1,6 @@
 const { find, set, cloneDeep } = require('lodash')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 
 function renderPreviousAnswerToField({ responses = [] } = {}) {
   return ([key, field]) => {

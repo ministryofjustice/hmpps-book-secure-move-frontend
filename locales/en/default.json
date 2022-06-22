@@ -46,7 +46,7 @@
   "awaiting_person": "Person to be added",
   "sort_ascending": "Sort {{label}} ascending",
   "sort_descending": "Sort {{label}} descending",
-  "empty_response": "Reviewed and nothing provided",
+  "empty_response": "No answer provided",
   "empty_details": "Details not provided",
   "attach_photo": "Attach photo here",
   "initial_option": "--- Choose {{label}} ---",

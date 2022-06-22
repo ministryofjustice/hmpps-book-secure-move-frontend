@@ -13,8 +13,8 @@ describe('Presenters', function () {
     const move = { id: 'move' }
 
     let timelinePanel
-    beforeEach(function () {
-      timelinePanel = eventToTimelinePanel(event, move)
+    beforeEach(async function () {
+      timelinePanel = await eventToTimelinePanel('token', event, move)
     })
 
     it('should return tag for the event', function () {

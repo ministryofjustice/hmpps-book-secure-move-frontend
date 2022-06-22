@@ -1,4 +1,4 @@
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 
 const presenter = require('./framework-to-task-list-component')
 

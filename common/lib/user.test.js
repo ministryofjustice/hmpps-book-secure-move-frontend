@@ -3,7 +3,7 @@ const proxyquire = require('proxyquire')
 const userServicesStub = {
   getLocations: () =>
     Promise.resolve([{ title: 'location2' }, { title: 'location1' }]),
-  getFullname: () => Promise.resolve('Mr Benn'),
+  getFullName: () => Promise.resolve('Mr Benn'),
   getSupplierId: () => Promise.resolve('undefined'),
 }
 

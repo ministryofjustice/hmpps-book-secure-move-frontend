@@ -1,6 +1,6 @@
 const timezoneMock = require('timezone-mock')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 
 const moveToSummaryListComponent = require('./move-to-additional-info-list-component')

@@ -1,4 +1,4 @@
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 
 const moveToImportantEventsTagListComponent = require('./move-to-important-events-tag-list-component')
 const profileToCardComponent = require('./profile-to-card-component')
@@ -77,7 +77,7 @@ function moveToCardComponent({
       classes: isCompact
         ? `app-card--compact ${personCardComponent.classes || ''}`
         : personCardComponent.classes || '',
-      caption: caption,
+      caption,
       ...(tags ? { tags } : undefined),
     }
   }
