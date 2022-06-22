@@ -37,7 +37,14 @@ class UpdateBaseController extends CreateBaseController {
   }
 
   getReturnUrl(req) {
-    return `/move/${req.getMoveId()}/details`
+    const personId = req.move.profile?.person.id
+    const previousRoute = req.form.options.route
+
+    if (previousRoute === '/personal-details') {
+      return `/person/${personId}/personal-details?move=${req.getMoveId()}`
+    } else {
+      return `/move/${req.getMoveId()}/details`
+    }
   }
 
   setCancelUrl(req, res, next) {
