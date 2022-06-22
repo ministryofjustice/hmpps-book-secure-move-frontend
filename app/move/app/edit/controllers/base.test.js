@@ -147,7 +147,12 @@ describe('Move controllers', function () {
       beforeEach(function () {
         nextSpy = sinon.spy()
         req = {
+          form: { options: { route: '/personal-details' } },
           getMoveId: sinon.stub().returns('moveId'),
+          move: {
+            id: '12345',
+            profile: { person: { id: '12345' } },
+          },
         }
         res = {
           locals: {
@@ -159,7 +164,9 @@ describe('Move controllers', function () {
       })
 
       it('should set cancel url correctly', function () {
-        expect(res.locals.cancelUrl).to.equal('/move/moveId/details')
+        expect(res.locals.cancelUrl).to.equal(
+          '/person/12345/personal-details?move=moveId'
+        )
       })
 
       it('should call next', function () {
@@ -176,6 +183,10 @@ describe('Move controllers', function () {
         nextSpy = sinon.spy()
         req = {
           getMoveId: sinon.stub().returns('moveId'),
+          move: {
+            id: '12345',
+            profile: { person: { id: '12345' } },
+          },
           form: {
             options: {},
           },
