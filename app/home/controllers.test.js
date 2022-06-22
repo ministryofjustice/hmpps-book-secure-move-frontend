@@ -10,7 +10,7 @@ describe('Home controllers', function () {
     let req, res
 
     beforeEach(function () {
-      sinon.stub(whatsNewContentService, 'fetch').throws(errorMock)
+      sinon.stub(whatsNewContentService, 'fetchAll').throws(errorMock)
 
       req = {
         filterSingleRequests: ['foo', 'bar'],

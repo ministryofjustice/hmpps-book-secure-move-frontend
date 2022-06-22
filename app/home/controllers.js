@@ -7,7 +7,7 @@ async function dashboard(req, res) {
   let whatsNewContent
 
   try {
-    whatsNewContent = await whatsNewContentService.fetch()
+    whatsNewContent = await whatsNewContentService.fetchAll()
   } catch (e) {
     whatsNewContent = null
   }

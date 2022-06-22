@@ -34,8 +34,10 @@
       <hr>
 
       <h2 class="govuk-heading-l govuk-!-margin-top-5">{{ post.title }}</h2>
+      
+      {{ post.summary | safe }}
 
-      {{ post.body | safe }}
+      <p class="govuk-body"><a class="govuk-link" href="/whats-new/{{ post.id }}">Read more</a></p>
     </div>
   {% endfor %}
 {% endblock %}
