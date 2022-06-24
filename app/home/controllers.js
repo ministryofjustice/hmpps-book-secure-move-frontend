@@ -1,5 +1,6 @@
 const dateHelpers = require('../../common/helpers/date')
 const whatsNewContentService = require('../../common/services/whats-new-content')
+const i18n = require('../../config/i18n').default
 
 async function dashboard(req, res) {
   const currentWeek = dateHelpers.getCurrentWeekAsRange()
@@ -10,6 +11,21 @@ async function dashboard(req, res) {
     whatsNewContent = await whatsNewContentService.fetch()
   } catch (e) {
     whatsNewContent = null
+  }
+
+  const numberOfOutgoingMoves = req.filterOutgoing[0].value
+  const numberOfIncomingMoves = req.filterIncoming[0].value
+
+  if (numberOfOutgoingMoves !== 1) {
+    req.filterOutgoing[0].label = i18n.t(
+      'dashboard::sections.outgoing.summary.total_plural'
+    )
+  }
+
+  if (numberOfIncomingMoves !== 1) {
+    req.filterIncoming[0].label = i18n.t(
+      'dashboard::sections.incoming.summary.total_plural'
+    )
   }
 
   const sections = {

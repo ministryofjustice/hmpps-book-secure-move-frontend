@@ -137,21 +137,21 @@ describe('Nunjucks filters', function () {
     context('when current date is today', function () {
       it('should return `Today`', function () {
         const formattedDate = filters.formatDateAsRelativeDay('2017-08-10')
-        expect(formattedDate).to.equal('Today')
+        expect(formattedDate).to.equal('today')
       })
     })
 
     context('when current date is tomorrow', function () {
       it('should return `Tomorrow`', function () {
         const formattedDate = filters.formatDateAsRelativeDay('2017-08-11')
-        expect(formattedDate).to.equal('Tomorrow')
+        expect(formattedDate).to.equal('tomorrow')
       })
     })
 
     context('when current date is yesterday', function () {
       it('should return `Yesterday`', function () {
         const formattedDate = filters.formatDateAsRelativeDay('2017-08-09')
-        expect(formattedDate).to.equal('Yesterday')
+        expect(formattedDate).to.equal('yesterday')
       })
     })
 
@@ -199,21 +199,21 @@ describe('Nunjucks filters', function () {
     context('when current date is today', function () {
       it('should return date along with `Today`', function () {
         const formattedDate = filters.formatDateWithRelativeDay('2017-08-10')
-        expect(formattedDate).to.equal('Thursday 10 Aug 2017 (Today)')
+        expect(formattedDate).to.equal('Thursday 10 Aug 2017 (today)')
       })
     })
 
     context('when current date is tomorrow', function () {
       it('should return date along with `Tomorrow`', function () {
         const formattedDate = filters.formatDateWithRelativeDay('2017-08-11')
-        expect(formattedDate).to.equal('Friday 11 Aug 2017 (Tomorrow)')
+        expect(formattedDate).to.equal('Friday 11 Aug 2017 (tomorrow)')
       })
     })
 
     context('when current date is yesterday', function () {
       it('should return date along with `Yesterday`', function () {
         const formattedDate = filters.formatDateWithRelativeDay('2017-08-09')
-        expect(formattedDate).to.equal('Wednesday 9 Aug 2017 (Yesterday)')
+        expect(formattedDate).to.equal('Wednesday 9 Aug 2017 (yesterday)')
       })
     })
 

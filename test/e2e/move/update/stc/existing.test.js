@@ -1,11 +1,7 @@
 import { Selector } from 'testcafe'
 
 import { acceptMove, startMove } from '../../../_helpers'
-import {
-  checkUpdateLinks,
-  checkUpdatePagesRedirected,
-  createMove,
-} from '../../../_move'
+import { checkUpdatePagesRedirected, createMove } from '../../../_move'
 import { stcUser } from '../../../_roles'
 import { home, getMove } from '../../../_routes'
 
@@ -24,7 +20,5 @@ fixture.beforeEach(async t => {
 })('Existing move that has left custody')
 
 test('User should not be able to update any information', async t => {
-  // No edit links should be visible
-  await checkUpdateLinks(undefined, true)
   await checkUpdatePagesRedirected(t.ctx.move.id)
 })

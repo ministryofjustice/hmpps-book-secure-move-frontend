@@ -18,8 +18,5 @@ fixture('Existing move from Secure Training Centre (STC) to Prison').beforeEach(
 )
 
 test('User should not be able to update move', async () => {
-  await checkUpdateLinks(['personal_details', 'court', 'move', 'date'], true, [
-    'risk',
-    'health',
-  ])
+  await checkUpdateLinks(['court', 'move', 'date'], true, ['risk', 'health'])
 })

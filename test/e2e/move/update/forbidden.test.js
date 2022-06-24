@@ -1,9 +1,5 @@
 import { getRandomLocation } from '../../_helpers'
-import {
-  createCourtMove,
-  checkNoUpdateLinks,
-  checkUpdatePagesForbidden,
-} from '../../_move'
+import { createCourtMove, checkUpdatePagesForbidden } from '../../_move'
 import { supplierUser } from '../../_roles'
 import { home } from '../../_routes'
 
@@ -19,7 +15,5 @@ fixture('Existing move (As supplier user)').beforeEach(async t => {
 })
 
 test('User should not be able to update a move', async () => {
-  await checkNoUpdateLinks()
-
   await checkUpdatePagesForbidden()
 })
