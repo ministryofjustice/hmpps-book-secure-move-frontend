@@ -240,7 +240,7 @@
     "mocha-junit-reporter": "2.0.2",
     "mock-fs": "5.1.2",
     "nock": "13.2.7",
-    "nodemon": "2.0.16",
+    "nodemon": "2.0.18",
     "npm-check-updates": "14.1.1",
     "nyc": "15.1.0",
     "open-cli": "7.0.1",
