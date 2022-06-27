@@ -60,7 +60,7 @@ async function getLocations(token, supplierId, permissions) {
       return getNomisLocations(token)
     default:
       Sentry.captureException(new Error('Unknown auth source'), {
-        level: Sentry.Severity.Warning,
+        level: 'warning',
         tags: { authSource },
       })
 

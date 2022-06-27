@@ -184,7 +184,7 @@ describe('API Client', function () {
               url: undefined,
               status_code: 500,
             },
-            level: Sentry.Severity.Info,
+            level: 'info',
           })
         })
 
@@ -228,7 +228,7 @@ describe('API Client', function () {
                 url: 'http://host.com/path?foo&bar,fizz,buzz',
                 status_code: 408,
               },
-              level: Sentry.Severity.Info,
+              level: 'info',
             })
           })
 
@@ -271,7 +271,7 @@ describe('API Client', function () {
                 url: undefined,
                 status_code: 502,
               },
-              level: Sentry.Severity.Info,
+              level: 'info',
             })
           })
 
