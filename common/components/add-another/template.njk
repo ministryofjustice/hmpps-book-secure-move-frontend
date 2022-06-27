@@ -42,7 +42,7 @@
     {% endif %}
   {% endfor %}
 
-  <div class="app-add-another__add-item {{ 'app-border-top-1 govuk-!-padding-top-5' if items.length > 0 }}">
+  <div class="app-add-another__add-item {{ 'app-border-top-1 govuk-!-padding-top-5 govuk-!-margin-top-4' if items.length > 0 }}">
     {{ govukButton({
       text: t("actions::add_item", {
         context: "with_items" if items.length > 0,
