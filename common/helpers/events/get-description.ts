@@ -7,6 +7,13 @@ import { EventDetails } from '../../types/event-details'
 
 const { getFullName } = require('../../services/user')
 
+const FORMATTED_SECTIONS: { [key: string]: string } = {
+  'health-information': 'Health information',
+  'offence-information': 'Offence information',
+  'property-information': 'Property information',
+  'risk-information': 'Risk information'
+}
+
 export async function getDescription (token: string, event: Event) {
   const {
     event_type: eventType,
@@ -16,7 +23,12 @@ export async function getDescription (token: string, event: Event) {
   details.vehicle_reg =
     details.vehicle_reg || details.journey?.vehicle?.registration
 
-  await populatePerCompletionUsers(token, details)
+  if (eventType === 'PerCompletion') {
+    await populatePerCompletion(token, details)
+  }
+  if (eventType === 'PerUpdated') {
+    await populatePerUpdated(token, details)
+  }
 
   if (supplier === null) {
     details.context = 'without_supplier'
@@ -41,8 +53,8 @@ const getCompletedBy = async (token: string, usernames?: Array<string | undefine
   return `by ${formatters.array(fullNames)}`
 }
 
-const populatePerCompletionUsers = async (token: string, details: EventDetails) => {
-  if (!details.responded_by) {
+const populatePerCompletion = async (token: string, details: EventDetails) => {
+  if (!details.responded_by || typeof details.responded_by === 'string') {
     details.riskUsers = ''
     details.offenceUsers = ''
     details.healthUsers = ''
@@ -54,4 +66,16 @@ const populatePerCompletionUsers = async (token: string, details: EventDetails) 
   details.offenceUsers = await getCompletedBy(token, details.responded_by['offence-information'])
   details.healthUsers = await getCompletedBy(token, details.responded_by['health-information'])
   details.propertyUsers = await getCompletedBy(token, details.responded_by['property-information'])
+}
+
+const populatePerUpdated = async (token: string, details: EventDetails) => {
+  if (!details.responded_by || typeof details.responded_by !== 'string') {
+    details.updateAuthor = ''
+  } else {
+    const fullName = await getFullName(token, details.responded_by)
+    details.updateAuthor = fullName ? `by ${fullName}` : ''
+  }
+
+  const section = FORMATTED_SECTIONS[details.section || '']
+  details.updateSection = section ? `${section} updated` : 'Updated'
 }
