@@ -70,8 +70,11 @@ app.get('/auth/logout', (req, res) => {
   res.redirect(req.query.redirect_uri)
 })
 
-app.get('/auth/api/user/me', (req, res) => {
-  const { user_name: username } = getUserFromToken(req)
+app.get('/auth/api/user/:USERNAME', (req, res) => {
+  const username =
+    req.params.USERNAME !== 'me'
+      ? req.params.USERNAME
+      : getUserFromToken(req).user_name
   const name = getUserFromUsername(username).name
 
   res.json({
