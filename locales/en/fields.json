@@ -80,6 +80,7 @@
   "move_type": {
     "label": "Move to",
     "short_label": "To",
+    "error_message": "Select where this person is moving to",
     "items": {
       "prison_transfer": {
         "label": "Prison or young offender institution (YOI)"
