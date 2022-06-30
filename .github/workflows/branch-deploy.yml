@@ -30,7 +30,7 @@ jobs:
         name: Create deployment
         uses: actions/github-script@v6
         with:
-          github-token: ${{github.token}}
+          github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
             try {
               return (await github.rest.repos.createDeployment({
@@ -48,7 +48,7 @@ jobs:
       - name: Update deployment
         uses: actions/github-script@v6
         with:
-          github-token: ${{github.token}}
+          github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
             try {
               github.rest.repos.createDeploymentStatus({
@@ -64,7 +64,7 @@ jobs:
       - name: Delete deployments
         uses: actions/github-script@v6
         with:
-          github-token: ${{github.token}}
+          github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
             try {
               let deployments = (
@@ -170,7 +170,7 @@ jobs:
       - name: Update deployment
         uses: actions/github-script@v6
         with:
-          github-token: ${{github.token}}
+          github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
             try {
               github.rest.repos.createDeploymentStatus({

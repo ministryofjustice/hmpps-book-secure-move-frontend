@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.123.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.122.4...v2.123.0) (2022-06-30)
+
+
+### Features
+
+* Add formatting for PerUpdated event ([ddc7bae](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ddc7bae958e0671aa53cb06284c72e5cb163a0a3))
+
 ### [2.122.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.122.3...v2.122.4) (2022-06-27)
 
 ### [2.122.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.122.2...v2.122.3) (2022-06-23)
