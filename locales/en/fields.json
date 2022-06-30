@@ -80,6 +80,7 @@
   "move_type": {
     "label": "Move to",
     "short_label": "To",
+    "error_message": "Select where this person is moving to",
     "items": {
       "prison_transfer": {
         "label": "Prison or young offender institution (YOI)"
@@ -155,7 +156,7 @@
   },
   "has_date_to": {
     "label": "Is there a date this move has to be completed by?",
-    "label_with_error": "Whether a move needs to be completed by a date"
+    "error_message": "Enter whether a move needs to be completed by a date"
   },
   "date_custom": {
     "label": "Date of travel"
