@@ -64,7 +64,7 @@ function requestMiddleware({ cacheExpiry = 60, useRedisCache = false } = {}) {
                 : undefined,
               status_code: status,
             },
-            level: Sentry.Severity.Info,
+            level: 'info',
           })
 
           throw error

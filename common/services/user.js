@@ -31,7 +31,9 @@ function getFullNameNoCache(token, username) {
 }
 
 async function getFullName(token, username = 'me') {
-  if (username === 'Serco' || username === 'GEOAmey') {
+  if (!username) {
+    return ''
+  } else if (username === 'Serco' || username === 'GEOAmey') {
     return username
   } else if (username === 'me') {
     return getFullNameNoCache(token, username)
@@ -60,7 +62,7 @@ async function getLocations(token, supplierId, permissions) {
       return getNomisLocations(token)
     default:
       Sentry.captureException(new Error('Unknown auth source'), {
-        level: Sentry.Severity.Warning,
+        level: 'warning',
         tags: { authSource },
       })
 

@@ -1182,17 +1182,13 @@ describe('Move controllers', function () {
           expect(Sentry.captureException.args[0][0].message).to.equal(
             errorMessage
           )
-          expect(Sentry.captureException.args[0][1].level).to.equal(
-            Sentry.Severity.Warning
-          )
+          expect(Sentry.captureException.args[0][1].level).to.equal('warning')
 
           expect(Sentry.captureException.args[1][0]).to.be.an.instanceOf(Error)
           expect(Sentry.captureException.args[1][0].message).to.equal(
             errorMessage
           )
-          expect(Sentry.captureException.args[1][1].level).to.equal(
-            Sentry.Severity.Warning
-          )
+          expect(Sentry.captureException.args[1][1].level).to.equal('warning')
         })
 
         it('should send correct data for filter field', function () {
