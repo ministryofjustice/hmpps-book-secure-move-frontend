@@ -45,7 +45,7 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
         run: |
           aws ecr batch-delete-image --repository-name "${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}" --image-ids imageTag="pr-${PR_NUMBER}.latest"
-      
+
       - name: Delete kube configs
         env:
           PR_NUMBER: ${{ github.event.number }}
@@ -58,7 +58,7 @@ jobs:
       - name: Delete deployments
         uses: actions/github-script@v6
         with:
-          github-token: ${{github.token}}
+          github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
             let deployments = (
               await github.rest.repos.listDeployments({
