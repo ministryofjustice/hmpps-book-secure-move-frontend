@@ -4,13 +4,13 @@ metadata:
   name: hmpps-book-secure-move-frontend-deployment-pr-{PR_NUMBER}
   namespace: hmpps-book-secure-move-frontend-staging
 spec:
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 10
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 0
-      maxSurge: 2
+      maxSurge: 1
   selector:
     matchLabels:
       app: hmpps-book-secure-move-frontend-web-pr-{PR_NUMBER}
