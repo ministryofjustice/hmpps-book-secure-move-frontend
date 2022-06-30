@@ -1,4 +1,5 @@
 const moveType = {
+  id: 'move_type',
   validate: 'required',
   component: 'govukRadios',
   name: 'move_type',
