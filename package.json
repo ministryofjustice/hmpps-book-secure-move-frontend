@@ -2,7 +2,7 @@
   "name": "hmpps-book-secure-move-frontend",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "version": "2.122.4",
+  "version": "2.123.0",
   "main": "start.js",
   "contributors": [
     {
@@ -50,12 +50,12 @@
       "email": "daniele.polencic@gmail.com"
     },
     {
-      "name": "Barbara Cassani",
-      "email": "barbaracassani@users.noreply.github.com"
-    },
-    {
       "name": "Matt Crowson",
       "email": "matt.crowson@digital.justice.gov.uk"
+    },
+    {
+      "name": "Barbara Cassani",
+      "email": "barbaracassani@users.noreply.github.com"
     },
     {
       "name": "Steve Lorek",
@@ -123,7 +123,7 @@
     "@ministryofjustice/frontend": "1.4.2",
     "@promster/express": "7.0.5",
     "@sentry/node": "7.3.0",
-    "@sentry/tracing": "7.2.0",
+    "@sentry/tracing": "7.3.0",
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.2.1",
     "audit-ci": "6.3.0",
@@ -165,7 +165,7 @@
     "json2csv": "5.0.7",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.21",
-    "lru-cache": "7.10.1",
+    "lru-cache": "7.11.0",
     "markdown-it": "13.0.1",
     "markdown-it-container": "3.0.0",
     "morgan": "1.10.0",
@@ -195,7 +195,7 @@
     "@babel/core": "7.18.5",
     "@babel/preset-env": "7.18.2",
     "@commitlint/cli": "17.0.2",
-    "@commitlint/config-conventional": "17.0.2",
+    "@commitlint/config-conventional": "17.0.3",
     "@ffmpeg-installer/ffmpeg": "1.1.0",
     "@types/chai": "4.3.1",
     "@types/express": "4.17.13",
@@ -222,7 +222,7 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-mocha": "10.0.5",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-promise": "6.0.0",
     "eslint-plugin-testcafe": "0.2.1",
     "finepack": "2.10.15",
