@@ -4,6 +4,9 @@ import { Person } from './person'
 import { PersonEscortRecord } from './person-escort-record'
 
 export interface EventDetails {
+  updateAuthor?: string
+  updateSection?: string
+  section?: string
   context?: string
   journey?: Journey
   move?: Move
@@ -42,7 +45,7 @@ export interface EventDetails {
     'offence-information'?: Array<string | undefined>
     'health-information'?: Array<string | undefined>
     'property-information'?: Array<string | undefined>
-  }
+  } | string
   confirmed_at?: string
   subtype?: string
   ended_at?: string
