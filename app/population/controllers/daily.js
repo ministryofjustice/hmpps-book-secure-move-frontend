@@ -10,8 +10,8 @@ function daily(req, res) {
   const spaces = populationToGrid({ population })
 
   res.render('population/views/daily', {
-    date: date,
-    locationId: locationId,
+    date,
+    locationId,
     spaces,
     transfers,
     editPath: `/population/day/${date}/${locationId}/edit`,

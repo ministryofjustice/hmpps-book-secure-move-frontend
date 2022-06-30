@@ -204,7 +204,7 @@ class MoveService extends BaseService {
         break
       default:
         statusFilter = {
-          status: status,
+          status,
         }
     }
 

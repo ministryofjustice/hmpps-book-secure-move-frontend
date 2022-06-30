@@ -225,7 +225,7 @@ class CreateBaseController extends FormWizardController {
 
       forEach(pickBy(errors, PNCPredicate), (error, key) => {
         Sentry.captureException(new Error('PNC validation failed'), {
-          level: Sentry.Severity.Warning,
+          level: 'warning',
           tags: {
             'validation_error.key': key,
             'validation_error.path': error.url,

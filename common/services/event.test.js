@@ -9,7 +9,7 @@ const EventService = proxyquire('./event', {
   '../lib/api-client/rest-client': restClient,
 })
 
-const eventService = new EventService({ apiClient: apiClient })
+const eventService = new EventService({ apiClient })
 
 describe('Event Service', function () {
   describe('#postEvents', function () {

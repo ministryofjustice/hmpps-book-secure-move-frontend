@@ -1,6 +1,6 @@
 const { filter, snakeCase } = require('lodash')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const setPreviousNextFrameworkSection = require('../../middleware/framework/set-previous-next-framework-section')
 const setMoveSummary = require('../../middleware/set-move-summary')
 const presenters = require('../../presenters')

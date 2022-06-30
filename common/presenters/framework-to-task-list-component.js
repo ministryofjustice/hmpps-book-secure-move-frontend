@@ -1,6 +1,6 @@
 const { sortBy } = require('lodash')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 
 const tagClasses = {
   not_started: 'govuk-tag--grey',

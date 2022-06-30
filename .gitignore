@@ -1,3 +1,6 @@
+# To manually add new .js files, use `git add -f file.js`
+*.js
+
 # Logs
 logs
 *.log

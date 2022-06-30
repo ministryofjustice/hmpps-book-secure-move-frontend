@@ -16,7 +16,7 @@ const MoveService = proxyquire('./move', {
   '../helpers/move/can-edit-move': sinon.stub().returns(true),
 })
 
-const moveService = new MoveService({ apiClient: apiClient })
+const moveService = new MoveService({ apiClient })
 
 const mockMove = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
@@ -206,7 +206,7 @@ describe('Move Service', function () {
           },
           empty_string: '',
           false: false,
-          undefined: undefined,
+          undefined,
           null: null,
           empty_array: [],
         })

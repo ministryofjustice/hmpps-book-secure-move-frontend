@@ -8,7 +8,7 @@ const encodeToken = data =>
 const configStub = {
   AUTH_PROVIDERS: {
     hmpps: {
-      user_url: 'http://test.com/user/me',
+      user_url: username => `http://test.com/user/${username}`,
       groups_url: () => 'http://test.com/',
     },
   },
@@ -66,7 +66,7 @@ const mockUserCaseloads = [
 
 const axiosInstanceStub = sinon.spy(axios.create())
 const axiosStub = { create: () => axiosInstanceStub }
-const { getLocations, getFullname, getSupplierId } = proxyquire('./user', {
+const { getLocations, getFullName, getSupplierId } = proxyquire('./user', {
   axios: axiosStub,
   './reference-data': function () {
     return referenceDataStub
@@ -79,19 +79,25 @@ describe('User service', function () {
     expect(axiosInstanceStub.defaults.raxConfig.retry).to.eq(1)
   })
 
-  describe('#getFullname()', function () {
+  describe('#getFullName()', function () {
     let result
 
     context('with valid bearer token', function () {
       context('User authenticated from HMPPS SSO', function () {
+        const mockRoute = () => {
+          nock('http://test.com')
+            .get(/^\/user\/.*$/)
+            .reply(200, JSON.stringify(mockFullNameResponse))
+        }
+
+        let getSpy
         beforeEach(async function () {
+          getSpy = sinon.spy(axiosInstanceStub, 'get')
+
           const mockToken = '12345678910'
 
-          nock('http://test.com')
-            .get('/user/me')
-            .reply(200, JSON.stringify(mockFullNameResponse))
-
-          result = await getFullname(mockToken)
+          mockRoute()
+          result = await getFullName(mockToken)
         })
 
         it('requests the user’s details from HMPPS SSO', function () {
@@ -100,6 +106,29 @@ describe('User service', function () {
 
         it('returns an object of user details', function () {
           expect(result).to.deep.equal(mockFullNameResponse.name)
+        })
+
+        it('does not cache "me"', async function () {
+          mockRoute()
+          await getFullName('12345678910')
+
+          expect(getSpy.callCount).equal(2)
+        })
+
+        it('does not hit auth for Serco/GEOAmey', async function () {
+          expect(await getFullName('12345678910', 'Serco')).equal('Serco')
+          expect(await getFullName('12345678910', 'GEOAmey')).equal('GEOAmey')
+
+          expect(getSpy.callCount).equal(1)
+        })
+
+        it('does cache other usernames', async function () {
+          for (let i = 0; i < 10; i++) {
+            mockRoute()
+            await getFullName('12345678910', 'test')
+          }
+
+          expect(getSpy.callCount).equal(2)
         })
       })
     })
@@ -301,7 +330,10 @@ describe('User service', function () {
         it('should send a warning to Sentry', function () {
           expect(Sentry.captureException).to.have.been.calledOnceWith(
             sinon.match.instanceOf(Error),
-            { tags: { authSource: undefined }, level: 'warning' }
+            {
+              tags: { authSource: undefined },
+              level: 'warning',
+            }
           )
         })
       })

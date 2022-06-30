@@ -18,8 +18,5 @@ fixture(
 })
 
 test('User should not be able to update move', async () => {
-  await checkUpdateLinks(['personal_details', 'court', 'move', 'date'], true, [
-    'risk',
-    'health',
-  ])
+  await checkUpdateLinks(['court', 'move', 'date'], true, ['risk', 'health'])
 })

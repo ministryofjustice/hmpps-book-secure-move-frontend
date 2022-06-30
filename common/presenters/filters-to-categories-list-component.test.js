@@ -1,6 +1,6 @@
 const { expect } = require('chai')
 
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 
 const filtersToCategoriesListComponent = require('./filters-to-categories-list-component')
 

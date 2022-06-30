@@ -5,7 +5,7 @@ restClient.post = sinon.stub()
 
 const JourneyService = require('./journey')
 
-const journeyService = new JourneyService({ apiClient: apiClient })
+const journeyService = new JourneyService({ apiClient })
 
 const mockJourneys = [
   {

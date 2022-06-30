@@ -33,10 +33,6 @@ function processAuthResponse() {
             return
           }
 
-          if (key === 'grant') {
-            return
-          }
-
           req.session[key] = previousSession[key]
         })
 

@@ -14,19 +14,24 @@ describe('Person app', function () {
     describe('#personalDetails()', function () {
       let req, res
 
-      beforeEach(function () {
+      beforeEach(async function () {
         sinon.stub(presenters, 'personToSummaryListComponent').returnsArg(0)
         req = {
           person: mockPerson,
           t: sinon.stub().returnsArg(0),
           query: { move: 'move id' },
+          services: {
+            move: {
+              getById: sinon.stub(),
+            },
+          },
         }
         res = {
           breadcrumb: sinon.stub().returnsThis(),
           render: sinon.stub(),
         }
 
-        personalDetails(req, res)
+        await personalDetails(req, res)
       })
 
       it('should render correct template', function () {
@@ -41,7 +46,11 @@ describe('Person app', function () {
         })
 
         it('should pass correct keys', function () {
-          expect(locals).to.have.all.keys(['personalDetailsSummary', 'moveId'])
+          expect(locals).to.have.all.keys([
+            'personalDetailsSummary',
+            'moveId',
+            'updateLink',
+          ])
           expect(locals.moveId).to.equal('move id')
         })
 

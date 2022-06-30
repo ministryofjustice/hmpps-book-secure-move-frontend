@@ -1,6 +1,6 @@
 const { isEmpty, kebabCase } = require('lodash')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const componentService = require('../../services/component')
 
 function assessmentActions(move = {}, { canAccess } = {}) {

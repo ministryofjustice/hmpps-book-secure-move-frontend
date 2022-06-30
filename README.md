@@ -32,13 +32,13 @@ There are three main repositories that comprise the Book a secure move service:
    git clone https://github.com/ministryofjustice/hmpps-book-secure-move-frontend && cd hmpps-book-secure-move-frontend
    ```
 
-1. Install node dependencies:
+2. Install node dependencies:
 
    ```
    npm install
    ```
 
-1. Build the assets
+3. Build the assets
 
    ```
    npm run build

@@ -165,10 +165,8 @@ module.exports = {
       logout_url: _authUrl(
         `/auth/logout?client_id=${AUTH_KEY}&redirect_uri=${BASE_URL}`
       ),
-      groups_url: userName => {
-        return _authUrl(`/auth/api/authuser/${userName}/groups`)
-      },
-      user_url: _authUrl('/auth/api/user/me'),
+      groups_url: username => _authUrl(`/auth/api/authuser/${username}/groups`),
+      user_url: username => _authUrl(`/auth/api/user/${username}`),
       key: AUTH_KEY,
       secret: process.env.AUTH_PROVIDER_SECRET,
     },

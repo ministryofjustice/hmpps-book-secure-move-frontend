@@ -1,6 +1,6 @@
 const pluralize = require('pluralize')
 
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 const { event: eventModel } = require('../../lib/api-client/models')
 
 const eventRelationships = Object.keys(eventModel.fields).filter(field => {
@@ -72,7 +72,9 @@ const getEventProperties = event => {
   const { notes, occurred_at, created_by } = event
   return {
     notes,
+    // eslint-disable-next-line camelcase
     occurred_at,
+    // eslint-disable-next-line camelcase
     created_by,
   }
 }

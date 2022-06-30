@@ -2,7 +2,7 @@
 
 App modules are subsections of the main site, dealing with a specific area , e.g locations or moves. They are constructed using [Express](https://expressjs.com) [routers](https://expressjs.com/en/api.html#router), [param middleware](https://expressjs.com/en/api.html#router.param) and [shared middleware](https://expressjs.com/en/api.html#router.use).
 
-They can have a variety of different parts, in either a root file, or a folder with multiple files, and exposed via an `index.js` in the folder.
+They can have a variety of different parts, in either a root file, or a folder with multiple files, and exposed via an `index.ts` in the folder.
 
 - `controllers` - Express controllers
 - `constants` - Predefined default settings for a module, including routing paths, actions, and other defaults

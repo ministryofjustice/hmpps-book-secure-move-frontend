@@ -2,7 +2,7 @@ const proxyquire = require('proxyquire')
 
 const FormWizardController = require('../../../common/controllers/form-wizard')
 const presenters = require('../../../common/presenters')
-const i18n = require('../../../config/i18n')
+const i18n = require('../../../config/i18n').default
 
 const setPreviousNextFrameworkSection = sinon.stub()
 const setMoveSummary = sinon.stub()

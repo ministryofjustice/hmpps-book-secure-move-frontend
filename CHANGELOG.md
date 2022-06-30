@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.123.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.122.4...v2.123.0) (2022-06-30)
+
+
+### Features
+
+* Add formatting for PerUpdated event ([ddc7bae](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/ddc7bae958e0671aa53cb06284c72e5cb163a0a3))
+
+### [2.122.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.122.3...v2.122.4) (2022-06-27)
+
+### [2.122.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.122.2...v2.122.3) (2022-06-23)
+
+
+### Bug Fixes
+
+* Fix remove property button from ghosting ([98308f9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/98308f9664417aafe0a0a618449686c290e4f35e))
+
+### [2.122.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.122.1...v2.122.2) (2022-06-22)
+
+### [2.122.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.122.0...v2.122.1) (2022-06-16)
+
+## [2.122.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.121.2...v2.122.0) (2022-06-08)
+
+
+### Features
+
+* Add new PerCompletion event ([c1517f0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c1517f0c0d6a32d37f6cd4af48187d65b103c1ab))
+* Add user_id tracking to app ([2cb5380](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/2cb53803ad73f6d887352dd9faa15525dce32c9a))
+
+### [2.121.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.121.1...v2.121.2) (2022-06-01)
+
+### [2.121.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.121.0...v2.121.1) (2022-06-01)
+
+
+### Bug Fixes
+
+* Change the wording for optional fields when not answer given ([4061d26](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4061d26d35550b95f97304528011a1323b22246c))
+
 ## [2.121.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.120.1...v2.121.0) (2022-05-16)
 
 

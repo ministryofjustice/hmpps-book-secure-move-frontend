@@ -2,14 +2,14 @@
   "page_title": "Your overview",
   "sections": {
     "outgoing": {
-      "heading": "$t(primary_navigation.outgoing) for",
+      "heading": "$t(primary_navigation.outgoing) moves for",
       "summary": {
         "total": "outgoing move",
         "total_plural": "outgoing moves"
       }
     },
     "incoming": {
-      "heading": "$t(primary_navigation.incoming) for",
+      "heading": "$t(primary_navigation.incoming) moves for",
       "summary": {
         "total": "incoming move",
         "total_plural": "incoming moves"

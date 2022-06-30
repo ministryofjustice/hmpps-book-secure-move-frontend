@@ -44,7 +44,7 @@ function _isCurrentWeek(date) {
  * @return {String} a formatted date
  *
  * @example {{ "2019-02-21" | formatDate }}
- * @example {{ "2019-02-21" | formatDate("DD/MM/YY") }}
+ * @example {{ "2019-02-21" | formatDate('DD/MM/YY') }}
  */
 function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
   if (!value) {
@@ -70,9 +70,9 @@ function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
  * @return {String} a formatted date
  *
  * @example {{ "2019-02-21" | formatDateRange }}
- * @example {{ ["2019-02-21"] | formatDateRange }}
+ * @example {{ ['2019-02-21'] | formatDateRange }}
  * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRange }}
- * @example {{ "2019-02-21" | formatDateRange("DD/MM/YY") }}
+ * @example {{ "2019-02-21" | formatDateRange('DD/MM/YY') }}
  */
 function formatDateRange(value, delimiter = 'to') {
   const dates = filter(value)
@@ -110,9 +110,9 @@ function formatDateRange(value, delimiter = 'to') {
  * @return {String} a formatted date
  *
  * @example {{ "2019-02-21" | formatDateRange }}
- * @example {{ ["2019-02-21"] | formatDateRange }}
+ * @example {{ ['2019-02-21'] | formatDateRange }}
  * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRange }}
- * @example {{ "2019-02-21" | formatDateRange("DD/MM/YY") }}
+ * @example {{ "2019-02-21" | formatDateRange('DD/MM/YY') }}
  */
 function formatDateRangeAsRelativeWeek(value) {
   const dates = filter(value)
@@ -179,22 +179,22 @@ function formatDateWithTimeAndDay(value, includeSeconds = false) {
  * @return {String} a formatted date
  *
  * @example {{ "2019-02-21" | formatDateAsRelativeDay }}
- * @example {{ "2019-02-21" | formatDateAsRelativeDay("DD/MM/YYYY") }}
+ * @example {{ "2019-02-21" | formatDateAsRelativeDay('DD/MM/YYYY') }}
  */
 function formatDateAsRelativeDay(
   value,
   formattedDateStr = DATE_FORMATS.WITH_DAY
 ) {
   if (isToday(parseISO(value))) {
-    return 'Today'
+    return 'today'
   }
 
   if (isTomorrow(parseISO(value))) {
-    return 'Tomorrow'
+    return 'tomorrow'
   }
 
   if (isYesterday(parseISO(value))) {
-    return 'Yesterday'
+    return 'yesterday'
   }
 
   return formatDate(value, formattedDateStr)
@@ -299,23 +299,16 @@ function formatTime(value) {
  * @example {{ ["one","two","three"] | oxfordJoin }}
  */
 function oxfordJoin(arr = [], lastDelimiter = 'and') {
-  let output
-
   if (!arr || !Array.isArray(arr)) {
-    output = arr
-  } else if (arr.length === 0) {
-    output = ''
+    return arr
   } else if (arr.length === 1) {
-    output = arr[0]
+    return arr[0]
   } else if (arr.length === 2) {
     // joins all with "and" but no commas
-    output = arr.join(` ${lastDelimiter} `)
-  } else {
-    // joins all with commas, but last one gets ", and" (oxford comma!)
-    output = `${arr.slice(0, -1).join(', ')}, ${lastDelimiter} ${arr.slice(-1)}`
+    return arr.join(` ${lastDelimiter} `)
   }
 
-  return output
+  return arr.join(', ').replace(/, ([^,]*)$/, `, ${lastDelimiter} $1`)
 }
 
 function filesize(str) {

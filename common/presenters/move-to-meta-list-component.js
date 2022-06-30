@@ -2,7 +2,7 @@ const { get, isNil } = require('lodash')
 
 const moveAgreedField = require('../../app/move/app/new/fields/move-agreed')
 const componentService = require('../../common/services/component')
-const i18n = require('../../config/i18n')
+const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 const mapUpdateLink = require('../helpers/move/map-update-link')
 
