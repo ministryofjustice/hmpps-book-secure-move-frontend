@@ -2,7 +2,7 @@
   "name": "hmpps-book-secure-move-frontend",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "version": "2.122.4",
+  "version": "2.123.0",
   "main": "start.js",
   "contributors": [
     {
@@ -50,12 +50,12 @@
       "email": "daniele.polencic@gmail.com"
     },
     {
-      "name": "Barbara Cassani",
-      "email": "barbaracassani@users.noreply.github.com"
-    },
-    {
       "name": "Matt Crowson",
       "email": "matt.crowson@digital.justice.gov.uk"
+    },
+    {
+      "name": "Barbara Cassani",
+      "email": "barbaracassani@users.noreply.github.com"
     },
     {
       "name": "Steve Lorek",
@@ -222,7 +222,7 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-mocha": "10.0.5",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-promise": "6.0.0",
     "eslint-plugin-testcafe": "0.2.1",
     "finepack": "2.10.15",
