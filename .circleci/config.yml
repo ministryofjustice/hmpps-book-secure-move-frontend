@@ -237,7 +237,7 @@ jobs:
 
   end-to-end-test:
     <<: *circle_container
-    resource_class: medium
+    resource_class: large
     parallelism: 8
     steps:
       - checkout
