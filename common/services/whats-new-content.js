@@ -35,7 +35,9 @@ const options = {
         node.content
       )}</h4>`,
     [BLOCKS.UL_LIST]: (node, next) =>
-      `<ul class="govuk-list govuk-list--bullet">${next(node.content)}</ul>`,
+      `<ul class="govuk-list govuk-list--bullet govuk-list-bullet-bottom-padding">${next(
+        node.content
+      )}</ul>`,
     [BLOCKS.OL_LIST]: (node, next) =>
       `<ol class="govuk-list govuk-list--number">${next(node.content)}</ol>`,
     [BLOCKS.PARAGRAPH]: (node, next) =>
