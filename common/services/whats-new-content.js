@@ -1,16 +1,12 @@
 const { documentToHtmlString } = require('@contentful/rich-text-html-renderer')
 const { BLOCKS, MARKS, INLINES } = require('@contentful/rich-text-types')
-const contentful = require('contentful')
 const { format } = require('date-fns')
 
-const {
-  CONTENTFUL_SPACE_ID,
-  CONTENTFUL_ACCESS_TOKEN,
-  CONTENTFUL_HOST,
-} = require('../../config')
 const { DATE_FORMATS } = require('../../config/index')
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
+
+const contentfulClientService = require('./contentful-client.ts')
 
 const options = {
   renderMark: {
@@ -54,11 +50,6 @@ const options = {
 }
 
 const service = {
-  client: contentful.createClient({
-    host: CONTENTFUL_HOST,
-    space: CONTENTFUL_SPACE_ID,
-    accessToken: CONTENTFUL_ACCESS_TOKEN,
-  }),
   fetch: async () => {
     const entries = await service.fetchEntries()
 
@@ -87,7 +78,9 @@ const service = {
     }
   },
   fetchEntries: async () => {
-    const entries = await service.client.getEntries()
+    const entries = await contentfulClientService.client.getEntries({
+      content_type: 'whatsNew',
+    })
 
     if (!entries.items?.length) {
       return []
@@ -101,6 +94,19 @@ const service = {
         date: new Date(date),
       })
     )
+  },
+  fetchEntryBySlugId: async slugId => {
+    const entry = await contentfulClientService.client.getEntries({
+      content_type: 'dedicatedContent',
+      'fields.slug[in]': slugId,
+    })
+
+    if (!entry.items?.length) {
+      return []
+    }
+
+    const post = entry.items[0].fields
+    return { title: post.title, body: service.convertToHTMLFormat(post.body) }
   },
   convertToHTMLFormat: body => documentToHtmlString(body, options),
   formatDate: date => format(date, DATE_FORMATS.WITH_MONTH),
