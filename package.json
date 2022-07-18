@@ -139,7 +139,7 @@
     "contentful": "9.1.32",
     "convert-hrtime": "3.0.0",
     "cookie-parser": "1.4.6",
-    "core-js": "3.23.4",
+    "core-js": "3.23.5",
     "css-minimizer-webpack-plugin": "4.0.0",
     "csurf": "1.11.0",
     "date-fns": "2.28.0",
