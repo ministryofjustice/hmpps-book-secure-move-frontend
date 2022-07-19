@@ -1,12 +1,16 @@
 const { documentToHtmlString } = require('@contentful/rich-text-html-renderer')
 const { BLOCKS, MARKS, INLINES } = require('@contentful/rich-text-types')
+const contentful = require('contentful')
 const { format } = require('date-fns')
 
+const {
+  CONTENTFUL_SPACE_ID,
+  CONTENTFUL_ACCESS_TOKEN,
+  CONTENTFUL_HOST,
+} = require('../../config')
 const { DATE_FORMATS } = require('../../config/index')
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
-
-const contentfulClientService = require('./contentful-client.ts')
 
 const options = {
   renderMark: {
@@ -50,6 +54,11 @@ const options = {
 }
 
 const service = {
+  client: contentful.createClient({
+    host: CONTENTFUL_HOST,
+    space: CONTENTFUL_SPACE_ID,
+    accessToken: CONTENTFUL_ACCESS_TOKEN,
+  }),
   fetch: async () => {
     const entries = await service.fetchEntries()
 
@@ -78,7 +87,7 @@ const service = {
     }
   },
   fetchEntries: async () => {
-    const entries = await contentfulClientService.client.getEntries({
+    const entries = await service.client.getEntries({
       content_type: 'whatsNew',
     })
 
@@ -96,7 +105,7 @@ const service = {
     )
   },
   fetchEntryBySlugId: async slugId => {
-    const entry = await contentfulClientService.client.getEntries({
+    const entry = await service.client.getEntries({
       content_type: 'dedicatedContent',
       'fields.slug[in]': slugId,
     })
