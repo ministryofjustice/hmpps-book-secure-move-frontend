@@ -1,5 +1,5 @@
 const dateHelpers = require('../../common/helpers/date')
-const whatsNewContentService = require('../../common/services/whats-new-content')
+const whatsNewContentService = require('../../common/services/contentful')
 const i18n = require('../../config/i18n').default
 
 async function dashboard(req, res) {

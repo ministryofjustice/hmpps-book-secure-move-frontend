@@ -1,6 +1,6 @@
 const sinon = require('sinon')
 
-const whatsNewContentService = require('../../common/services/whats-new-content')
+const whatsNewContentService = require('../../common/services/contentful')
 
 const controllers = require('./controllers')
 

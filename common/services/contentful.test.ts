@@ -1,9 +1,10 @@
-const { format } = require('date-fns')
-const sinon = require('sinon')
+import { format } from 'date-fns'
+import sinon from 'sinon'
+import { expect } from 'chai'
 
 const { DATE_FORMATS } = require('../../config')
 
-const whatsNewContentService = require('./whats-new-content')
+const whatsNewContentService = require('./contentful')
 
 const todaysDate = new Date()
 

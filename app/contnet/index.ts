@@ -1,7 +1,7 @@
 // Dependencies
 const router = require('express').Router()
 
-const whatsNewContentService = require('../../common/services/whats-new-content')
+const whatsNewContentService = require('../../common/services/contentful')
 
 // Define routes
 router.get('/:id', async (req: any, res: any, next: any) => {
