@@ -1,14 +1,14 @@
 // Dependencies
 const router = require('express').Router()
 
-const whatsNewContentService = require('../../common/services/contentful')
+const contentfulService = require('../../common/services/contentful')
 
 // Define routes
 router.get('/:id', async (req: any, res: any, next: any) => {
   let content
 
   try {
-    content = await whatsNewContentService.fetchEntryBySlugId(req.params.id)
+    content = await contentfulService.fetchEntryBySlugId(req.params.id)
   } catch (e) {
     return next(e)
   }

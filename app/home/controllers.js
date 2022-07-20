@@ -1,5 +1,5 @@
 const dateHelpers = require('../../common/helpers/date')
-const whatsNewContentService = require('../../common/services/contentful')
+const contentfulService = require('../../common/services/contentful')
 const i18n = require('../../config/i18n').default
 
 async function dashboard(req, res) {
@@ -8,7 +8,7 @@ async function dashboard(req, res) {
   let whatsNewContent
 
   try {
-    whatsNewContent = await whatsNewContentService.fetch()
+    whatsNewContent = await contentfulService.fetch()
   } catch (e) {
     whatsNewContent = null
   }
