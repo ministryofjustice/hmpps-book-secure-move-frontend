@@ -111,7 +111,7 @@ const service = {
     })
 
     if (!entry.items?.length) {
-      return []
+      return undefined
     }
 
     const post = entry.items[0].fields
