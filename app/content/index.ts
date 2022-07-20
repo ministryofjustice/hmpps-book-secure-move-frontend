@@ -13,7 +13,7 @@ router.get('/:id', async (req: any, res: any, next: any) => {
     return next(e)
   }
 
-  res.render('contnet/content', {
+  res.render('content/content', {
     post: content
   })
 })
