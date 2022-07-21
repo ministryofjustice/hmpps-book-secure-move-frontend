@@ -1,6 +1,6 @@
 const sinon = require('sinon')
 
-const whatsNewContentService = require('../../common/services/whats-new-content')
+const contentfulService = require('../../common/services/contentful')
 
 const controllers = require('./controllers')
 
@@ -10,7 +10,7 @@ describe('Home controllers', function () {
     let req, res
 
     beforeEach(function () {
-      sinon.stub(whatsNewContentService, 'fetch').throws(errorMock)
+      sinon.stub(contentfulService, 'fetch').throws(errorMock)
 
       req = {
         filterSingleRequests: ['foo', 'bar'],

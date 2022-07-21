@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.124.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.123.1...v2.124.0) (2022-07-21)
+
+
+### Features
+
+* Add new method to fetch a a post by the slug ([48f5a06](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/48f5a06f1f1b278c93efeeec0b9133806e5d7b36))
+
 ### [2.123.1](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.123.0...v2.123.1) (2022-07-12)
 
 ## [2.123.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.122.4...v2.123.0) (2022-06-30)
