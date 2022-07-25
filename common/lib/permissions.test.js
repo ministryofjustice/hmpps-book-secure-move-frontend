@@ -230,6 +230,7 @@ describe('Permissions', function () {
           'moves:view:proposed',
           'move:review',
           'move:view',
+          'move:update',
           'person_escort_record:view',
           'person_escort_record:print',
           'youth_risk_assessment:view',
