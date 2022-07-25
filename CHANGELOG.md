@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.125.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.124.0...v2.125.0) (2022-07-25)
+
+
+### Features
+
+* Allow PMU users to have the ability to update a move ([8e62015](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8e6201584eb648b729fd0b9e75401d4f165d9bfc))
+* Allow PMU users to have the ability to update a move ([bed1e2e](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/bed1e2e8df581e440a271fb95324d86bdbd7fa06))
+
 ## [2.124.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.123.1...v2.124.0) (2022-07-21)
 
 
