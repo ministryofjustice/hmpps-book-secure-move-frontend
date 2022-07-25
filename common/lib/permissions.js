@@ -174,6 +174,7 @@ const pmuPermissions = [
   'move:review',
   'move:view',
   'move:update',
+  'move:update:prison_transfer',
   'person_escort_record:view',
   'person_escort_record:print',
   'youth_risk_assessment:view',
