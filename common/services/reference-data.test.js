@@ -681,11 +681,15 @@ describe('Reference Data Service', function () {
       const mockId = 'd335715f-c9d1-415c-a7c8-06e830158214'
 
       beforeEach(async function () {
-        locations = await referenceDataService.getLocationsBySupplierId(mockId)
+        locations = await referenceDataService.getLocationsBySupplierId(
+          {},
+          mockId
+        )
       })
 
       it('should call the supplier location endpoint', function () {
         expect(restClient).to.be.calledOnceWithExactly(
+          {},
           '/suppliers/d335715f-c9d1-415c-a7c8-06e830158214/locations',
           {
             per_page: 2000,

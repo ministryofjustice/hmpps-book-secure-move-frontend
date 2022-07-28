@@ -7,9 +7,9 @@ const {
 const auth = require('./auth')()
 const getRequestHeaders = require('./request-headers')
 
-const restClient = async (url, args, options = {}) => {
+const restClient = async (req, url, args, options = {}) => {
   const authorizationHeader = await auth.getAuthorizationHeader()
-  const requestHeaders = getRequestHeaders(options.format)
+  const requestHeaders = getRequestHeaders(req, options.format)
   const headers = {
     ...authorizationHeader,
     ...requestHeaders,
@@ -30,7 +30,7 @@ const restClient = async (url, args, options = {}) => {
 
 restClient.get = restClient
 
-restClient.post = (url, data, options) =>
-  restClient(url, data, { ...options, method: 'post' })
+restClient.post = (req, url, data, options) =>
+  restClient(req, url, data, { ...options, method: 'post' })
 
 module.exports = restClient

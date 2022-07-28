@@ -34,7 +34,7 @@ describe('API Client', function () {
       let data
 
       beforeEach(async function () {
-        data = await restClient('/foo')
+        data = await restClient({}, '/foo')
       })
 
       it('should get the authorization header', function () {
@@ -42,7 +42,7 @@ describe('API Client', function () {
       })
 
       it('should get the default client headers', function () {
-        expect(getRequestHeadersStub).to.be.calledOnceWithExactly(undefined)
+        expect(getRequestHeadersStub).to.be.calledOnceWithExactly({}, undefined)
       })
 
       it('should make the expected request', function () {
@@ -64,7 +64,7 @@ describe('API Client', function () {
 
     context('when calling the API with params', function () {
       beforeEach(async function () {
-        await restClient('/foo', { bar: 'baz' })
+        await restClient({}, '/foo', { bar: 'baz' })
       })
 
       it('should make the expected request', function () {
@@ -83,7 +83,7 @@ describe('API Client', function () {
 
     context('when calling the API as a post with no data', function () {
       beforeEach(async function () {
-        await restClient('/foo', null, { method: 'post' })
+        await restClient({}, '/foo', null, { method: 'post' })
       })
 
       it('should make the expected request', function () {
@@ -102,7 +102,7 @@ describe('API Client', function () {
 
     context('when calling the API as a post with data', function () {
       beforeEach(async function () {
-        await restClient('/foo', { bar: 'baz' }, { method: 'post' })
+        await restClient({}, '/foo', { bar: 'baz' }, { method: 'post' })
       })
 
       it('should make the expected request', function () {
@@ -122,11 +122,17 @@ describe('API Client', function () {
 
     context('when calling the API - format', function () {
       beforeEach(async function () {
-        await restClient('/foo', { bar: 'baz' }, { format: 'application/foo' })
+        await restClient(
+          {},
+          '/foo',
+          { bar: 'baz' },
+          { format: 'application/foo' }
+        )
       })
 
       it('should pass the expected format to the method that returns the default client headers', function () {
         expect(getRequestHeadersStub).to.be.calledOnceWithExactly(
+          {},
           'application/foo'
         )
       })
@@ -134,7 +140,7 @@ describe('API Client', function () {
 
     context('when using get method', function () {
       beforeEach(async function () {
-        await restClient.get('/foo', { bar: 'baz' })
+        await restClient.get({}, '/foo', { bar: 'baz' })
       })
 
       it('should make the expected request', function () {
@@ -153,7 +159,7 @@ describe('API Client', function () {
 
     context('when using post method', function () {
       beforeEach(async function () {
-        await restClient.post('/foo', { bar: 'baz' })
+        await restClient.post({}, '/foo', { bar: 'baz' })
       })
 
       it('should make the expected request', function () {

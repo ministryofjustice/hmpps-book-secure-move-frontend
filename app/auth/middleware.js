@@ -17,7 +17,7 @@ function processAuthResponse() {
       const decodedAccessToken = decodeAccessToken(accessToken)
       const previousSession = { ...req.session }
 
-      const user = await loadUser(accessToken)
+      const user = await loadUser(req, accessToken)
 
       req.session.regenerate(error => {
         if (error) {

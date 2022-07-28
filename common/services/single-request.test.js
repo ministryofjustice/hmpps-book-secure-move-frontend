@@ -291,15 +291,21 @@ describe('Single request service', function () {
 
     context('with arguments', function () {
       beforeEach(async function () {
-        moves = await singleRequestService.getDownload({
-          foo: 'bar',
-        })
+        moves = await singleRequestService.getDownload(
+          {},
+          {
+            foo: 'bar',
+          }
+        )
       })
 
       it('should call getAll with existing args and include', function () {
-        expect(moveService.getDownload).to.be.calledOnceWithExactly({
-          foo: 'bar',
-        })
+        expect(moveService.getDownload).to.be.calledOnceWithExactly(
+          {},
+          {
+            foo: 'bar',
+          }
+        )
       })
 
       it('should return moves', function () {

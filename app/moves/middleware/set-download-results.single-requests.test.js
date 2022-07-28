@@ -43,7 +43,7 @@ describe('Moves middleware', function () {
       it('should call the data service with request body', function () {
         expect(
           singleRequestService.getDownload
-        ).to.have.been.calledOnceWithExactly({
+        ).to.have.been.calledOnceWithExactly(req, {
           status: 'proposed',
           createdAtDate: ['2019-01-01', '2019-01-07'],
           fromLocationId: '123',

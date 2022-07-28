@@ -89,10 +89,14 @@ class ReferenceDataService extends BaseService {
     })
   }
 
-  async getLocationsBySupplierId(supplierId) {
-    const { data } = await restClient(`/suppliers/${supplierId}/locations`, {
-      per_page: 2000,
-    })
+  async getLocationsBySupplierId(req, supplierId) {
+    const { data } = await restClient(
+      req,
+      `/suppliers/${supplierId}/locations`,
+      {
+        per_page: 2000,
+      }
+    )
     const locations = data.map(location => {
       const { attributes, relationships, ...values } = location
       return {
