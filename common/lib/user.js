@@ -15,7 +15,7 @@ const forenameToInitial = name => {
   return `${name.charAt()}. ${name.split(' ').pop()}`
 }
 
-async function loadUser(accessToken) {
+async function loadUser(req, accessToken) {
   const {
     user_id: userId,
     user_name: username,
@@ -31,7 +31,12 @@ async function loadUser(accessToken) {
 
   const permissions = rolesToPermissions(authorities)
 
-  const locations = await getLocations(accessToken, supplierId, permissions)
+  const locations = await getLocations(
+    req,
+    accessToken,
+    supplierId,
+    permissions
+  )
   locations.sort((a, b) => a.title.localeCompare(b.title))
 
   return {

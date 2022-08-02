@@ -46,8 +46,12 @@ async function getFullName(token, username = 'me') {
   return fullNameCache[username]
 }
 
-async function getLocations(token, supplierId, permissions) {
-  const supplierLocations = await getSupplierLocations(supplierId, permissions)
+async function getLocations(req, token, supplierId, permissions) {
+  const supplierLocations = await getSupplierLocations(
+    req,
+    supplierId,
+    permissions
+  )
 
   if (supplierLocations) {
     return supplierLocations
@@ -125,16 +129,16 @@ function getNomisLocations(token) {
     )
 }
 
-async function getSupplierLocations(supplierId, permissions) {
+async function getSupplierLocations(req, supplierId, permissions) {
   if (supplierId) {
-    return await referenceDataService.getLocationsBySupplierId(supplierId)
+    return await referenceDataService.getLocationsBySupplierId(req, supplierId)
   }
 
   if (permissions.includes('locations:contract_delivery_manager')) {
     const suppliers = await referenceDataService.getSuppliers()
     const supplierLocations = await Promise.all(
       suppliers.map(supplier =>
-        referenceDataService.getLocationsBySupplierId(supplier.id)
+        referenceDataService.getLocationsBySupplierId(req, supplier.id)
       )
     )
 

@@ -40,6 +40,7 @@ describe('Moves middleware', function () {
 
         it('should call API with move date and location ID', function () {
           expect(moveService.getDownload).to.be.calledOnceWithExactly(
+            req,
             req.body[mockBodyKey]
           )
         })

@@ -19,7 +19,7 @@ const perEvents = [
 const personMoveEvents = ['PersonMoveUsedForce', 'PersonMoveDeathInCustody']
 
 class EventService extends BaseService {
-  postEvents(lockoutEvents, move, journeys, user) {
+  postEvents(req, lockoutEvents, move, journeys, user) {
     const todaysDate = new Date()
     const events = []
 
@@ -78,9 +78,7 @@ class EventService extends BaseService {
           },
         }
 
-        const response = await restClient.post('/events', payload)
-
-        return response
+        return await restClient.post(req, '/events', payload)
       })
     )
   }
