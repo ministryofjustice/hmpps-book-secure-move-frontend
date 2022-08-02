@@ -171,6 +171,17 @@ function formatDateWithTimeAndDay(value, includeSeconds = false) {
 }
 
 /**
+ * Formats a time for an event
+ *
+ * @param  {Any} a datetime
+ * @return {String} a formatted time as string
+ * @example {{ "2000-01-01T14:00:00Z" | formatDateTimeForEvents }}
+ */
+function formatDateTimeForEvents(value) {
+  return formatDate(value, DATE_FORMATS.WITH_TIME_AND_DAY_FOR_EVENTS)
+}
+
+/**
  * Returns today, tomorrow or yesterday if they match, otherwise
  * it will return that date formatted with day by default or in
  * the format supplied
@@ -276,17 +287,7 @@ function formatTime(value) {
     return value
   }
 
-  const hours = format(parsedDate, 'h')
-  const parsedMins = format(parsedDate, 'mm')
-  const minutes = parsedMins !== '00' ? `:${parsedMins}` : ''
-  const suffix = format(parsedDate, 'a').toLowerCase()
-  const timeStr = `${hours}${minutes}${suffix}`
-
-  if (timeStr === '12am') {
-    return 'Midnight'
-  }
-
-  return `${hours}${minutes}${suffix}`
+  return format(parsedDate, 'HH:mm')
 }
 
 /**
@@ -329,6 +330,7 @@ module.exports = {
   formatDateRangeWithRelativeWeek,
   formatDateWithDay,
   formatDateWithTimeAndDay,
+  formatDateTimeForEvents,
   formatDateWithRelativeDay,
   formatDateAsRelativeDay,
   formatISOWeek,

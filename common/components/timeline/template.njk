@@ -19,7 +19,7 @@
       <p class="app-timeline__date {{- ' ' + item.datetime.classes if item.datetime.classes}}">
         <time datetime="{{ item.datetime.timestamp }}">
           {%- if item.datetime.type %}
-            {{- item.datetime.timestamp | mojDate(item.datetime.type) -}}
+            {{- item.datetime.timestamp | formatDateTimeForEvents -}}
           {% else %}
             {{- item.datetime.timestamp | date(item.datetime.format) -}}
           {% endif -%}
