@@ -92,8 +92,8 @@ class SingleRequestService extends BaseService {
     })
   }
 
-  getDownload(args) {
-    return this.moveService.getDownload(args)
+  getDownload(req, args) {
+    return this.moveService.getDownload(req, args)
   }
 
   approve(id, { date } = {}) {

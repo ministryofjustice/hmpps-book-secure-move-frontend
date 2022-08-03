@@ -233,16 +233,19 @@ class MoveService extends BaseService {
     })
   }
 
-  async getDownload({
-    status = 'requested,accepted,booked,in_transit,completed,cancelled',
-    dateRange = [],
-    createdAtDate = [],
-    fromLocationId,
-    toLocationId,
-    supplierId = undefined,
-    dateOfBirthFrom,
-    dateOfBirthTo,
-  } = {}) {
+  async getDownload(
+    req,
+    {
+      status = 'requested,accepted,booked,in_transit,completed,cancelled',
+      dateRange = [],
+      createdAtDate = [],
+      fromLocationId,
+      toLocationId,
+      supplierId = undefined,
+      dateOfBirthFrom,
+      dateOfBirthTo,
+    } = {}
+  ) {
     const [startDate, endDate] = dateRange
     const [createdAtFrom, createdAtTo] = createdAtDate
     const filter = omitBy(
@@ -266,6 +269,7 @@ class MoveService extends BaseService {
     )
 
     const response = await restClient.post(
+      req,
       '/moves/csv',
       { filter },
       {

@@ -33,7 +33,7 @@ describe('User', function () {
         './permissions': permissionsLibStub,
       })
 
-      user = await loadUser(accessToken)
+      user = await loadUser({}, accessToken)
     })
 
     it('sets the userId', function () {

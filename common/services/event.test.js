@@ -140,6 +140,7 @@ describe('Event Service', function () {
     context('with a PER_EVENTS lockout event', function () {
       beforeEach(async function () {
         await eventService.postEvents(
+          {},
           perMocklockoutEvents,
           move,
           journeys,
@@ -153,6 +154,7 @@ describe('Event Service', function () {
 
       it('will be called with the correct payload for a PER_EVENT', function () {
         expect(restClient.post).to.be.calledWithExactly(
+          {},
           '/events',
           mockedPERPayload
         )
@@ -162,6 +164,7 @@ describe('Event Service', function () {
     context('with a PERSON_MOVE_EVENTS lockout event', function () {
       beforeEach(async function () {
         await eventService.postEvents(
+          {},
           personMoveMocklockoutEvents,
           move,
           journeys,
@@ -171,6 +174,7 @@ describe('Event Service', function () {
 
       it('will be called with the correct payload for a PERSON_MOVE_EVENTS', function () {
         expect(restClient.post).to.be.calledWithExactly(
+          {},
           '/events',
           mockedPersonMovePayload
         )

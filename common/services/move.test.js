@@ -948,11 +948,12 @@ describe('Move Service', function () {
 
     context('without arguments', function () {
       beforeEach(async function () {
-        moves = await moveService.getDownload()
+        moves = await moveService.getDownload({})
       })
 
       it('should call getAll with all statuses', function () {
         expect(restClient.post).to.be.calledOnceWithExactly(
+          {},
           '/moves/csv',
           {
             filter: {
@@ -976,16 +977,20 @@ describe('Move Service', function () {
       const mockToLocationId = 'b195d0f0-df8e-4b97-891e-92020d6820b9'
 
       beforeEach(async function () {
-        moves = await moveService.getDownload({
-          dateRange: mockDateRange,
-          createdAtDate: mockCreatedRange,
-          fromLocationId: mockFromLocationId,
-          toLocationId: mockToLocationId,
-        })
+        moves = await moveService.getDownload(
+          {},
+          {
+            dateRange: mockDateRange,
+            createdAtDate: mockCreatedRange,
+            fromLocationId: mockFromLocationId,
+            toLocationId: mockToLocationId,
+          }
+        )
       })
 
       it('should call getAll with all statuses', function () {
         expect(restClient.post).to.be.calledOnceWithExactly(
+          {},
           '/moves/csv',
           {
             filter: {
