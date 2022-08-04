@@ -13,8 +13,8 @@ const filters = proxyquire('./filters', {
     DATE_FORMATS: {
       LONG: 'd MMM yyyy',
       WITH_DAY: 'EEEE d MMM yyyy',
-      WITH_TIME_AND_DAY: "H:mm 'on' EEEE d MMM yyyy",
-      WITH_TIME_AND_DAY_FOR_EVENTS: "d MMMM yyyy 'at' H:mm",
+      WITH_TIME_AND_DAY: "HH:mm 'on' EEEE d MMM yyyy",
+      WITH_TIME_AND_DAY_FOR_EVENTS: "d MMMM yyyy 'at' HH:mm",
       WITH_TIME_WITH_SECONDS_AND_DAY: "H:mm:ss 'on' EEEE d MMM yyyy",
     },
   },
@@ -115,6 +115,14 @@ describe('Nunjucks filters', function () {
       expect(formattedDate).to.equal('12:00 on Wednesday 5 Jan 2000')
     })
 
+    it('should return config date with day with 24 hr format', function () {
+      const formattedDate = filters.formatDateWithTimeAndDay(
+        '2000-01-05T08:00:00.00Z'
+      )
+
+      expect(formattedDate).to.equal('08:00 on Wednesday 5 Jan 2000')
+    })
+
     it('should return config date with day, time and seconds format', function () {
       const formattedDate = filters.formatDateWithTimeAndDay(
         '2000-01-05T14:13:45Z',
@@ -132,6 +140,14 @@ describe('Nunjucks filters', function () {
       )
 
       expect(formattedDate).to.equal('5 January 2000 at 13:46')
+    })
+
+    it('should return config date with day and time format', function () {
+      const formattedDate = filters.formatDateTimeForEvents(
+        '2000-01-05T07:46:00.00Z'
+      )
+
+      expect(formattedDate).to.equal('5 January 2000 at 07:46')
     })
 
     it('should return config date with day with 24 hr format', function () {
