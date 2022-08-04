@@ -31,7 +31,7 @@ describe('Presenters', function () {
 
     it('should return html for the event', function () {
       expect(timelinePanel.html).to.equal(
-        '\n    <div class="app-timeline__description">eventType.description</div>\n    <div class="app-timeline__date">\n      <time datetime="2020-01-01T10:00:00Z">10:00am on Wednesday 1 Jan 2020</time>\n    </div>\n  '
+        '\n    <div class="app-timeline__description">eventType.description</div>\n    <div class="app-timeline__date">\n      <time datetime="2020-01-01T10:00:00Z">10:00 on Wednesday 1 Jan 2020</time>\n    </div>\n  '
       )
     })
 

@@ -13,8 +13,9 @@ const filters = proxyquire('./filters', {
     DATE_FORMATS: {
       LONG: 'd MMM yyyy',
       WITH_DAY: 'EEEE d MMM yyyy',
-      WITH_TIME_AND_DAY: "h:mm bbbb 'on' EEEE d MMM yyyy",
-      WITH_TIME_WITH_SECONDS_AND_DAY: "h:mm:ss bbbb 'on' EEEE d MMM yyyy",
+      WITH_TIME_AND_DAY: "H:mm 'on' EEEE d MMM yyyy",
+      WITH_TIME_AND_DAY_FOR_EVENTS: "d MMMM yyyy 'at' H:mm",
+      WITH_TIME_WITH_SECONDS_AND_DAY: "H:mm:ss 'on' EEEE d MMM yyyy",
     },
   },
   '../../locales/en/actions.json': actions,
@@ -103,15 +104,15 @@ describe('Nunjucks filters', function () {
         '2000-01-05T13:46:00.00Z'
       )
 
-      expect(formattedDate).to.equal('1:46 p.m. on Wednesday 5 Jan 2000')
+      expect(formattedDate).to.equal('13:46 on Wednesday 5 Jan 2000')
     })
 
-    it('should return config date with day and noon format', function () {
+    it('should return config date with day with 24 hr format', function () {
       const formattedDate = filters.formatDateWithTimeAndDay(
         '2000-01-05T12:00:00.00Z'
       )
 
-      expect(formattedDate).to.equal('12:00 noon on Wednesday 5 Jan 2000')
+      expect(formattedDate).to.equal('12:00 on Wednesday 5 Jan 2000')
     })
 
     it('should return config date with day, time and seconds format', function () {
@@ -120,7 +121,33 @@ describe('Nunjucks filters', function () {
         true
       )
 
-      expect(formattedDate).to.equal('2:13:45 p.m. on Wednesday 5 Jan 2000')
+      expect(formattedDate).to.equal('14:13:45 on Wednesday 5 Jan 2000')
+    })
+  })
+
+  describe('#formatDateTimeForEvents()', function () {
+    it('should return config date with day and time format', function () {
+      const formattedDate = filters.formatDateTimeForEvents(
+        '2000-01-05T13:46:00.00Z'
+      )
+
+      expect(formattedDate).to.equal('5 January 2000 at 13:46')
+    })
+
+    it('should return config date with day with 24 hr format', function () {
+      const formattedDate = filters.formatDateTimeForEvents(
+        '2000-01-05T12:00:00.00Z'
+      )
+
+      expect(formattedDate).to.equal('5 January 2000 at 12:00')
+    })
+
+    it('should return config date with day with 24 hr format', function () {
+      const formattedDate = filters.formatDateTimeForEvents(
+        '2000-01-05T23:59:00.00Z'
+      )
+
+      expect(formattedDate).to.equal('5 January 2000 at 23:59')
     })
   })
 
@@ -654,71 +681,71 @@ describe('Nunjucks filters', function () {
         })
 
         context('when the time is 12am', function () {
-          it('should midnight as a string', function () {
+          it('should return correct format', function () {
             const time = filters.formatTime('2000-01-01T00:00:00.00Z')
-            expect(time).to.equal('Midnight')
+            expect(time).to.equal('00:00')
           })
         })
 
         context('when time is in the morning', function () {
           it('should return correct format', function () {
             const time = filters.formatTime('2000-01-01T08:00:00.00Z')
-            expect(time).to.equal('8am')
+            expect(time).to.equal('08:00')
           })
 
           it('should return correct format', function () {
             const time = filters.formatTime('2000-01-01T10:00:00.00Z')
-            expect(time).to.equal('10am')
+            expect(time).to.equal('10:00')
           })
         })
 
         context('when time is in the afternoon', function () {
           it('should return correct format', function () {
             const time = filters.formatTime('2000-01-01T14:00:00.00Z')
-            expect(time).to.equal('2pm')
+            expect(time).to.equal('14:00')
           })
 
           it('should return correct format', function () {
             const time = filters.formatTime('2000-01-01T17:00:00.00Z')
-            expect(time).to.equal('5pm')
+            expect(time).to.equal('17:00')
           })
         })
 
         context('when time is not on the hour', function () {
           it('should return correct format', function () {
             const time = filters.formatTime('2000-01-01T23:59:59Z')
-            expect(time).to.equal('11:59pm')
+            expect(time).to.equal('23:59')
           })
 
           it('should return correct format', function () {
             const time = filters.formatTime('2000-01-01T11:59:59Z')
-            expect(time).to.equal('11:59am')
+            expect(time).to.equal('11:59')
           })
 
           it('should return correct format', function () {
             const time = filters.formatTime('2000-01-01T09:30:00.00Z')
-            expect(time).to.equal('9:30am')
+            expect(time).to.equal('09:30')
           })
         })
 
         it('should return correct format', function () {
           const time = filters.formatTime('2000-01-01T01:00:00.00Z')
-          expect(time).to.equal('1am')
+          expect(time).to.equal('01:00')
         })
 
         it('should return correct format', function () {
           const time = filters.formatTime('2000-06-01T01:00:00.00Z')
-          expect(time).to.equal('1am')
+          expect(time).to.equal('01:00')
         })
 
         it('should return correct format', function () {
           const time = filters.formatTime('10:00')
-          expect(time).to.equal('10am')
+          expect(time).to.equal('10:00')
         })
 
         it('should return correct format', function () {
           const time = filters.formatTime('22:00')
-          expect(time).to.equal('10pm')
+          expect(time).to.equal('22:00')
         })
       })
 
@@ -733,12 +760,12 @@ describe('Nunjucks filters', function () {
 
         it('should return correct format', function () {
           const time = filters.formatTime('2000-01-01T01:00:00.000Z')
-          expect(time).to.equal('5pm')
+          expect(time).to.equal('17:00')
         })
 
         it('should return correct format', function () {
           const time = filters.formatTime('2000-06-01T01:00:00.000Z')
-          expect(time).to.equal('6pm')
+          expect(time).to.equal('18:00')
         })
       })
 
@@ -753,12 +780,12 @@ describe('Nunjucks filters', function () {
 
         it('should return correct format', function () {
           const time = filters.formatTime('2018-01-01T01:00:00.000Z')
-          expect(time).to.equal('11pm')
+          expect(time).to.equal('23:00')
         })
 
         it('should return correct format', function () {
           const time = filters.formatTime('2018-06-01T01:00:00.000Z')
-          expect(time).to.equal('10pm')
+          expect(time).to.equal('22:00')
         })
       })
     })
