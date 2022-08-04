@@ -13,8 +13,8 @@ const filters = proxyquire('./filters', {
     DATE_FORMATS: {
       LONG: 'd MMM yyyy',
       WITH_DAY: 'EEEE d MMM yyyy',
-      WITH_TIME_AND_DAY: "H:mm 'on' EEEE d MMM yyyy",
-      WITH_TIME_AND_DAY_FOR_EVENTS: "d MMMM yyyy 'at' H:mm",
+      WITH_TIME_AND_DAY: "HH:mm 'on' EEEE d MMM yyyy",
+      WITH_TIME_AND_DAY_FOR_EVENTS: "d MMMM yyyy 'at' HH:mm",
       WITH_TIME_WITH_SECONDS_AND_DAY: "H:mm:ss 'on' EEEE d MMM yyyy",
     },
   },
@@ -113,6 +113,14 @@ describe('Nunjucks filters', function () {
       )
 
       expect(formattedDate).to.equal('12:00 on Wednesday 5 Jan 2000')
+    })
+
+    it('should return config date with day with 24 hr format', function () {
+      const formattedDate = filters.formatDateWithTimeAndDay(
+        '2000-01-05T08:00:00.00Z'
+      )
+
+      expect(formattedDate).to.equal('08:00 on Wednesday 5 Jan 2000')
     })
 
     it('should return config date with day, time and seconds format', function () {
