@@ -142,6 +142,14 @@ describe('Nunjucks filters', function () {
       expect(formattedDate).to.equal('5 January 2000 at 13:46')
     })
 
+    it('should return config date with day and time format', function () {
+      const formattedDate = filters.formatDateTimeForEvents(
+        '2000-01-05T07:46:00.00Z'
+      )
+
+      expect(formattedDate).to.equal('5 January 2000 at 07:46')
+    })
+
     it('should return config date with day with 24 hr format', function () {
       const formattedDate = filters.formatDateTimeForEvents(
         '2000-01-05T12:00:00.00Z'
