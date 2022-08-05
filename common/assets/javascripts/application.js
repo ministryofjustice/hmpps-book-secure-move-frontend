@@ -56,11 +56,12 @@ nodeListForEach($banner, function ($banner) {
   new Banner($banner).init()
 })
 
+const developmentTools = new DevelopmentTools(document)
 const $toggleBanner = document.querySelectorAll(
   '[data-module="app-toggle-banner"]'
 )
 nodeListForEach($toggleBanner, function ($toggleBanner) {
-  new DevelopmentTools($toggleBanner, document).init()
+  developmentTools.attachToggleWhatsNewBanner($toggleBanner)
 })
 
 const $messages = document.querySelectorAll('[data-module="app-message"]')

@@ -1,27 +1,21 @@
 export class DevelopmentTools {
-  $module: any
-  $document: any
+  document: Document
 
-  constructor ($module: any, $document: any) {
-    this.cacheEls($module, $document)
-    this.$document.getElementById($module.id).onclick = () => { this.toggleWhatsNewBanner() }
+  constructor($document: Document) {
+    this.document = $document
   }
 
-  cacheEls ($module: any, $document: any) {
-    this.$module = $module
-    this.$document = $document
+  attachToggleWhatsNewBanner (element: HTMLElement) {
+    element.onclick = () => this.toggleWhatsNewBanner()
   }
 
   toggleWhatsNewBanner () {
-    const decodedCookie = decodeURIComponent(this.$document.cookie)
+    const decodedCookie = decodeURIComponent(this.document.cookie)
     const cookies = decodedCookie.split(';')
 
-    const result = cookies.filter(cookie => cookie.includes('banner-dismissed'))
-
-    if (result) {
-      this.$document.cookie = 'banner-dismissed=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+    if (cookies.filter(cookie => cookie.includes('banner-dismissed')).length) {
+      this.document.cookie = 'banner-dismissed=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       location.reload()
     }
-
   }
 }
