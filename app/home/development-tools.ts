@@ -1,7 +1,7 @@
 export class DevelopmentTools {
   document: Document
 
-  constructor($document: Document) {
+  constructor ($document: Document) {
     this.document = $document
   }
 
@@ -12,8 +12,9 @@ export class DevelopmentTools {
   toggleWhatsNewBanner () {
     const decodedCookie = decodeURIComponent(this.document.cookie)
     const cookies = decodedCookie.split(';')
+    const isBannerDismissed = cookies.filter(cookie => cookie.includes('banner-dismissed')).length
 
-    if (cookies.filter(cookie => cookie.includes('banner-dismissed')).length) {
+    if (isBannerDismissed) {
       this.document.cookie = 'banner-dismissed=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       location.reload()
     }
