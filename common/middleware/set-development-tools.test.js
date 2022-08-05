@@ -22,8 +22,16 @@ describe('#setDevelopmentTools', function () {
       DEVELOPMENT_TOOLS: {
         items: [
           {
+            dataModule: 'app-set-permissions',
             href: `${toolsMountpath}${toolsRoutes.permissions}`,
+            id: 'set-permissions',
             text: 'Set permissions',
+          },
+          {
+            dataModule: 'app-toggle-banner',
+            href: '#',
+            id: 'toggle-banner',
+            text: 'Toggle banner',
           },
         ],
       },
