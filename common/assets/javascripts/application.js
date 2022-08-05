@@ -23,7 +23,7 @@ const { initAll } = require('govuk-frontend')
 const HcSticky = require('hc-sticky')
 const StickySidebar = require('sticky-sidebar/dist/sticky-sidebar')
 
-const DevelopmentTools = require('../../../app/home/development-tools')
+const { DevelopmentTools } = require('../../../app/home/development-tools')
 const AddAnother = require('../../components/add-another/add-another')
 const Footer = require('../../components/footer/footer')
 const Header = require('../../components/internal-header/internal-header')
