@@ -247,11 +247,11 @@ jobs:
       - *install_dependencies
       - *save_cache
       - run:
-          name: Build assets and frameworks
-          command: npm run build
-      - run:
           name: Compile typescript
           command: npx tsc --project ./
+      - run:
+          name: Build assets and frameworks
+          command: npm run build
       - run:
           name: Run E2E tests (same instance)
           environment:
