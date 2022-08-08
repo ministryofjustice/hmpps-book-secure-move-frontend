@@ -2,7 +2,7 @@
   "name": "hmpps-book-secure-move-frontend",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "version": "2.126.0",
+  "version": "2.127.0",
   "main": "start.js",
   "contributors": [
     {
@@ -160,7 +160,7 @@
     "hmpo-form-wizard": "12.0.6",
     "i18next": "21.8.16",
     "i18next-express-middleware": "2.0.0",
-    "i18next-fs-backend": "1.1.4",
+    "i18next-fs-backend": "1.1.5",
     "js-yaml": "4.1.0",
     "json2csv": "5.0.7",
     "jsonwebtoken": "8.5.1",
