@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.127.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.126.0...v2.127.0) (2022-08-08)
+
+
+### Features
+
+* Add dev tool to allow a a user in staging to toggle the whats new banner ([d9d89b3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d9d89b37f92ef4559f7ac14e61c6eef643161969))
+
 ## [2.126.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.125.1...v2.126.0) (2022-08-04)
 
 
