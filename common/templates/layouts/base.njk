@@ -188,7 +188,7 @@
         <ul class="app-development-tools__items">
           {% for item in DEVELOPMENT_TOOLS.items %}
             <li class="app-development-tools__item">
-              {% if item.href %}<a href="{{ item.href }}">{% endif %}
+              {% if item.href %}<a href="{{ item.href }}" id="{{item.id}}" data-module="{{ item.dataModule }}">{% endif %}
                 {{ item.text }}
               {% if item.href %}</a>{% endif %}
             </li>

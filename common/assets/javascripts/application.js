@@ -23,6 +23,7 @@ const { initAll } = require('govuk-frontend')
 const HcSticky = require('hc-sticky')
 const StickySidebar = require('sticky-sidebar/dist/sticky-sidebar')
 
+const { DevelopmentTools } = require('../../../app/home/development-tools')
 const AddAnother = require('../../components/add-another/add-another')
 const Footer = require('../../components/footer/footer')
 const Header = require('../../components/internal-header/internal-header')
@@ -53,6 +54,14 @@ const $banner = document.querySelectorAll(
 )
 nodeListForEach($banner, function ($banner) {
   new Banner($banner).init()
+})
+
+const developmentTools = new DevelopmentTools(document)
+const $toggleBanner = document.querySelectorAll(
+  '[data-module="app-toggle-banner"]'
+)
+nodeListForEach($toggleBanner, function ($toggleBanner) {
+  developmentTools.attachToggleWhatsNewBanner($toggleBanner)
 })
 
 const $messages = document.querySelectorAll('[data-module="app-message"]')
