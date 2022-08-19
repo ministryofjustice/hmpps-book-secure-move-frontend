@@ -29,6 +29,7 @@ describe('Presenters', function () {
               {
                 event_type: 'PerHandover',
                 id: 'abc',
+                occurred_at: '2022-08-01T01:23:45+00:00',
               },
             ],
           }
@@ -80,6 +81,7 @@ describe('Presenters', function () {
               {
                 event_type: 'PerHandover',
                 id: 'abc',
+                occurred_at: '2022-08-01T01:23:45+00:00',
               },
             ],
           }
@@ -101,6 +103,10 @@ describe('Presenters', function () {
           },
           {
             from_location: { id: 'loc2', title: 'Location 2' },
+            date: '2022-08-01',
+          },
+          {
+            from_location: { id: 'loc3', title: 'Location 3' },
           },
         ]
 
@@ -115,6 +121,13 @@ describe('Presenters', function () {
               {
                 event_type: 'PerHandover',
                 id: 'abc',
+                occurred_at: '2022-08-01T01:23:45+00:00',
+              },
+              {
+                event_type: 'PerHandover',
+                id: 'def',
+                location: { id: 'loc2' },
+                occurred_at: '2022-07-28T01:23:45+00:00',
               },
             ],
           }
@@ -128,6 +141,10 @@ describe('Presenters', function () {
             {
               recorded: false,
               location: 'Location 2',
+            },
+            {
+              recorded: false,
+              location: 'Location 3',
             },
           ])
         })
@@ -143,11 +160,19 @@ describe('Presenters', function () {
               {
                 event_type: 'PerHandover',
                 id: 'abc',
+                occurred_at: '2022-08-01T01:23:45+00:00',
               },
               {
                 event_type: 'PerHandover',
                 id: 'def',
                 location: { id: 'loc2' },
+                occurred_at: '2022-08-01T01:23:45+00:00',
+              },
+              {
+                event_type: 'PerHandover',
+                id: 'ghi',
+                location: { id: 'loc3' },
+                occurred_at: '2022-08-01T01:23:46+00:00',
               },
             ],
           }
@@ -162,6 +187,11 @@ describe('Presenters', function () {
               recorded: true,
               event: 'def',
               location: 'Location 2',
+            },
+            {
+              recorded: true,
+              event: 'ghi',
+              location: 'Location 3',
             },
           ])
         })

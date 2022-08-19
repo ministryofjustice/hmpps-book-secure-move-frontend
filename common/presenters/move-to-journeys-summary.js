@@ -25,6 +25,13 @@ module.exports = (move, journeys, { formatDate = filters.formatDate } = {}) => {
     ({ state }) => state !== 'rejected' && state !== 'cancelled'
   )
 
+  // order the journeys by date, then by creation order
+  filteredJourneys.sort(
+    (a, b) =>
+      a.date.localeCompare(b.date) ||
+      new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+  )
+
   const hasJourneysOnDifferentDay =
     filteredJourneys.filter(({ date }) => date !== move.date).length !== 0
 
