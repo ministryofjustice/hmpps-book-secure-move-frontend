@@ -42,13 +42,25 @@ module.exports = (move, journeys) => {
     )
   }
 
-  return filteredJourneys.flatMap(journey => {
-    const events = findPerHandoverEvents(move, journey, move.important_events)
+  const handovers = []
 
-    if (events.length) {
-      return events.map(event => formatRecordedHandover(journey, event))
+  filteredJourneys.reverse().forEach(journey => {
+    const handoverEvent = findPerHandoverEvents(
+      move,
+      journey,
+      move.important_events
+    )
+      .reverse()
+      .find(event => {
+        return !handovers.find(handover => handover.event === event.id)
+      })
+
+    if (handoverEvent) {
+      handovers.unshift(formatRecordedHandover(journey, handoverEvent))
     } else {
-      return [formatAwaitingHandover(journey.from_location)]
+      handovers.unshift(formatAwaitingHandover(journey.from_location))
     }
   })
+
+  return handovers
 }
