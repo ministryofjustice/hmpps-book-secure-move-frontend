@@ -31,9 +31,12 @@ const findPerHandoverEvents = (move, journey, events) => {
   })
 }
 
-module.exports = (move, journeys) => {
+module.exports = (move, journeys, includeProposed) => {
   const filteredJourneys = journeys.filter(
-    ({ state }) => state !== 'rejected' && state !== 'cancelled'
+    ({ state }) =>
+      state !== 'rejected' &&
+      state !== 'cancelled' &&
+      (includeProposed || state !== 'proposed')
   )
 
   if (['proposed', 'requested', 'booked'].includes(move.status)) {

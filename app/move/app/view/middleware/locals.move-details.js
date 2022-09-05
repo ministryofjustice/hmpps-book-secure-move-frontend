@@ -18,7 +18,7 @@ function localsMoveDetails(req, res, next) {
     ({ event_type: eventType }) => eventType === 'MoveLodgingEnd'
   )
 
-  const handovers = presenters.moveToHandoversSummary(move, journeys)
+  const handovers = presenters.moveToHandoversSummary(move, journeys, true)
 
   if (move.is_lockout && handovers.length >= 2) {
     res.locals.moveLockoutHandover = handovers[handovers.length - 1]
