@@ -17,7 +17,9 @@ describe('Presenters', function () {
             important_events: [],
           }
 
-          expect(moveToHandoversSummary(thisMove, journeys)).to.deep.equal([])
+          expect(
+            moveToHandoversSummary(thisMove, journeys, false)
+          ).to.deep.equal([])
         })
       })
 
@@ -34,7 +36,9 @@ describe('Presenters', function () {
             ],
           }
 
-          expect(moveToHandoversSummary(thisMove, journeys)).to.deep.equal([
+          expect(
+            moveToHandoversSummary(thisMove, journeys, false)
+          ).to.deep.equal([
             {
               recorded: true,
               event: 'abc',
@@ -64,7 +68,9 @@ describe('Presenters', function () {
             important_events: [],
           }
 
-          expect(moveToHandoversSummary(thisMove, journeys)).to.deep.equal([
+          expect(
+            moveToHandoversSummary(thisMove, journeys, false)
+          ).to.deep.equal([
             {
               recorded: false,
               location: 'Location',
@@ -86,7 +92,9 @@ describe('Presenters', function () {
             ],
           }
 
-          expect(moveToHandoversSummary(thisMove, journeys)).to.deep.equal([
+          expect(
+            moveToHandoversSummary(thisMove, journeys, false)
+          ).to.deep.equal([
             {
               recorded: true,
               event: 'abc',
@@ -132,7 +140,9 @@ describe('Presenters', function () {
             ],
           }
 
-          expect(moveToHandoversSummary(thisMove, thisJourneys)).to.deep.equal([
+          expect(
+            moveToHandoversSummary(thisMove, thisJourneys, false)
+          ).to.deep.equal([
             {
               recorded: true,
               event: 'abc',
@@ -177,7 +187,9 @@ describe('Presenters', function () {
             ],
           }
 
-          expect(moveToHandoversSummary(thisMove, thisJourneys)).to.deep.equal([
+          expect(
+            moveToHandoversSummary(thisMove, thisJourneys, false)
+          ).to.deep.equal([
             {
               recorded: true,
               event: 'abc',

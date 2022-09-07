@@ -95,7 +95,7 @@ function moveToSummaryListComponent(
     })
   }
 
-  const handoversSummary = moveToHandoversSummary(move, journeys)
+  const handoversSummary = moveToHandoversSummary(move, journeys, false)
 
   if (handoversSummary.length) {
     const links = handoversSummary.map(({ recorded, event, location }) => {
