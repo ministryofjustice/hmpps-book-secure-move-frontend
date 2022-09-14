@@ -41,11 +41,11 @@
 
           <div class="govuk-grid-column-one-half govuk-!-text-align-right">
             {% if moveLodgingStarted %}
-              {% if not moveLodgingEnded and (not moveLockoutHandover or not moveLockoutHandover.recorded) %}
+              {% if canAccess('move:lockout:add_events') and not moveLodgingEnded and (not moveLockoutHandover or not moveLockoutHandover.recorded) %}
                 <a href="/move/{{moveId}}/police-custody-form" class="govuk-button">Add events</a>
               {% endif %}
 
-              {% if moveLockoutHandover and not moveLockoutHandover.recorded %}
+              {% if canAccess('move:lockout:handover') and moveLockoutHandover and not moveLockoutHandover.recorded %}
                 <a href="/move/{{moveId}}/person-escort-record/confirm" class="govuk-button">Record handover</a>
               {% endif %}
             {% endif %}
