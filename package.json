@@ -261,7 +261,7 @@
     "sinon-chai": "3.7.0",
     "standard": "17.0.0",
     "standard-version": "9.5.0",
-    "terser-webpack-plugin": "5.3.5",
+    "terser-webpack-plugin": "5.3.6",
     "testcafe": "2.0.1",
     "testcafe-browser-provider-browserstack": "1.14.0",
     "testcafe-reporter-xunit": "2.2.1",
