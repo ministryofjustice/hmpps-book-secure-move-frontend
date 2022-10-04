@@ -187,7 +187,7 @@
     "pluralize": "8.0.0",
     "prom-client": "14.1.0",
     "qs": "6.11.0",
-    "redis": "4.3.0",
+    "redis": "4.3.1",
     "response-time": "2.3.2",
     "retry-axios": "2.6.0",
     "semver-sort": "1.0.0",
