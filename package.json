@@ -234,7 +234,7 @@
     "eslint-plugin-promise": "6.0.1",
     "eslint-plugin-testcafe": "0.2.1",
     "finepack": "2.10.15",
-    "git-authors-cli": "1.0.42",
+    "git-authors-cli": "1.0.44",
     "glob": "8.0.3",
     "husky": "8.0.1",
     "image-minimizer-webpack-plugin": "2.2.0",
