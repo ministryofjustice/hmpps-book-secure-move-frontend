@@ -19,7 +19,7 @@ steps.forEach(updateJourney => {
     journeyName: `update-move-${key}`,
   }
   router.use(
-    protectRoute(updateJourney.permission),
+    protectRoute(updateJourney.permission, updateJourney),
     wizard(steps, fields, updateStepConfig)
   )
 })

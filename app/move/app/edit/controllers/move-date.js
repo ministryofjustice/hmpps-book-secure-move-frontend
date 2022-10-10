@@ -3,7 +3,7 @@ const CreateMoveDateController = require('../../new/controllers/move-date')
 
 const UpdateBase = require('./base')
 
-class UpdateMoveDetailsController extends UpdateBase {
+class UpdateMoveDateController extends UpdateBase {
   constructor(options) {
     super(options)
     this.saveFields = ['date']
@@ -40,6 +40,6 @@ class UpdateMoveDetailsController extends UpdateBase {
   }
 }
 
-UpdateBase.mixin(UpdateMoveDetailsController, CreateMoveDateController)
+UpdateBase.mixin(UpdateMoveDateController, CreateMoveDateController)
 
-module.exports = UpdateMoveDetailsController
+module.exports = UpdateMoveDateController

@@ -19,7 +19,7 @@ const updateStepPropOverrides = {
 const updateSteps = [
   {
     key: 'personal_details',
-    permission: 'move:update',
+    permission: ['move:update_date', 'move:update_details'],
     steps: {
       '/personal-details': {
         ...createSteps['/personal-details'],
@@ -30,7 +30,7 @@ const updateSteps = [
   },
   {
     key: 'move',
-    permission: 'move:update',
+    permission: 'move:update_details',
     steps: {
       '/move-details': {
         ...createSteps['/move-details'],
@@ -41,7 +41,7 @@ const updateSteps = [
   },
   {
     key: 'date',
-    permission: 'move:update',
+    permission: 'move:update_date',
     steps: {
       '/move-date': {
         ...createSteps['/move-date'],
@@ -52,7 +52,7 @@ const updateSteps = [
   },
   {
     key: 'court',
-    permission: 'move:update',
+    permission: 'move:update_details',
     steps: {
       '/court-information': {
         ...createSteps['/court-information'],
@@ -63,7 +63,7 @@ const updateSteps = [
   },
   {
     key: 'hospital',
-    permission: 'move:update',
+    permission: 'move:update_details',
     steps: {
       '/hospital': {
         ...createSteps['/hospital'],
@@ -74,7 +74,7 @@ const updateSteps = [
   },
   {
     key: 'prison_recall',
-    permission: 'move:update',
+    permission: 'move:update_details',
     steps: {
       '/move-details': {
         ...createSteps['/move-details'],
@@ -85,7 +85,7 @@ const updateSteps = [
   },
   {
     key: 'video_remand',
-    permission: 'move:update',
+    permission: 'move:update_details',
     steps: {
       '/move-details': {
         ...createSteps['/move-details'],
@@ -96,7 +96,7 @@ const updateSteps = [
   },
   {
     key: 'risk',
-    permission: 'move:update',
+    permission: 'move:update_details',
     steps: {
       '/risk-information': {
         ...createSteps['/risk-information'],
@@ -107,7 +107,7 @@ const updateSteps = [
   },
   {
     key: 'health',
-    permission: 'move:update',
+    permission: 'move:update_details',
     steps: {
       '/health-information': {
         ...createSteps['/health-information'],

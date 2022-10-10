@@ -29,7 +29,7 @@ function setCanAccess(req, res, next) {
   next()
 }
 
-function protectRoute(permission) {
+function protectRoute(permission, b) {
   return (req, res, next) => {
     const userPermissions = get(req.session, 'user.permissions')
 
@@ -37,6 +37,8 @@ function protectRoute(permission) {
       return next()
     }
 
+    // eslint-disable-next-line no-console
+    console.log(b)
     const error = new Error(`Forbidden. Missing permission: '${permission}'`)
     error.statusCode = 403
 

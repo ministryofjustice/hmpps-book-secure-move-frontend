@@ -82,7 +82,7 @@ describe('Move helpers', function () {
         })
 
         context('with update access to move type', function () {
-          it('should return false', function () {
+          it('should return true', function () {
             canAccessStub.withArgs('move:update:court_appearance').returns(true)
 
             expect(canEditMove(mockMove, canAccessStub)).to.be.true

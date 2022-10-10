@@ -3,7 +3,7 @@ function canEditMove(move = {}, canAccess = () => false) {
     return false
   }
 
-  if (!canAccess('move:update')) {
+  if (!(canAccess('move:update_date') || canAccess('move:update_details'))) {
     return false
   }
 
