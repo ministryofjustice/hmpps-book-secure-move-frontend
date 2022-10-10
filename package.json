@@ -201,7 +201,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.19.3",
-    "@babel/preset-env": "7.19.3",
+    "@babel/preset-env": "7.19.4",
     "@commitlint/cli": "17.1.2",
     "@commitlint/config-conventional": "17.1.0",
     "@ffmpeg-installer/ffmpeg": "1.1.0",
@@ -224,7 +224,7 @@
     "coveralls": "3.1.1",
     "css-loader": "6.7.1",
     "del-cli": "5.0.0",
-    "eslint": "^8.24.0",
+    "eslint": "^8.25.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-import": "2.26.0",
