@@ -213,6 +213,10 @@ module.exports = {
         from: 'secure_training_centre',
         to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
       }),
+      {
+        fn: req => req.sessionModel.get('move_type') === 'prison_recall',
+        next: 'recall-arrest-date',
+      },
       'move-date',
     ],
     fields: [
