@@ -29,17 +29,6 @@ const updateSteps = [
     },
   },
   {
-    key: 'move',
-    permission: 'move:update_details',
-    steps: {
-      '/move-details': {
-        ...createSteps['/move-details'],
-        ...updateStepPropOverrides,
-        controller: MoveDetails,
-      },
-    },
-  },
-  {
     key: 'date',
     permission: 'move:update_date',
     steps: {
@@ -47,6 +36,17 @@ const updateSteps = [
         ...createSteps['/move-date'],
         ...updateStepPropOverrides,
         controller: MoveDate,
+      },
+    },
+  },
+  {
+    key: 'move',
+    permission: 'move:update_details',
+    steps: {
+      '/move-details': {
+        ...createSteps['/move-details'],
+        ...updateStepPropOverrides,
+        controller: MoveDetails,
       },
     },
   },
