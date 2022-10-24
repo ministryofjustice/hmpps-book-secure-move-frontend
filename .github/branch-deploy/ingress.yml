@@ -8,6 +8,7 @@ metadata:
     external-dns.alpha.kubernetes.io/set-identifier: hmpps-book-secure-move-frontend-ingress-pr-{PR_NUMBER}-hmpps-book-secure-move-frontend-staging-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
+  ingressClassName: default
   tls:
   - hosts:
     - hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.live-1.cloud-platform.service.justice.gov.uk
