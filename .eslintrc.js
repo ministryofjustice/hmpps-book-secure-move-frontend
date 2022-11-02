@@ -5,18 +5,14 @@ module.exports = {
     node: true,
     jquery: true,
   },
-  extends: [
-    'prettier',
-    'standard',
-    'plugin:import/typescript',
-    'plugin:@typescript-eslint/recommended',
-  ],
-  plugins: ['prettier', 'import'],
+  extends: ['prettier', 'standard', 'plugin:import/typescript'],
+  plugins: ['prettier', 'import', '@typescript-eslint'],
   globals: {
     Atomics: 'readonly',
     MutationObserver: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2020,
   },
@@ -65,7 +61,6 @@ module.exports = {
       { blankLine: 'always', prev: 'block-like', next: '*' },
     ],
     'require-await': 'error',
-    'max-len': ['error', 120],
   },
   overrides: [
     {
