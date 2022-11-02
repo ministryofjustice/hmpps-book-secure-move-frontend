@@ -5,7 +5,12 @@ module.exports = {
     node: true,
     jquery: true,
   },
-  extends: ['prettier', 'standard', 'plugin:import/typescript'],
+  extends: [
+    'prettier',
+    'standard',
+    'plugin:import/typescript',
+    'plugin:@typescript-eslint/recommended',
+  ],
   plugins: ['prettier', 'import'],
   globals: {
     Atomics: 'readonly',
@@ -60,10 +65,11 @@ module.exports = {
       { blankLine: 'always', prev: 'block-like', next: '*' },
     ],
     'require-await': 'error',
+    'max-len': ['error', 120],
   },
   overrides: [
     {
-      files: ['*.test.js', '*.spec.js'],
+      files: ['*.test.ts', '*.spec.ts', '*.test.js', '*.spec.js'],
       env: {
         mocha: true,
       },

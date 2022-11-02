@@ -897,6 +897,96 @@ describe('Nunjucks filters', function () {
     })
   })
 
+  describe('#nonOxfordJoin()', function () {
+    context('by default', function () {
+      context('with undefined', function () {
+        it('should return undefined', function () {
+          const joined = filters.nonOxfordJoin()
+          expect(joined).to.equal('')
+        })
+      })
+
+      context('with a string', function () {
+        it('should return string untouched', function () {
+          const joined = filters.nonOxfordJoin('foo')
+          expect(joined).to.equal('foo')
+        })
+      })
+
+      context('with a number', function () {
+        it('should return number untouched', function () {
+          const joined = filters.nonOxfordJoin(23)
+          expect(joined).to.equal(23)
+        })
+      })
+
+      context('with a boolean', function () {
+        it('should return boolean untouched', function () {
+          const joined = filters.nonOxfordJoin(false)
+          expect(joined).to.equal(false)
+        })
+      })
+
+      context('with no items', function () {
+        it('should return empty string', function () {
+          const joined = filters.nonOxfordJoin([])
+          expect(joined).to.equal('')
+        })
+      })
+
+      context('with one item', function () {
+        it('should return item', function () {
+          const joined = filters.nonOxfordJoin(['one'])
+          expect(joined).to.equal('one')
+        })
+      })
+
+      context('with two items', function () {
+        it('should join with `and`', function () {
+          const joined = filters.nonOxfordJoin(['one', 'two'])
+          expect(joined).to.equal('one and two')
+        })
+      })
+
+      context('with multiple items', function () {
+        it('should join with comma and `and`', function () {
+          const joined = filters.nonOxfordJoin(['one', 'two', 'three'])
+          expect(joined).to.equal('one, two and three')
+        })
+      })
+    })
+
+    context('with custom delimiter', function () {
+      context('with no items', function () {
+        it('should return empty string', function () {
+          const joined = filters.nonOxfordJoin([], 'or')
+          expect(joined).to.equal('')
+        })
+      })
+
+      context('with one item', function () {
+        it('should return item', function () {
+          const joined = filters.nonOxfordJoin(['one'], 'or')
+          expect(joined).to.equal('one')
+        })
+      })
+
+      context('with two items', function () {
+        it('should join with `or`', function () {
+          const joined = filters.nonOxfordJoin(['one', 'two'], 'or')
+          expect(joined).to.equal('one or two')
+        })
+      })
+
+      context('with multiple items', function () {
+        it('should join with comma and `or`', function () {
+          const joined = filters.nonOxfordJoin(['one', 'two', 'three'], 'or')
+          expect(joined).to.equal('one, two or three')
+        })
+      })
+    })
+  })
+
   describe('#filesize()', function () {
     const testFilesize = '101010'
     let filesize

@@ -1,7 +1,7 @@
 import { format as formatDate } from 'date-fns'
 import * as parsers from '../parsers'
 
-const { oxfordJoin } = require('../../config/nunjucks/filters')
+const { oxfordJoin, nonOxfordJoin } = require('../../config/nunjucks/filters')
 
 export function date (value: Date | string, format = 'yyyy-MM-dd'): Date | string {
   const parsedDate = parsers.date(value)
@@ -18,6 +18,6 @@ export function array (array: any[] = [], useOxfordComma = false): string {
     .filter(i => i)
     .sort()
 
-  return useOxfordComma ? oxfordJoin(tidyArray) : tidyArray.join(', ').replace(/, ([^,]*)$/, ` and $1`)
+  return useOxfordComma ? oxfordJoin(tidyArray) : nonOxfordJoin(tidyArray)
 }
 
