@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.127.4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.127.3...v2.127.4) (2022-11-04)
+
+
+### Bug Fixes
+
+* "Review single request" button no longer spans multiple lines ([00a0600](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/00a0600cbfde68a6263924bbc41fb9481c657744))
+
 ### [2.127.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.127.2...v2.127.3) (2022-10-03)
 
 ### [2.127.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.127.1...v2.127.2) (2022-09-30)
