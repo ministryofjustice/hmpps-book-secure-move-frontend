@@ -1,10 +1,16 @@
+import { expect } from 'chai'
 import { format } from 'date-fns'
 import sinon from 'sinon'
-import { expect } from 'chai'
 
-const { DATE_FORMATS } = require('../../config')
+// TODO: convert this file to TS and remove this ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { DATE_FORMATS } from '../../config'
 
-const contentfulService = require('./contentful')
+// TODO: convert this file to TS and remove this ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import contentfulService from './contentful'
 
 const todaysDate = new Date()
 
@@ -198,7 +204,9 @@ const whatsNewMockedResponse = {
                     title: 'Test asset',
                     description: 'asset-test',
                     file: {
-                      url: '//images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc14e8d568d5f5314733e1b9aadb/image.png',
+                      url:
+                        '//images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc14e8d568d5f5314733e1b9aadb' +
+                        '/image.png',
                       details: {
                         size: 497136,
                         image: { width: 867, height: 479 },
@@ -411,7 +419,9 @@ const dedicatedContentMockedResponse = {
                     title: 'Test asset',
                     description: 'asset-test',
                     file: {
-                      url: '//images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc14e8d568d5f5314733e1b9aadb/image.png',
+                      url:
+                        '//images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc14e8d568d5f5314733e1b9aadb' +
+                        '/image.png',
                       details: {
                         size: 497136,
                         image: { width: 867, height: 479 },
@@ -447,7 +457,16 @@ describe('Contentful Service', function () {
     it('returns the formatted body', async function () {
       const formattedEntries = await contentfulService.fetch()
       expect(formattedEntries.posts[0].body).to.equal(
-        '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="govuk-heading-m govuk-!-margin-top-4"><em>Test heading 3.</em></h3><h4 class="govuk-heading-s govuk-!-margin-top-3">Test heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet govuk-list-bullet-bottom-padding"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul><ol class="govuk-list govuk-list--number"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ol><figure class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>'
+        '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure' +
+          ' move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="govuk-heading-m' +
+          ' govuk-!-margin-top-4"><em>Test heading 3.</em></h3><h4 class="govuk-heading-s govuk-!-margin-top-3">Test' +
+          ' heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body">' +
+          '<strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet ' +
+          'govuk-list-bullet-bottom-padding"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">' +
+          'TEST LINE 2</p></li></ul><ol class="govuk-list govuk-list--number"><li><p class="govuk-body">TEST LINE 1' +
+          '</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ol><figure class="govuk-!-margin-top-6 ' +
+          'govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc' +
+          '14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>'
       )
     })
     it('returns the content title', async function () {
@@ -481,7 +500,18 @@ describe('Contentful Service', function () {
     })
     it('returns the body', async function () {
       const formattedEntries = await contentfulService.fetch()
-      expect(formattedEntries.posts[0].body).to.equal('<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="govuk-heading-m govuk-!-margin-top-4"><em>Test heading 3.</em></h3><h4 class="govuk-heading-s govuk-!-margin-top-3">Test heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet govuk-list-bullet-bottom-padding"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ul><ol class="govuk-list govuk-list--number"><li><p class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ol><figure class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>')
+      expect(formattedEntries.posts[0].body).to.equal(
+        '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure' +
+          ' move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="' +
+          'govuk-heading-m govuk-!-margin-top-4"><em>Test heading 3.</em></h3><h4 class="govuk-heading-s ' +
+          'govuk-!-margin-top-3">Test heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a>' +
+          '<p class="govuk-body"><strong>Some random paragraph text.</strong></p><ul class="govuk-list ' +
+          'govuk-list--bullet govuk-list-bullet-bottom-padding"><li><p class="govuk-body">TEST LINE 1</p></li><li>' +
+          '<p class="govuk-body">TEST LINE 2</p></li></ul><ol class="govuk-list govuk-list--number"><li><p ' +
+          'class="govuk-body">TEST LINE 1</p></li><li><p class="govuk-body">TEST LINE 2</p></li></ol><figure ' +
+          'class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4' +
+          'W3q8OwEoyEQxjJtdtCkbg/51b7fc14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>'
+      )
     })
   })
 

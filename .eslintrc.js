@@ -6,12 +6,13 @@ module.exports = {
     jquery: true,
   },
   extends: ['prettier', 'standard', 'plugin:import/typescript'],
-  plugins: ['prettier', 'import'],
+  plugins: ['prettier', 'import', '@typescript-eslint'],
   globals: {
     Atomics: 'readonly',
     MutationObserver: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2020,
   },
@@ -63,7 +64,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.test.js', '*.spec.js'],
+      files: ['*.test.ts', '*.spec.ts', '*.test.js', '*.spec.js'],
       env: {
         mocha: true,
       },

@@ -1,14 +1,25 @@
-const proxyquire = require('proxyquire').noCallThru()
+import { expect } from 'chai'
+import { noCallThru } from 'proxyquire'
+import sinon from 'sinon'
 
-const i18n = require('../../config/i18n').default
-const filters = require('../../config/nunjucks/filters')
+// TODO: convert ../../config/nunjucks/filters to TS and remove this ignore
+// @ts-ignore
+import filters from '../../config/nunjucks/filters'
+import { Profile } from '../types/profile'
 
+import { CardComponent } from './profile-to-card-component'
+
+const i18nStub = {
+  t: sinon.stub().returns('__translated__'),
+}
+const proxyquire = noCallThru()
 const frameworkFlagsToTagListStub = sinon.stub().returns(['1', '2', '3'])
 const profileToCardComponent = proxyquire('./profile-to-card-component', {
   './framework-flags-to-tag-list': frameworkFlagsToTagListStub,
+  '../../config/i18n': { ...i18nStub },
 })
 
-const mockProfile = {
+const mockProfile: Profile = {
   id: '12345',
   person: {
     id: '12345',
@@ -34,10 +45,10 @@ const mockArgs = {
 
 describe('Presenters', function () {
   describe('#profileToCardComponent()', function () {
-    let transformedResponse
+    let transformedResponse: CardComponent
 
     beforeEach(function () {
-      sinon.stub(i18n, 't').returns('__translated__')
+      i18nStub.t.resetHistory()
       sinon.stub(filters, 'formatDate').returns('18 Jun 1960')
       sinon.stub(filters, 'calculateAge').returns(50)
     })
@@ -87,7 +98,7 @@ describe('Presenters', function () {
                 },
                 {
                   label: { text: '__translated__' },
-                  text: mockProfile.person.gender.title,
+                  text: mockProfile.person.gender?.title,
                 },
               ],
             })
@@ -101,7 +112,7 @@ describe('Presenters', function () {
             expect(transformedResponse).to.have.property('insetText')
             expect(transformedResponse.insetText).to.deep.equal({
               classes: 'govuk-inset-text--compact',
-              text: '__translated__',
+              html: '__translated__<br>The incomplete sections are <a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Frisk-information">Risk</a>, <a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Foffence-information">Offence</a>, <a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fhealth-information">Health</a> and <a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fproperty-information">Property</a>.',
             })
           })
 
@@ -112,7 +123,7 @@ describe('Presenters', function () {
 
         describe('translations', function () {
           it('should translate age label', function () {
-            expect(i18n.t.getCall(0)).to.be.calledWithExactly('age', {
+            expect(i18nStub.t.getCall(0)).to.be.calledWithExactly('age', {
               context: 'with_date_of_birth',
               age: 50,
               date_of_birth: '18 Jun 1960',
@@ -120,23 +131,23 @@ describe('Presenters', function () {
           })
 
           it('should translate date of birth label', function () {
-            expect(i18n.t.getCall(1)).to.be.calledWithExactly(
+            expect(i18nStub.t.getCall(1)).to.be.calledWithExactly(
               'fields::date_of_birth.label'
             )
           })
 
           it('should translate gender label', function () {
-            expect(i18n.t.getCall(2)).to.be.calledWithExactly(
+            expect(i18nStub.t.getCall(2)).to.be.calledWithExactly(
               'fields::gender.label'
             )
           })
 
           it('should translate inset text', function () {
-            expect(i18n.t).to.be.calledWithExactly('assessment::incomplete')
+            expect(i18nStub.t).to.be.calledWithExactly('assessment::incomplete')
           })
 
           it('should translate correct number of times', function () {
-            expect(i18n.t).to.be.callCount(4)
+            expect(i18nStub.t).to.be.callCount(4)
           })
         })
       })
@@ -183,7 +194,7 @@ describe('Presenters', function () {
       })
 
       context('when meta contains some falsey values', function () {
-        let transformedResponse
+        let transformedResponse: CardComponent
 
         beforeEach(function () {
           transformedResponse = profileToCardComponent()({
@@ -199,12 +210,12 @@ describe('Presenters', function () {
 
         it('should correctly remove false items', function () {
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta.items.length).to.equal(1)
+          expect(transformedResponse.meta?.items.length).to.equal(1)
           expect(transformedResponse.meta).to.deep.equal({
             items: [
               {
                 label: { text: '__translated__' },
-                text: mockProfile.person.gender.title,
+                text: mockProfile.person.gender?.title,
               },
             ],
           })
@@ -215,10 +226,31 @@ describe('Presenters', function () {
         context('with `not_started` PER', function () {
           beforeEach(function () {
             transformedResponse = profileToCardComponent()({
+              ...mockArgs,
               profile: {
                 ...mockProfile,
                 person_escort_record: {
                   status: 'not_started',
+                  meta: {
+                    section_progress: [
+                      {
+                        key: 'risk-information',
+                        status: 'not-started',
+                      },
+                      {
+                        key: 'health-information',
+                        status: 'not-started',
+                      },
+                      {
+                        key: 'property-information',
+                        status: 'not-started',
+                      },
+                      {
+                        key: 'offence-information',
+                        status: 'not-started',
+                      },
+                    ],
+                  },
                 },
               },
             })
@@ -232,12 +264,12 @@ describe('Presenters', function () {
             expect(transformedResponse).to.have.property('insetText')
             expect(transformedResponse.insetText).to.deep.equal({
               classes: 'govuk-inset-text--compact',
-              text: '__translated__',
+              html: '__translated__<br>The incomplete sections are <a href="/move/12345/person-escort-record/risk-information">Risk</a>, <a href="/move/12345/person-escort-record/offence-information">Offence</a>, <a href="/move/12345/person-escort-record/health-information">Health</a> and <a href="/move/12345/person-escort-record/property-information">Property</a>.',
             })
           })
 
           it('should translate inset text message', function () {
-            expect(i18n.t).to.have.been.calledWithExactly(
+            expect(i18nStub.t).to.have.been.calledWithExactly(
               'assessment::incomplete'
             )
           })
@@ -246,10 +278,31 @@ describe('Presenters', function () {
         context('with `in_progress` PER', function () {
           beforeEach(function () {
             transformedResponse = profileToCardComponent()({
+              ...mockArgs,
               profile: {
                 ...mockProfile,
                 person_escort_record: {
                   status: 'in_progress',
+                  meta: {
+                    section_progress: [
+                      {
+                        key: 'risk-information',
+                        status: 'completed',
+                      },
+                      {
+                        key: 'health-information',
+                        status: 'completed',
+                      },
+                      {
+                        key: 'property-information',
+                        status: 'completed',
+                      },
+                      {
+                        key: 'offence-information',
+                        status: 'not-started',
+                      },
+                    ],
+                  },
                 },
               },
             })
@@ -263,12 +316,12 @@ describe('Presenters', function () {
             expect(transformedResponse).to.have.property('insetText')
             expect(transformedResponse.insetText).to.deep.equal({
               classes: 'govuk-inset-text--compact',
-              text: '__translated__',
+              html: '__translated__<br>The incomplete section is <a href="/move/12345/person-escort-record/offence-information">Offence</a>.',
             })
           })
 
           it('should translate inset text message', function () {
-            expect(i18n.t).to.have.been.calledWithExactly(
+            expect(i18nStub.t).to.have.been.calledWithExactly(
               'assessment::incomplete'
             )
           })
@@ -290,7 +343,7 @@ describe('Presenters', function () {
 
           it('should contain tags', function () {
             expect(transformedResponse).to.have.property('tags')
-            expect(transformedResponse.tags[0]).to.deep.equal({
+            expect(transformedResponse.tags?.[0]).to.deep.equal({
               items: ['1', '2', '3'],
             })
           })
@@ -351,7 +404,7 @@ describe('Presenters', function () {
 
       it('should contain meta', function () {
         expect(transformedResponse).to.have.property('meta')
-        expect(transformedResponse.meta.items.length).to.equal(2)
+        expect(transformedResponse.meta?.items.length).to.equal(2)
       })
     })
 
@@ -384,7 +437,7 @@ describe('Presenters', function () {
 
       it('should contain meta', function () {
         expect(transformedResponse).to.have.property('meta')
-        expect(transformedResponse.meta.items.length).to.equal(2)
+        expect(transformedResponse.meta?.items.length).to.equal(2)
       })
     })
 
@@ -436,7 +489,7 @@ describe('Presenters', function () {
 
         it('should prepend existing meta', function () {
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta.items.length).to.equal(4)
+          expect(transformedResponse.meta?.items.length).to.equal(4)
           expect(transformedResponse.meta).to.deep.equal({
             items: [
               {
@@ -464,7 +517,10 @@ describe('Presenters', function () {
       {
         property: 'prison_number',
         locationType: 'prison',
-        meta: { label: { text: '__translated__' }, text: 'ABC123' },
+        meta: {
+          label: { text: '__translated__' },
+          text: 'ABC123',
+        },
         undefinedMeta: {
           label: { text: '__translated__' },
           text: '__translated__',
@@ -473,7 +529,10 @@ describe('Presenters', function () {
       {
         property: 'police_national_computer',
         locationType: 'other',
-        meta: { label: { html: '__translated__' }, text: '321CBA' },
+        meta: {
+          label: { html: '__translated__' },
+          text: '321CBA',
+        },
         undefinedMeta: {
           label: { html: '__translated__' },
           text: '__translated__',
@@ -490,7 +549,7 @@ describe('Presenters', function () {
 
           it('adds the correct meta items', function () {
             expect(transformedResponse).to.have.property('meta')
-            expect(transformedResponse.meta.items.length).to.equal(3)
+            expect(transformedResponse.meta?.items.length).to.equal(3)
             expect(transformedResponse.meta).to.deep.equal({
               items: [
                 meta,
@@ -509,7 +568,8 @@ describe('Presenters', function () {
 
         context(`when profile.${property} is undefined`, function () {
           beforeEach(function () {
-            mockProfile.person[property] = undefined
+            ;(mockProfile.person as { [key: string]: any })[property] =
+              undefined
             transformedResponse = profileToCardComponent({ locationType })(
               mockArgs
             )
@@ -517,7 +577,7 @@ describe('Presenters', function () {
 
           it('adds the correct meta items', function () {
             expect(transformedResponse).to.have.property('meta')
-            expect(transformedResponse.meta.items.length).to.equal(3)
+            expect(transformedResponse.meta?.items.length).to.equal(3)
             expect(transformedResponse.meta).to.deep.equal({
               items: [
                 undefinedMeta,

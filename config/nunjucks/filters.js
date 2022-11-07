@@ -312,6 +312,28 @@ function oxfordJoin(arr = [], lastDelimiter = 'and') {
   return arr.join(', ').replace(/, ([^,]*)$/, `, ${lastDelimiter} $1`)
 }
 
+/**
+ * Join a list of items using commas and `and` as
+ * the final join
+ *
+ * @param  {Array} an array of items to join
+ * @param  {String} last delimiter to use
+ * @return {String} items joined using commas and the last delimiter
+ * @example {{ ["one","two","three"] | nonOxfordJoin }}
+ */
+function nonOxfordJoin(arr = [], lastDelimiter = 'and') {
+  if (!arr || !Array.isArray(arr)) {
+    return arr
+  } else if (arr.length === 1) {
+    return arr[0]
+  } else if (arr.length === 2) {
+    // joins all with "and" but no commas
+    return arr.join(` ${lastDelimiter} `)
+  }
+
+  return arr.join(', ').replace(/, ([^,]*)$/, ` ${lastDelimiter} $1`)
+}
+
 function filesize(str) {
   return filesizejs(str, {
     round: 0,
@@ -340,6 +362,7 @@ module.exports = {
   startCase,
   pluralize,
   oxfordJoin,
+  nonOxfordJoin,
   filesize,
   containsElement,
 }
