@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { filter, isEmpty } from 'lodash'
 
 import i18n from '../../config/i18n'
@@ -95,12 +96,9 @@ const generateIncompletePERSectionText = (
 ) => {
   const incompleteSections = getIncompletePERSections(personEscortRecord)
 
-  return (
-    (incompleteSections.length > 1 ? 's are ' : ' is ') +
-    filters.nonOxfordJoin(
-      incompleteSections.map(section =>
-        generatePERSectionAnchor(personEscortRecord, hrefPrefix, section)
-      )
+  return filters.nonOxfordJoin(
+    incompleteSections.map(section =>
+      generatePERSectionAnchor(personEscortRecord, hrefPrefix, section)
     )
   )
 }
@@ -122,7 +120,13 @@ function profileToCardComponent({
     profile,
     href,
     reference,
-  }: { profile?: Profile; href?: string; reference?: string } = {}) {
+    date,
+  }: {
+    profile?: Profile
+    href?: string
+    reference?: string
+    date?: string
+  } = {}) {
     const { person = {} as Person, person_escort_record: personEscortRecord } =
       profile || {}
 
@@ -209,14 +213,31 @@ function profileToCardComponent({
           },
         ]
       } else if (!isEmpty(person)) {
-        card.insetText = {
-          classes: 'govuk-inset-text--compact',
-          html: `${i18n.t(
-            'assessment::incomplete'
-          )}<br>The incomplete section${generateIncompletePERSectionText(
-            personEscortRecord,
-            href
-          )}.`,
+        const sectionHrefs = generateIncompletePERSectionText(
+          personEscortRecord,
+          href
+        )
+
+        if (date === format(new Date(), 'yyyy-MM-dd')) {
+          card.insetText = {
+            classes: 'govuk-inset-text--compact govuk-inset-text--important',
+            html: i18n.t('assessment::incomplete_today', {
+              section_plural: sectionHrefs.includes(' and ') ? 's' : '',
+              section_hrefs: sectionHrefs,
+              interpolation: { escapeValue: false },
+            }),
+          }
+        } else {
+          card.insetText = {
+            classes: 'govuk-inset-text--compact',
+            html: i18n.t('assessment::incomplete', {
+              section_plural: sectionHrefs.includes(' and ')
+                ? 's are '
+                : ' is ',
+              section_hrefs: sectionHrefs,
+              interpolation: { escapeValue: false },
+            }),
+          }
         }
       }
     }

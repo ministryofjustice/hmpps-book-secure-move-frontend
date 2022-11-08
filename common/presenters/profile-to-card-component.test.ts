@@ -1,4 +1,5 @@
 import { expect } from 'chai'
+import { format } from 'date-fns'
 import { noCallThru } from 'proxyquire'
 import sinon from 'sinon'
 
@@ -112,7 +113,7 @@ describe('Presenters', function () {
             expect(transformedResponse).to.have.property('insetText')
             expect(transformedResponse.insetText).to.deep.equal({
               classes: 'govuk-inset-text--compact',
-              html: '__translated__<br>The incomplete sections are <a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Frisk-information">Risk</a>, <a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Foffence-information">Offence</a>, <a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fhealth-information">Health</a> and <a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fproperty-information">Property</a>.',
+              html: '__translated__',
             })
           })
 
@@ -143,7 +144,18 @@ describe('Presenters', function () {
           })
 
           it('should translate inset text', function () {
-            expect(i18nStub.t).to.be.calledWithExactly('assessment::incomplete')
+            expect(i18nStub.t).to.be.calledWithExactly(
+              'assessment::incomplete',
+              {
+                section_plural: 's are ',
+                section_hrefs:
+                  '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Frisk-information">Risk</a>, ' +
+                  '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Foffence-information">Offence</a>, ' +
+                  '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fhealth-information">Health</a> and ' +
+                  '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fproperty-information">Property</a>',
+                interpolation: { escapeValue: false },
+              }
+            )
           })
 
           it('should translate correct number of times', function () {
@@ -264,14 +276,73 @@ describe('Presenters', function () {
             expect(transformedResponse).to.have.property('insetText')
             expect(transformedResponse.insetText).to.deep.equal({
               classes: 'govuk-inset-text--compact',
-              html: '__translated__<br>The incomplete sections are <a href="/move/12345/person-escort-record/risk-information">Risk</a>, <a href="/move/12345/person-escort-record/offence-information">Offence</a>, <a href="/move/12345/person-escort-record/health-information">Health</a> and <a href="/move/12345/person-escort-record/property-information">Property</a>.',
+              html: '__translated__',
             })
           })
 
           it('should translate inset text message', function () {
             expect(i18nStub.t).to.have.been.calledWithExactly(
-              'assessment::incomplete'
+              'assessment::incomplete',
+              {
+                section_plural: 's are ',
+                section_hrefs:
+                  '<a href="/move/12345/person-escort-record/risk-information">Risk</a>, ' +
+                  '<a href="/move/12345/person-escort-record/offence-information">Offence</a>, ' +
+                  '<a href="/move/12345/person-escort-record/health-information">Health</a> and ' +
+                  '<a href="/move/12345/person-escort-record/property-information">Property</a>',
+                interpolation: { escapeValue: false },
+              }
             )
+          })
+
+          context('when the move is today', function () {
+            beforeEach(function () {
+              transformedResponse = profileToCardComponent()({
+                ...mockArgs,
+                date: format(new Date(), 'yyyy-MM-dd'),
+                profile: {
+                  ...mockProfile,
+                  person_escort_record: {
+                    status: 'not_started',
+                    meta: {
+                      section_progress: [
+                        {
+                          key: 'risk-information',
+                          status: 'not-started',
+                        },
+                        {
+                          key: 'health-information',
+                          status: 'not-started',
+                        },
+                        {
+                          key: 'property-information',
+                          status: 'not-started',
+                        },
+                        {
+                          key: 'offence-information',
+                          status: 'not-started',
+                        },
+                      ],
+                    },
+                  },
+                },
+              })
+            })
+
+            it('should translate inset text message', function () {
+              expect(i18nStub.t).to.have.been.calledWithExactly(
+                'assessment::incomplete_today',
+                {
+                  section_plural: 's',
+                  section_hrefs:
+                    '<a href="/move/12345/person-escort-record/risk-information">Risk</a>, ' +
+                    '<a href="/move/12345/person-escort-record/offence-information">Offence</a>, ' +
+                    '<a href="/move/12345/person-escort-record/health-information">Health</a> and ' +
+                    '<a href="/move/12345/person-escort-record/property-information">Property</a>',
+                  interpolation: { escapeValue: false },
+                }
+              )
+            })
           })
         })
 
@@ -316,13 +387,19 @@ describe('Presenters', function () {
             expect(transformedResponse).to.have.property('insetText')
             expect(transformedResponse.insetText).to.deep.equal({
               classes: 'govuk-inset-text--compact',
-              html: '__translated__<br>The incomplete section is <a href="/move/12345/person-escort-record/offence-information">Offence</a>.',
+              html: '__translated__',
             })
           })
 
           it('should translate inset text message', function () {
             expect(i18nStub.t).to.have.been.calledWithExactly(
-              'assessment::incomplete'
+              'assessment::incomplete',
+              {
+                section_plural: ' is ',
+                section_hrefs:
+                  '<a href="/move/12345/person-escort-record/offence-information">Offence</a>',
+                interpolation: { escapeValue: false },
+              }
             )
           })
         })
