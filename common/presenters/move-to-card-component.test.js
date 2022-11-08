@@ -83,6 +83,7 @@ describe('Presenters', function () {
               profile: mockMove.profile,
               href: '/move/12345',
               reference: 'AB12FS45',
+              date: undefined,
             })
             expect(profileToCardComponentStub).to.be.calledWithExactly({
               locationType: undefined,
@@ -129,6 +130,7 @@ describe('Presenters', function () {
             profile: null,
             href: '',
             reference: 'AB12FG',
+            date: undefined,
           })
         })
 
@@ -158,6 +160,7 @@ describe('Presenters', function () {
           profile: mockMove.profile,
           href: '/move/12345/path/to/somewhere',
           reference: 'AB12FS45',
+          date: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -181,6 +184,7 @@ describe('Presenters', function () {
           profile: mockMove.profile,
           href: '/move/12345',
           reference: 'AB12FS45',
+          date: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -204,6 +208,7 @@ describe('Presenters', function () {
           profile: mockMove.profile,
           href: '/move/12345',
           reference: 'AB12FS45',
+          date: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -227,6 +232,7 @@ describe('Presenters', function () {
           profile: mockMove.profile,
           href: '/move/12345',
           reference: 'AB12FS45',
+          date: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -250,6 +256,7 @@ describe('Presenters', function () {
           profile: mockMove.profile,
           href: '/move/12345',
           reference: 'AB12FS45',
+          date: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -277,6 +284,7 @@ describe('Presenters', function () {
           profile: mockMove.profile,
           href: '/move/12345',
           reference: 'AB12FS45',
+          date: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -308,6 +316,7 @@ describe('Presenters', function () {
           profile: mockMove.profile,
           href: '/move/12345',
           reference: 'AB12FS45',
+          date: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -346,6 +355,7 @@ describe('Presenters', function () {
           profile: mockMove.profile,
           href: '/move/12345',
           reference: 'AB12FS45',
+          date: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -465,6 +475,7 @@ describe('Presenters', function () {
             profile: mockMove.profile,
             href: '/move/12345',
             reference: 'AB12FS45',
+            date: undefined,
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: undefined,
@@ -494,6 +505,7 @@ describe('Presenters', function () {
             profile: mockMove.profile,
             href: '/move/12345',
             reference: 'AB12FS45',
+            date: undefined,
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: undefined,
@@ -524,6 +536,7 @@ describe('Presenters', function () {
             profile: mockMove.profile,
             href: '/move/12345',
             reference: 'AB12FS45',
+            date: undefined,
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: undefined,
@@ -561,6 +574,7 @@ describe('Presenters', function () {
             profile: mockMove.profile,
             href: '/move/12345',
             reference: 'AB12FS45',
+            date: undefined,
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: 'prison',

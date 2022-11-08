@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { filter, isEmpty } from 'lodash'
 
 import i18n from '../../config/i18n'
@@ -19,6 +20,11 @@ const perSections: { [section: string]: string } = {
   'offence-information': 'Offence',
   'health-information': 'Health',
   'property-information': 'Property',
+}
+
+interface PerSectionStatus {
+  key: string
+  status: string
 }
 
 interface MetaItem {
@@ -49,9 +55,13 @@ export interface CardComponent {
 const generatePERSectionURL = (
   personEscortRecord: PersonEscortRecord | undefined,
   hrefPrefix: string | undefined,
-  section: string
+  section: PerSectionStatus
 ) => {
-  const sectionURL = `${hrefPrefix}/person-escort-record/${section}`
+  let sectionURL = `${hrefPrefix}/person-escort-record/${section.key}`
+
+  if (section.status === 'not_started') {
+    sectionURL += '/start'
+  }
 
   if (personEscortRecord) {
     return sectionURL
@@ -65,28 +75,29 @@ const generatePERSectionURL = (
 const generatePERSectionAnchor = (
   personEscortRecord: PersonEscortRecord | undefined,
   hrefPrefix: string | undefined,
-  section: string
+  section: PerSectionStatus
 ) => {
   return `<a href="${generatePERSectionURL(
     personEscortRecord,
     hrefPrefix,
     section
-  )}">${perSections[section]}</a>`
+  )}">${perSections[section.key]}</a>`
 }
 
 const getIncompletePERSections = (
   personEscortRecord: PersonEscortRecord | undefined
 ) => {
   if (!personEscortRecord?.meta?.section_progress) {
-    return Object.keys(perSections)
+    return Object.keys(perSections).map(section => {
+      return { key: section, status: 'not_started' }
+    })
   }
 
   const sectionKeys = Object.keys(perSections)
 
   return personEscortRecord.meta.section_progress
     .filter(({ status }) => status !== 'completed')
-    .map(({ key }) => key)
-    .sort((a, b) => sectionKeys.indexOf(a) - sectionKeys.indexOf(b))
+    .sort((a, b) => sectionKeys.indexOf(a.key) - sectionKeys.indexOf(b.key))
 }
 
 const generateIncompletePERSectionText = (
@@ -95,12 +106,9 @@ const generateIncompletePERSectionText = (
 ) => {
   const incompleteSections = getIncompletePERSections(personEscortRecord)
 
-  return (
-    (incompleteSections.length > 1 ? 's are ' : ' is ') +
-    filters.nonOxfordJoin(
-      incompleteSections.map(section =>
-        generatePERSectionAnchor(personEscortRecord, hrefPrefix, section)
-      )
+  return filters.nonOxfordJoin(
+    incompleteSections.map(section =>
+      generatePERSectionAnchor(personEscortRecord, hrefPrefix, section)
     )
   )
 }
@@ -122,7 +130,13 @@ function profileToCardComponent({
     profile,
     href,
     reference,
-  }: { profile?: Profile; href?: string; reference?: string } = {}) {
+    date,
+  }: {
+    profile?: Profile
+    href?: string
+    reference?: string
+    date?: string
+  } = {}) {
     const { person = {} as Person, person_escort_record: personEscortRecord } =
       profile || {}
 
@@ -209,14 +223,31 @@ function profileToCardComponent({
           },
         ]
       } else if (!isEmpty(person)) {
-        card.insetText = {
-          classes: 'govuk-inset-text--compact',
-          html: `${i18n.t(
-            'assessment::incomplete'
-          )}<br>The incomplete section${generateIncompletePERSectionText(
-            personEscortRecord,
-            href
-          )}.`,
+        const sectionHrefs = generateIncompletePERSectionText(
+          personEscortRecord,
+          href
+        )
+
+        if (date === format(new Date(), 'yyyy-MM-dd')) {
+          card.insetText = {
+            classes: 'govuk-inset-text--compact govuk-inset-text--important',
+            html: i18n.t('assessment::incomplete_today', {
+              section_plural: sectionHrefs.includes(' and ') ? 's' : '',
+              section_hrefs: sectionHrefs,
+              interpolation: { escapeValue: false },
+            }),
+          }
+        } else {
+          card.insetText = {
+            classes: 'govuk-inset-text--compact',
+            html: i18n.t('assessment::incomplete', {
+              section_plural: sectionHrefs.includes(' and ')
+                ? 's are '
+                : ' is ',
+              section_hrefs: sectionHrefs,
+              interpolation: { escapeValue: false },
+            }),
+          }
         }
       }
     }

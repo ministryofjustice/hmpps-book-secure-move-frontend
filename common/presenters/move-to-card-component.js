@@ -16,6 +16,7 @@ function moveToCardComponent({
 } = {}) {
   return function item(move) {
     const {
+      date,
       id,
       reference,
       profile,
@@ -56,7 +57,7 @@ function moveToCardComponent({
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
       showTags,
-    })({ profile, href, reference })
+    })({ profile, href, reference, date })
 
     let tags
 
