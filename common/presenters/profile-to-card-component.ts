@@ -22,6 +22,11 @@ const perSections: { [section: string]: string } = {
   'property-information': 'Property',
 }
 
+interface PerSectionStatus {
+  key: string
+  status: string
+}
+
 interface MetaItem {
   text?: string
   html?: string
@@ -50,9 +55,13 @@ export interface CardComponent {
 const generatePERSectionURL = (
   personEscortRecord: PersonEscortRecord | undefined,
   hrefPrefix: string | undefined,
-  section: string
+  section: PerSectionStatus
 ) => {
-  const sectionURL = `${hrefPrefix}/person-escort-record/${section}`
+  let sectionURL = `${hrefPrefix}/person-escort-record/${section.key}`
+
+  if (section.status === 'not_started') {
+    sectionURL += '/start'
+  }
 
   if (personEscortRecord) {
     return sectionURL
@@ -66,28 +75,29 @@ const generatePERSectionURL = (
 const generatePERSectionAnchor = (
   personEscortRecord: PersonEscortRecord | undefined,
   hrefPrefix: string | undefined,
-  section: string
+  section: PerSectionStatus
 ) => {
   return `<a href="${generatePERSectionURL(
     personEscortRecord,
     hrefPrefix,
     section
-  )}">${perSections[section]}</a>`
+  )}">${perSections[section.key]}</a>`
 }
 
 const getIncompletePERSections = (
   personEscortRecord: PersonEscortRecord | undefined
 ) => {
   if (!personEscortRecord?.meta?.section_progress) {
-    return Object.keys(perSections)
+    return Object.keys(perSections).map(section => {
+      return { key: section, status: 'not_started' }
+    })
   }
 
   const sectionKeys = Object.keys(perSections)
 
   return personEscortRecord.meta.section_progress
     .filter(({ status }) => status !== 'completed')
-    .map(({ key }) => key)
-    .sort((a, b) => sectionKeys.indexOf(a) - sectionKeys.indexOf(b))
+    .sort((a, b) => sectionKeys.indexOf(a.key) - sectionKeys.indexOf(b.key))
 }
 
 const generateIncompletePERSectionText = (
