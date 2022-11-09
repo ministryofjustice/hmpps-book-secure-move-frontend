@@ -60,6 +60,7 @@
   "view_previous_assessment_framework": "View information provided in youth risk assessment",
   "incomplete": "Warnings will display once a Person Escort Record has been completed.<br>The incompete section{{section_plural}}{{section_hrefs}}.",
   "incomplete_today": "This move is scheduled today and the Person Escort Record must be completed.<br>Complete the {{section_hrefs}} section{{section_plural}}.",
+  "incomplete_locked": "Warnings cannot be displayed because the Person Escort Record was not completed.",
   "incomplete_overview": "This will display once a Person Escort Record has been completed",
   "section_incomplete": "Warnings will display once this section has been completed",
   "warnings_started": "Warnings will display once a Person Escort Record has been started",

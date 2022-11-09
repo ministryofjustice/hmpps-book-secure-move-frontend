@@ -1,5 +1,6 @@
 const { sortBy } = require('lodash')
 
+const canEditMove = require('../../../common/helpers/move/can-edit-move')
 const presenters = require('../../../common/presenters')
 
 function viewAllocation(req, res) {
@@ -46,6 +47,10 @@ function viewAllocation(req, res) {
       'profile.person._fullname'
     )
       .reverse()
+      .map(move => {
+        move._canEdit = canEditMove(move, canAccess)
+        return move
+      })
       .map(move => ({
         id: move.id,
         profile: move.profile,

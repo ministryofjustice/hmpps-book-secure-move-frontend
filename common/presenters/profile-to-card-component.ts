@@ -44,10 +44,15 @@ export interface CardComponent {
   classes?: string
   meta?: { items: MetaItem[] }
   tags?: { items: MetaItem[] }[]
-  insetText?: {
-    classes: string
-    html: string
-  }
+  insetText?:
+    | {
+        classes: string
+        html: string
+      }
+    | {
+        classes: string
+        text: string
+      }
   image_path?: string
   image_alt?: string
 }
@@ -131,11 +136,13 @@ function profileToCardComponent({
     href,
     reference,
     date,
+    isEditable,
   }: {
     profile?: Profile
     href?: string
     reference?: string
     date?: string
+    isEditable?: boolean
   } = {}) {
     const { person = {} as Person, person_escort_record: personEscortRecord } =
       profile || {}
@@ -228,7 +235,12 @@ function profileToCardComponent({
           href
         )
 
-        if (date === format(new Date(), 'yyyy-MM-dd')) {
+        if (!isEditable) {
+          card.insetText = {
+            classes: 'govuk-inset-text--compact',
+            text: i18n.t('assessment::incomplete_locked'),
+          }
+        } else if (date === format(new Date(), 'yyyy-MM-dd')) {
           card.insetText = {
             classes: 'govuk-inset-text--compact govuk-inset-text--important',
             html: i18n.t('assessment::incomplete_today', {
