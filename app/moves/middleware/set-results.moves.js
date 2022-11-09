@@ -1,5 +1,6 @@
 const { omitBy, isUndefined } = require('lodash')
 
+const canEditMove = require('../../../common/helpers/move/can-edit-move')
 const presenters = require('../../../common/presenters')
 
 function setResultsMoves(bodyKey, locationKey) {
@@ -13,6 +14,9 @@ function setResultsMoves(bodyKey, locationKey) {
 
       const args = omitBy(req.body[bodyKey], isUndefined)
       const activeMoves = await req.services.move.getActive(args)
+      activeMoves.forEach(
+        move => (move._canEdit = canEditMove(move, req.canAccess))
+      )
 
       if (groupBy === 'vehicle') {
         req.resultsAsCards = presenters.movesByVehicle({

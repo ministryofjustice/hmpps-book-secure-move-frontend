@@ -57,7 +57,7 @@ function moveToCardComponent({
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
       showTags,
-    })({ profile, href, reference, date })
+    })({ profile, href, reference, date, isEditable: move._canEdit })
 
     let tags
 

@@ -84,6 +84,7 @@ describe('Presenters', function () {
               href: '/move/12345',
               reference: 'AB12FS45',
               date: undefined,
+              isEditable: undefined,
             })
             expect(profileToCardComponentStub).to.be.calledWithExactly({
               locationType: undefined,
@@ -131,6 +132,7 @@ describe('Presenters', function () {
             href: '',
             reference: 'AB12FG',
             date: undefined,
+            isEditable: undefined,
           })
         })
 
@@ -161,6 +163,7 @@ describe('Presenters', function () {
           href: '/move/12345/path/to/somewhere',
           reference: 'AB12FS45',
           date: undefined,
+          isEditable: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -185,6 +188,7 @@ describe('Presenters', function () {
           href: '/move/12345',
           reference: 'AB12FS45',
           date: undefined,
+          isEditable: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -209,6 +213,7 @@ describe('Presenters', function () {
           href: '/move/12345',
           reference: 'AB12FS45',
           date: undefined,
+          isEditable: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -233,6 +238,7 @@ describe('Presenters', function () {
           href: '/move/12345',
           reference: 'AB12FS45',
           date: undefined,
+          isEditable: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -257,6 +263,7 @@ describe('Presenters', function () {
           href: '/move/12345',
           reference: 'AB12FS45',
           date: undefined,
+          isEditable: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -285,6 +292,7 @@ describe('Presenters', function () {
           href: '/move/12345',
           reference: 'AB12FS45',
           date: undefined,
+          isEditable: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -317,6 +325,7 @@ describe('Presenters', function () {
           href: '/move/12345',
           reference: 'AB12FS45',
           date: undefined,
+          isEditable: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -356,6 +365,7 @@ describe('Presenters', function () {
           href: '/move/12345',
           reference: 'AB12FS45',
           date: undefined,
+          isEditable: undefined,
         })
         expect(profileToCardComponentStub).to.be.calledWithExactly({
           locationType: undefined,
@@ -476,6 +486,7 @@ describe('Presenters', function () {
             href: '/move/12345',
             reference: 'AB12FS45',
             date: undefined,
+            isEditable: undefined,
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: undefined,
@@ -506,6 +517,7 @@ describe('Presenters', function () {
             href: '/move/12345',
             reference: 'AB12FS45',
             date: undefined,
+            isEditable: undefined,
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: undefined,
@@ -537,6 +549,7 @@ describe('Presenters', function () {
             href: '/move/12345',
             reference: 'AB12FS45',
             date: undefined,
+            isEditable: undefined,
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: undefined,
@@ -575,6 +588,7 @@ describe('Presenters', function () {
             href: '/move/12345',
             reference: 'AB12FS45',
             date: undefined,
+            isEditable: undefined,
           })
           expect(profileToCardComponentStub).to.be.calledWithExactly({
             locationType: 'prison',
