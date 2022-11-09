@@ -42,6 +42,7 @@ const mockArgs = {
   profile: mockProfile,
   href: mockHref,
   reference: mockReference,
+  isEditable: true,
 }
 
 describe('Presenters', function () {
@@ -277,6 +278,24 @@ describe('Presenters', function () {
             expect(transformedResponse.insetText).to.deep.equal({
               classes: 'govuk-inset-text--compact',
               html: '__translated__',
+            })
+          })
+
+          context('when the move is not editable', function () {
+            beforeEach(function () {
+              transformedResponse = profileToCardComponent()({
+                ...mockArgs,
+                isEditable: false,
+                profile: {
+                  ...mockProfile,
+                },
+              })
+            })
+
+            it('should translate inset text message', function () {
+              expect(i18nStub.t).to.have.been.calledWithExactly(
+                'assessment::incomplete_locked'
+              )
             })
           })
 
