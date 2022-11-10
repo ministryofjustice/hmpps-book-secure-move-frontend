@@ -15,6 +15,7 @@ describe('Move view app', function () {
             foo: 'bar',
             is_lockout: false,
             important_events: [{ event_type: 'MoveLodgingEnd' }],
+            _canEdit: true,
           },
           journeys: [],
         }
@@ -40,12 +41,14 @@ describe('Move view app', function () {
           moveLodgingStarted: false,
           moveLodgingEnded: true,
           moveDetails: {
+            _canEdit: true,
             id: '12345',
             foo: 'bar',
             is_lockout: false,
             important_events: [{ event_type: 'MoveLodgingEnd' }],
           },
           moveId: '12345',
+          moveIsEditable: true,
           moveIsLockout: false,
         })
       })

@@ -8,7 +8,10 @@
   {% if assessment.isCompleted == false %}
     {{ govukInsetText({
       classes: "govuk-!-font-size-16 govuk-!-margin-0",
-      text: t("assessment::section_incomplete")
+      text: t("assessment::section_incomplete", {
+        context: "locked" if not moveIsEditable,
+        section: assessment.name | replace(" information", "")
+      })
     }) }}
   {% elif assessment.count > 0 %}
     {% if assessment.groupedPanels %}
@@ -79,7 +82,7 @@
       {% else %}
         {{ govukInsetText({
           classes: "govuk-!-font-size-16 govuk-!-margin-top-0",
-          text: t("assessment::incomplete_overview")
+          text: t("assessment::incomplete_overview", {context: "locked" if not moveIsEditable})
         }) }}
       {% endif %}
     </div>
