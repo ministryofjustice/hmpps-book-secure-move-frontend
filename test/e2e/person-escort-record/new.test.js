@@ -27,7 +27,7 @@ test('Start new Record', async t => {
     )
     .expect(moveDetailPage.nodes.tagList.innerText)
     .eql(
-      'This will display once a Person Escort Record has been completed',
+      'This will display once the Person Escort Record has been completed in full.',
       'Should not render tags'
     )
     .expect(moveDetailPage.nodes.identityBar.innerText)
