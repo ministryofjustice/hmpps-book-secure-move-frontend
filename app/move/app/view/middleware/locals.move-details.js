@@ -3,10 +3,9 @@ const presenters = require('../../../../../common/presenters')
 function localsMoveDetails(req, res, next) {
   const { journeys, move } = req
 
-  const moveDetails = presenters.moveToMetaListComponent(move, journeys)
-
-  res.locals.moveDetails = moveDetails
+  res.locals.moveDetails = presenters.moveToMetaListComponent(move, journeys)
   res.locals.moveIsLockout = move.is_lockout
+  res.locals.moveIsEditable = move._canEdit
   res.locals.moveId = move.id
 
   const importantEvents = move.important_events || []
