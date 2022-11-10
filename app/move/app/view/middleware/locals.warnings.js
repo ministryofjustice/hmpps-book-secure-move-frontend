@@ -16,7 +16,12 @@ async function setWarnings(req, res, next) {
   let tagList, importantEventsTagList
   const personEscortRecord = profile.person_escort_record
   const perAssessmentSections = map(
-    personEscortRecord?._framework?.sections,
+    personEscortRecord?._framework?.sections || [
+      { name: 'Risk information', order: 1 },
+      { name: 'Offence information', order: 2 },
+      { name: 'Health information', order: 3 },
+      { name: 'Property information', order: 4 },
+    ],
     presenters.frameworkSectionToPanelList({
       baseUrl: `/move/${moveId}/person-escort-record`,
     })
@@ -37,7 +42,7 @@ async function setWarnings(req, res, next) {
     )
   }
 
-  const sections = personEscortRecord
+  const sections = perAssessmentSections
     ? sortBy(perAssessmentSections, 'order')
     : []
 

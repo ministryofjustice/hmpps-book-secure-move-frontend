@@ -78,9 +78,26 @@ describe('Move view app', function () {
             middleware(req, res, nextSpy)
           })
 
-          it('should set sections variable to undefined', function () {
+          it('should set sections variable to a sensible default', function () {
             expect(res.locals.warnings).to.have.property('sections')
-            expect(res.locals.warnings.sections).to.be.empty
+            expect(res.locals.warnings.sections).to.deep.equal([
+              {
+                name: 'Risk information',
+                order: 1,
+              },
+              {
+                name: 'Offence information',
+                order: 2,
+              },
+              {
+                name: 'Health information',
+                order: 3,
+              },
+              {
+                name: 'Property information',
+                order: 4,
+              },
+            ])
           })
         })
 
@@ -100,6 +117,22 @@ describe('Move view app', function () {
                 key: 'in-transit-events',
                 name: 'In transit information',
                 panels: [],
+              },
+              {
+                name: 'Risk information',
+                order: 1,
+              },
+              {
+                name: 'Offence information',
+                order: 2,
+              },
+              {
+                name: 'Health information',
+                order: 3,
+              },
+              {
+                name: 'Property information',
+                order: 4,
               },
             ])
           })
