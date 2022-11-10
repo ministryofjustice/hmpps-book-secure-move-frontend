@@ -38,8 +38,21 @@ function setUserLocations(locations) {
   }
 }
 
+function setUsername(username) {
+  return (req, res, next) => {
+    req.session.user = req.session.user || {}
+
+    if (username && !req.session.user.username) {
+      req.session.user.username = username
+    }
+
+    next()
+  }
+}
+
 module.exports = {
   bypassAuth,
   setUserPermissions,
   setUserLocations,
+  setUsername,
 }

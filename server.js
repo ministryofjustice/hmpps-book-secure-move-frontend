@@ -204,6 +204,7 @@ module.exports = async () => {
     app.use(development.bypassAuth(config.AUTH_BYPASS_SSO))
     app.use(development.setUserPermissions(config.USER_PERMISSIONS))
     app.use(development.setUserLocations(config.USER_LOCATIONS))
+    app.use(development.setUsername(config.USER_USERNAME))
   }
 
   app.use(

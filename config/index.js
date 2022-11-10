@@ -142,6 +142,7 @@ module.exports = {
   REDIS,
   USER_PERMISSIONS: process.env.USER_PERMISSIONS,
   USER_LOCATIONS: process.env.USER_LOCATIONS,
+  USER_USERNAME: process.env.USER_USERNAME,
   AUTH_BYPASS_SSO: process.env.BYPASS_SSO && IS_DEV,
   AUTH_WHITELIST_URLS: [
     '/auth',
