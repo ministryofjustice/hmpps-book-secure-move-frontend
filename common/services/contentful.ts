@@ -1,7 +1,10 @@
-const { documentToHtmlString } = require('@contentful/rich-text-html-renderer')
-const { BLOCKS, MARKS, INLINES } = require('@contentful/rich-text-types')
-const contentful = require('contentful')
-const { format } = require('date-fns')
+import {
+  documentToHtmlString,
+  Options,
+} from '@contentful/rich-text-html-renderer'
+import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
+import * as contentful from 'contentful'
+import { format } from 'date-fns'
 
 const {
   CONTENTFUL_SPACE_ID,
@@ -14,8 +17,8 @@ const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
 
 const options = {
   renderMark: {
-    [MARKS.BOLD]: (text: any) => `<strong>${text}</strong>`,
-    [MARKS.ITALIC]: (text: any) => `<em>${text}</em>`,
+    [MARKS.BOLD]: (text: string) => `<strong>${text}</strong>`,
+    [MARKS.ITALIC]: (text: string) => `<em>${text}</em>`,
   },
   renderNode: {
     [BLOCKS.HEADING_1]: (node: { content: any }, next: (arg0: any) => any) =>
@@ -46,11 +49,64 @@ const options = {
       data: {
         target: { fields },
       },
-    }: {data: {target: {fields: {file: {url: string}, description: string}}}}) =>
+    }) =>
       `<figure class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"><img src="https:${fields.file.url}" alt="${fields.description}" /></figure>`,
-    [INLINES.HYPERLINK]: (node: { data: { uri: any }; content: any }, next: (arg0: any) => any) =>
+    [INLINES.HYPERLINK]: (node, next) =>
       `<a class="govuk-link" href="${node.data.uri}">${next(node.content)}</a>`,
   },
+} as Partial<Options>
+
+interface ContentfulFields {
+  title: string
+  body: string
+  briefBannerText: string
+  date: string
+  bannerExpiry: string
+}
+
+class ContentfulContent {
+  private readonly title: string
+  private readonly body: string
+  private readonly briefBannerText: string
+  readonly date: Date
+  private readonly bannerExpiry?: Date
+
+  constructor(data: {
+    title: string
+    body: string
+    briefBannerText: string
+    date: Date
+    bannerExpiry?: Date
+  }) {
+    this.title = data.title
+    this.body = data.body
+    this.briefBannerText = data.briefBannerText
+    this.date = data.date
+    this.bannerExpiry = data.bannerExpiry
+  }
+
+  toEntry() {
+    return {
+      title: this.title,
+      body: service.convertToHTMLFormat(this.body),
+      date: service.formatDate(this.date),
+    }
+  }
+
+  hasBannerExpired() {
+    if (this.bannerExpiry) {
+      return this.bannerExpiry < new Date()
+    }
+
+    return this.date.getTime() + TWO_WEEKS < Date.now()
+  }
+
+  toBanner() {
+    return {
+      body: this.briefBannerText,
+      date: service.formatDate(this.date),
+    }
+  }
 }
 
 const service = {
@@ -66,49 +122,44 @@ const service = {
       return null
     }
 
-    const formattedEntries = entries.map(( { title, body, date }: { title: string, body: string, date: any }) => ({
-      title,
-      body: service.convertToHTMLFormat(body),
-      date: service.formatDate(date),
-    }))
-
-    let formattedBannerContent = null
-
-    if (<any>new Date() - entries[0].date <= TWO_WEEKS) {
-      formattedBannerContent = {
-        body: entries[0].briefBannerText,
-        date: service.formatDate(entries[0].date),
-      }
-    }
-
     return {
-      bannerContent: formattedBannerContent,
-      posts: formattedEntries,
+      bannerContent: entries
+        .filter(entry => {
+          return !entry.hasBannerExpired()
+        })
+        .sort((a, b) => {
+          return b.date.getTime() - a.date.getTime()
+        })[0]
+        ?.toBanner(),
+      posts: entries.map(entry => entry.toEntry()),
     }
   },
   fetchEntries: async () => {
-    const entries = await service.client.getEntries({
+    const entries = (await service.client.getEntries({
       content_type: 'whatsNew',
-    })
+    })) as contentful.EntryCollection<ContentfulFields>
 
     if (!entries.items?.length) {
       return []
     }
 
     return entries.items.map(
-      ({ fields: { title, body, briefBannerText, date } }: {fields: { title: string, body: string, briefBannerText: string, date: any}}) => ({
-        title,
-        body,
-        briefBannerText,
-        date: new Date(date),
-      })
+      ({ fields: { title, body, briefBannerText, date, bannerExpiry } }) => {
+        return new ContentfulContent({
+          title,
+          body,
+          briefBannerText,
+          date: new Date(date),
+          bannerExpiry: bannerExpiry ? new Date(bannerExpiry) : undefined,
+        })
+      }
     )
   },
   fetchEntryBySlugId: async (slugId: any) => {
-    const entry = await service.client.getEntries({
+    const entry = (await service.client.getEntries({
       content_type: 'dedicatedContent',
       'fields.slug[in]': slugId,
-    })
+    })) as contentful.EntryCollection<ContentfulFields>
 
     if (!entry.items?.length) {
       return undefined
