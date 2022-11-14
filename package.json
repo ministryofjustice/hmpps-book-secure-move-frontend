@@ -166,7 +166,7 @@
     "hc-sticky": "2.2.7",
     "helmet": "4.6.0",
     "hmpo-form-wizard": "12.0.6",
-    "i18next": "21.10.0",
+    "i18next": "22.0.5",
     "i18next-express-middleware": "2.0.0",
     "i18next-fs-backend": "1.1.5",
     "js-yaml": "4.1.0",
