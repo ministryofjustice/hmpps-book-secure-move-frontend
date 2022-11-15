@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.129.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.127.4...v2.129.0) (2022-11-15)
+
+
+### Features
+
+* Add incomplete PER sections to overview card ([8cfbdac](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8cfbdac1bc74cec73f9b03e38d4db4be04949527))
+* Add locked PER dialog to the moves overview page ([c04f34b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/c04f34b1681f82dc473972d843ff6232c9338c72))
+* Add new warning box for incomplete PER when move is today ([95de6ca](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/95de6ca4238bc5ec3a5e8441354f570e8d3b648f))
+* Add wording to move warnings screen for locked move with incomplete PER ([df554b4](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/df554b40ba373aafed0741a39e485f6208dd4c7d))
+
 ## [2.128.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.127.4...v2.128.0) (2022-11-15)
 
 
