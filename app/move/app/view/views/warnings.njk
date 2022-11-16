@@ -9,7 +9,7 @@
     {{ govukInsetText({
       classes: "govuk-!-font-size-16 govuk-!-margin-0",
       text: t("assessment::section_incomplete", {
-        context: "locked" if not moveIsEditable,
+        context: "locked" if isPerLocked,
         section: assessment.name | replace(" information", "")
       })
     }) }}
@@ -82,7 +82,7 @@
       {% else %}
         {{ govukInsetText({
           classes: "govuk-!-font-size-16 govuk-!-margin-top-0",
-          text: t("assessment::incomplete_overview", {context: "locked" if not moveIsEditable})
+          text: t("assessment::incomplete_overview", {context: "locked" if isPerLocked})
         }) }}
       {% endif %}
     </div>

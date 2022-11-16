@@ -1,4 +1,4 @@
-export interface PersonEscortRecord {
+export interface YouthRiskAssessment {
   meta?: {
     section_progress: { key: string; status: string }[]
   }

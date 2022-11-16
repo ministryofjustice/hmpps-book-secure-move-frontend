@@ -136,13 +136,17 @@ function profileToCardComponent({
     href,
     reference,
     date,
-    isEditable,
+    isPerLocked,
+    canEditPer,
+    assessmentType,
   }: {
     profile?: Profile
     href?: string
     reference?: string
     date?: string
-    isEditable?: boolean
+    isPerLocked?: boolean
+    canEditPer?: boolean
+    assessmentType?: 'youth_risk_assessment' | 'person_escort_record'
   } = {}) {
     const { person = {} as Person, person_escort_record: personEscortRecord } =
       profile || {}
@@ -235,21 +239,31 @@ function profileToCardComponent({
           href
         )
 
-        if (!isEditable) {
+        if (isPerLocked) {
           card.insetText = {
             classes: 'govuk-inset-text--compact',
             text: i18n.t('assessment::incomplete_locked'),
           }
-        } else if (date === format(new Date(), 'yyyy-MM-dd')) {
-          card.insetText = {
-            classes: 'govuk-inset-text--compact govuk-inset-text--important',
-            html: i18n.t('assessment::incomplete_today', {
-              section_plural: sectionHrefs.includes(' and ') ? 's' : '',
-              section_hrefs: sectionHrefs,
-              interpolation: { escapeValue: false },
-            }),
+        } else if (
+          date === format(new Date(), 'yyyy-MM-dd') &&
+          assessmentType !== 'youth_risk_assessment'
+        ) {
+          if (canEditPer) {
+            card.insetText = {
+              classes: 'govuk-inset-text--compact govuk-inset-text--important',
+              html: i18n.t('assessment::incomplete_today', {
+                section_plural: sectionHrefs.includes(' and ') ? 's' : '',
+                section_hrefs: sectionHrefs,
+                interpolation: { escapeValue: false },
+              }),
+            }
+          } else {
+            card.insetText = {
+              classes: 'govuk-inset-text--compact govuk-inset-text--important',
+              text: i18n.t('assessment::incomplete_today_no_permission'),
+            }
           }
-        } else {
+        } else if (canEditPer && assessmentType !== 'youth_risk_assessment') {
           card.insetText = {
             classes: 'govuk-inset-text--compact',
             html: i18n.t('assessment::incomplete', {
@@ -259,6 +273,11 @@ function profileToCardComponent({
               section_hrefs: sectionHrefs,
               interpolation: { escapeValue: false },
             }),
+          }
+        } else {
+          card.insetText = {
+            classes: 'govuk-inset-text--compact',
+            text: i18n.t('assessment::incomplete_no_permission'),
           }
         }
       }

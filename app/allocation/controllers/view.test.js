@@ -253,6 +253,8 @@ describe('Allocation controllers', function () {
             removeMoveHref: undefined,
             card: {
               _canEdit: true,
+              _canEditPer: true,
+              _isPerLocked: true,
               id: '011',
               profile: {
                 person: {
@@ -275,6 +277,8 @@ describe('Allocation controllers', function () {
             removeMoveHref: undefined,
             card: {
               _canEdit: true,
+              _canEditPer: true,
+              _isPerLocked: true,
               id: '456',
               profile: {
                 person: {

@@ -1,6 +1,10 @@
 const { sortBy } = require('lodash')
 
+const {
+  canEditAssessment,
+} = require('../../../common/helpers/move/can-edit-assessment')
 const canEditMove = require('../../../common/helpers/move/can-edit-move')
+const { isPerLocked } = require('../../../common/helpers/move/is-per-locked')
 const presenters = require('../../../common/presenters')
 
 function viewAllocation(req, res) {
@@ -49,6 +53,8 @@ function viewAllocation(req, res) {
       .reverse()
       .map(move => {
         move._canEdit = canEditMove(move, canAccess)
+        move._isPerLocked = isPerLocked(move)
+        move._canEditPer = canEditAssessment(move, canAccess)
         return move
       })
       .map(move => ({
