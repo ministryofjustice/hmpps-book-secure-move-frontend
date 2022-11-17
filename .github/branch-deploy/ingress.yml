@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hmpps-book-secure-move-frontend-ingress-pr-{PR_NUMBER}
@@ -17,6 +17,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: hmpps-book-secure-move-frontend-service-pr-{PR_NUMBER}
-          servicePort: 80
+          service:
+            name: hmpps-book-secure-move-frontend-service-pr-{PR_NUMBER}
+            port:
+              number: 80
