@@ -5,11 +5,7 @@ const presenters = require('../../../../../common/presenters')
 
 function _filterCourtMoves(move) {
   return category => {
-    if (move.move_type !== 'court_appearance' && category?.key === 'court') {
-      return false
-    }
-
-    return true
+    return !(move.move_type !== 'court_appearance' && category?.key === 'court')
   }
 }
 
@@ -62,7 +58,8 @@ function renderDetails(req, res) {
 
   const locals = {
     allocation: move.allocation,
-    isEditable: move._canEdit,
+    isPerLocked: move._isPerLocked,
+    canEditPer: move._canEditPer,
     isAllocationMove: !isNil(move.allocation),
     moveSummary,
     sections: {

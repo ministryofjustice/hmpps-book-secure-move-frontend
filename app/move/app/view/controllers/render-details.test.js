@@ -82,16 +82,16 @@ describe('Move view app', function () {
           })
         })
 
-        describe('isEditable', function () {
+        describe('canEditPer', function () {
           beforeEach(function () {
-            req.move._canEdit = true
+            req.move._canEditPer = true
 
             controller(req, res)
           })
 
-          it('should set editable property', function () {
+          it('should set canEditPer property', function () {
             const locals = res.render.args[0][1]
-            expect(locals.isEditable).to.equal(true)
+            expect(locals.canEditPer).to.equal(true)
           })
         })
 

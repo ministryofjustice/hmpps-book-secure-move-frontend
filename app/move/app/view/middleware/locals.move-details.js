@@ -6,6 +6,7 @@ function localsMoveDetails(req, res, next) {
   res.locals.moveDetails = presenters.moveToMetaListComponent(move, journeys)
   res.locals.moveIsLockout = move.is_lockout
   res.locals.moveIsEditable = move._canEdit
+  res.locals.isPerLocked = move._isPerLocked
   res.locals.moveId = move.id
 
   const importantEvents = move.important_events || []

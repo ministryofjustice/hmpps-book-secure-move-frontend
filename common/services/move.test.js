@@ -16,7 +16,10 @@ const MoveService = proxyquire('./move', {
   '../helpers/move/can-edit-move': sinon.stub().returns(true),
 })
 
-const moveService = new MoveService({ apiClient })
+const moveService = new MoveService({
+  apiClient,
+  canAccess: () => true,
+})
 
 const mockMove = {
   id: 'b695d0f0-af8e-4b97-891e-92020d6820b9',
@@ -717,6 +720,7 @@ describe('Move Service', function () {
             'profile.person',
             'profile.person.gender',
             'profile.person_escort_record.flags',
+            'profile.youth_risk_assessment',
             'to_location',
           ],
           params: {
@@ -770,6 +774,7 @@ describe('Move Service', function () {
             'profile.person',
             'profile.person.gender',
             'profile.person_escort_record.flags',
+            'profile.youth_risk_assessment',
             'to_location',
           ],
           filter: {
@@ -1049,6 +1054,8 @@ describe('Move Service', function () {
             ...mockResponse.data,
             _canCancel: true,
             _canEdit: true,
+            _canEditPer: true,
+            _isPerLocked: false,
           })
         })
       })

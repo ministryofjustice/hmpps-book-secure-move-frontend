@@ -16,6 +16,7 @@ describe('Move view app', function () {
             is_lockout: false,
             important_events: [{ event_type: 'MoveLodgingEnd' }],
             _canEdit: true,
+            _isPerLocked: false,
           },
           journeys: [],
         }
@@ -38,10 +39,12 @@ describe('Move view app', function () {
 
       it('should set move details on locals', function () {
         expect(res.locals).to.be.deep.equal({
+          isPerLocked: false,
           moveLodgingStarted: false,
           moveLodgingEnded: true,
           moveDetails: {
             _canEdit: true,
+            _isPerLocked: false,
             id: '12345',
             foo: 'bar',
             is_lockout: false,

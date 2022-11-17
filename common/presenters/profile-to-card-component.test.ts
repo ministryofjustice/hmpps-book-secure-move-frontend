@@ -42,7 +42,9 @@ const mockArgs = {
   profile: mockProfile,
   href: mockHref,
   reference: mockReference,
-  isEditable: true,
+  isPerLocked: false,
+  canEditPer: true,
+  assessmentType: 'person_escort_record',
 }
 
 describe('Presenters', function () {
@@ -281,11 +283,11 @@ describe('Presenters', function () {
             })
           })
 
-          context('when the move is not editable', function () {
+          context('when the PER is locked', function () {
             beforeEach(function () {
               transformedResponse = profileToCardComponent()({
                 ...mockArgs,
-                isEditable: false,
+                isPerLocked: true,
                 profile: {
                   ...mockProfile,
                 },

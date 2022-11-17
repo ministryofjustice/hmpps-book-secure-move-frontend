@@ -70,7 +70,7 @@
     {% call _section(section.heading) %}
       {{ _renderAssessmentComponent(section) }}
 
-      {% if isEditable %}
+      {% if canEditPer %}
         {{ _updateLink(updateLinks[section.key]) }}
       {% endif %}
     {% endcall %}

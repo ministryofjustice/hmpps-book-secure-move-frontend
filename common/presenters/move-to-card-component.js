@@ -50,6 +50,11 @@ function moveToCardComponent({
     const statusBadge = showStatusBadge
       ? { text: i18n.t(`statuses::${status}`) }
       : undefined
+    const assessmentType =
+      move.profile?.requires_youth_risk_assessment &&
+      move.profile?.youth_risk_assessment?.status !== 'confirmed'
+        ? 'youth_risk_assessment'
+        : 'person_escort_record'
 
     const personCardComponent = profileToCardComponent({
       locationType,
@@ -57,7 +62,15 @@ function moveToCardComponent({
       showImage: isCompact ? false : showImage,
       showMeta: isCompact ? false : showMeta,
       showTags,
-    })({ profile, href, reference, date, isEditable: move._canEdit })
+    })({
+      profile,
+      href,
+      reference,
+      date,
+      isPerLocked: move._isPerLocked,
+      canEditPer: move._canEditPer,
+      assessmentType,
+    })
 
     let tags
 

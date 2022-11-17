@@ -1,6 +1,10 @@
 const { omitBy, isUndefined } = require('lodash')
 
+const {
+  canEditAssessment,
+} = require('../../../common/helpers/move/can-edit-assessment')
 const canEditMove = require('../../../common/helpers/move/can-edit-move')
+const { isPerLocked } = require('../../../common/helpers/move/is-per-locked')
 const presenters = require('../../../common/presenters')
 
 function setResultsMoves(bodyKey, locationKey) {
@@ -14,9 +18,11 @@ function setResultsMoves(bodyKey, locationKey) {
 
       const args = omitBy(req.body[bodyKey], isUndefined)
       const activeMoves = await req.services.move.getActive(args)
-      activeMoves.forEach(
-        move => (move._canEdit = canEditMove(move, req.canAccess))
-      )
+      activeMoves.forEach(move => {
+        move._canEdit = canEditMove(move, req.canAccess)
+        move._isPerLocked = isPerLocked(move)
+        move._canEditPer = canEditAssessment(move, req.canAccess)
+      })
 
       if (groupBy === 'vehicle') {
         req.resultsAsCards = presenters.movesByVehicle({

@@ -2,7 +2,9 @@ const dateFunctions = require('date-fns')
 const { mapValues, omitBy, pickBy, isUndefined, isEmpty } = require('lodash')
 
 const canCancelMove = require('../helpers/move/can-cancel-move')
+const { canEditAssessment } = require('../helpers/move/can-edit-assessment')
 const canEditMove = require('../helpers/move/can-edit-move')
+const { isPerLocked } = require('../helpers/move/is-per-locked')
 const restClient = require('../lib/api-client/rest-client')
 
 const BaseService = require('./base')
@@ -217,6 +219,7 @@ class MoveService extends BaseService {
         'profile.person',
         'profile.person.gender',
         'profile.person_escort_record.flags',
+        'profile.youth_risk_assessment',
         'to_location',
       ],
       params: {
@@ -268,7 +271,7 @@ class MoveService extends BaseService {
       isEmpty
     )
 
-    const response = await restClient.post(
+    return await restClient.post(
       req,
       '/moves/csv',
       { filter },
@@ -276,7 +279,6 @@ class MoveService extends BaseService {
         format: 'text/csv',
       }
     )
-    return response
   }
 
   _getById(id, options = {}) {
@@ -293,6 +295,8 @@ class MoveService extends BaseService {
         ...move,
         _canCancel: canCancelMove(move, canAccess),
         _canEdit: canEditMove(move, canAccess),
+        _isPerLocked: isPerLocked(move),
+        _canEditPer: canEditAssessment(move, canAccess),
       }
     })
   }
