@@ -219,6 +219,7 @@ class MoveService extends BaseService {
         'profile.person',
         'profile.person.gender',
         'profile.person_escort_record.flags',
+        'profile.youth_risk_assessment',
         'to_location',
       ],
       params: {

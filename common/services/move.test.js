@@ -720,6 +720,7 @@ describe('Move Service', function () {
             'profile.person',
             'profile.person.gender',
             'profile.person_escort_record.flags',
+            'profile.youth_risk_assessment',
             'to_location',
           ],
           params: {
@@ -773,6 +774,7 @@ describe('Move Service', function () {
             'profile.person',
             'profile.person.gender',
             'profile.person_escort_record.flags',
+            'profile.youth_risk_assessment',
             'to_location',
           ],
           filter: {
