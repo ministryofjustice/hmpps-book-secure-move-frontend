@@ -17,6 +17,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: hmpps-book-secure-move-frontend-service-pr-{PR_NUMBER}
-          servicePort: 80
+          service:
+            name: hmpps-book-secure-move-frontend-service-pr-{PR_NUMBER}
+            port:
+              number: 80
