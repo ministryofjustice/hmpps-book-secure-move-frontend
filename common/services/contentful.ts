@@ -122,13 +122,14 @@ const service = {
       return null
     }
 
+    entries.sort((a, b) => {
+      return b.date.getTime() - a.date.getTime()
+    })
+
     return {
       bannerContent: entries
         .filter(entry => {
           return !entry.hasBannerExpired()
-        })
-        .sort((a, b) => {
-          return b.date.getTime() - a.date.getTime()
         })[0]
         ?.toBanner(),
       posts: entries.map(entry => entry.toEntry()),
