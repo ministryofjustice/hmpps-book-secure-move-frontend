@@ -9,7 +9,7 @@
 {% block content %}
   <h1 class="govuk-heading-xl">{{ t(message.heading) }}</h1>
 
-  <p>{{ t(message.content) }}</p>
+  <p>{{ t(message.content, {outage_body: outage.end})}}</p>
 
   {% if showNomisMessage %}
     <p>{{ t("errors::nomis_status_message") }}</p>

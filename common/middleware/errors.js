@@ -1,6 +1,7 @@
+const contentfulService = require('../../common/services/contentful')
 const logger = require('../../config/logger')
 
-function _getMessage(error) {
+async function _getMessage(error) {
   let errorLookup = 'default'
 
   if (error.code === 'EBADCSRFTOKEN') {
@@ -11,12 +12,27 @@ function _getMessage(error) {
     errorLookup = 'unauthorized'
   } else if (error.statusCode === 422) {
     errorLookup = 'unprocessable_entity'
+  } else if (await findOutage()) {
+    errorLookup = 'outage'
   }
 
   return {
     heading: `errors::${errorLookup}.heading`,
     content: `errors::${errorLookup}.content`,
   }
+}
+
+async function findOutage() {
+  let outage
+
+  try {
+    outage = await contentfulService.getActiveOutage()
+    logger.info(outage.end)
+  } catch (e) {
+    outage = null
+  }
+
+  return outage
 }
 
 function notFound(req, res, next) {

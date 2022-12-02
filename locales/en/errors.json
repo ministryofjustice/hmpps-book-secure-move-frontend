@@ -45,5 +45,9 @@
     "heading": "We could not process the request",
     "content": "Try again in a few moments."
   },
+  "outage": {
+    "heading": "Book a Secure Move is currently unavailable",
+    "content": "{{outage_body}}"
+  },
   "nomis_status_message": "The problem may be related to NOMIS being unavailable."
 }
