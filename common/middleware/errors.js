@@ -1,8 +1,10 @@
 const contentfulService = require('../../common/services/contentful')
 const logger = require('../../config/logger')
+const { AUTH_BASE_URL } = require('../../config/nunjucks/globals')
 
 async function _getMessage(error) {
   let errorLookup = 'default'
+  let outage
 
   if (error.code === 'EBADCSRFTOKEN') {
     errorLookup = 'tampered_with'
@@ -12,13 +14,48 @@ async function _getMessage(error) {
     errorLookup = 'unauthorized'
   } else if (error.statusCode === 422) {
     errorLookup = 'unprocessable_entity'
-  } else if (await findOutage()) {
-    errorLookup = 'outage'
+  } else {
+    outage = await findOutage()
+
+    if (outage !== null) {
+      errorLookup = 'outage'
+    }
   }
 
   return {
     heading: `errors::${errorLookup}.heading`,
     content: `errors::${errorLookup}.content`,
+    end: getDateAndTime(outage?.end),
+    more: `errors::${errorLookup}.more`,
+    actions: `errors::${errorLookup}.actions`,
+    alternative: `errors::${errorLookup}.alternative`,
+    otherwise: `errors::${errorLookup}.otherwise`,
+    link: AUTH_BASE_URL + '/auth',
+  }
+}
+
+function getDateAndTime(date) {
+  if (!date) {
+    return null
+  }
+
+  const dateOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+  const timeOptions = {
+    hour: 'numeric',
+    hour12: true,
+    minutes: date.getMinutes() > 0 ? 'numeric' : null,
+  }
+  return {
+    date: date.toLocaleDateString('en-GB', dateOptions),
+    time: date
+      .toLocaleTimeString('en-GB', timeOptions)
+      .replace(/\s/g, '')
+      .replace(/^0/, '12'),
   }
 }
 
@@ -43,7 +80,7 @@ function notFound(req, res, next) {
 }
 
 function catchAll(showStackTrace = false) {
-  return function errors(error, req, res, next) {
+  return async function errors(error, req, res, next) {
     if (res.headersSent) {
       return next(error)
     }
@@ -74,7 +111,7 @@ function catchAll(showStackTrace = false) {
       statusCode,
       showStackTrace,
       showNomisMessage,
-      message: _getMessage(error),
+      message: await _getMessage(error),
     })
   }
 }
