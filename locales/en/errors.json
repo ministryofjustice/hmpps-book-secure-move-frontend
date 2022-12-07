@@ -53,7 +53,7 @@
       "revert to paper processes",
       "use paper Person Escort Records (PERs)"
     ],
-    "otherwise" : "While Book a secure move is unavailable you should:"
+    "otherwise" : "While Book a secure move is unavailable, you should:"
   },
   "nomis_status_message": "The problem may be related to NOMIS being unavailable."
 }

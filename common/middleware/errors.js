@@ -39,24 +39,33 @@ function getDateAndTime(date) {
     return null
   }
 
+  return {
+    date: formatDate(date),
+    time: formatTime(date),
+  }
+}
+
+function formatDate(date) {
   const dateOptions = {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   }
+  return date.toLocaleDateString('en-GB', dateOptions)
+}
+
+function formatTime(date) {
   const timeOptions = {
+    minute: date.getMinutes() > 0 ? 'numeric' : undefined,
     hour: 'numeric',
     hour12: true,
-    minutes: date.getMinutes() > 0 ? 'numeric' : null,
   }
-  return {
-    date: date.toLocaleDateString('en-GB', dateOptions),
-    time: date
-      .toLocaleTimeString('en-GB', timeOptions)
-      .replace(/\s/g, '')
-      .replace(/^0/, '12'),
-  }
+
+  return date
+    .toLocaleTimeString('en-GB', timeOptions)
+    .replace(/\s/g, '')
+    .replace(/^0/, '12')
 }
 
 async function findOutage() {
