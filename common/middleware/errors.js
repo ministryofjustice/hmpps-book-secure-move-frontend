@@ -1,6 +1,7 @@
 const contentfulService = require('../../common/services/contentful')
 const logger = require('../../config/logger')
 const { AUTH_BASE_URL } = require('../../config/nunjucks/globals')
+const { sentenceFormatTime, sentenceFormatDate } = require('../formatters')
 
 async function _getMessage(error) {
   let errorLookup = 'default'
@@ -40,32 +41,9 @@ function getDateAndTime(date) {
   }
 
   return {
-    date: formatDate(date),
-    time: formatTime(date),
+    date: sentenceFormatDate(date),
+    time: sentenceFormatTime(date),
   }
-}
-
-function formatDate(date) {
-  const dateOptions = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }
-  return date.toLocaleDateString('en-GB', dateOptions)
-}
-
-function formatTime(date) {
-  const timeOptions = {
-    minute: date.getMinutes() > 0 ? 'numeric' : undefined,
-    hour: 'numeric',
-    hour12: true,
-  }
-
-  return date
-    .toLocaleTimeString('en-GB', timeOptions)
-    .replace(/\s/g, '')
-    .replace(/^0/, '12')
 }
 
 async function findOutage() {
