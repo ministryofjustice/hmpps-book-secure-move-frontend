@@ -19,10 +19,18 @@ async function _getMessage(error) {
     outage = await findOutage()
 
     if (outage !== null) {
-      errorLookup = 'outage'
+      return outageMessage(outage)
     }
   }
 
+  return {
+    heading: `errors::${errorLookup}.heading`,
+    content: `errors::${errorLookup}.content`,
+  }
+}
+
+function outageMessage(outage) {
+  const errorLookup = 'outage'
   return {
     heading: `errors::${errorLookup}.heading`,
     content: `errors::${errorLookup}.content`,

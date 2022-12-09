@@ -1,3 +1,6 @@
+const sinon = require('sinon')
+
+const contentfulService = require('../../common/services/contentful')
 const logger = require('../../config/logger')
 
 const errors = require('./errors')
@@ -10,6 +13,7 @@ describe('Error middleware', function () {
   beforeEach(function () {
     sinon.stub(logger, 'info')
     sinon.stub(logger, 'error')
+    sinon.stub(contentfulService, 'getActiveOutage')
   })
 
   describe('#notFound', function () {
@@ -51,9 +55,9 @@ describe('Error middleware', function () {
     })
 
     context('when headers have already been sent', function () {
-      beforeEach(function () {
+      beforeEach(async function () {
         mockRes.headersSent = true
-        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should call next middleware with error', function () {
@@ -68,8 +72,8 @@ describe('Error middleware', function () {
     })
 
     context('when stack trace should be visible', function () {
-      beforeEach(function () {
-        errors.catchAll(true)(mockError, mockReq, mockRes, nextSpy)
+      beforeEach(async function () {
+        await errors.catchAll(true)(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should send showStackTrace property to template', function () {
@@ -82,8 +86,8 @@ describe('Error middleware', function () {
     })
 
     context('when stack trace should not be visible', function () {
-      beforeEach(function () {
-        errors.catchAll(false)(mockError, mockReq, mockRes, nextSpy)
+      beforeEach(async function () {
+        await errors.catchAll(false)(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should send showStackTrace property to template', function () {
@@ -96,8 +100,8 @@ describe('Error middleware', function () {
     })
 
     context('when show stack trace is not set', function () {
-      beforeEach(function () {
-        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+      beforeEach(async function () {
+        await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should send showStackTrace property to template', function () {
@@ -110,9 +114,9 @@ describe('Error middleware', function () {
     })
 
     context('with a 404 error status code', function () {
-      beforeEach(function () {
+      beforeEach(async function () {
         mockError.statusCode = errorCode404
-        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function () {
@@ -153,9 +157,9 @@ describe('Error middleware', function () {
     })
 
     context('with a standard 403 error status code', function () {
-      beforeEach(function () {
+      beforeEach(async function () {
         mockError.statusCode = errorCode403
-        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function () {
@@ -196,10 +200,10 @@ describe('Error middleware', function () {
     })
 
     context('with a CSRF 403 error status code', function () {
-      beforeEach(function () {
+      beforeEach(async function () {
         mockError.statusCode = errorCode403
         mockError.code = 'EBADCSRFTOKEN'
-        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should set correct status code on response', function () {
@@ -245,8 +249,8 @@ describe('Error middleware', function () {
       })
 
       context('without location', function () {
-        beforeEach(function () {
-          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        beforeEach(async function () {
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should set correct status code on response', function () {
@@ -287,14 +291,14 @@ describe('Error middleware', function () {
       })
 
       context('with req location', function () {
-        beforeEach(function () {
+        beforeEach(async function () {
           mockReq.location = {
             location_type: 'prison',
           }
           mockRes.locals.CURRENT_LOCATION = {
             location_type: 'hospital',
           }
-          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should pass correct values to template', function () {
@@ -312,11 +316,11 @@ describe('Error middleware', function () {
       })
 
       context('with locals location', function () {
-        beforeEach(function () {
+        beforeEach(async function () {
           mockRes.locals.CURRENT_LOCATION = {
             location_type: 'prison',
           }
-          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should pass correct values to template', function () {
@@ -335,7 +339,7 @@ describe('Error middleware', function () {
     })
 
     context('with sensitive data', function () {
-      beforeEach(function () {
+      beforeEach(async function () {
         mockError.config = {
           url: 'http://host.com',
           data: {
@@ -347,7 +351,7 @@ describe('Error middleware', function () {
             'Content-Type': 'application/vnd.api+json',
           },
         }
-        errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
       })
 
       it('should log unauthorized message to logger error level', function () {
@@ -373,8 +377,8 @@ describe('Error middleware', function () {
 
     context('with no error status code', function () {
       context('without location', function () {
-        beforeEach(function () {
-          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        beforeEach(async function () {
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should set correct status code on response', function () {
@@ -415,14 +419,14 @@ describe('Error middleware', function () {
       })
 
       context('with req location', function () {
-        beforeEach(function () {
+        beforeEach(async function () {
           mockReq.location = {
             location_type: 'prison',
           }
           mockRes.locals.CURRENT_LOCATION = {
             location_type: 'hospital',
           }
-          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should pass correct values to template', function () {
@@ -440,11 +444,11 @@ describe('Error middleware', function () {
       })
 
       context('with locals location', function () {
-        beforeEach(function () {
+        beforeEach(async function () {
           mockRes.locals.CURRENT_LOCATION = {
             location_type: 'prison',
           }
-          errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
         })
 
         it('should pass correct values to template', function () {

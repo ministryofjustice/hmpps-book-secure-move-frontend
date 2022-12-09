@@ -209,7 +209,6 @@ const service = {
     const info = (await service.client.getEntries({
       content_type: 'downtime',
     })) as contentful.EntryCollection<DowntimeContent>
-    console.log(info.items[0])
     if (!info.items?.length) {
       return []
     }
