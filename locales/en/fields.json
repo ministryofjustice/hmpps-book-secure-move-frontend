@@ -335,7 +335,7 @@
   "special_vehicle__explicit": {
     "label": "Does this person need to travel in a special vehicle?",
     "label_with_error": "Special vehicle needs",
-    "hint": "This could be a specially-adapted prison van. For example, to accomodate wheelchairs."
+    "hint": "This could be a specially-adapted prison van. For example, to accommodate wheelchairs."
   },
   "not_to_be_released": {
     "label": "Release status details"
