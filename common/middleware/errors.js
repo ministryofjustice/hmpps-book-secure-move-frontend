@@ -59,7 +59,6 @@ async function findOutage() {
 
   try {
     outage = await contentfulService.getActiveOutage()
-    logger.info(outage.end)
   } catch (e) {
     outage = null
   }
