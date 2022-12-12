@@ -13,6 +13,29 @@ export function time (value: Date | string, format = 'HH:mm') {
   return parsedDate ? formatDate(parsedDate, format) : value
 }
 
+export function sentenceFormatDate(date: Date) {
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+  return date.toLocaleDateString('en-GB', dateOptions)
+}
+
+export function sentenceFormatTime(date: Date) {
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    minute: date.getMinutes() > 0 ? 'numeric' : undefined,
+    hour: 'numeric',
+    hour12: true,
+  }
+
+  return date
+    .toLocaleTimeString('en-GB', timeOptions)
+    .replace(/\s/g, '')
+    .replace(/^0/, '12')
+}
+
 export function array (array: any[] = [], useOxfordComma = false): string {
   const tidyArray = array
     .filter(i => i)

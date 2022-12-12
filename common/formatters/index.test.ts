@@ -87,4 +87,56 @@ describe('Formatters', function () {
       })
     })
   })
+  describe('#sentenceFormatTime()', function () {
+    context('when input value is a valid time', function () {
+      context('on the hour', function () {
+        it('should return default date format', function () {
+          const time = formatters.sentenceFormatTime(
+            new Date('2017-08-10T11:00:00')
+          )
+          expect(time).to.equal('11am')
+        })
+      })
+      context('at half past the hour', function () {
+        it('should return default date format', function () {
+          const time = formatters.sentenceFormatTime(
+            new Date('2017-08-10T11:30:00')
+          )
+          expect(time).to.equal('11:30am')
+        })
+      })
+      context('at quarter past the hour', function () {
+        it('should return default date format', function () {
+          const time = formatters.sentenceFormatTime(
+            new Date('2017-08-10T11:15:00')
+          )
+          expect(time).to.equal('11:15am')
+        })
+      })
+      context('at noon', function () {
+        it('should return default date format', function () {
+          const time = formatters.sentenceFormatTime(
+            new Date('2017-08-10T12:00:00')
+          )
+          expect(time).to.equal('12pm')
+        })
+      })
+      context('at midnight', function () {
+        it('should return default date format', function () {
+          const time = formatters.sentenceFormatTime(
+            new Date('2017-08-10T00:00:00')
+          )
+          expect(time).to.equal('12am')
+        })
+      })
+      context('in the afternoon', function () {
+        it('should return default date format', function () {
+          const time = formatters.sentenceFormatTime(
+            new Date('2017-08-10T13:00:00')
+          )
+          expect(time).to.equal('1pm')
+        })
+      })
+    })
+  })
 })

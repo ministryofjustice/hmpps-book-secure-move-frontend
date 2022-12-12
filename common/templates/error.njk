@@ -9,7 +9,21 @@
 {% block content %}
   <h1 class="govuk-heading-xl">{{ t(message.heading) }}</h1>
 
-  <p>{{ t(message.content) }}</p>
+  {% if message.end  %}
+    <p>{{ t(message.content | string, { end: message.end }) }}</p>
+    <p>{{ t(message.otherwise) }}</p>
+    <ul>
+    {% for option in t(message.actions, {returnObjects: true}) %}
+     <li><p>{{ option }}</p></li>
+    {% endfor %}
+    </ul>
+     {% set other %}  {{ t(message.alternative | string , { link: message.link } ) | safe }}  {% endset %}
+     <Trans>
+       <p> {{ other | safe}} <p>
+</Trans
+  {% else %}
+    <p>{{ t(message.content) }}</p>
+  {% endif %}
 
   {% if showNomisMessage %}
     <p>{{ t("errors::nomis_status_message") }}</p>

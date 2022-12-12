@@ -45,5 +45,15 @@
     "heading": "We could not process the request",
     "content": "Try again in a few moments."
   },
+  "outage": {
+    "heading": "Sorry, Book a secure move is unavailable",
+    "content": "You will be able to use the service again from {{ end.time }} on {{ end.date }}.",
+    "alternative": "You can still <a href=\"{{ link }}\">use other services on DPS</a>.",
+    "actions" : [
+      "revert to paper processes",
+      "use paper Person Escort Records (PERs)"
+    ],
+    "otherwise" : "While Book a secure move is unavailable, you should:"
+  },
   "nomis_status_message": "The problem may be related to NOMIS being unavailable."
 }

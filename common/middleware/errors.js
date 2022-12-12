@@ -1,7 +1,11 @@
+const contentfulService = require('../../common/services/contentful')
 const logger = require('../../config/logger')
+const { AUTH_BASE_URL } = require('../../config/nunjucks/globals')
+const { sentenceFormatTime, sentenceFormatDate } = require('../formatters')
 
-function _getMessage(error) {
+async function _getMessage(error) {
   let errorLookup = 'default'
+  let outage
 
   if (error.code === 'EBADCSRFTOKEN') {
     errorLookup = 'tampered_with'
@@ -11,12 +15,53 @@ function _getMessage(error) {
     errorLookup = 'unauthorized'
   } else if (error.statusCode === 422) {
     errorLookup = 'unprocessable_entity'
+  } else {
+    outage = await findOutage()
   }
 
+  return outage
+    ? outageMessage(outage)
+    : {
+        heading: `errors::${errorLookup}.heading`,
+        content: `errors::${errorLookup}.content`,
+      }
+}
+
+function outageMessage(outage) {
+  const errorLookup = 'outage'
   return {
     heading: `errors::${errorLookup}.heading`,
     content: `errors::${errorLookup}.content`,
+    end: getDateAndTime(outage?.end),
+    more: `errors::${errorLookup}.more`,
+    actions: `errors::${errorLookup}.actions`,
+    alternative: `errors::${errorLookup}.alternative`,
+    otherwise: `errors::${errorLookup}.otherwise`,
+    link: AUTH_BASE_URL + '/auth',
   }
+}
+
+function getDateAndTime(date) {
+  if (!date) {
+    return null
+  }
+
+  return {
+    date: sentenceFormatDate(date),
+    time: sentenceFormatTime(date),
+  }
+}
+
+async function findOutage() {
+  let outage
+
+  try {
+    outage = await contentfulService.getActiveOutage()
+  } catch (e) {
+    outage = null
+  }
+
+  return outage
 }
 
 function notFound(req, res, next) {
@@ -27,7 +72,7 @@ function notFound(req, res, next) {
 }
 
 function catchAll(showStackTrace = false) {
-  return function errors(error, req, res, next) {
+  return async function errors(error, req, res, next) {
     if (res.headersSent) {
       return next(error)
     }
@@ -58,7 +103,7 @@ function catchAll(showStackTrace = false) {
       statusCode,
       showStackTrace,
       showNomisMessage,
-      message: _getMessage(error),
+      message: await _getMessage(error),
     })
   }
 }

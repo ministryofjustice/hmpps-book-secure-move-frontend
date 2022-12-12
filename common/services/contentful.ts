@@ -5,6 +5,7 @@ import {
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
 import * as contentful from 'contentful'
 import { format } from 'date-fns'
+import {loggers} from "winston";
 
 const {
   CONTENTFUL_SPACE_ID,
@@ -64,6 +65,12 @@ interface ContentfulFields {
   bannerExpiry: string
 }
 
+interface DowntimeFields {
+  title: string
+  start: string
+  end: string
+}
+
 class ContentfulContent {
   private readonly title: string
   private readonly body: string
@@ -107,6 +114,33 @@ class ContentfulContent {
       date: service.formatDate(this.date),
     }
   }
+}
+class DowntimeContent {
+  readonly title: string
+  readonly start: Date
+  readonly end: Date | undefined
+  readonly daysNotice: number
+
+  constructor(data: {
+    title: string
+    start: Date
+    end: Date | undefined
+    daysNotice: number
+  }) {
+    this.title = data.title
+    this.start = data.start
+    this.end = data.end
+    this.daysNotice = data.daysNotice
+  }
+
+  isDowntimeCurrent() {
+    if (!this.end) {
+      return this.start < new Date()
+    }
+
+    return this.start.getTime() < Date.now() && this.end.getTime() > Date.now()
+  }
+
 }
 
 const service = {
@@ -171,5 +205,42 @@ const service = {
   },
   convertToHTMLFormat: (body: any) => documentToHtmlString(body, options),
   formatDate: (date: any) => format(date, DATE_FORMATS.WITH_MONTH),
+  fetchOutageInfo: async () => {
+    const info = (await service.client.getEntries({
+      content_type: 'downtime',
+    })) as contentful.EntryCollection<DowntimeContent>
+    if (!info.items?.length) {
+      return []
+    }
+
+    return info.items.map(
+      ({ fields: { title, start, end, daysNotice } }) => {
+        return new DowntimeContent({
+          title,
+          start: new Date(start),
+          end:  end ? new Date(end): undefined,
+          daysNotice: daysNotice,
+        })
+      }
+    )
+  },
+  getActiveOutage: async () => {
+    const info = (await service.fetchOutageInfo())
+    if (info.length === 0) {
+      return null
+    }
+
+    info.sort((a, b) => {
+      return b.start.getTime() - a.start.getTime()
+    })
+
+    return {
+      end: info
+        .filter(entry => {
+          return entry.isDowntimeCurrent()
+        })[0].end,
+    }
+  }
+
 }
 module.exports = service
