@@ -17,16 +17,14 @@ async function _getMessage(error) {
     errorLookup = 'unprocessable_entity'
   } else {
     outage = await findOutage()
-
-    if (outage) {
-      return outageMessage(outage)
-    }
   }
 
-  return {
-    heading: `errors::${errorLookup}.heading`,
-    content: `errors::${errorLookup}.content`,
-  }
+  return outage
+    ? outageMessage(outage)
+    : {
+        heading: `errors::${errorLookup}.heading`,
+        content: `errors::${errorLookup}.content`,
+      }
 }
 
 function outageMessage(outage) {
