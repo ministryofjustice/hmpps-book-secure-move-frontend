@@ -18,7 +18,7 @@ async function _getMessage(error) {
   } else {
     outage = await findOutage()
 
-    if (outage !== null) {
+    if (outage) {
       return outageMessage(outage)
     }
   }
