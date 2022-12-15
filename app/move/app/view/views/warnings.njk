@@ -27,14 +27,6 @@
           {% endfor %}
         {% endif %}
       {% endfor %}
-    {% elif not canEditPer %}
-      {{ govukInsetText({
-      classes: "govuk-!-font-size-16 govuk-!-margin-0",
-      text: t("assessment::section_incomplete", {
-        context: "locked" if isPerLocked,
-        section: assessment.name | replace(" information", "")
-      })
-      }) }}
     {% elif assessment.panels %}
       {% for panel in assessment.panels %}
         {{ appPanel(panel) }}

@@ -47,6 +47,7 @@ describe('Presenters', function () {
               prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
+              editable: undefined,
             }
           )
         })
@@ -84,6 +85,7 @@ describe('Presenters', function () {
               prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
+              editable: undefined,
             }
           )
         })
@@ -136,6 +138,7 @@ describe('Presenters', function () {
               afterContent: {
                 html: 'NOMIS_HTML',
               },
+              editable: undefined,
             }
           )
         })
@@ -173,6 +176,7 @@ describe('Presenters', function () {
               prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: 'completed',
+              editable: undefined,
             }
           )
         })
@@ -211,6 +215,7 @@ describe('Presenters', function () {
               prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
+              editable: undefined,
             }
           )
         })
@@ -276,6 +281,7 @@ describe('Presenters', function () {
                 prefilled: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
                 assessmentStatus: undefined,
+                editable: undefined,
               }
             )
             expect(componentService.getComponent).to.be.calledWithExactly(
@@ -287,6 +293,7 @@ describe('Presenters', function () {
                 prefilled: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.items[0].followup[0].id}`,
                 assessmentStatus: undefined,
+                editable: undefined,
               }
             )
           })
@@ -336,6 +343,7 @@ describe('Presenters', function () {
                 prefilled: false,
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
                 assessmentStatus: undefined,
+                editable: undefined,
               }
             )
           })
@@ -415,6 +423,7 @@ describe('Presenters', function () {
                   prefilled: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
                   assessmentStatus: undefined,
+                  editable: undefined,
                 }
               )
             })
@@ -445,6 +454,7 @@ describe('Presenters', function () {
                   prefilled: false,
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
                   assessmentStatus: undefined,
+                  editable: undefined,
                 }
               )
             })
@@ -478,6 +488,7 @@ describe('Presenters', function () {
               prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
+              editable: undefined,
             }
           )
         })
@@ -510,6 +521,7 @@ describe('Presenters', function () {
               prefilled: true,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
+              editable: undefined,
             }
           )
         })
@@ -650,6 +662,7 @@ describe('Presenters', function () {
                 prefilled: false,
                 questionUrl: `${mockStepUrl}#${test.id}`,
                 assessmentStatus: undefined,
+                editable: undefined,
               }
             )
           })
@@ -671,6 +684,7 @@ describe('Presenters', function () {
               prefilled: false,
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
+              editable: undefined,
             }
           )
         })

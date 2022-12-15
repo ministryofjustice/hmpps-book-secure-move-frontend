@@ -47,6 +47,7 @@
   "sort_ascending": "Sort {{label}} ascending",
   "sort_descending": "Sort {{label}} descending",
   "empty_response": "No answer provided",
+  "awaiting_response": "Awaiting answer",
   "empty_details": "Details not provided",
   "attach_photo": "Attach photo here",
   "initial_option": "--- Choose {{label}} ---",

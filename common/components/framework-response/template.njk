@@ -37,7 +37,7 @@
     </span>
   {% endif %}
 {% else %}
-  {% if canEditPer %}
+  {% if params.editable %}
     {% if params.prefilled %}
       <a href="{{ params.questionUrl }}">
         {{ t("actions::review_answer") }}
@@ -47,5 +47,9 @@
         {{ t("actions::answer_question") }}
       </a>
     {% endif %}
-   {% endif %}
+  {% else %}
+    <span class="app-secondary-text-colour">
+          {{ t("awaiting_response") }}
+        </span>
+  {% endif %}
 {% endif %}

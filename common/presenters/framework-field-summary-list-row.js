@@ -4,7 +4,7 @@ const i18n = require('../../config/i18n').default
 const frameworkNomisMappingsToPanel = require('../presenters/framework-nomis-mappings-to-panel')
 const componentService = require('../services/component')
 
-function frameworkFieldToSummaryListRow(stepUrl) {
+function frameworkFieldToSummaryListRow(stepUrl, editPermission = false) {
   return field => {
     const { description, id, response, question, descendants, itemName } = field
     const headerText = description || question
@@ -33,7 +33,7 @@ function frameworkFieldToSummaryListRow(stepUrl) {
               },
             }
           })
-          .map(frameworkFieldToSummaryListRow(stepUrl))
+          .map(frameworkFieldToSummaryListRow(stepUrl, editPermission))
 
         return [
           {
@@ -56,6 +56,7 @@ function frameworkFieldToSummaryListRow(stepUrl) {
       prefilled: response.prefilled === true,
       questionUrl: `${stepUrl}#${id}`,
       assessmentStatus: response.assessment?.status,
+      editable: response.assessment?.editable && editPermission,
     }
 
     if ((response.nomis_mappings || []).length > 0) {
@@ -89,7 +90,11 @@ function frameworkFieldToSummaryListRow(stepUrl) {
     const followupRows = field.items
       .filter(item => item.followup)
       .filter(item => item.value === field.response.value)
-      .map(item => item.followup.map(frameworkFieldToSummaryListRow(stepUrl)))
+      .map(item =>
+        item.followup.map(
+          frameworkFieldToSummaryListRow(stepUrl, editPermission)
+        )
+      )
 
     return filter(flattenDeep([row, ...followupRows]))
   }

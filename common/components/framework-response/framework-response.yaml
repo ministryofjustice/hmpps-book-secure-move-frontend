@@ -23,6 +23,10 @@ params:
     type: string
     required: false
     description: Determines if the question should be modifyable.
+  - name: editable
+    type: boolean
+    required: false
+    description: Determines if the user is able to edit the response (given status of per and user role)
 
 examples:
   - name: string
@@ -30,12 +34,14 @@ examples:
       value: Example string response
       valueType: string
       responded: true
+      editable: true
   - name: object
     data:
       value:
         option: "Yes"
       valueType: object::followup_comment
       responded: true
+      editable: true
   - name: object with details
     data:
       value:
@@ -43,6 +49,7 @@ examples:
         details: Example further details for this response
       valueType: object::followup_comment
       responded: true
+      editable: true
   - name: array
     data:
       value:
@@ -51,6 +58,7 @@ examples:
         - Item three
       valueType: array
       responded: true
+      editable: true
   - name: collection
     data:
       value:
@@ -62,6 +70,7 @@ examples:
           option: Item three
       valueType: collection::followup_comment
       responded: true
+      editable: true
   - name: collection with details
     data:
       value:
@@ -76,25 +85,36 @@ examples:
           details: Further details for option three
       valueType: collection::followup_comment
       responded: true
+      editable: true
   - name: additional HTML
     data:
       value: Example string response
       valueType: string
       responded: true
+      editable: true
       afterContent:
         html: <p>Some example <strong>HTML</strong></p>
   - name: unanswered question
     data:
       responded: false
+      editable: true
       questionUrl: /step-url#question-id
   - name: prefilled question
     data:
       value: Example string response
       valueType: string
       responded: false
+      editable: true
       prefilled: true
       questionUrl: /step-url#question-id
   - name: empty answer
     data:
       responded: true
+      editable: true
+      questionUrl: /step-url#question-id
+  - name: uneditable no response
+    data:
+      responded: false
+      editable: false
+      prefilled: false
       questionUrl: /step-url#question-id

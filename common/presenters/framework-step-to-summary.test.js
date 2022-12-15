@@ -16,6 +16,7 @@ describe('Presenters', function () {
       slug: 'step-slug',
       fields: ['fieldOne'],
     }
+    const mockPermission = true
     let frameworkStepToSummary
     let response
 
@@ -48,7 +49,8 @@ describe('Presenters', function () {
         response = frameworkStepToSummary(
           mockFields,
           mockResponses,
-          mockBaseUrl
+          mockBaseUrl,
+          mockPermission
         )(['/step-one', mockStep])
       })
 
@@ -70,7 +72,8 @@ describe('Presenters', function () {
 
       it('should render summary list rows', function () {
         expect(frameworkFieldToSummaryListRowStub).to.be.calledWithExactly(
-          '/base-url/step-slug'
+          '/base-url/step-slug',
+          true
         )
       })
 
@@ -98,13 +101,16 @@ describe('Presenters', function () {
       beforeEach(function () {
         response = frameworkStepToSummary(
           mockFields,
-          mockResponses
+          mockResponses,
+          undefined,
+          mockPermission
         )(['/step-one', mockStep])
       })
 
       it('should render summary list rows', function () {
         expect(frameworkFieldToSummaryListRowStub).to.be.calledWithExactly(
-          'step-slug'
+          'step-slug',
+          true
         )
       })
 
@@ -125,7 +131,8 @@ describe('Presenters', function () {
         response = frameworkStepToSummary(
           {},
           mockResponses,
-          mockBaseUrl
+          mockBaseUrl,
+          mockPermission
         )([
           '/step-one',
           {
@@ -197,7 +204,8 @@ describe('Presenters', function () {
             frameworkStepToSummary(
               mockFields,
               mockResponsesWithCondition,
-              mockBaseUrl
+              mockBaseUrl,
+              mockPermission
             )
           )
         })

@@ -4,7 +4,12 @@ const frameworksHelpers = require('../helpers/frameworks')
 
 const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
 
-function frameworkStepToSummary(allFields, responses, baseUrl = '') {
+function frameworkStepToSummary(
+  allFields,
+  responses,
+  baseUrl = '',
+  editPermission = false
+) {
   return ([key, step], i, allSteps = []) => {
     const allNextSteps = allSteps
       .map(([key, step]) => step.next)
@@ -27,7 +32,7 @@ function frameworkStepToSummary(allFields, responses, baseUrl = '') {
     const summaryListRows = stepFields
       .map(frameworksHelpers.mapFieldFromName(allFields))
       .map(frameworksHelpers.appendResponseToField(responses))
-      .map(frameworkFieldToSummaryListRow(stepUrl))
+      .map(frameworkFieldToSummaryListRow(stepUrl, editPermission))
 
     return [
       key,

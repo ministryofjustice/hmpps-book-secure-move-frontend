@@ -420,7 +420,8 @@ describe('Framework controllers', function () {
         expect(presenters.frameworkStepToSummary).to.be.calledOnceWithExactly(
           mockReq.form.options.allFields,
           mockReq.assessment.responses,
-          `${mockReq.baseUrl}/`
+          `${mockReq.baseUrl}/`,
+          undefined
         )
       })
 
