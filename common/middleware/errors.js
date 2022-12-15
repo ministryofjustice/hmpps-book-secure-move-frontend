@@ -1,7 +1,7 @@
-const contentfulService = require('../../common/services/contentful')
 const logger = require('../../config/logger')
 const { AUTH_BASE_URL } = require('../../config/nunjucks/globals')
 const { sentenceFormatTime, sentenceFormatDate } = require('../formatters')
+const { DowntimeService } = require('../services/contentful/downtime')
 
 async function _getMessage(error) {
   let errorLookup = 'default'
@@ -31,7 +31,7 @@ function outageMessage(outage) {
   const errorLookup = 'outage'
   return {
     heading: `errors::${errorLookup}.heading`,
-    content: `errors::${errorLookup}.content`,
+    content: outage.body,
     end: getDateAndTime(outage?.end),
     more: `errors::${errorLookup}.more`,
     actions: `errors::${errorLookup}.actions`,
@@ -56,7 +56,7 @@ async function findOutage() {
   let outage
 
   try {
-    outage = await contentfulService.getActiveOutage()
+    outage = (await new DowntimeService().fetchPosts())[0]
   } catch (e) {
     outage = null
   }

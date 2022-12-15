@@ -1,9 +1,19 @@
+const proxyquire = require('proxyquire')
 const sinon = require('sinon')
 
-const contentfulService = require('../../common/services/contentful')
 const logger = require('../../config/logger')
+const { DowntimeService } = require('../services/contentful/downtime')
+class DowntimeServiceMock extends DowntimeService {
+  fetchPosts(entries) {
+    return Promise.resolve([])
+  }
+}
 
-const errors = require('./errors')
+const errors = proxyquire('./errors', {
+  '../services/contentful/downtime': {
+    DowntimeService: DowntimeServiceMock,
+  },
+})
 
 const errorCode404 = 404
 const errorCode403 = 403
@@ -13,7 +23,6 @@ describe('Error middleware', function () {
   beforeEach(function () {
     sinon.stub(logger, 'info')
     sinon.stub(logger, 'error')
-    sinon.stub(contentfulService, 'getActiveOutage')
   })
 
   describe('#notFound', function () {

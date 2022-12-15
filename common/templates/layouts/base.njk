@@ -47,6 +47,7 @@
 {% from "time/macro.njk"              import appTime %}
 {% from "timeline/macro.njk"          import appTimeline %}
 {% from "whats-new-banner/macro.njk"  import appWhatsNewBanner %}
+{% from "notification-banner/macro.njk"  import appNotificationBanner %}
 
 {% block head %}
   <link rel="canonical" href="{{ CANONICAL_URL }}">
@@ -151,12 +152,15 @@
     </div>
   {% endif %}
 
-  {% if REQUEST_PATH === '/' and whatsNewContent and whatsNewContent.bannerContent %}
-    {{ appWhatsNewBanner(whatsNewContent.bannerContent) }}
+  {% if REQUEST_PATH === '/' and whatsNewContent %}
+    {{ appWhatsNewBanner(whatsNewContent) }}
   {% endif %}
 {% endblock %}
 
 {% block beforeContent %}
+  {% if downtimeContent %}
+    {{ appNotificationBanner(downtimeContent) }}
+  {% endif %}
   {% include "includes/messages.njk" %}
 {% endblock %}
 

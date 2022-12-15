@@ -47,7 +47,6 @@
   },
   "outage": {
     "heading": "Sorry, Book a secure move is unavailable",
-    "content": "You will be able to use the service again from {{ end.time }} on {{ end.date }}.",
     "alternative": "You can still <a href=\"{{ link }}\">use other services on DPS</a>.",
     "actions" : [
       "revert to paper processes",

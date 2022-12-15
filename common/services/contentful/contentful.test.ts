@@ -2,15 +2,9 @@ import { expect } from 'chai'
 import { format } from 'date-fns'
 import sinon from 'sinon'
 
-// TODO: convert this file to TS and remove this ignore
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { DATE_FORMATS } from '../../config'
+import { DATE_FORMATS } from '../../../config'
 
-// TODO: convert this file to TS and remove this ignore
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import contentfulService from './contentful'
+import { ContentfulService } from './contentful'
 
 const todaysDate = new Date()
 
@@ -445,17 +439,24 @@ const dedicatedContentMockedResponse = {
 }
 
 const emptyMockedResponse = { items: [] }
+let contentfulService: ContentfulService
 
-describe('Contentful Service', function () {
+describe('ContentfulService', function () {
+  beforeEach(function () {
+    // @ts-ignore
+    contentfulService = new ContentfulService()
+  })
+
   context('with a response for whats new content', function () {
     beforeEach(function () {
       sinon
-        .stub(contentfulService.client, 'getEntries')
+        .stub((contentfulService as any).client, 'getEntries')
         .resolves(whatsNewMockedResponse)
     })
 
     it('returns the formatted body', async function () {
       const formattedEntries = await contentfulService.fetch()
+      // @ts-ignore
       expect(formattedEntries.posts[0].body).to.equal(
         '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure' +
           ' move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="govuk-heading-m' +
@@ -471,16 +472,19 @@ describe('Contentful Service', function () {
     })
     it('returns the content title', async function () {
       const formattedEntries = await contentfulService.fetch()
+      // @ts-ignore
       expect(formattedEntries.posts[0].title).to.equal('Whats new today!')
     })
     it('returns the banner text', async function () {
       const formattedEntries = await contentfulService.fetch()
+      // @ts-ignore
       expect(formattedEntries.bannerContent.body).to.equal(
         'Some text briefly explaining the changes.'
       )
     })
     it('returns the formatted date', async function () {
       const formattedEntries = await contentfulService.fetch()
+      // @ts-ignore
       expect(formattedEntries.posts[0].date).to.equal(
         format(todaysDate, DATE_FORMATS.WITH_MONTH)
       )
@@ -490,16 +494,18 @@ describe('Contentful Service', function () {
   context('with a response for dedicated content', function () {
     beforeEach(function () {
       sinon
-        .stub(contentfulService.client, 'getEntries')
+        .stub((contentfulService as any).client, 'getEntries')
         .resolves(dedicatedContentMockedResponse)
     })
 
     it('returns the title', async function () {
       const formattedEntries = await contentfulService.fetch()
+      // @ts-ignore
       expect(formattedEntries.posts[0].title).to.equal('Dedicated content')
     })
     it('returns the body', async function () {
       const formattedEntries = await contentfulService.fetch()
+      // @ts-ignore
       expect(formattedEntries.posts[0].body).to.equal(
         '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure' +
           ' move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="' +
@@ -518,7 +524,7 @@ describe('Contentful Service', function () {
   context('without a response', function () {
     it('return null if no content is found', async function () {
       sinon
-        .stub(contentfulService.client, 'getEntries')
+        .stub((contentfulService as any).client, 'getEntries')
         .resolves(emptyMockedResponse)
       const formattedEntries = await contentfulService.fetch()
       expect(formattedEntries).to.equal(null)
@@ -528,7 +534,7 @@ describe('Contentful Service', function () {
   context('when Contentful is down', function () {
     it('returns the error', async function () {
       sinon
-        .stub(contentfulService.client, 'getEntries')
+        .stub((contentfulService as any).client, 'getEntries')
         .resolves(emptyMockedResponse)
       const response = await contentfulService.fetch()
       expect(response).to.equal(null)

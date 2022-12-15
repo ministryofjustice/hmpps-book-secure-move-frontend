@@ -1,17 +1,37 @@
+const proxyquire = require('proxyquire')
 const sinon = require('sinon')
 
-const contentfulService = require('../../common/services/contentful')
+const { DowntimeService } = require('../../common/services/contentful/downtime')
+const {
+  WhatsNewService,
+} = require('../../common/services/contentful/whats-new')
 
-const controllers = require('./controllers')
+const errorMock = new Error('500')
+class DowntimeServiceMock extends DowntimeService {
+  fetchBanner(entries) {
+    throw errorMock
+  }
+}
+class WhatsNewServiceMock extends WhatsNewService {
+  fetchBanner(entries) {
+    throw errorMock
+  }
+}
+
+const controllers = proxyquire('./controllers', {
+  '../../common/services/contentful/downtime': {
+    DowntimeService: DowntimeServiceMock,
+  },
+  '../../common/services/contentful/whats-new': {
+    WhatsNewService: WhatsNewServiceMock,
+  },
+})
 
 describe('Home controllers', function () {
   describe('#dashboard()', function () {
-    const errorMock = new Error('500')
     let req, res
 
     beforeEach(function () {
-      sinon.stub(contentfulService, 'fetch').throws(errorMock)
-
       req = {
         filterSingleRequests: ['foo', 'bar'],
         filterAllocations: ['fizz', 'buzz'],
@@ -55,7 +75,8 @@ describe('Home controllers', function () {
           'sections',
           'currentWeek',
           'today',
-          'whatsNewContent'
+          'whatsNewContent',
+          'downtimeContent'
         )
         expect(params.pageTitle).to.equal('dashboard::page_title')
         expect(params.sections).to.have.all.keys(sections)

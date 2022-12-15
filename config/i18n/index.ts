@@ -17,6 +17,7 @@ i18next.use(Backend).init({
     'components',
     'dashboard',
     'default',
+    'downtime',
     'actions',
     'errors',
     'events',
@@ -31,13 +32,13 @@ i18next.use(Backend).init({
     'population',
     'statuses',
     'validation',
-    'youth-risk-assessment'
+    'youth-risk-assessment',
   ],
   defaultNS: 'default',
   backend: {
-    loadPath: './locales/{{lng}}/{{ns}}.json'
+    loadPath: './locales/{{lng}}/{{ns}}.json',
   },
-  interpolation
+  interpolation,
 })
 
 export default i18next
