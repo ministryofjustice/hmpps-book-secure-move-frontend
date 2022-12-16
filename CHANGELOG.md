@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.130.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.129.3...v2.130.0) (2022-12-16)
+
+
+### Features
+
+* Add planned downtime banner ([6ebf3c9](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6ebf3c92b3e941b5e0de6da395433fbbaf2f9c25))
+
 ### [2.129.3](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.129.2...v2.129.3) (2022-12-12)
 
 ### [2.129.2](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.129.1...v2.129.2) (2022-11-28)
