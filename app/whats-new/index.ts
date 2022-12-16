@@ -1,20 +1,21 @@
+import { DedicatedContentService } from '../../common/services/contentful/dedicated-content'
+import { WhatsNewService } from '../../common/services/contentful/whats-new'
+
 // Dependencies
 const router = require('express').Router()
 
-const contentfulService = require('../../common/services/contentful')
-
 // Define routes
-router.get('/',async (req: any, res: any, next: any) => {
+router.get('/', async (req: any, res: any, next: any) => {
   let content
 
   try {
-    content = await contentfulService.fetch()
+    content = await new WhatsNewService().fetch()
   } catch (e) {
     return next(e)
   }
 
   res.render('whats-new/whats-new', {
-    posts: content.posts,
+    posts: content?.posts,
   })
 })
 
@@ -22,13 +23,15 @@ router.get('/:id', async (req: any, res: any, next: any) => {
   let content
 
   try {
-    content = await contentfulService.fetchEntryBySlugId(req.params.id)
+    content = await new DedicatedContentService().fetchEntryBySlugId(
+      req.params.id
+    )
   } catch (e) {
     return next(e)
   }
 
   res.render('whats-new/content', {
-    post: content
+    post: content,
   })
 })
 

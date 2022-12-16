@@ -109,3 +109,12 @@
 .govuk-link--no-underline {
   text-decoration: none;
 }
+
+.govuk-notification-banner {
+  margin-bottom: 10px;
+  margin-top: 36px;
+}
+
+.govuk-notification-banner__content > * {
+  max-width: 100%;
+}

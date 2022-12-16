@@ -1,16 +1,28 @@
 const dateHelpers = require('../../common/helpers/date')
-const contentfulService = require('../../common/services/contentful')
+const { DowntimeService } = require('../../common/services/contentful/downtime')
+const {
+  WhatsNewService,
+} = require('../../common/services/contentful/whats-new')
 const i18n = require('../../config/i18n').default
 
 async function dashboard(req, res) {
   const currentWeek = dateHelpers.getCurrentWeekAsRange()
   const today = new Date().toISOString()
+  let downtimeContent
   let whatsNewContent
 
   try {
-    whatsNewContent = await contentfulService.fetch()
+    downtimeContent = await new DowntimeService().fetchBanner()
   } catch (e) {
-    whatsNewContent = null
+    downtimeContent = null
+  }
+
+  if (!downtimeContent) {
+    try {
+      whatsNewContent = await new WhatsNewService().fetchBanner()
+    } catch (e) {
+      whatsNewContent = null
+    }
   }
 
   const numberOfOutgoingMoves = req.filterOutgoing[0].value
@@ -60,6 +72,7 @@ async function dashboard(req, res) {
     sections,
     currentWeek,
     today,
+    downtimeContent,
     whatsNewContent,
   })
 }
