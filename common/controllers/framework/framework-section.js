@@ -82,7 +82,9 @@ class FrameworkSectionController extends FormWizardController {
       presenters.frameworkStepToSummary(
         form.options.allFields,
         assessment.responses,
-        `${baseUrl}/`
+        `${baseUrl}/`,
+        assessment.editable &&
+          req.canAccess(`${snakeCase(assessment.framework.name)}:update`)
       )
     )
     const sectionProgress = assessment.meta?.section_progress.filter(

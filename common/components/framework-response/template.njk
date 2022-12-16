@@ -37,13 +37,19 @@
     </span>
   {% endif %}
 {% else %}
-  {% if params.prefilled %}
-    <a href="{{ params.questionUrl }}">
-      {{ t("actions::review_answer") }}
-    </a>
+  {% if params.editable %}
+    {% if params.prefilled %}
+      <a href="{{ params.questionUrl }}">
+        {{ t("actions::review_answer") }}
+      </a>
+    {% else %}
+      <a href="{{ params.questionUrl }}">
+        {{ t("actions::answer_question") }}
+      </a>
+    {% endif %}
   {% else %}
-    <a href="{{ params.questionUrl }}">
-      {{ t("actions::answer_question") }}
-    </a>
+    <span class="app-secondary-text-colour">
+          {{ t("awaiting_response") }}
+        </span>
   {% endif %}
 {% endif %}
