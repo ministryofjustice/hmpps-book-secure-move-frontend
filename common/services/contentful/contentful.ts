@@ -94,14 +94,18 @@ export class ContentfulContent {
     return {
       title: this.title,
       body: this.body,
-      date: formatDate(this.date),
+      date: isNaN(this.date as unknown as number)
+        ? undefined
+        : formatDate(this.date),
     }
   }
 
   getBannerData() {
     return {
       body: this.bannerText,
-      date: formatDate(this.date),
+      date: isNaN(this.date as unknown as number)
+        ? undefined
+        : formatDate(this.date),
     }
   }
 
@@ -181,18 +185,5 @@ export class ContentfulService {
     }
 
     return entries.map(entry => entry.getPostData())
-  }
-
-  async fetchEntryBySlugId(slugId: any) {
-    const entry = (await this.client.getEntries({
-      content_type: this.contentType,
-      'fields.slug[in]': slugId,
-    })) as contentful.EntryCollection<ContentfulFields>
-
-    if (!entry.items?.length) {
-      return undefined
-    }
-
-    return this.createContent(entry.items[0].fields).getPostData()
   }
 }

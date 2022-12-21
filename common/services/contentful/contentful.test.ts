@@ -3,8 +3,9 @@ import { format } from 'date-fns'
 import sinon from 'sinon'
 
 import { DATE_FORMATS } from '../../../config'
+import { mockDate, unmockDate } from '../../../mocks/date'
 
-import { ContentfulService } from './contentful'
+import { ContentfulContent, ContentfulService } from './contentful'
 
 const todaysDate = new Date()
 
@@ -538,6 +539,98 @@ describe('ContentfulService', function () {
         .resolves(emptyMockedResponse)
       const response = await contentfulService.fetch()
       expect(response).to.equal(null)
+    })
+  })
+})
+
+describe('ContentfulContent', function () {
+  let content: ContentfulContent
+
+  beforeEach(function () {
+    content = new ContentfulContent({
+      title: 'Test Title',
+      body: 'Test body',
+      bannerText: 'Test banner text',
+      date: new Date(2022, 4, 2, 16),
+      expiry: new Date(2022, 4, 9, 18),
+    })
+  })
+
+  describe('#getPostData', function () {
+    it('returns the correct data', function () {
+      expect(content.getPostData()).to.deep.eq({
+        title: 'Test Title',
+        body: 'Test body',
+        date: '2 May 2022',
+      })
+    })
+
+    context('when content.date is an invalid date', function () {
+      beforeEach(function () {
+        ;(content as any).date = new Date('w')
+      })
+
+      it('returns the correct data without throwing an error', function () {
+        expect(content.getPostData()).to.deep.eq({
+          title: 'Test Title',
+          body: 'Test body',
+          date: undefined,
+        })
+      })
+    })
+  })
+
+  describe('#getBannerData', function () {
+    it('returns the correct data', function () {
+      expect(content.getBannerData()).to.deep.eq({
+        body: 'Test banner text',
+        date: '2 May 2022',
+      })
+    })
+
+    context('when content.date is an invalid date', function () {
+      beforeEach(function () {
+        ;(content as any).date = new Date('w')
+      })
+
+      it('returns the correct data without throwing an error', function () {
+        expect(content.getBannerData()).to.deep.eq({
+          body: 'Test banner text',
+          date: undefined,
+        })
+      })
+    })
+  })
+
+  describe('#isCurrent', function () {
+    afterEach(function () {
+      unmockDate()
+    })
+
+    context('when the current date is before the content date', function () {
+      it('returns false', function () {
+        mockDate(2022, 4, 2, 15, 59)
+        expect(content.isCurrent()).to.eq(false)
+      })
+    })
+
+    context(
+      'when the current date is after the content date but before the content expiry',
+      function () {
+        it('returns true', function () {
+          mockDate(2022, 4, 2, 16)
+          expect(content.isCurrent()).to.eq(true)
+          mockDate(2022, 4, 9, 17, 59, 59)
+          expect(content.isCurrent()).to.eq(true)
+        })
+      }
+    )
+
+    context('when the current date is after the content expiry', function () {
+      it('returns false', function () {
+        mockDate(2022, 4, 9, 18)
+        expect(content.isCurrent()).to.eq(false)
+      })
     })
   })
 })
