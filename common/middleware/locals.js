@@ -1,4 +1,4 @@
-const { startOfTomorrow } = require('date-fns')
+const { startOfTomorrow, startOfYesterday } = require('date-fns')
 
 const movesApp = require('../../app/moves')
 const SERVICE_NAME = 'Book a secure move'
@@ -10,6 +10,7 @@ module.exports = function setLocals(req, res, next) {
     CANONICAL_URL: baseUrl + req.path,
     TODAY: new Date(),
     TOMORROW: startOfTomorrow(),
+    YESTERDAY: startOfYesterday(),
     REQUEST_PATH: req.path,
     USER: req.user,
     CURRENT_LOCATION: req.session.currentLocation,
