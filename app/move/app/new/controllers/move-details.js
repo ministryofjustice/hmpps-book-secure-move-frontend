@@ -44,6 +44,13 @@ class MoveDetailsController extends CreateBaseController {
     const permittedMoveTypes = get(req.session, 'user.permissions', [])
       .filter(permission => permission.includes('move:create:'))
       .map(permission => permission.replace('move:create:', ''))
+      .filter(
+        permission =>
+          !(
+            req.sessionModel.attributes.from_location_type !== 'police' &&
+            permission === 'prison_recall'
+          )
+      )
     const existingItems = req.form.options.fields.move_type.items
     const permittedItems = existingItems.filter(item =>
       permittedMoveTypes.includes(item.value)
