@@ -135,6 +135,10 @@
     "heading": "$t(statuses::completed)",
     "description": "Move has been completed by {{move.supplier.name}}"
   },
+  "MoveOvernightLodge": {
+    "heading": "Overnight lodge added",
+    "description": "Lodge added for $t(events::person) to stay at {{location.title}} on {{start_date, formatDateWithDay}}"
+  },
   "MoveLockout": {
     "contextKey": "reason",
     "heading": "Lockout",
