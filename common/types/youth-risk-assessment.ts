@@ -1,7 +1,3 @@
-export interface YouthRiskAssessment {
-  meta?: {
-    section_progress: { key: string; status: string }[]
-  }
-  status: string
-  flags?: string[]
-}
+import { Assessment } from './assessment'
+
+export interface YouthRiskAssessment extends Assessment {}

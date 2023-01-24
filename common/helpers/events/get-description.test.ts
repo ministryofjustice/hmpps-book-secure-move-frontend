@@ -13,6 +13,17 @@ const { getDescription } = proxyquire('./get-description', {
   '../../../config/i18n': { default: i18nStub },
 })
 
+const baseEvent: Event = {
+  id: '',
+  event_type: '',
+  classification: '',
+  occurred_at: '',
+  recorded_at: '',
+  notes: null,
+  created_by: null,
+  details: {},
+}
+
 describe('Helpers', function () {
   beforeEach(function () {
     i18nStub.t.resetHistory()
@@ -20,6 +31,7 @@ describe('Helpers', function () {
 
   describe('Events', function () {
     const mockEvent: Event = {
+      ...baseEvent,
       id: 'eventId',
       event_type: 'eventType',
       details: {

@@ -1,21 +1,25 @@
-const transformer = require('./person.transformer')
+import { expect } from 'chai'
+
+import { Person } from '../../../types/person'
+
+import { personTransformer } from './person.transformer'
 
 describe('API Client', function () {
   describe('Transformers', function () {
     describe('#personTransformer', function () {
-      let item
+      let person: Person
 
       beforeEach(function () {
-        item = {
+        person = {
           id: '12345',
           first_names: 'Foo',
           last_name: 'Bar',
         }
-        transformer(item)
+        personTransformer(person)
       })
 
       it('should add custom properties', function () {
-        expect(item).to.deep.equal({
+        expect(person).to.deep.equal({
           id: '12345',
           first_names: 'Foo',
           last_name: 'Bar',

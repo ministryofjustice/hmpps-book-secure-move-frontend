@@ -156,11 +156,17 @@
     "reason_other": ""
   },
   "MoveLodgingStart": {
-    "heading": "Lodging started",
-    "description": "$t(events::person) temporarily lodged at {{location.title}} $t(events::MoveLodgingStart.select_reason) $t(events::select_authorised_by)",
+    "heading": "$t(events::MoveLodgingStart.heading_text, {\"context\": \"{{reason}}\"})",
+    "heading_text": "Temporary lodge started",
+    "heading_text_overnight_lodging": "Overnight lodge: arrived at lodge prison",
+    "heading_text_lockout": "Lockout: arrived at police custody suite",
+    "description": "$t(events::MoveLodgingStart.description_text, {\"context\": \"{{reason}}\"})",
+    "description_text": "$t(events::person) temporarily lodged at {{location.title}} $t(events::MoveLodgingStart.select_reason) $t(events::select_authorised_by)",
+    "description_text_overnight_lodging": "$t(events::person) arrived at {{location.title}} $t(events::MoveLodgingStart.select_reason) $t(events::select_authorised_by)",
+    "description_text_lockout": "$t(events::person) arrived at {{location.title}} $t(events::MoveLodgingStart.select_reason) $t(events::select_authorised_by)",
     "select_reason": "$t(events::MoveLodgingStart.reason, {\"context\": \"{{reason}}\"})",
     "reason": "",
-    "reason_overnight_lodging": "due to an overnight lodging",
+    "reason_overnight_lodging": "due to an overnight lodge",
     "reason_lockout": "due to a lockout",
     "reason_operation_hmcts": "due to Operation HMCTS",
     "reason_court_cells": "due to court cells reaching capacity",
@@ -169,8 +175,14 @@
     "reason_other": ""
   },
   "MoveLodgingEnd": {
-    "heading": "Lodging ended",
-    "description": "$t(events::person) collected by {{move.supplier.name}} from temporary lodging at {{location.title}}"
+    "heading": "$t(events::MoveLodgingEnd.heading_text, {\"context\": \"{{reason}}\"})",
+    "heading_text": "Temporary lodge ended",
+    "heading_text_overnight_lodging": "Overnight lodge: collected from lodge prison",
+    "heading_text_lockout": "Lockout: collected from police custody suite",
+    "description": "$t(events::MoveLodgingEnd.description_text, {\"context\": \"{{reason}}\"})",
+    "description_text": "$t(events::person) collected from temporary lodging at {{location.title}} $t(events::select_authorised_by)",
+    "description_text_overnight_lodging": "$t(events::person) collected from overnight lodge at {{location.title}} $t(events::select_authorised_by)",
+    "description_text_lockout": "$t(events::person) collected from {{location.title}} $t(events::select_authorised_by)"
   },
   "MoveNotifyPremisesOfArrivalIn30Mins": {
     "heading": "30 minute arrival notification",

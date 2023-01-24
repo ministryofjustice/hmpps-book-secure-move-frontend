@@ -1105,6 +1105,7 @@ describe('Move Service', function () {
       beforeEach(async function () {
         move = await moveService.getByIdWithEvents(mockId)
       })
+
       it('should call find method with data', function () {
         expect(moveService._getById).to.be.calledOnceWithExactly(mockId, {
           include: [
@@ -1120,6 +1121,7 @@ describe('Move Service', function () {
           ],
         })
       })
+
       it('should return move', function () {
         expect(move).to.deep.equal(mockMove)
       })
