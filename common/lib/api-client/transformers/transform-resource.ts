@@ -1,7 +1,7 @@
-const { cloneDeep } = require('lodash')
+import { cloneDeep } from 'lodash'
 
-module.exports = function transformResource(transformer) {
-  return function deserializer(item, included) {
+export function transformResource(transformer?: (data: any) => void) {
+  return function deserializer(this: any, item: any, included: string[]) {
     try {
       const _this = cloneDeep(this)
       const modelName = _this.pluralize.singular(item.type)

@@ -1,9 +1,18 @@
-const transformResource = require('./transform-resource')
+import { expect } from 'chai'
+import sinon from 'sinon'
+
+import { transformResource } from './transform-resource'
+
+interface Resource {
+  id: string
+  type: string
+  foo: string
+}
 
 describe('API Client', function () {
   describe('Transformers', function () {
     describe('#transformResource', function () {
-      let output, _this, item, included
+      let output: Resource, _this: any, item: Resource, included: string[]
 
       beforeEach(function () {
         _this = {
@@ -68,7 +77,7 @@ describe('API Client', function () {
       })
 
       context('with transformer', function () {
-        let transformer
+        let transformer: (data: any) => void
 
         beforeEach(function () {
           transformer = sinon.stub().callsFake(data => {
@@ -117,7 +126,7 @@ describe('API Client', function () {
 
       context('when transformer throws an error', function () {
         const errorMock = new Error('Transformer error')
-        let transformer
+        let transformer: (data: any) => void
 
         beforeEach(function () {
           transformer = sinon.stub().throws(errorMock)
