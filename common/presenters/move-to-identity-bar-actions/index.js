@@ -1,3 +1,4 @@
+const config = require('../../../config')
 const i18n = require('../../../config/i18n').default
 const componentService = require('../../services/component')
 
@@ -37,7 +38,7 @@ function moveToIdentityBarActions(move = {}, { canAccess = () => false } = {}) {
   }
 
   // Person Escort Record/Youth Risk Assessment specific actions
-  return assessmentActions(move, { canAccess })
+  return assessmentActions(move, { canAccess }, config.FEATURE_FLAGS)
 }
 
 module.exports = moveToIdentityBarActions
