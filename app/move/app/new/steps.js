@@ -75,6 +75,22 @@ const healthStep = {
   next: 'save',
 }
 
+const moveDateSteps = [
+  createDateRangeStepForLocations({
+    from: 'prison',
+    to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
+  }),
+  createDateRangeStepForLocations({
+    from: 'secure_childrens_home',
+    to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
+  }),
+  createDateRangeStepForLocations({
+    from: 'secure_training_centre',
+    to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
+  }),
+  'move-date',
+]
+
 module.exports = {
   '/': {
     entryPoint: true,
@@ -206,7 +222,7 @@ module.exports = {
         fn: Base.prototype.shouldAskRecallInfoStep,
         next: 'recall-info',
       },
-      'move-date',
+      ...moveDateSteps,
     ],
     fields: [
       'move_type',
@@ -221,26 +237,11 @@ module.exports = {
       'video_remand_comments',
     ],
   },
-
   '/recall-info': {
     editable: true,
     controller: RecallInfo,
     pageTitle: 'moves::steps.recall_information.heading',
-    next: [
-      createDateRangeStepForLocations({
-        from: 'prison',
-        to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
-      }),
-      createDateRangeStepForLocations({
-        from: 'secure_childrens_home',
-        to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
-      }),
-      createDateRangeStepForLocations({
-        from: 'secure_training_centre',
-        to: ['prison', 'secure_childrens_home', 'secure_training_centre'],
-      }),
-      'move-date',
-    ],
+    next: moveDateSteps,
     fields: ['recall_date'],
   },
   '/agreement-status': {

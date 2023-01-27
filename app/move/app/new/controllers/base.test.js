@@ -1126,6 +1126,76 @@ describe('Move controllers', function () {
       })
     })
 
+    describe('#shouldAskRecallInfoStep', function () {
+      context('when prison recall by police', function () {
+        const mockReq = {
+          sessionModel: {
+            attributes: {
+              move_type: 'prison_recall',
+            },
+          },
+          user: {
+            permissions: ['move:add:date_of_arrest'],
+          },
+        }
+
+        it('should return true', function () {
+          expect(controller.shouldAskRecallInfoStep(mockReq)).to.be.true
+        })
+      })
+
+      context('when prison recall by non-police', function () {
+        const mockReq = {
+          sessionModel: {
+            attributes: {
+              move_type: 'prison_recall',
+            },
+          },
+          user: {
+            permissions: [],
+          },
+        }
+
+        it('should return true', function () {
+          expect(controller.shouldAskRecallInfoStep(mockReq)).to.be.false
+        })
+      })
+
+      context('when by police but not prison recall', function () {
+        const mockReq = {
+          sessionModel: {
+            attributes: {
+              move_type: 'prison_transfer',
+            },
+          },
+          user: {
+            permissions: ['move:add:date_of_arrest'],
+          },
+        }
+
+        it('should return true', function () {
+          expect(controller.shouldAskRecallInfoStep(mockReq)).to.be.false
+        })
+      })
+
+      context('when not prison recall and not by police', function () {
+        const mockReq = {
+          sessionModel: {
+            attributes: {
+              move_type: 'prison_transfer',
+            },
+          },
+          user: {
+            permissions: [],
+          },
+        }
+
+        it('should return true', function () {
+          expect(controller.shouldAskRecallInfoStep(mockReq)).to.be.false
+        })
+      })
+    })
+
     describe('#validateFields', function () {
       let mockReq, mockRes, nextSpy
       const errorMessage = 'PNC validation failed'

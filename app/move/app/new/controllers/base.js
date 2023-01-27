@@ -187,7 +187,7 @@ class CreateBaseController extends FormWizardController {
   shouldAskRecallInfoStep(req) {
     return (
       req.sessionModel.attributes.move_type === 'prison_recall' &&
-      req.session.activeRoles.includes('ROLE_PECS_POLICE')
+      req.user.permissions?.includes('move:add:date_of_arrest')
     )
   }
 

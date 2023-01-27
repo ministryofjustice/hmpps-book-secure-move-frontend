@@ -19,7 +19,8 @@
       "move_agreed_by": null,
       "date_from": null,
       "date_to": null,
-      "is_lockout": false
+      "is_lockout": false,
+      "recall_date": null
     },
     "relationships": {
       "supplier": {

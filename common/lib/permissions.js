@@ -24,6 +24,7 @@ const policePermissions = [
   'move:update:prison_recall',
   'move:update:police_transfer',
   'move:update:video_remand',
+  'move:add:date_of_arrest',
   'person_escort_record:view',
   'person_escort_record:create',
   'person_escort_record:update',
