@@ -36,7 +36,7 @@ function moveToAdditionalInfoListComponent(
         classes: !additionalInformation ? 'app-secondary-text-colour' : '',
         text: additionalInformation || i18n.t('not_provided'),
       },
-      updateJourneyKey: 'move',
+      updateJourneyKey: moveType === 'prison_recall' ? 'move' : null,
     },
     {
       key: {

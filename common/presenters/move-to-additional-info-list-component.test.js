@@ -185,35 +185,78 @@ describe('Presenters', function () {
 
     context('with update URLs', function () {
       const updateUrls = {
-        recall_info: 'http://www.example.com',
+        move: 'http://www.example.com/move-details',
+        recall_info: 'http://www.example.com/recall-info',
       }
 
-      beforeEach(function () {
-        transformedResponse = moveToAdditionalInfoListComponent(
-          {
-            ...mockMove,
-            time_due: null,
-          },
-          updateUrls
-        )
+      context('when prison recall move', function () {
+        beforeEach(function () {
+          transformedResponse = moveToAdditionalInfoListComponent(
+            {
+              ...mockMove,
+              time_due: null,
+              move_type: 'prison_recall',
+            },
+            updateUrls
+          )
+        })
+
+        describe('response', function () {
+          it('should include the update link for recall date', function () {
+            const recallDateRow = transformedResponse.rows.find(
+              row => row.updateJourneyKey === 'recall_info'
+            )
+
+            expect(recallDateRow.actions.items).to.eql([
+              {
+                attributes: {
+                  'data-update-link': 'recall_info',
+                },
+                category: 'recall_info',
+                href: 'http://www.example.com/recall-info',
+                html: 'moves::update_link.link_text',
+              },
+            ])
+          })
+
+          it('should include the update link for additional info', function () {
+            const additionalInfoRow = transformedResponse.rows.find(
+              row => row.updateJourneyKey === 'move'
+            )
+
+            expect(additionalInfoRow.actions.items).to.eql([
+              {
+                attributes: {
+                  'data-update-link': 'move',
+                },
+                category: 'move',
+                href: 'http://www.example.com/move-details',
+                html: 'moves::update_link.link_text',
+              },
+            ])
+          })
+        })
       })
 
-      describe('response', function () {
-        it('should include the update link', function () {
-          const recallDateRow = transformedResponse.rows.find(
-            row => row.updateJourneyKey === 'recall_info'
-          )
-
-          expect(recallDateRow.actions.items).to.eql([
+      context('when not a prison recall move', function () {
+        beforeEach(function () {
+          transformedResponse = moveToAdditionalInfoListComponent(
             {
-              attributes: {
-                'data-update-link': 'recall_info',
-              },
-              category: 'recall_info',
-              href: 'http://www.example.com',
-              html: 'moves::update_link.link_text',
+              ...mockMove,
+              time_due: null,
             },
-          ])
+            updateUrls
+          )
+        })
+
+        describe('response', function () {
+          it('should not include the update link for additional info', function () {
+            const additionalInfoRow = transformedResponse.rows.find(
+              row => row.updateJourneyKey === 'move'
+            )
+
+            expect(additionalInfoRow).to.be.undefined
+          })
         })
       })
     })
