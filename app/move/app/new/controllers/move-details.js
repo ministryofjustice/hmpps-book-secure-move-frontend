@@ -40,10 +40,23 @@ class MoveDetailsController extends CreateBaseController {
     )
   }
 
+  isFromPoliceLocation(req) {
+    const move = req.getMove()
+    // location type is stored differently for new/edit actions
+    return (
+      move.from_location_type === 'police' ||
+      move.from_location?.location_type === 'police'
+    )
+  }
+
   setMoveTypes(req, res, next) {
     const permittedMoveTypes = get(req.session, 'user.permissions', [])
       .filter(permission => permission.includes('move:create:'))
       .map(permission => permission.replace('move:create:', ''))
+      .filter(
+        permission =>
+          !(!this.isFromPoliceLocation(req) && permission === 'prison_recall')
+      )
     const existingItems = req.form.options.fields.move_type.items
     const permittedItems = existingItems.filter(item =>
       permittedMoveTypes.includes(item.value)

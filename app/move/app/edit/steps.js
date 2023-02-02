@@ -7,6 +7,7 @@ const {
   MoveDate,
   MoveDetails,
   PersonalDetails,
+  RecallInfo,
 } = require('./controllers')
 
 const updateStepPropOverrides = {
@@ -73,13 +74,13 @@ const updateSteps = [
     },
   },
   {
-    key: 'prison_recall',
+    key: 'recall_info',
     permission: 'move:update',
     steps: {
-      '/move-details': {
-        ...createSteps['/move-details'],
+      '/recall-info': {
+        ...createSteps['/recall-info'],
         ...updateStepPropOverrides,
-        controller: MoveDetails,
+        controller: RecallInfo,
       },
     },
   },

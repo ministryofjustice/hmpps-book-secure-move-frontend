@@ -75,6 +75,7 @@ class CreateMovePage extends Page {
       notToBeReleased: Selector('#not_to_be_released'),
       notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
       hasCourtCase: Selector('[name="has_court_case"]'),
+      recallDate: Selector('#recall_date'),
     }
 
     this.nodes = {
@@ -224,6 +225,20 @@ class CreateMovePage extends Page {
       ...fields,
       fullname: person.fullname,
     }
+  }
+
+  /**
+   * Fill in recall info
+   */
+  async fillInRecallInfo() {
+    await t.expect(this.getCurrentUrl()).contains('/recall-info')
+
+    return fillInForm({
+      recallDate: {
+        selector: this.fields.recallDate,
+        value: format(faker.date.past(), 'd/M/yyyy'),
+      },
+    })
   }
 
   /**

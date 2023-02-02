@@ -85,6 +85,7 @@ describe('Move controllers', function () {
 
     describe('#setMoveTypes()', function () {
       let req, res, nextSpy
+      const getMoveStub = sinon.stub().returns({})
 
       beforeEach(function () {
         req = {
@@ -129,6 +130,7 @@ describe('Move controllers', function () {
               },
             },
           },
+          getMove: getMoveStub,
         }
         res = {}
         nextSpy = sinon.spy()
@@ -165,49 +167,116 @@ describe('Move controllers', function () {
               'move:create:video_remand',
             ],
           }
-          controller.setMoveTypes(req, res, nextSpy)
         })
 
-        it('should not remove any items from move_type', function () {
-          expect(req.form.options.fields.move_type.items.length).to.equal(6)
+        context('when from police location', function () {
+          beforeEach(function () {
+            getMoveStub.returns({ from_location_type: 'police' })
+            controller.setMoveTypes(req, res, nextSpy)
+          })
+
+          it('should not remove any items from move_type', function () {
+            expect(req.form.options.fields.move_type.items.length).to.equal(6)
+          })
+
+          it('should keep all conditional fields', function () {
+            expect(req.form.options.fields).to.deep.equal({
+              move_type: {
+                items: [
+                  {
+                    value: 'court_appearance',
+                    conditional: 'to_location_court_appearance',
+                  },
+                  {
+                    value: 'prison_transfer',
+                    conditional: 'to_location_prison_transfer',
+                  },
+                  {
+                    value: 'police_transfer',
+                    conditional: 'to_location_police_transfer',
+                  },
+                  {
+                    value: 'hospital',
+                    conditional: 'to_location_hospital',
+                  },
+                  {
+                    value: 'prison_recall',
+                    conditional: 'additional_information',
+                  },
+                  {
+                    value: 'video_remand',
+                    conditional: 'additional_information',
+                  },
+                ],
+              },
+              to_location_court_appearance: {},
+              to_location_prison_transfer: {},
+              to_location_police_transfer: {},
+              to_location_hospital: {},
+              additional_information: {},
+              unrelated_field: {},
+            })
+          })
         })
 
-        it('should keep all conditional fields', function () {
-          expect(req.form.options.fields).to.deep.equal({
-            move_type: {
-              items: [
-                {
-                  value: 'court_appearance',
-                  conditional: 'to_location_court_appearance',
-                },
-                {
-                  value: 'prison_transfer',
-                  conditional: 'to_location_prison_transfer',
-                },
-                {
-                  value: 'police_transfer',
-                  conditional: 'to_location_police_transfer',
-                },
-                {
-                  value: 'hospital',
-                  conditional: 'to_location_hospital',
-                },
-                {
-                  value: 'prison_recall',
-                  conditional: 'additional_information',
-                },
-                {
-                  value: 'video_remand',
-                  conditional: 'additional_information',
-                },
-              ],
-            },
-            to_location_court_appearance: {},
-            to_location_prison_transfer: {},
-            to_location_police_transfer: {},
-            to_location_hospital: {},
-            additional_information: {},
-            unrelated_field: {},
+        context(
+          'when from police location and move already exists',
+          function () {
+            beforeEach(function () {
+              getMoveStub.returns({
+                from_location: { location_type: 'police' },
+              })
+              controller.setMoveTypes(req, res, nextSpy)
+            })
+
+            it('should not remove any items from move_type', function () {
+              expect(req.form.options.fields.move_type.items.length).to.equal(6)
+            })
+          }
+        )
+
+        context('when from non-police location', function () {
+          beforeEach(function () {
+            getMoveStub.returns({ from_location_type: 'prison' })
+            controller.setMoveTypes(req, res, nextSpy)
+          })
+
+          it('should remove one item from move_type', function () {
+            expect(req.form.options.fields.move_type.items.length).to.equal(5)
+          })
+
+          it('should remove the prison_recall field', function () {
+            expect(req.form.options.fields).to.deep.equal({
+              move_type: {
+                items: [
+                  {
+                    value: 'court_appearance',
+                    conditional: 'to_location_court_appearance',
+                  },
+                  {
+                    value: 'prison_transfer',
+                    conditional: 'to_location_prison_transfer',
+                  },
+                  {
+                    value: 'police_transfer',
+                    conditional: 'to_location_police_transfer',
+                  },
+                  {
+                    value: 'hospital',
+                    conditional: 'to_location_hospital',
+                  },
+                  {
+                    value: 'video_remand',
+                    conditional: 'additional_information',
+                  },
+                ],
+              },
+              to_location_court_appearance: {},
+              to_location_prison_transfer: {},
+              to_location_police_transfer: {},
+              to_location_hospital: {},
+              unrelated_field: {},
+            })
           })
         })
       })

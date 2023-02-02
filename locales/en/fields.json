@@ -154,6 +154,10 @@
       }
     }
   },
+  "recall_information": {
+    "label": "When did they return to police custody?",
+    "hint": "This is the date that they returned to police custody, whether for recall or any additional offence. For example 28/11/2022 or 28 November 2022."
+  },
   "has_date_to": {
     "label": "Is there a date this move has to be completed by?",
     "error_message": "Enter whether a move needs to be completed by a date"

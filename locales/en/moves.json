@@ -33,6 +33,9 @@
       "heading": "Where is this person moving?",
       "update_link": "where this person is moving to"
     },
+    "recall_information": {
+      "heading": "Recall information"
+    },
     "hospital_appointment": {
       "heading": "Hospital information"
     },
@@ -244,6 +247,10 @@
       },
       "risk": {
         "heading": "Risk information updated",
+        "message": "$t(moves::update_flash.supplier_message)"
+      },
+      "recall_info": {
+        "heading": "Recall information updated",
         "message": "$t(moves::update_flash.supplier_message)"
       }
     }

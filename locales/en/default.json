@@ -53,6 +53,7 @@
   "initial_option": "--- Choose {{label}} ---",
   "person_escort_record": "Person Escort Record",
   "youth_risk_assessment": "Youth Risk Assessment",
+  "recall_date": "Date of return to police custody",
   "primary_navigation": {
     "home": "Home",
     "population": "Population",

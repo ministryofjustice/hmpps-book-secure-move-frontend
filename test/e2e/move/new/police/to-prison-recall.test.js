@@ -38,6 +38,10 @@ test('With a new person', async t => {
   await createMovePage.fillInMoveDetails('Prison recall')
   await page.submitForm()
 
+  // Recall info
+  await createMovePage.fillInRecallInfo()
+  await page.submitForm()
+
   // Fill in date
   await createMovePage.fillInDate()
   await page.submitForm()
