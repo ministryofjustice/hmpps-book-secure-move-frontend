@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.131.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.130.0...v2.131.0) (2023-02-03)
+
+
+### Features
+
+*  P4-3970 prevent prison recall reason when not at police location ([6275f54](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/6275f54753ed5181994adfee814f986b2e99f43a))
+* Add recall date screen to booking form ([94aca89](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/94aca89d263d0f7f28570737021f4ece2e811aa9))
+* Change MoveLodgingStart/End to display content based on lodging reason ([f3fbff0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/f3fbff0593c03c79dff667d7edb0a5beb004175a))
+* P4-3970 add Date of Arrest question to booking form ([a53d6ee](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/a53d6eefbd304729a92287b20f34d14a497fa6d9))
+
+
+### Bug Fixes
+
+* Fix error thrown by content which doesn't have a date ([4b0cac7](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/4b0cac7d207303009868d3b83d826256c56e8466))
+* Only show update link for additional info when prison recall move ([fd2c1fd](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/fd2c1fde3747af4691cbcb4fd677cc33ac580cd6))
+
 ## [2.130.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.129.3...v2.130.0) (2022-12-16)
 
 
