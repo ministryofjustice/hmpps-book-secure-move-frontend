@@ -169,7 +169,7 @@
     "faker": "5.5.3",
     "filesize": "10.0.6",
     "form-data": "4.0.0",
-    "got": "11.8.3",
+    "got": "12.5.3",
     "govuk-frontend": "4.3.1",
     "grant-express": "5.4.8",
     "hc-sticky": "2.2.7",
