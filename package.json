@@ -248,7 +248,7 @@
     "finepack": "2.10.15",
     "git-authors-cli": "1.0.44",
     "glob": "8.0.3",
-    "husky": "8.0.1",
+    "husky": "8.0.3",
     "image-minimizer-webpack-plugin": "2.2.0",
     "imagemin-gifsicle": "7.0.0",
     "imagemin-jpegtran": "7.0.0",
