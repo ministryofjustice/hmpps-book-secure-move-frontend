@@ -255,7 +255,7 @@
     "imagemin-optipng": "8.0.0",
     "imagemin-svgo": "10.0.1",
     "lint-staged": "13.1.0",
-    "mini-css-extract-plugin": "2.6.1",
+    "mini-css-extract-plugin": "2.7.2",
     "mocha": "10.1.0",
     "mocha-junit-reporter": "2.2.0",
     "mock-fs": "5.2.0",
