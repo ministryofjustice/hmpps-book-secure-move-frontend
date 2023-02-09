@@ -13,6 +13,7 @@ const policePermissions = [
   'move:create:police_transfer',
   'move:create:video_remand',
   'move:cancel',
+  'move:lodging:add_events',
   'move:lockout:add_events',
   'move:lockout:handover',
   'move:update',

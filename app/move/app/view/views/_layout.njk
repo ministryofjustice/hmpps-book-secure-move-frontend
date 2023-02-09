@@ -63,6 +63,12 @@
               iconFallbackText: "Warning"
             }) }}
           </div>
+
+          <div class="govuk-grid-column-one-half govuk-!-text-align-right">
+            {% if canAccess('move:lodging:add_events') and not moveLodgingEnded %}
+              <a href="/move/{{moveId}}/police-custody-form" class="govuk-button">Add events</a>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
