@@ -1,6 +1,14 @@
-const presenters = require('../../../../../common/presenters')
+import { findLast } from 'lodash'
 
-function localsMoveDetails(req, res, next) {
+// @ts-ignore // TODO: convert to ts
+import presenters from '../../../../../common/presenters'
+import { BasmRequest } from '../../../../../common/types/basm_request'
+
+export default function localsMoveDetails(
+  req: BasmRequest,
+  res: any,
+  next: any
+) {
   const { journeys, move } = req
 
   res.locals.moveDetails = presenters.moveToMetaListComponent(move, journeys)
@@ -11,11 +19,16 @@ function localsMoveDetails(req, res, next) {
 
   const importantEvents = move.important_events || []
 
-  res.locals.moveLodgingStarted = importantEvents.some(
+  const latestLodgingStart = findLast(
+    importantEvents,
     ({ event_type: eventType }) => eventType === 'MoveLodgingStart'
   )
+  res.locals.moveLodgingStarted = !!latestLodgingStart
   res.locals.moveLodgingEnded = importantEvents.some(
-    ({ event_type: eventType }) => eventType === 'MoveLodgingEnd'
+    event =>
+      event.event_type === 'MoveLodgingEnd' &&
+      (!latestLodgingStart ||
+        event.occurred_at > latestLodgingStart.occurred_at)
   )
 
   const handovers = presenters.moveToHandoversSummary(move, journeys, true)
@@ -26,5 +39,3 @@ function localsMoveDetails(req, res, next) {
 
   next()
 }
-
-module.exports = localsMoveDetails

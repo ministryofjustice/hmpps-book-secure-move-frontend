@@ -53,6 +53,19 @@
         </div>
       </div>
     </div>
+  {% elif moveLodgingStarted %}
+    <div class="govuk-!-margin-bottom-6 prison-lockout-banner">
+      <div class="govuk-width-container prison-lockout-banner-content">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-half">
+            {{ govukWarningText({
+              text: t("moves::is_lodging"),
+              iconFallbackText: "Warning"
+            }) }}
+          </div>
+        </div>
+      </div>
+    </div>
   {% endif %}
 
   {% block contentContainer %}
