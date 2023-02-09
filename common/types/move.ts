@@ -35,4 +35,7 @@ export interface Move {
     expected_collection_time?: string | null
     expected_time_of_arrival?: string | null
   }
+  is_lockout?: boolean
+  _canEdit?: boolean
+  _isPerLocked?: boolean
 }

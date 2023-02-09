@@ -4,6 +4,7 @@
   "move_reference": "Reference: {{reference}}",
   "move_reference_compact": "<span class=\"govuk-visally-hidden\">Reference: </span>{{reference}}",
   "is_lockout": "Prison lockout",
+  "is_lodging": "This move includes an overnight lodge.",
   "steps": {
     "person_search": {
       "heading": "Who is being moved?",
