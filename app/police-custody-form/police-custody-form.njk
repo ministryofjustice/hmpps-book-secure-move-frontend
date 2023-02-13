@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block pageTitle %}
-  Add lockout events
+  Add {{ "lockout" if moveIsLockout else "overnight lodge" }} events
 {% endblock %}
 
 {% macro _sidebarSection(borderTopClasses = true, borderBottomClasses = true) %}
@@ -56,9 +56,9 @@
 
   <header>
     <h1 class="govuk-heading-xl">
-      Add lockout events
+      Add {{ "lockout" if moveIsLockout else "overnight lodge" }} events
     </h1>
-  </header>  
+  </header>
 
   {% block contentContainer %}
     <div class="govuk-grid-row">
@@ -448,7 +448,7 @@
                   html:"<b>Give details</b>"
                 },
                 hint: {
-                  html: 
+                  html:
                   "
                   <p>For each medication, include:</p>
                   <ul class='govuk-list govuk-list--bullet govuk-!-margin-bottom-1'>
@@ -480,7 +480,7 @@
                   html:"<b>Give details</b>"
                 },
                 hint: {
-                  html: 
+                  html:
                   "
                   <p>For each medication, include:</p>
                   <ul class='govuk-list govuk-list--bullet'>
