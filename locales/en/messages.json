@@ -72,7 +72,7 @@
     "content_person_escort_record": "The handover for <strong>{{name}}</strong> has been recorded. You can view the details in the <a href=\"{{timelineUrl}}\">history of events</a>."
   },
   "events_added": {
-    "heading": "Lockout events added successfully",
-    "content": "You have added new lockout events for <strong>{{fullName}}</strong>. You can view the details in the <a href='#tab-history-of-events' class='govuk-link'>history of events</a>."
+    "heading": "{{type}} events added successfully",
+    "content": "You have added new {{type}} events for <strong>{{fullName}}</strong>. You can view the details in the <a href='#tab-history-of-events' class='govuk-link'>history of events</a>."
   }
 }
