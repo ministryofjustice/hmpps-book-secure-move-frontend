@@ -28,26 +28,56 @@ describe('Presenters', function () {
     }
 
     let panelList
-    beforeEach(async function () {
-      panelList = await moveToInTransitEventsPanelList('token', move)
+
+    context('when the move is a lockout', function () {
+      beforeEach(async function () {
+        move.is_lockout = true
+        panelList = await moveToInTransitEventsPanelList('token', move)
+      })
+
+      it('should return panels for incident and lockout events', function () {
+        expect(panelList).to.deep.equal({
+          context: 'framework',
+          count: 2,
+          isCompleted: true,
+          key: 'in-transit-events',
+          name: 'In transit information',
+          groupedPanels: [
+            {
+              panels: ['panel'],
+            },
+            {
+              heading: 'Lockout events',
+              panels: ['panel'],
+            },
+          ],
+        })
+      })
     })
 
-    it('should return panels for incident and lockout events', function () {
-      expect(panelList).to.deep.equal({
-        context: 'framework',
-        count: 2,
-        isCompleted: true,
-        key: 'in-transit-events',
-        name: 'In transit information',
-        groupedPanels: [
-          {
-            panels: ['panel'],
-          },
-          {
-            heading: 'Lockout events',
-            panels: ['panel'],
-          },
-        ],
+    context('when the move is not a lockout', function () {
+      beforeEach(async function () {
+        move.is_lockout = false
+        panelList = await moveToInTransitEventsPanelList('token', move)
+      })
+
+      it('should return panels for incident and overnight lodge events', function () {
+        expect(panelList).to.deep.equal({
+          context: 'framework',
+          count: 2,
+          isCompleted: true,
+          key: 'in-transit-events',
+          name: 'In transit information',
+          groupedPanels: [
+            {
+              panels: ['panel'],
+            },
+            {
+              heading: 'Overnight lodge events',
+              panels: ['panel'],
+            },
+          ],
+        })
       })
     })
   })

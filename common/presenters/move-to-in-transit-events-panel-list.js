@@ -22,7 +22,7 @@ async function toPanelList(token, lockoutEvents, otherEvents, move) {
         panels: otherPanels,
       },
       {
-        heading: 'Lockout events',
+        heading: `${move.is_lockout ? 'Lockout' : 'Overnight lodge'} events`,
         panels: lockoutPanels,
       },
     ]
