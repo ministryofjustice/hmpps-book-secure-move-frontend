@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.132.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.131.0...v2.132.0) (2023-02-17)
+
+
+### Features
+
+* Add "Add events" button to lodgings banner ([d4cfadf](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/d4cfadf8f1d34ee905e2e049e5680df2bb6f060a))
+* Add lodgings banner for moves with MoveLodgingStart ([8b29a12](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/8b29a1231890e1c592dd4307faab1363885a1678))
+
+
+### Bug Fixes
+
+* Fix PerMedicalAid/PerMedicalMedication errors missing descriptions ([629894a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/629894a894e84984bf1824f4784cf6a5e472e6a7))
+
 ## [2.131.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.130.0...v2.131.0) (2023-02-03)
 
 
