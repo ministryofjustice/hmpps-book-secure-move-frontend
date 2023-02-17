@@ -41,7 +41,9 @@ aliases:
       - image: cimg/node:16.13.1-browsers
   - &cloud_container
     docker:
-      - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
+    #  - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
+      - image: hmpps/node
+        tag: 18.14-browsers
         environment:
           GITHUB_TEAM_NAME_SLUG: book-a-secure-move
   # Common steps
@@ -305,13 +307,18 @@ jobs:
     steps:
       - checkout
       - *set_package_version
-      - run:
-          name: Install NPM
-          command: |
-            apk add --no-cache libgcc libstdc++ curl libtool automake autoconf nasm
-            curl -fLO https://github.com/oznu/alpine-node/releases/download/16.15.1/node-v16.15.1-linux-x86_64-alpine.tar.gz
-            tar -xzf node-v16.15.1-linux-x86_64-alpine.tar.gz -C /usr --strip-components=1 --no-same-owner
-            rm -rf node-v16.15.1-linux-x86_64-alpine.tar.gz
+      - hmpps/install_aws_cli
+#      - run:
+#          name: Install NPM
+#          command: |
+#            echo $PATH
+#            cd /usr/local
+#            apk add --no-cache libgcc libstdc++ curl libtool automake autoconf nasm wget
+#            apk add --no-cache libuv \
+#              && apk add --no-cache --update-cache  "nodejs>18.14.0" \
+#              && apk add --no-cache --update-cache  "npm>9.5.0" \
+#              && echo "NodeJS Version:" "$(node -v)" \
+#              && echo "NPM Version:" "$(npm -v)"
       - *install_dependencies
       - when:
           condition: <<parameters.production>>
@@ -340,7 +347,7 @@ jobs:
       - run:
           name: Login to ECR
           command: |
-            $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
+            $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ENDPOINT)
       - run:
           name: Push docker image to ECR
           command: |
