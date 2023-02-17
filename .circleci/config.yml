@@ -313,6 +313,7 @@ jobs:
             apk add --no-cache libgcc libstdc++ curl libtool automake autoconf nasm wget
             apk add --no-cache libuv \
               && apk add --no-cache --update-cache  "nodejs<18.14.0" \
+              && apk add --no-cache --update-cache  "npm<9.5.0" \
               && echo "NodeJS Version:" "$(node -v)" \
               && echo "NPM Version:" "$(npm -v)"
       - *install_dependencies
