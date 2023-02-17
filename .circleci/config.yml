@@ -346,7 +346,7 @@ jobs:
       - run:
           name: Login to ECR
           command: |
-            $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
+            $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ENDPOINT)
       - run:
           name: Push docker image to ECR
           command: |
