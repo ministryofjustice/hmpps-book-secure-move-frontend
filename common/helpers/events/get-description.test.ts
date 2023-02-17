@@ -38,6 +38,7 @@ describe('Helpers', function () {
         journey: { vehicle: { registration: 'fallback reg' } },
       },
       supplier: '12341-12312132',
+      occurred_at: '2020-10-10T14:00:00Z',
     }
 
     describe('#getDescription', function () {

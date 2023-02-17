@@ -57,6 +57,7 @@ class MoveDetailsController extends CreateBaseController {
         permission =>
           !(!this.isFromPoliceLocation(req) && permission === 'prison_recall')
       )
+
     const existingItems = req.form.options.fields.move_type.items
     const permittedItems = existingItems.filter(item =>
       permittedMoveTypes.includes(item.value)

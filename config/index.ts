@@ -300,6 +300,7 @@ export const E2E = {
 }
 export const FEATURE_FLAGS = {
   GOT: /true/i.test(process.env.FEATURE_FLAG_GOT || ''),
+  DATE_OF_ARREST: /true/i.test(process.env.FEATURE_FLAG_DATE_OF_ARREST || ''),
 }
 export const FRAMEWORKS = {
   CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
