@@ -42,7 +42,8 @@ aliases:
   - &cloud_container
     docker:
     #  - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
-      - image: cimg/node:18.14.0-browsers
+      - image: hmpps/node
+        tag: 18.14-browsers
         environment:
           GITHUB_TEAM_NAME_SLUG: book-a-secure-move
   # Common steps
