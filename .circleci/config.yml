@@ -309,12 +309,18 @@ jobs:
           name: Install NPM
           command: |
             echo $PATH
-            pwd
+            cd /usr/local
             apk add --no-cache libgcc libstdc++ curl libtool automake autoconf nasm
-            curl -L -o node.tar.gz "https://nodejs.org/dist/v18.14.0/node-v18.14.0-linux-x64.tar.gz"
-            tar -xzf node.tar.gz -C /usr/local --strip-components=1 --no-same-owner
-            rm -rf node.tar.gz
-            ln -s /usr/local/bin/node /usr/local/bin/nodejs
+            curl -fsSLO --compressed "https://nodejs.org/dist/v18.14.0/node-v18.14.0.tar.xz"
+              && tar -xf "node-v18.14.0.tar.xz" --strip-components=1 --no-same-owner\
+              && cd "/node-v18.14.0" \
+              && ./configure \
+              && make -j$(getconf _NPROCESSORS_ONLN) V= \
+              && make install \
+              && apk del .build-deps \
+              && cd .. \
+              && rm -Rf "node-v18.14.0" \
+              && rm "node-v18.14.0.tar.xz"
       - *install_dependencies
       - when:
           condition: <<parameters.production>>
