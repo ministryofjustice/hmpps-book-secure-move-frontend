@@ -310,17 +310,11 @@ jobs:
           command: |
             echo $PATH
             cd /usr/local
-            apk add --no-cache libgcc libstdc++ curl libtool automake autoconf nasm
-            curl -fsSLO --compressed "https://nodejs.org/dist/v18.14.0/node-v18.14.0.tar.xz" \
-              && tar -xf "node-v18.14.0.tar.xz"\
-              && cd "node-v18.14.0" \
-              && ./configure \
-              && make -j$(getconf _NPROCESSORS_ONLN) V= \
-              && make install \
-              && apk del .build-deps \
-              && cd .. \
-              && rm -Rf "node-v18.14.0" \
-              && rm "node-v18.14.0.tar.xz"
+            apk add --no-cache libgcc libstdc++ curl libtool automake autoconf nasm wget
+            apk add --no-cache libuv \
+              && apk add --no-cache --update-cache  nodejs nodejs-npm \
+              && echo "NodeJS Version:" "$(node -v)" \
+              && echo "NPM Version:" "$(npm -v)"
       - *install_dependencies
       - when:
           condition: <<parameters.production>>
