@@ -306,6 +306,7 @@ jobs:
     steps:
       - checkout
       - *set_package_version
+      - hmpps/install_aws_cli
 #      - run:
 #          name: Install NPM
 #          command: |
