@@ -42,7 +42,8 @@ aliases:
   - &cloud_container
     docker:
     #  - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
-      - image: cimg/node:18.14.0-browsers
+      - image: hmpps/node
+        tag: 18.14-browsers
         environment:
           GITHUB_TEAM_NAME_SLUG: book-a-secure-move
   # Common steps
@@ -346,7 +347,7 @@ jobs:
       - run:
           name: Login to ECR
           command: |
-            $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
+            $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ENDPOINT)
       - run:
           name: Push docker image to ECR
           command: |
