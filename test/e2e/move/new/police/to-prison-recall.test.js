@@ -1,5 +1,6 @@
 import { Selector } from 'testcafe'
 
+import { FEATURE_FLAGS } from '../../../../../config'
 import { policeUser } from '../../../_roles'
 import { newMove } from '../../../_routes'
 import {
@@ -38,9 +39,12 @@ test('With a new person', async t => {
   await createMovePage.fillInMoveDetails('Prison recall')
   await page.submitForm()
 
-  // Recall info
-  await createMovePage.fillInRecallInfo()
-  await page.submitForm()
+  // TODO: find a way to test feature flags properly
+  if (FEATURE_FLAGS.DATE_OF_ARREST) {
+    // Recall info
+    await createMovePage.fillInRecallInfo()
+    await page.submitForm()
+  }
 
   // Fill in date
   await createMovePage.fillInDate()
