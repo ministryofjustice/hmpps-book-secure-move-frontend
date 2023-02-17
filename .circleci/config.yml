@@ -41,8 +41,7 @@ aliases:
       - image: cimg/node:16.13.1-browsers
   - &cloud_container
     docker:
-    #  - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
-      - image: alpine/3.17.2
+      - image: ${ECR_ENDPOINT}/cloud-platform/tools:2.3.0
         environment:
           GITHUB_TEAM_NAME_SLUG: book-a-secure-move
   # Common steps
