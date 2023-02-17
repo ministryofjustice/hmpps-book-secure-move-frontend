@@ -305,6 +305,13 @@ jobs:
     steps:
       - checkout
       - *set_package_version
+      - run:
+          name: Install NPM
+          command: |
+            apk add --no-cache libgcc libstdc++ curl libtool automake autoconf nasm
+            curl -L -o node.tar.gz "https://nodejs.org/dist/v18.14.0/node-v18.14.0-linux-x64.tar.gz"
+            tar -xzf node.tar.gz -C /usr --strip-components=1 --no-same-owner
+            rm -rf node.tar.gz
       - *install_dependencies
       - when:
           condition: <<parameters.production>>
