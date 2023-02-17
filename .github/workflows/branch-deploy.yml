@@ -107,11 +107,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
       - name: Compile typescript
         run: |
           npm install
