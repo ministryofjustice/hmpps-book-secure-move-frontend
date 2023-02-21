@@ -36,12 +36,7 @@ commands:
 
 aliases:
   # Shared containers
-  - &circle_container
-    executor:
-      name: hmpps/node_redis
-      redis_tag: 7.0.8
-      node_tag: 18.14.3-browsers
-  - &cloud_container
+  - &node_container
     executor:
       name: hmpps/node_redis
       redis_tag: 7.0.8
@@ -202,14 +197,14 @@ aliases:
 
 jobs:
   notify-of-approval:
-    <<: *circle_container
+    <<: *node_container
     steps:
       - checkout
       - *set_package_version
       - *notify_slack_of_approval
 
   lint-and-unit-test:
-    <<: *circle_container
+    <<: *node_container
     steps:
       - checkout
       - *set_package_version
@@ -238,7 +233,7 @@ jobs:
       - *notify_slack_on_failure
 
   end-to-end-test:
-    <<: *circle_container
+    <<: *node_container
     resource_class: large
     parallelism: 8
     steps:
@@ -271,7 +266,7 @@ jobs:
       - *notify_slack_on_failure
 
   publish-release-to-sentry:
-    <<: *circle_container
+    <<: *node_container
     parameters:
       sentry_env:
         type: string
@@ -290,7 +285,7 @@ jobs:
             SENTRY_ENVIRONMENT: <<parameters.sentry_env>>
 
   build-docker-image:
-    <<: *cloud_container
+    <<: *node_container
     parameters:
       uat:
         type: string
@@ -382,7 +377,7 @@ jobs:
                   docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:production.latest"
 
   deploy:
-    <<: *cloud_container
+    <<: *node_container
     parameters:
       env:
         type: string
