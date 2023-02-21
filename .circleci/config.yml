@@ -456,14 +456,6 @@ workflows:
           <<: *all_tags
           name: build-docker-image-main
           staging: 'true'
-      - build-docker-image:
-          context:
-            - hmpps-common-vars
-          <<: *only_deploy_tags
-          name: build-docker-image-release
-          uat: 'true'
-          preprod: 'true'
-          production: 'true'
       # Deployment
       - deploy:
           context:
