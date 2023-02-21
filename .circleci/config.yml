@@ -40,12 +40,12 @@ aliases:
     executor:
       - name: hmpps/node_redis
         redis_tag: 7.0.8
-        node_tag: node:18.14.3-browsers
+        node_tag: 18.14.3-browsers
   - &cloud_container
     executor:
       - name: hmpps/node_redis
         redis_tag: 7.0.8
-        node_tag: node:18.14.3-browsers
+        node_tag: 18.14.3-browsers
   # Common steps
   - &install_dependencies
     run:
