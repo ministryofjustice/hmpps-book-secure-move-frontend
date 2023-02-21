@@ -37,17 +37,15 @@ commands:
 aliases:
   # Shared containers
   - &circle_container
-    docker:
-      - image: hmpps/node_redis
+    executor:
+      - name: hmpps/node_redis
         redis_tag: 7.0.8
         node_tag: node:18.14.3-browsers
   - &cloud_container
-    docker:
-      - image: hmpps/node_redis
+    executor:
+      - name: hmpps/node_redis
         redis_tag: 7.0.8
         node_tag: node:18.14.3-browsers
-        environment:
-          GITHUB_TEAM_NAME_SLUG: book-a-secure-move
   # Common steps
   - &install_dependencies
     run:
