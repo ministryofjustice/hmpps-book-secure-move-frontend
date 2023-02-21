@@ -38,10 +38,14 @@ aliases:
   # Shared containers
   - &circle_container
     docker:
-      - image: cimg/node:16.13.1-browsers
+      - image: hmpps/node_redis
+        redis_tag: 7.0.8
+        node_tag: node:18.14.3-browsers
   - &cloud_container
     docker:
-      - image: ${ECR_ENDPOINT}/cloud-platform/tools:circleci
+      - image: hmpps/node_redis
+        redis_tag: 7.0.8
+        node_tag: node:18.14.3-browsers
         environment:
           GITHUB_TEAM_NAME_SLUG: book-a-secure-move
   # Common steps
@@ -449,7 +453,7 @@ workflows:
       - build-docker-image:
           context:
             - hmpps-common-vars
-          <<: *only_main
+          <<: *all_tags
           name: build-docker-image-main
           staging: 'true'
       - build-docker-image:
