@@ -387,6 +387,8 @@ workflows:
           name: deploy-production
           env: 'production'
           notify_slack: 'true'
+          requires:
+            - prod-approval
 
       # Approval gates
       - uat-approval:
