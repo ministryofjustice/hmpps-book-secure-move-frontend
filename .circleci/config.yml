@@ -352,6 +352,7 @@ jobs:
       - export_kube_vars:
           env: << parameters.env >>
           cluster: << parameters.cluster >>
+      - kubernetes/install
       - run:
           name: Authenticate with cluster
           command: |
