@@ -373,7 +373,7 @@ workflows:
           name: deploy-preprod
           env: 'preprod'
           requires:
-            - preprod
+            - preprod-approval
       - deploy:
           context:
             - hmpps-common-vars
