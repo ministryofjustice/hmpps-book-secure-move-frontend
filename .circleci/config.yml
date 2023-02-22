@@ -57,7 +57,7 @@ aliases:
   - &node_container
     executor:
       name: node_aws
-      aws_tag: 2023.01
+      aws_tag: "2023.01"
       node_tag: 18.14-browsers
   # Common steps
   - &install_dependencies
