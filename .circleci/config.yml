@@ -1,5 +1,21 @@
 version: 2.1
 
+executors:
+  node_aws:
+    docker:
+      - image: 'cimg/node:<<parameters.node_tag>>'
+      - image: 'cimg/aws:<<parameters.aws_tag>>'
+    working_directory: ~/app
+    resource_class: <<parameters.resource_class>>
+    parameters:
+      resource_class:
+        default: medium
+        type: string
+      node_tag:
+        type: string
+      aws_tag:
+        type: string
+
 orbs:
   node: circleci/node@5.1.0
   browser-tools: circleci/browser-tools@1.4.1
@@ -38,8 +54,8 @@ aliases:
   # Shared containers
   - &node_container
     executor:
-      name: hmpps/node_redis
-      redis_tag: 7.0.8
+      name: node_aws
+      redis_tag: 2023.01
       node_tag: 18.14-browsers
   # Common steps
   - &install_dependencies
