@@ -172,7 +172,7 @@ aliases:
   - &only_main
     filters:
       branches:
-        only: main
+        only: main, P4-4110b
   - &ignore_main
     filters:
       branches:
