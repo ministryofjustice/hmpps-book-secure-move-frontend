@@ -334,7 +334,9 @@ jobs:
             docker tag app "quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
             docker push "quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
   deploy:
-    <<: *node_container
+    executor:
+      name: hmpps/default_small
+      tag: "3.10"
     parameters:
       env:
         type: string
