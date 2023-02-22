@@ -389,7 +389,7 @@ workflows:
           notify_slack: 'true'
 
       # Approval gates
-      - preprod-approval:
+      - uat-approval:
           context:
             - hmpps-common-vars
           type: approval
