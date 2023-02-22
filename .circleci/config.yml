@@ -1,23 +1,4 @@
 version: 2.1
-
-executors:
-  node_aws:
-    docker:
-      - image: 'cimg/node:<<parameters.node_tag>>'
-      - image: 'cimg/aws:<<parameters.aws_tag>>'
-    environment:
-      GITHUB_TEAM_NAME_SLUG: book-a-secure-move
-    working_directory: ~/app
-    resource_class: <<parameters.resource_class>>
-    parameters:
-      resource_class:
-        default: medium
-        type: string
-      node_tag:
-        type: string
-      aws_tag:
-        type: string
-
 orbs:
   node: circleci/node@5.1.0
   browser-tools: circleci/browser-tools@1.4.1
@@ -56,8 +37,7 @@ aliases:
   # Shared containers
   - &node_container
     executor:
-      name: node_aws
-      aws_tag: "2023.01"
+      name: hmpps/node
       node_tag: 18.14-browsers
   # Common steps
   - &install_dependencies
@@ -346,47 +326,10 @@ jobs:
               --build-arg APP_BUILD_BRANCH=${CIRCLE_BRANCH} \
               -t app .
       - run:
-          name: Login to ECR
+          name: Push docker image to Quay
           command: |
-            $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ENDPOINT)
-      - run:
-          name: Push docker image to ECR
-          command: |
-            docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
-            docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
-      - when:
-          condition: <<parameters.staging>>
-          steps:
-            - run:
-                name: Push staging docker image to ECR
-                command: |
-                  docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:staging.latest"
-                  docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:staging.latest"
-      - when:
-          condition: <<parameters.uat>>
-          steps:
-            - run:
-                name: Push staging docker image to ECR
-                command: |
-                  docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:uat.latest"
-                  docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:uat.latest"
-      - when:
-          condition: <<parameters.preprod>>
-          steps:
-            - run:
-                name: Push preproduction docker image to ECR
-                command: |
-                  docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:preprod.latest"
-                  docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:preprod.latest"
-      - when:
-          condition: <<parameters.production>>
-          steps:
-            - run:
-                name: Push production docker image to ECR
-                command: |
-                  docker tag app "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:production.latest"
-                  docker push "${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${CIRCLE_PROJECT_REPONAME}:production.latest"
-
+            docker tag app "quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
+            docker push "quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
   deploy:
     <<: *node_container
     parameters:
