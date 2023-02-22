@@ -328,6 +328,7 @@ jobs:
       - run:
           name: Push docker image to Quay
           command: |
+            docker login -u="${QUAYIO_USERNAME}" -p="${QUAYIO_PASSWORD}" quay.io
             docker tag app "quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
             docker push "quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
   deploy:
