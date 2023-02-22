@@ -174,7 +174,7 @@
     "grant-express": "5.4.8",
     "hc-sticky": "2.2.7",
     "helmet": "4.6.0",
-    "hmpo-form-wizard": "12.0.6",
+    "hmpo-form-wizard": "12.1.0",
     "i18next": "22.4.10",
     "i18next-express-middleware": "2.0.0",
     "i18next-fs-backend": "2.1.1",
