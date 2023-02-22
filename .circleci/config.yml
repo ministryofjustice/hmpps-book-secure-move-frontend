@@ -5,6 +5,8 @@ executors:
     docker:
       - image: 'cimg/node:<<parameters.node_tag>>'
       - image: 'cimg/aws:<<parameters.aws_tag>>'
+    environment:
+      GITHUB_TEAM_NAME_SLUG: book-a-secure-move
     working_directory: ~/app
     resource_class: <<parameters.resource_class>>
     parameters:
@@ -55,7 +57,7 @@ aliases:
   - &node_container
     executor:
       name: node_aws
-      redis_tag: 2023.01
+      aws_tag: 2023.01
       node_tag: 18.14-browsers
   # Common steps
   - &install_dependencies
@@ -346,7 +348,7 @@ jobs:
       - run:
           name: Login to ECR
           command: |
-            $(aws ecr get-login --region ${AWS_DEFAULT_REGION} --no-include-email)
+            $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ENDPOINT)
       - run:
           name: Push docker image to ECR
           command: |
