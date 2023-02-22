@@ -40,7 +40,7 @@ aliases:
     executor:
       name: hmpps/node_redis
       redis_tag: 7.0.8
-      node_tag: 18.14.3-browsers
+      node_tag: 18.14-browsers
   # Common steps
   - &install_dependencies
     run:
