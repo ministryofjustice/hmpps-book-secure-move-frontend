@@ -38,7 +38,7 @@ aliases:
   - &node_container
     executor:
       name: hmpps/node
-      node_tag: 18.14-browsers
+      tag: 18.14-browsers
   # Common steps
   - &install_dependencies
     run:
