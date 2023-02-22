@@ -356,7 +356,6 @@ workflows:
             - hmpps-common-vars
           <<: *only_main
           name: build-docker-image
-          staging: 'true'
       # Deployment
       - deploy:
           context:
