@@ -412,8 +412,8 @@ workflows:
           context:
             - hmpps-common-vars
           requires:
-            - build-docker-image-main
-            - end-to-end-test-release
+            - build-docker-image
+            - end-to-end-test
             - lint-and-unit-test
 
       # Post release
