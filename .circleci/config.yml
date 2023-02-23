@@ -174,7 +174,6 @@ aliases:
 jobs:
   notify-of-approval:
     <<: *node_container
-    <<: *only_main
     steps:
       - checkout
       - *set_package_version
