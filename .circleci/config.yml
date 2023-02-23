@@ -410,6 +410,7 @@ workflows:
             - deploy-preprod
             - deploy-uat
       - notify-of-approval:
+          <<: *only_main
           context:
             - hmpps-common-vars
           requires:
