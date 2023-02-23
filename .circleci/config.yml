@@ -170,7 +170,6 @@ aliases:
       branches:
         only:
           - main
-          - P4-4110b
 
 jobs:
   notify-of-approval:
