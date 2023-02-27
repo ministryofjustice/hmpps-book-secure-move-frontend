@@ -3,6 +3,7 @@ const { forEach, omitBy, pickBy } = require('lodash')
 
 const FormWizardController = require('../../../../../common/controllers/form-wizard')
 const middleware = require('../../../../../common/middleware')
+const { FEATURE_FLAGS } = require('../../../../../config')
 const filters = require('../../../../../config/nunjucks/filters')
 
 class CreateBaseController extends FormWizardController {
@@ -182,6 +183,14 @@ class CreateBaseController extends FormWizardController {
     }
 
     return false
+  }
+
+  shouldAskRecallInfoStep(req) {
+    return (
+      FEATURE_FLAGS.DATE_OF_ARREST &&
+      req.sessionModel.attributes.move_type === 'prison_recall' &&
+      req.user.permissions?.includes('move:add:date_of_arrest')
+    )
   }
 
   requiresYouthAssessment(req) {

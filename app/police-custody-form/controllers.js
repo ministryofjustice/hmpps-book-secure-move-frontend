@@ -27,8 +27,13 @@ exports.addEvents = async function (req, res) {
   const fullName = move.profile.person._fullname
 
   req.flash('success', {
-    title: req.t('messages::events_added.heading'),
-    content: req.t('messages::events_added.content', { fullName }),
+    title: req.t('messages::events_added.heading', {
+      type: move.is_lockout ? 'Lockout' : 'Overnight lodge',
+    }),
+    content: req.t('messages::events_added.content', {
+      fullName,
+      type: move.is_lockout ? 'lockout' : 'overnight lodge',
+    }),
   })
 
   return res.redirect(`/move/${moveId}`)

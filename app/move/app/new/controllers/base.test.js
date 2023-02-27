@@ -1,5 +1,6 @@
 const Sentry = require('@sentry/node')
 const FormController = require('hmpo-form-wizard').Controller
+const proxyquire = require('proxyquire')
 
 const FormWizardController = require('../../../../../common/controllers/form-wizard')
 const middleware = require('../../../../../common/middleware')
@@ -7,7 +8,11 @@ const personService = {
   getCategory: sinon.stub(),
 }
 
-const CreateBaseController = require('./base')
+const FEATURE_FLAGS = {}
+
+const CreateBaseController = proxyquire('./base', {
+  '../../../../../config': { FEATURE_FLAGS },
+})
 
 const controller = new CreateBaseController({ route: '/' })
 
@@ -1122,6 +1127,105 @@ describe('Move controllers', function () {
             is_young_offender_institution: false,
           })
           expect(controller.requiresYouthAssessment(mockReq)).to.be.false
+        })
+      })
+    })
+
+    describe('#shouldAskRecallInfoStep', function () {
+      context('when the DATE_OF_ARREST feature flag is not set', function () {
+        beforeEach(function () {
+          FEATURE_FLAGS.DATE_OF_ARREST = false
+        })
+
+        context('when prison recall by police', function () {
+          const mockReq = {
+            sessionModel: {
+              attributes: {
+                move_type: 'prison_recall',
+              },
+            },
+            user: {
+              permissions: ['move:add:date_of_arrest'],
+            },
+          }
+
+          it('should return false', function () {
+            expect(controller.shouldAskRecallInfoStep(mockReq)).to.be.false
+          })
+        })
+      })
+
+      context('when the DATE_OF_ARREST feature flag is set', function () {
+        beforeEach(function () {
+          FEATURE_FLAGS.DATE_OF_ARREST = true
+        })
+
+        context('when prison recall by police', function () {
+          const mockReq = {
+            sessionModel: {
+              attributes: {
+                move_type: 'prison_recall',
+              },
+            },
+            user: {
+              permissions: ['move:add:date_of_arrest'],
+            },
+          }
+
+          it('should return true', function () {
+            expect(controller.shouldAskRecallInfoStep(mockReq)).to.be.true
+          })
+        })
+
+        context('when prison recall by non-police', function () {
+          const mockReq = {
+            sessionModel: {
+              attributes: {
+                move_type: 'prison_recall',
+              },
+            },
+            user: {
+              permissions: [],
+            },
+          }
+
+          it('should return true', function () {
+            expect(controller.shouldAskRecallInfoStep(mockReq)).to.be.false
+          })
+        })
+
+        context('when by police but not prison recall', function () {
+          const mockReq = {
+            sessionModel: {
+              attributes: {
+                move_type: 'prison_transfer',
+              },
+            },
+            user: {
+              permissions: ['move:add:date_of_arrest'],
+            },
+          }
+
+          it('should return true', function () {
+            expect(controller.shouldAskRecallInfoStep(mockReq)).to.be.false
+          })
+        })
+
+        context('when not prison recall and not by police', function () {
+          const mockReq = {
+            sessionModel: {
+              attributes: {
+                move_type: 'prison_transfer',
+              },
+            },
+            user: {
+              permissions: [],
+            },
+          }
+
+          it('should return true', function () {
+            expect(controller.shouldAskRecallInfoStep(mockReq)).to.be.false
+          })
         })
       })
     })

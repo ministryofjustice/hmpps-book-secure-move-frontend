@@ -4,6 +4,7 @@ import Backend from 'i18next-fs-backend'
 const interpolation = require('./interpolation')
 
 i18next.use(Backend).init({
+  returnNull: false,
   initImmediate: false,
   lng: 'en',
   fallbackLng: 'en',

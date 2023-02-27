@@ -24,7 +24,10 @@ function renderDetails(req, res) {
     canAccess,
   })
 
-  const additionalInfo = presenters.moveToAdditionalInfoListComponent(move)
+  const additionalInfo = presenters.moveToAdditionalInfoListComponent(
+    move,
+    updateUrls
+  )
   const singleRequestInfo = presenters.singleRequestToSummaryListComponent(move)
 
   const assessmentsByCategory =
