@@ -3,7 +3,7 @@ const { isEmpty, kebabCase } = require('lodash')
 const i18n = require('../../../config/i18n').default
 const componentService = require('../../services/component')
 
-function assessmentActions(move = {}, { canAccess } = {}) {
+function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
   const actions = []
 
   if (!move.profile) {
@@ -18,6 +18,12 @@ function assessmentActions(move = {}, { canAccess } = {}) {
   const assessment = move.profile[assessmentType] || {}
   const baseUrl = `/move/${move.id}/${kebabCase(assessmentType)}`
   const context = assessmentType
+  const hasLodges =
+    move.timeline_events?.filter(
+      event =>
+        event.event_type === 'MoveLodgingStart' &&
+        event.details.reason === 'overnight_lodging'
+    ).length > 0
 
   if (
     ['requested', 'booked'].includes(move.status) &&
@@ -64,6 +70,24 @@ function assessmentActions(move = {}, { canAccess } = {}) {
         text: i18n.t('actions::provide_confirmation', { context }),
         preventDoubleClick: true,
         href: `${baseUrl}/confirm`,
+      }),
+    })
+  }
+
+  if (
+    featureFlags.ADD_LODGE_BUTTON &&
+    move.status !== 'completed' &&
+    move.status !== 'cancelled' &&
+    canAccess('allocation:create')
+  ) {
+    actions.push({
+      html: componentService.getComponent('govukButton', {
+        text: i18n.t('actions::add_item', {
+          context: hasLodges ? 'with_items' : '',
+          name: 'overnight lodge',
+        }),
+        classes: 'govuk-button--primary',
+        preventDoubleClick: true,
       }),
     })
   }
