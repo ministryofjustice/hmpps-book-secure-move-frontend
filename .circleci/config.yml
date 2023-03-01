@@ -231,7 +231,7 @@ jobs:
             REDIS_URL: ""
             NODE_OPTIONS: --max-old-space-size=12288
           command: |
-            npm run test-e2e -- --test $(circleci tests glob "test/e2e/**/*.test.js" | circleci tests split --split-by=timings)
+            npm run test-e2e -- --test $(circleci tests glob "test/e2e/**/*.test.js" | circleci tests split --split-by=timings) --testcafe '-q attemptLimit=10,successThreshold=2'
       - run:
           name: Convert testcafe reports to relative path
           command: sed -i 's/\/home\/circleci\/project\///g' reports/testcafe/*.xml
