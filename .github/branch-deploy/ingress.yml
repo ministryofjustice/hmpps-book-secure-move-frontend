@@ -7,6 +7,8 @@ metadata:
     nginx.ingress.kubernetes.io/custom-http-errors: "502,504" #default is 413,502,503,504
     external-dns.alpha.kubernetes.io/set-identifier: hmpps-book-secure-move-frontend-ingress-pr-{PR_NUMBER}-hmpps-book-secure-move-frontend-staging-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      add_header X-Robots-Tag "noindex, nofollow";
 spec:
   ingressClassName: default
   tls:
