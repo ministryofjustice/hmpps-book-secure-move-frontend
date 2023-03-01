@@ -4,5 +4,9 @@
   "pageLoadTimeout": 120000,
   "pageRequestTimeout": 90000,
   "retryTestPages": true,
-  "hostname": "localhost"
+  "hostname": "localhost",
+  "quarantineMode": {
+    "successThreshold": 2,
+    "attemptLimit": 10
+  }
 }
