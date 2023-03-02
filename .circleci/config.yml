@@ -223,6 +223,9 @@ jobs:
           name: Compile typescript
           command: npx tsc --project ./
       - run:
+          name: reinstall webpack
+          command: npm remove webpack webpack-cli &&  npm install --save-dev webpack webpack-cli
+      - run:
           name: Build assets and frameworks
           command: npm run build
       - run:
