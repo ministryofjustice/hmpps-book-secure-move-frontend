@@ -107,23 +107,16 @@ const commonConfig = {
           {
             loader: ImageMinimizerPlugin.loader,
             options: {
-              minimizerOptions: {
-                plugins: [
-                  ['gifsicle', { interlaced: true }],
-                  ['jpegtran', { progressive: true }],
-                  ['optipng', { optimizationLevel: 5 }],
-                  [
-                    'svgo',
-                    {
-                      plugins: [
-                        {
-                          name: 'removeViewBox',
-                          active: false,
-                        },
-                      ],
-                    },
+              minimizer: {
+                implementation: ImageMinimizerPlugin.imageminMinify,
+                options: {
+                  plugins: [
+                    'imagemin-gifsicle',
+                    'imagemin-mozjpeg',
+                    'imagemin-pngquant',
+                    'imagemin-svgo',
                   ],
-                ],
+                },
               },
             },
           },
