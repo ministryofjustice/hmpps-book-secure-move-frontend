@@ -223,6 +223,9 @@ jobs:
           name: Compile typescript
           command: npx tsc --project ./
       - run:
+          name: reinstall webpack
+          command: npm remove webpack webpack-cli &&  npm install --save-dev webpack webpack-cli
+      - run:
           name: Build assets and frameworks
           command: npm run build
       - run:
@@ -260,6 +263,32 @@ jobs:
           environment:
             SENTRY_ENVIRONMENT: <<parameters.sentry_env>>
 
+  test-build-docker-image:
+    <<: *node_container
+    steps:
+      - checkout
+      - *set_package_version
+      - *install_dependencies
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Compile typescript
+          command: npx tsc --project ./
+      - run:
+          name: Build docker image
+          command: |
+            export BUILD_DATE=$(date -Is) >> $BASH_ENV
+            source $BASH_ENV
+
+            docker build \
+              --label build.git.sha=${CIRCLE_SHA1} \
+              --label build.git.branch=${CIRCLE_BRANCH} \
+              --label build.date=${BUILD_DATE} \
+              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
+              --build-arg APP_BUILD_TAG=${CIRCLE_BUILD_NUM} \
+              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
+              --build-arg APP_BUILD_BRANCH=${CIRCLE_BRANCH} \
+              -t app .
   build-docker-image:
     <<: *node_container
     steps:
@@ -349,6 +378,10 @@ workflows:
           context:
             - hmpps-common-vars
           name: end-to-end-test
+      - test-build-docker-image:
+          context:
+            - hmpps-common-vars
+          name: test-build-docker-image
       # Docker builds
       - build-docker-image:
           context:
