@@ -1,3 +1,5 @@
+import I18n from '../../config/i18n'
+
 import { Allocation } from './allocation'
 import { Journey } from './journey'
 import { Move } from './move'
@@ -10,14 +12,15 @@ export interface BasmRequest extends Express.Request {
   flash?: (yeah: any, nah: any) => void
   form?: {
     options: {
-      fields: object
+      fields: { [key: string]: any }
       next: string
     }
-    values: any
+    values: { [key: string]: any }
   }
   initialStep?: any
   journeys: Journey[]
   move: Move
+  t: typeof I18n.t
   services?: {
     allocation: Service
   }
