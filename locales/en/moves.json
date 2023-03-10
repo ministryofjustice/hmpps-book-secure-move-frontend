@@ -64,6 +64,14 @@
     },
     "prison_transfer_reason": {
       "heading": "Request information"
+    },
+    "lodge": {
+      "location": {
+        "heading": "Where would you like to lodge this person?"
+      },
+      "date": {
+        "heading": "When will they leave the lodge prison?"
+      }
     }
   },
   "download": {

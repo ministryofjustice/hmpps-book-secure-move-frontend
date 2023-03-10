@@ -4,6 +4,7 @@ import sinon from 'sinon'
 // @ts-ignore // TODO: convert to ts
 import presenters from '../../../../../common/presenters'
 import { BasmRequest } from '../../../../../common/types/basm_request'
+import I18n from '../../../../../config/i18n'
 
 import middleware from './locals.move-details'
 
@@ -44,6 +45,8 @@ describe('Move view app', function () {
             _isPerLocked: false,
           },
           journeys: [],
+          t: I18n.t,
+          form: { options: { fields: {} }, values: {} },
         }
         res = {
           locals: {},
