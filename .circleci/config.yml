@@ -1,38 +1,9 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.1.0
   browser-tools: circleci/browser-tools@1.4.1
   slack: circleci/slack@4.12.1
-  hmpps: ministryofjustice/hmpps@7.0.1
+  hmpps: ministryofjustice/hmpps@7.2.1
   kubernetes: circleci/kubernetes@1.3.1
-commands:
-  export_kube_vars:
-    description: "Exports kube vars for the chosen environment and cluster."
-    parameters:
-      env:
-        type: string
-      cluster:
-        type: string
-        default: "live"
-    steps:
-      - run:
-          name: Export kubernetes env vars
-          command: |
-            ENV_UPCASED=$(echo "<< parameters.env >>" | tr '[:lower:]' '[:upper:]')
-            [[ "<< parameters.cluster >>" = "live" ]] && CLUSTER_SUFFIX="_LIVE"
-
-            CLUSTER_VAR="KUBE_CLUSTER${CLUSTER_SUFFIX}"
-            CACERT_VAR="KUBE_ENV_${ENV_UPCASED}_CACERT${CLUSTER_SUFFIX}"
-            NAME_VAR="KUBE_ENV_${ENV_UPCASED}_NAME"
-            NAMESPACE_VAR="KUBE_ENV_${ENV_UPCASED}_NAMESPACE"
-            TOKEN_VAR="KUBE_ENV_${ENV_UPCASED}_TOKEN${CLUSTER_SUFFIX}"
-
-            echo "export KUBE_CLUSTER=\"${!CLUSTER_VAR}\"" >> $BASH_ENV
-            echo "export KUBE_CACERT=\"${!CACERT_VAR}\"" >> $BASH_ENV
-            echo "export KUBE_NAME=\"${!NAME_VAR}\"" >> $BASH_ENV
-            echo "export KUBE_NAMESPACE=\"${!NAMESPACE_VAR}\"" >> $BASH_ENV
-            echo "export KUBE_TOKEN=\"${!TOKEN_VAR}\"" >> $BASH_ENV
-
 aliases:
   # Shared containers
   - &node_container
@@ -59,111 +30,6 @@ aliases:
       name: Set version
       command: |
         echo "export PACKAGE_VERSION=$(grep -m1 version package.json | awk -F: '{ print $2 }' | sed 's/[", ]//g')" >> $BASH_ENV
-  - &notify_slack_on_failure
-    slack/notify:
-      event: fail
-      branch_pattern: main
-  - &notify_slack_on_release_start
-    slack/notify:
-      channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
-      custom: '{
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "*Frontend v${PACKAGE_VERSION} is being prepared for release* :building_construction:"
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "@here A new release was created by ${CIRCLE_USERNAME}"
-                }
-              },
-              {
-                "type": "actions",
-                "elements": [
-                  {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "Changelog"
-                    },
-                    "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/blob/main/CHANGELOG.md"
-                  }
-                ]
-              }
-            ]
-          }'
-  - &notify_slack_of_approval
-    slack/notify:
-      channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
-      custom: '{
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "Frontend v${PACKAGE_VERSION} *requires your approval* before it can be deployed :eyes:"
-                },
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "${BUILD_NOTIFICATIONS_MENTION_ID}"
-                  }
-                ]
-              },
-              {
-                "type": "actions",
-                "elements": [
-                  {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "View Workflow"
-                    },
-                    "url": "https://circleci.com/workflow-run/${CIRCLE_WORKFLOW_ID}"
-                  }
-                ]
-              }
-            ]
-          }'
-  - &notify_slack_on_release_end
-    slack/notify:
-      channel: $BUILD_NOTIFICATIONS_CHANNEL_ID
-      custom: '{
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "*Frontend v${PACKAGE_VERSION} has been deployed* :rocket:"
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "@here This release was successfully deployed to production"
-                }
-              },
-              {
-                "type": "actions",
-                "elements": [
-                  {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "Release"
-                    },
-                    "url": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/releases/tag/v${PACKAGE_VERSION}"
-                  }
-                ]
-              }
-            ]
-          }'
   # Common filters
   - &only_main
     filters:
@@ -172,14 +38,7 @@ aliases:
           - main
 
 jobs:
-  notify-of-approval:
-    <<: *node_container
-    steps:
-      - checkout
-      - *set_package_version
-      - *notify_slack_of_approval
-
-  lint-and-unit-test:
+  build:
     <<: *node_container
     steps:
       - checkout
@@ -188,11 +47,37 @@ jobs:
       - *install_dependencies
       - *save_cache
       - run:
-          name: Lint the code
-          command: npm run circle:lint
-      - run:
           name: Compile typescript
           command: npx tsc --project ./
+      - run:
+          name: Build assets and frameworks
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - .
+  lint:
+    <<: *node_container
+    steps:
+      - checkout 
+      - attach_workspace:
+          at: .  
+      - *restore_cache
+      - run:
+          name: Lint the code
+          command: npm run circle:lint
+      - store_artifacts:
+          path: ./reports/eslint/eslint.xml
+          destination: lint-report
+
+      #Can't lint helm until we have charts
+      #- hmpps/helm_lint
+
+  unit-test:
+    <<: *node_container
+    steps:
+      - attach_workspace:
+          at: .
       - run:
           name: Run unit tests
           command: |
@@ -206,29 +91,15 @@ jobs:
           command: tar -cvzf coverage.tar coverage
       - store_artifacts:
           path: coverage.tar
-      - *notify_slack_on_failure
 
   end-to-end-test:
     <<: *node_container
     resource_class: large
     parallelism: 8
-    working_directory: ~/app
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - browser-tools/install-browser-tools
-      - *set_package_version
-      - *restore_cache
-      - *install_dependencies
-      - *save_cache
-      - run:
-          name: Compile typescript
-          command: npx tsc --project ./
-      - run:
-          name: reinstall webpack
-          command: npm remove webpack webpack-cli &&  npm install --save-dev webpack webpack-cli
-      - run:
-          name: Build assets and frameworks
-          command: npm run build
       - run:
           name: Run E2E tests (same instance)
           environment:
@@ -242,238 +113,100 @@ jobs:
       - store_test_results:
           path: reports/testcafe
       - store_artifacts:
-          path: ~/app/artifacts
-      - *notify_slack_on_failure
-
-  publish-release-to-sentry:
-    <<: *node_container
-    parameters:
-      sentry_env:
-        type: string
-    steps:
-      - checkout
-      - run:
-          name: Create release and notify Sentry of deploy
-          command: |
-            curl -sL https://sentry.io/get-cli/ | bash
-            export SENTRY_RELEASE=$(sentry-cli releases propose-version)
-            sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
-            sentry-cli releases set-commits $SENTRY_RELEASE --auto
-            sentry-cli releases finalize $SENTRY_RELEASE
-            sentry-cli releases deploys $SENTRY_RELEASE new -e $SENTRY_ENVIRONMENT
-          environment:
-            SENTRY_ENVIRONMENT: <<parameters.sentry_env>>
-
-  test-build-docker-image:
-    <<: *node_container
-    steps:
-      - checkout
-      - *set_package_version
-      - *install_dependencies
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Compile typescript
-          command: npx tsc --project ./
-      - run:
-          name: Build docker image
-          command: |
-            export BUILD_DATE=$(date -Is) >> $BASH_ENV
-            source $BASH_ENV
-
-            docker build \
-              --label build.git.sha=${CIRCLE_SHA1} \
-              --label build.git.branch=${CIRCLE_BRANCH} \
-              --label build.date=${BUILD_DATE} \
-              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
-              --build-arg APP_BUILD_TAG=${CIRCLE_BUILD_NUM} \
-              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
-              --build-arg APP_BUILD_BRANCH=${CIRCLE_BRANCH} \
-              -t app .
-  build-docker-image:
-    <<: *node_container
-    steps:
-      - checkout
-      - *set_package_version
-      - *install_dependencies
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Compile typescript
-          command: npx tsc --project ./
-      - run:
-          name: Build docker image
-          command: |
-            export BUILD_DATE=$(date -Is) >> $BASH_ENV
-            source $BASH_ENV
-
-            docker build \
-              --label build.git.sha=${CIRCLE_SHA1} \
-              --label build.git.branch=${CIRCLE_BRANCH} \
-              --label build.date=${BUILD_DATE} \
-              --build-arg APP_BUILD_DATE=${BUILD_DATE} \
-              --build-arg APP_BUILD_TAG=${CIRCLE_BUILD_NUM} \
-              --build-arg APP_GIT_COMMIT=${CIRCLE_SHA1} \
-              --build-arg APP_BUILD_BRANCH=${CIRCLE_BRANCH} \
-              -t app .
-      - run:
-          name: Push docker image to Quay
-          command: |
-            docker login -u="${QUAYIO_USERNAME}" -p="${QUAYIO_PASSWORD}" quay.io
-            docker tag app "quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
-            docker push "quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
-  deploy:
-    executor:
-      name: hmpps/default_small
-      tag: "3.10"
-    parameters:
-      env:
-        type: string
-      cluster:
-        type: string
-        default: "live"
-      notify_slack:
-        type: string
-        default: ""
-    steps:
-      - checkout
-      - *set_package_version
-      - export_kube_vars:
-          env: << parameters.env >>
-          cluster: << parameters.cluster >>
-      - kubernetes/install
-      - run:
-          name: Authenticate with cluster
-          command: |
-            echo -n $KUBE_CACERT | base64 -d > ./ca.crt
-            kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
-            kubectl config set-credentials circleci --token=${KUBE_TOKEN}
-            kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=circleci --namespace=${KUBE_NAMESPACE}
-            kubectl config use-context ${KUBE_CLUSTER}
-      - deploy:
-          name: Deploy image to << parameters.env >> on << parameters.cluster >> cluster
-          command: |
-            export BUILD_DATE=$(date -Is) >> $BASH_ENV
-            source $BASH_ENV
-
-            kubectl set image -n hmpps-book-secure-move-frontend-<< parameters.env >> \
-                    deployment/hmpps-book-secure-move-frontend-deployment-<< parameters.env >> \
-                    webapp="quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1}"
-
-            kubectl annotate -n hmpps-book-secure-move-frontend-<< parameters.env >> \
-                    deployment/hmpps-book-secure-move-frontend-deployment-<< parameters.env >> \
-                    kubernetes.io/change-cause="${BUILD_DATE} set image ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_SHA1} via CircleCI"
-      - when:
-          condition: <<parameters.notify_slack>>
-          steps:
-            - *notify_slack_on_release_end
+          path: artifacts
 
 workflows:
   continuous-deployment:
     jobs:
       # Tests
-      - lint-and-unit-test:
-          context:
-            - hmpps-common-vars
+      - build
+      - lint:
+          requires:
+            - build
+      - unit-test:
+          requires:
+            - build
       - end-to-end-test:
-          context:
-            - hmpps-common-vars
           name: end-to-end-test
-      - test-build-docker-image:
-          context:
-            - hmpps-common-vars
-          name: test-build-docker-image
-      # Docker builds
-      - build-docker-image:
-          context:
-            - hmpps-common-vars
+          requires:
+            - build
+      - hmpps/build_docker:
           <<: *only_main
           name: build-docker-image
+          requires:
+            - build
       # Deployment
-      - deploy:
-          context:
-            - hmpps-common-vars
+      - hmpps/deploy_env:
           <<: *only_main
           name: deploy-staging
           env: 'staging'
           requires:
             - build-docker-image
             - end-to-end-test
-            - lint-and-unit-test
-      - deploy:
-          context:
-            - hmpps-common-vars
+            - lint
+      - hmpps/deploy_env:
+          <<: *only_main
           name: deploy-preprod
           env: 'preprod'
           requires:
             - preprod-approval
-      - deploy:
-          context:
-            - hmpps-common-vars
+      - hmpps/deploy_env:
+          <<: *only_main
           name: deploy-uat
           env: 'uat'
           requires:
             - uat-approval
-      - deploy:
-          context:
-            - hmpps-common-vars
+      - hmpps/deploy_env:
+          <<: *only_main
           name: deploy-production
           env: 'production'
-          notify_slack: 'true'
+          slack_notification: true
+          slack_channel_name: pecs-dev
           requires:
             - prod-approval
 
       # Approval gates
       - uat-approval:
-          context:
-            - hmpps-common-vars
           type: approval
           requires:
             - deploy-staging
       - preprod-approval:
-          context:
-            - hmpps-common-vars
           type: approval
           requires:
             - deploy-staging
       - prod-approval:
-          context:
-            - hmpps-common-vars
           type: approval
           requires:
             - deploy-preprod
             - deploy-uat
-      - notify-of-approval:
-          <<: *only_main
-          context:
-            - hmpps-common-vars
-          requires:
-            - build-docker-image
-            - end-to-end-test
-            - lint-and-unit-test
 
       # Post release
-      - publish-release-to-sentry:
+      - hmpps/sentry_release_and_deploy:
           <<: *only_main
           name: publish-release-to-sentry-staging
-          sentry_env: staging
+          sentry_project: book-a-secure-move-frontend
+          sentry_environment: staging
+          sentry_create_release: true
           requires:
             - deploy-staging
-      - publish-release-to-sentry:
+      - hmpps/sentry_release_and_deploy:
           <<: *only_main
           name: publish-release-to-sentry-uat
-          sentry_env: uat
+          sentry_project: book-a-secure-move-frontend
+          sentry_environment: uat
           requires:
             - deploy-uat
-      - publish-release-to-sentry:
+      - hmpps/sentry_release_and_deploy:
           <<: *only_main
           name: publish-release-to-sentry-preprod
-          sentry_env: preproduction
+          sentry_project: book-a-secure-move-frontend
+          sentry_environment: preproduction
           requires:
             - deploy-preprod
-      - publish-release-to-sentry:
+      - hmpps/sentry_release_and_deploy:
           <<: *only_main
           name: publish-release-to-sentry-production
-          sentry_env: production
+          sentry_project: book-a-secure-move-frontend
+          sentry_environment: production
           requires:
             - deploy-production

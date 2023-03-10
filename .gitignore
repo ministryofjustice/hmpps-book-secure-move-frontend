@@ -79,3 +79,6 @@ report*.json
 
 # IntelliJ IDEA folder
 .idea
+
+# Helm Chart lockfiles
+**/Chart.lock
