@@ -8,6 +8,10 @@ const {
   MoveDetails,
   PersonalDetails,
   RecallInfo,
+  AddLodgeController,
+  AddLodgeLocationController,
+  AddLodgeDateController,
+  AddLodgeSaveController,
 } = require('./controllers')
 
 const updateStepPropOverrides = {
@@ -114,6 +118,37 @@ const updateSteps = [
         ...createSteps['/health-information'],
         ...updateStepPropOverrides,
         controller: Assessment,
+      },
+    },
+  },
+  {
+    key: 'lodge',
+    permission: 'move:update',
+    controller: AddLodgeController,
+    steps: {
+      '/lodge': {
+        entryPoint: true,
+        reset: true,
+        resetJourney: true,
+        skip: true,
+        controller: AddLodgeController,
+        next: 'lodge/location',
+      },
+      '/lodge/location': {
+        controller: AddLodgeLocationController,
+        pageTitle: 'moves::steps.lodge.location.heading',
+        fields: ['to_location_lodge'],
+        next: 'lodge/date',
+      },
+      '/lodge/date': {
+        controller: AddLodgeDateController,
+        pageTitle: 'moves::steps.lodge.date.heading',
+        fields: ['date_type_lodge'],
+        next: 'lodge/add',
+      },
+      '/lodge/add': {
+        skip: true,
+        controller: AddLodgeSaveController,
       },
     },
   },

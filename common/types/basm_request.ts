@@ -28,5 +28,5 @@ export interface BasmRequest extends Express.Request {
     save: () => void
   }
   sessionModel?: SessionModel
-  t?: (keys: string, options?: any) => string
+  t: typeof I18n.t
 }
