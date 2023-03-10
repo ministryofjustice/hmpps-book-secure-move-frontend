@@ -5,10 +5,12 @@ const courtHearingCourtCase = require('./court-hearing-court-case')
 const courtHearingStartTime = require('./court-hearing-start-time')
 const date = require('./date')
 const dateCustom = require('./date-custom')
+const dateCustomLodge = require('./date-custom-lodge')
 const dateFrom = require('./date-from')
 const dateOfBirth = require('./date-of-birth')
 const dateTo = require('./date-to')
 const dateType = require('./date-type')
+const dateTypeLodge = require('./date-type-lodge')
 const documents = require('./documents')
 const ethnicity = require('./ethnicity')
 const filterPoliceNationalComputer = require('./filter.police-national-computer')
@@ -34,6 +36,7 @@ const timeDue = require('./time-due')
 const toLocation = require('./to-location')
 const toLocationCourtAppearance = require('./to-location-court-appearance')
 const toLocationHospital = require('./to-location-hospital')
+const toLocationLodge = require('./to-location-lodge')
 const toLocationPoliceTransfer = require('./to-location-police-transfer')
 const toLocationPrisonTransfer = require('./to-location-prison-transfer')
 const toLocationSecureChildrensHomeTransfer = require('./to-location-secure-childrens-home')
@@ -48,10 +51,12 @@ const fields = {
   court_hearing__start_time: courtHearingStartTime,
   date,
   date_custom: dateCustom,
+  date_custom_lodge: dateCustomLodge,
   date_from: dateFrom,
   date_of_birth: dateOfBirth,
   date_to: dateTo,
   date_type: dateType,
+  date_type_lodge: dateTypeLodge,
   documents,
   escape: assessmentAnswer(),
   ethnicity,
@@ -97,6 +102,7 @@ const fields = {
   to_location: toLocation,
   to_location_court_appearance: toLocationCourtAppearance,
   to_location_hospital: toLocationHospital,
+  to_location_lodge: toLocationLodge,
   to_location_police_transfer: toLocationPoliceTransfer,
   to_location_prison_transfer: toLocationPrisonTransfer,
   to_location_secure_childrens_home: toLocationSecureChildrensHomeTransfer,
