@@ -10,17 +10,9 @@ export interface BasmRequest extends Express.Request {
   allocation?: Allocation
   canAccess: (permission: string) => boolean
   flash?: (yeah: any, nah: any) => void
-  form?: {
-    options: {
-      fields: { [key: string]: any }
-      next: string
-    }
-    values: { [key: string]: any }
-  }
   initialStep?: any
   journeys: Journey[]
   move: Move
-  t: typeof I18n.t
   services?: {
     allocation: Service
   }
@@ -29,4 +21,11 @@ export interface BasmRequest extends Express.Request {
   }
   sessionModel?: SessionModel
   t: typeof I18n.t
+  form?: {
+    options: {
+      fields: { [key: string]: any }
+      next: string
+    }
+    values: { [key: string]: any }
+  }
 }
