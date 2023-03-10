@@ -1,3 +1,5 @@
+import I18n from '../../config/i18n'
+
 import { Allocation } from './allocation'
 import { Journey } from './journey'
 import { Move } from './move'
@@ -21,4 +23,5 @@ export interface BasmRequest extends Express.Request {
     allocation: Service
   }
   sessionModel?: SessionModel
+  t: typeof I18n.t
 }

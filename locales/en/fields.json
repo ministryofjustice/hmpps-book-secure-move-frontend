@@ -1,6 +1,7 @@
 {
   "date": {
     "hint": "For example 28/11/2020, 28 November 2020 or next Friday",
+    "hint_limited": "For example, 27/07/2022 or 27 July 2022.",
     "label_with_error": "Date"
   },
   "date_select": {
@@ -121,6 +122,9 @@
   "to_location_prison_transfer": {
     "label": "Name of prison or YOI"
   },
+  "to_location_lodge": {
+    "label": "Name of lodge prison"
+  },
   "to_location_hospital": {
     "label": "Name of hospital"
   },
@@ -151,6 +155,13 @@
       },
       "another": {
         "label": "Another date"
+      }
+    }
+  },
+  "date_type_lodge": {
+    "items": {
+      "day_after_tomorrow": {
+        "label": "The day after tomorrow ({{date}})"
       }
     }
   },
