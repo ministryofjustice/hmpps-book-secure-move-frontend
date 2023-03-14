@@ -123,7 +123,7 @@
     "label": "Name of prison or YOI"
   },
   "to_location_lodge": {
-    "label": "Name of lodge prison"
+    "label": "Name of lodge location"
   },
   "to_location_hospital": {
     "label": "Name of hospital"
@@ -152,6 +152,9 @@
       },
       "tomorrow": {
         "label": "Tomorrow ({{date}})"
+      },
+      "overmorrow": {
+        "label": "The day after tomorrow ({{date}})"
       },
       "another": {
         "label": "Another date"
