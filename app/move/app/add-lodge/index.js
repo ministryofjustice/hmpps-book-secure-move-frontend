@@ -19,5 +19,5 @@ router.use(wizard(steps, fields, config, 'params.moveId'))
 // Export
 module.exports = {
   router,
-  mountpath: '/newlodge',
+  mountpath: '/lodge',
 }
