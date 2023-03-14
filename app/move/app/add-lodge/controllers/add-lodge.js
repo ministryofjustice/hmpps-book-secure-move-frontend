@@ -5,12 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddLodgeController = void 0;
 // @ts-ignore // TODO: convert to ts
-const base1 = __importDefault(require("../../edit/controllers/base"));
-class AddLodgeController extends base1.default {
+const base_1 = __importDefault(require("../../edit/controllers/base"));
+class AddLodgeController extends base_1.default {
     middlewareSetup() {
+        console.log('Setting up middleware');
         super.middlewareSetup();
     }
     setNextStep(req, res, next) {
+        console.log('Hi');
         next();
     }
     canEdit(req, res, next) {
