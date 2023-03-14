@@ -11,6 +11,7 @@ const personEscortRecordApp = require('../person-escort-record')
 const policeCustodyFormApp = require('../police-custody-form')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
 
+const addLodgeApp = require('./app/add-lodge')
 const assignApp = require('./app/assign')
 const cancelApp = require('./app/cancel')
 const editApp = require('./app/edit')
@@ -61,6 +62,7 @@ moveRouter.use(cancelApp.mountpath, cancelApp.router)
 moveRouter.use(unassignApp.mountpath, unassignApp.router)
 moveRouter.use(assignApp.mountpath, assignApp.router)
 moveRouter.use(editApp.mountpath, editApp.router)
+moveRouter.use(addLodgeApp.mountpath, addLodgeApp.router)
 
 // Export
 module.exports = {

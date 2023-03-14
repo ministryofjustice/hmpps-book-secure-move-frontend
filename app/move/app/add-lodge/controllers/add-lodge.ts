@@ -7,6 +7,7 @@ export class AddLodgeController extends EditBase {
   }
 
   setNextStep(req: any, res: any, next: any) {
+    console.log('Hi')
     next()
   }
 
