@@ -1,15 +1,10 @@
-const AddLodgeController = require('./controllers/add-lodge')
-const AddLodgeLocationController = require('./controllers/add-lodge-location')
-const AddLodgeDateController = require('./controllers/add-lodge-date')
-const AddLodgeSaveController  = require('./controllers/add-lodge-save')
+const { AddLodgeController,
+  AddLodgeLocationController ,
+  AddLodgeDateController,
+  AddLodgeSaveController } = require('./controllers')
 
-module.exports =
-  {
-    key: 'lodge',
-    permission: 'move:update',
-    controller: AddLodgeController,
-    steps: {
-      '/lodge': {
+module.exports = {
+      '/': {
         entryPoint: true,
         reset: true,
         resetJourney: true,
@@ -32,6 +27,5 @@ module.exports =
       '/save-lodge': {
         skip: true,
         controller: AddLodgeSaveController,
-      },
-    },
+      }
   }
