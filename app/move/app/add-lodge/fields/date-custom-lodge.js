@@ -1,6 +1,6 @@
 const { cloneDeep } = require('lodash')
 
-const commonDateField = require('./common.date')
+const commonDateField = require('../../new/fields/common.date')
 
 const dateCustom = {
   ...cloneDeep(commonDateField),
