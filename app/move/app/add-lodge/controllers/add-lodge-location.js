@@ -14,13 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AddLodgeLocationController = void 0;
 // @ts-ignore // TODO: convert to ts
-const middleware1 = __importDefault(require("../../../../../common/middleware"));
+const middleware_1 = __importDefault(require("../../../../../common/middleware"));
 const add_lodge_1 = require("./add-lodge");
 class AddLodgeLocationController extends add_lodge_1.AddLodgeController {
     middlewareSetup() {
         super.middlewareSetup();
         // @ts-ignore // #use does exist
-        this.use(middleware1.default.setLocationItems('prison', 'to_location_lodge'));
+        this.use(middleware_1.default.setLocationItems('prison', 'to_location_lodge'));
     }
     successHandler(req, res, next) {
         const _super = Object.create(null, {
