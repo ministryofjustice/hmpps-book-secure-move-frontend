@@ -64,6 +64,7 @@ moveRouter.use(assignApp.mountpath, assignApp.router)
 moveRouter.use(editApp.mountpath, editApp.router)
 moveRouter.use(addLodgeApp.mountpath, addLodgeApp.router)
 
+console.log(moveRouter)
 // Export
 module.exports = {
   router,
