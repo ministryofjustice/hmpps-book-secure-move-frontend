@@ -3,29 +3,36 @@ const { AddLodgeController,
   AddLodgeDateController,
   AddLodgeSaveController } = require('./controllers')
 
-module.exports = {
+const addLodgeSteps = {
       '/': {
         entryPoint: true,
         reset: true,
         resetJourney: true,
         skip: true,
-        controller: AddLodgeController,
-        next: 'lodge-location',
+        next: 'new',
       },
-      '/lodge-location': {
-        controller: AddLodgeLocationController,
+      '/new': {
+        controller: AddLodgeController.AddLodgeController,
+        pageTitle: 'moves::steps.lodge.location.heading',
+        skip: true,
+        next: 'location',
+      },
+      '/location': {
+        controller: AddLodgeLocationController.AddLodgeLocationController,
         pageTitle: 'moves::steps.lodge.location.heading',
         fields: ['to_location_lodge'],
-        next: 'lodge-date',
+        next: 'date',
       },
-      '/lodge-date': {
-        controller: AddLodgeDateController,
+      '/date': {
+        controller: AddLodgeDateController.AddLodgeDateController,
         pageTitle: 'moves::steps.lodge.date.heading',
         fields: ['date_type_lodge'],
         next: 'save-lodge',
       },
-      '/save-lodge': {
+      '/save': {
         skip: true,
-        controller: AddLodgeSaveController,
+        controller: AddLodgeSaveController.AddLodgeSaveController,
       }
   }
+
+module.exports = addLodgeSteps
