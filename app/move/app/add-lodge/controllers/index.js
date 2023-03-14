@@ -4,10 +4,8 @@ const AddLodgeDateController = require('./add-lodge-date')
 const AddLodgeSaveController  = require('./add-lodge-save')
 
 module.exports = {
-
   AddLodgeController,
   AddLodgeLocationController,
   AddLodgeDateController,
   AddLodgeSaveController,
-
 }
