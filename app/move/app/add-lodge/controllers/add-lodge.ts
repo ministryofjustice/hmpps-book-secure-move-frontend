@@ -1,8 +1,9 @@
 // @ts-ignore // TODO: convert to ts
-import EditBase from './base'
+import EditBase from '../../edit/controllers/base'
 
 export class AddLodgeController extends EditBase {
   middlewareSetup() {
+    console.log('Setting up middleware')
     super.middlewareSetup()
   }
 
