@@ -3,12 +3,10 @@ import EditBase from '../../edit/controllers/base'
 
 export class AddLodgeController extends EditBase {
   middlewareSetup() {
-    console.log('Setting up middleware')
     super.middlewareSetup()
   }
 
   setNextStep(req: any, res: any, next: any) {
-    console.log('Hi')
     next()
   }
 
