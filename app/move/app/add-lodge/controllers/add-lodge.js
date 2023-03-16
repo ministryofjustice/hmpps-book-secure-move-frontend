@@ -8,11 +8,9 @@ exports.AddLodgeController = void 0;
 const base_1 = __importDefault(require("../../edit/controllers/base"));
 class AddLodgeController extends base_1.default {
     middlewareSetup() {
-        console.log('Setting up middleware');
         super.middlewareSetup();
     }
     setNextStep(req, res, next) {
-        console.log('Hi');
         next();
     }
     canEdit(req, res, next) {
