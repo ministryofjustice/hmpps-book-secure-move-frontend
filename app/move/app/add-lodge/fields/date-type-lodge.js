@@ -1,5 +1,5 @@
 const dateType = {
-  validate: 'required',
+  validate: 'required, after',
   component: 'govukRadios',
   name: 'date_type',
   fieldset: {
@@ -21,7 +21,7 @@ const dateType = {
     {
       value: 'custom',
       text: 'fields::date_type.items.another.label',
-      conditional: 'date_custom',
+      conditional: 'date_custom_lodge',
     },
   ],
 }
