@@ -12,8 +12,9 @@ const addLodgeSteps = {
         next: 'new',
       },
       '/new': {
-        controller: AddLodgeController.AddLodgeController,
-        pageTitle: 'moves::steps.lodge.location.heading',
+        entryPoint: true,
+        reset: true,
+        resetJourney: true,
         skip: true,
         next: 'location',
       },
