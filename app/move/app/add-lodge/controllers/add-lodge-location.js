@@ -20,7 +20,7 @@ class AddLodgeLocationController extends add_lodge_1.AddLodgeController {
     middlewareSetup() {
         super.middlewareSetup();
         // @ts-ignore // #use does exist
-        this.use(middleware_1.default.setLocationItems('prison', 'to_location_lodge'));
+        this.use(middleware_1.default.setLocationItems(['prison', 'police'], 'to_location_lodge'));
     }
     successHandler(req, res, next) {
         const _super = Object.create(null, {
