@@ -17,6 +17,7 @@ describe('Move view app', function () {
         req = {
           canAccess: sinon.stub(),
           move: {
+            date: '2023-03-27',
             id: '12345',
             is_lockout: false,
             profile: { id: 'profile', person: {} },

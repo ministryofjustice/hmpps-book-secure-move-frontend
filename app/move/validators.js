@@ -60,4 +60,7 @@ module.exports = {
   policeNationalComputerNumber(value) {
     return value === '' || isPNCNumberValid(value)
   },
+  positive(number) {
+    return Number.isFinite(number) && number > 0
+  },
 }
