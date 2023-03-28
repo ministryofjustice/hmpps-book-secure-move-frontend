@@ -1,6 +1,7 @@
-const toLocation = require('../../new/fields/common.to-location')
+// @ts-ignore // TODO: convert to TS
+import toLocation from '../../new/fields/common.to-location'
 
-const toLocationLodge = {
+export const toLocationLodge = {
   ...toLocation,
   id: 'to_location_lodge',
   name: 'to_location_lodge',
@@ -11,4 +12,3 @@ const toLocationLodge = {
     classes: 'govuk-label--s',
   },
 }
-module.exports = toLocationLodge

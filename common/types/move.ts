@@ -3,7 +3,12 @@ import { Location } from './location'
 import { Profile } from './profile'
 
 export interface Move {
+<<<<<<< HEAD
   profile?: Profile
+=======
+  date: string | Date
+  profile: Profile
+>>>>>>> a02cc9aa (chore: WIP add lodge form)
   status:
     | 'proposed'
     | 'requested'

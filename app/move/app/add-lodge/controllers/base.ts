@@ -1,9 +1,30 @@
 // @ts-ignore // TODO: convert to ts
-import EditBase from '../../edit/controllers/base'
+import UpdateBaseController from '../../edit/controllers/base'
 
-export class AddLodgeController extends EditBase {
+export class BaseController extends UpdateBaseController {
   middlewareSetup() {
     super.middlewareSetup()
+  }
+
+  getErrors(req: any, res: any) {
+    const errors = super.getErrors(req, res)
+
+    const referrer = req.get('referrer')
+    console.log(
+      'ERRORORORORORORS',
+      errors,
+      req.initialStep,
+      req.query.referrer,
+      referrer,
+      (this as any).getBaseUrl(req)
+    )
+
+    if (referrer) {
+      const { pathname } = new URL(referrer)
+      console.log(pathname)
+    }
+
+    return errors
   }
 
   setNextStep(req: any, res: any, next: any) {

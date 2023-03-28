@@ -69,8 +69,8 @@
       "location": {
         "heading": "Where would you like to lodge this person?"
       },
-      "date": {
-        "heading": "When will they leave the lodge location?"
+      "length": {
+        "heading": "How many nights will they stay at the lodge location?"
       }
     }
   },
