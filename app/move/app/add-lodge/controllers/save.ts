@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 import { addDays, parseISO } from 'date-fns'
 
 import { formatDate } from '../../../../../config/nunjucks/filters'
 
+=======
+>>>>>>> f5133e5c (chore: WIP add lodge form)
 import { BaseController } from './base'
 
 export class SaveController extends BaseController {
@@ -9,6 +12,7 @@ export class SaveController extends BaseController {
     super.middlewareSetup()
   }
 
+<<<<<<< HEAD
   async successHandler(req: any, res: any, next: any) {
     const dateFormat = 'yyyy-MM-dd'
 
@@ -40,5 +44,11 @@ export class SaveController extends BaseController {
     } catch (err) {
       next(err)
     }
+=======
+  successHandler(req: any, res: any, next: any) {
+    console.log('SAVE!')
+
+    next()
+>>>>>>> f5133e5c (chore: WIP add lodge form)
   }
 }

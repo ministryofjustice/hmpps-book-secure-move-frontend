@@ -1,11 +1,13 @@
-import { AddLodgeController } from './add-lodge'
+import { BaseController } from './base'
 
-export class AddLodgeSaveController extends AddLodgeController {
+export class SaveController extends BaseController {
   middlewareSetup() {
     super.middlewareSetup()
   }
 
   successHandler(req: any, res: any, next: any) {
+    console.log('SAVE!')
+
     next()
   }
 }
