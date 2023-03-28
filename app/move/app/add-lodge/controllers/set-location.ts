@@ -1,13 +1,18 @@
 // @ts-ignore // TODO: convert to ts
 import commonMiddleware from '../../../../../common/middleware'
 
-import { AddLodgeController } from './add-lodge'
+import { BaseController } from './base'
 
-export class AddLodgeLocationController extends AddLodgeController {
+export class SetLocationController extends BaseController {
   middlewareSetup() {
     super.middlewareSetup()
     // @ts-ignore // #use does exist
-    this.use(commonMiddleware.setLocationItems(['prison', 'police'], 'to_location_lodge'))
+    this.use(
+      commonMiddleware.setLocationItems(
+        ['prison', 'police'],
+        'to_location_lodge'
+      )
+    )
   }
 
   async successHandler(req: any, res: any, next: any) {

@@ -8,6 +8,7 @@ import { Move } from '../../../types/move'
 import { moveTransformer } from './move.transformer'
 
 const baseMove: Move = {
+  date: '',
   id: '',
   profile: {
     id: '',

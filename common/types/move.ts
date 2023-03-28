@@ -5,6 +5,7 @@ import { Supplier } from './supplier'
 
 export interface Move {
   profile?: Profile
+  date: string | Date
   status:
     | 'proposed'
     | 'requested'

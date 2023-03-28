@@ -4,6 +4,9 @@
     "hint_limited": "For example, 27/07/2022 or 27 July 2022.",
     "label_with_error": "Date"
   },
+  "number": {
+    "hint": "For example, 5 or 6."
+  },
   "date_select": {
     "label": "Date you want to view",
     "label_with_error": "date you want to view"
@@ -77,6 +80,12 @@
   },
   "to_location": {
     "label": "Move to"
+  },
+  "lodge_location": {
+    "label": "Lodge prison"
+  },
+  "lodge_start": {
+    "label": "Lodge start date"
   },
   "move_type": {
     "label": "Move to",
@@ -161,10 +170,16 @@
       }
     }
   },
-  "date_type_lodge": {
+  "lodge_length": {
     "items": {
-      "day_after_tomorrow": {
-        "label": "The day after tomorrow ({{date}})"
+      "one": {
+        "label": "One"
+      },
+      "two": {
+        "label": "Two"
+      },
+      "another": {
+        "label": "Other"
       }
     }
   },
