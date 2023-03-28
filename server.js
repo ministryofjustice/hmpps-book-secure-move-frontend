@@ -260,6 +260,9 @@ module.exports = async () => {
           styleSrc: ["'self'", "'unsafe-inline'", 'cdn.jsdelivr.net'],
         },
       },
+      referrerPolicy: {
+        policy: 'strict-origin-when-cross-origin',
+      },
     })
   )
 
