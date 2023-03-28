@@ -4,8 +4,8 @@ import { Profile } from './profile'
 import { Supplier } from './supplier'
 
 export interface Move {
-  profile?: Profile
   date: string | Date
+  profile?: Profile
   status:
     | 'proposed'
     | 'requested'
