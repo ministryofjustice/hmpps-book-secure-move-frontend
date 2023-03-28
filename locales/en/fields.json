@@ -171,7 +171,7 @@
       }
     }
   },
-  "lodge_length_type": {
+  "lodge_length": {
     "items": {
       "one": {
         "label": "One"
