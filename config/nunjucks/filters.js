@@ -11,13 +11,19 @@ const {
   isSameMonth,
   isSameYear,
   isDate,
+  addDays,
+  subDays,
 } = require('date-fns')
 const filesizejs = require('filesize')
 const { filter, kebabCase, startCase } = require('lodash')
 const pluralize = require('pluralize')
 
 const parse = require('../../common/parsers')
-const { current_week: currentWeek } = require('../../locales/en/actions.json')
+const {
+  current_week: currentWeek,
+  next_week: nextWeek,
+  last_week: lastWeek,
+} = require('../../locales/en/actions.json')
 const { DATE_FORMATS } = require('../index')
 
 function _isRelativeDate(date) {
@@ -34,6 +40,18 @@ function _isCurrentWeek(date) {
     isDate(date) ? date : parseISO(date)
   )
   return isThisWeek(startDate, options) && isThisWeek(endDate, options)
+}
+
+function _isNextWeek(date) {
+  return _isCurrentWeek(
+    date.map(date => subDays(isDate(date) ? date : parseISO(date), 7))
+  )
+}
+
+function _isLastWeek(date) {
+  return _isCurrentWeek(
+    date.map(date => addDays(isDate(date) ? date : parseISO(date), 7))
+  )
 }
 
 /**
@@ -127,6 +145,14 @@ function formatDateRangeAsRelativeWeek(value) {
 
   if (_isCurrentWeek(dates)) {
     return currentWeek
+  }
+
+  if (_isNextWeek(dates)) {
+    return nextWeek
+  }
+
+  if (_isLastWeek(dates)) {
+    return lastWeek
   }
 
   return formatDateRange(value)
@@ -252,7 +278,7 @@ function formatDateRangeWithRelativeWeek(value) {
 
   const dateWithWeek = formatDateRange(value)
 
-  return _isCurrentWeek(dates)
+  return _isCurrentWeek(dates) || _isNextWeek(dates) || _isLastWeek(dates)
     ? `${dateWithWeek} (${formatDateRangeAsRelativeWeek(value)})`
     : dateWithWeek
 }

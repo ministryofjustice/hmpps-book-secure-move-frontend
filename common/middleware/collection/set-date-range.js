@@ -3,6 +3,7 @@ const dateHelpers = require('../../helpers/date')
 function setDateRange(req, res, next, date) {
   const { period } = req.params
   const dateRange = dateHelpers.getDateRange(date, period)
+  req.session.viewDate = date
 
   if (!dateRange[0] && !dateRange[1]) {
     const error = new Error('Invalid date')

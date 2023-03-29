@@ -10,6 +10,7 @@ describe('Population middleware', function () {
       req = {
         baseUrl: '/population',
         canAccess: sinon.stub().returns(false),
+        session: {},
       }
       res = {
         redirect: sinon.stub(),

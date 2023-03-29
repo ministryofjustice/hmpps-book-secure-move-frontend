@@ -5,9 +5,11 @@ const {
   setContext,
   setDateRange,
   setDatePagination,
+  switchPeriod,
 } = require('../../common/middleware/collection')
 const setLocation = require('../../common/middleware/set-location')
 const wizard = require('../../common/middleware/unique-form-wizard')
+const { DEFAULTS } = require('../moves/constants')
 
 const { BASE_PATH, MOUNTPATH, DAILY_PATH, WEEKLY_PATH } = require('./constants')
 const { dashboard, daily, weekly } = require('./controllers')
@@ -55,6 +57,8 @@ router.get(
   setResultsAsFreeSpacesTables,
   dashboard
 )
+
+router.get(BASE_PATH + '/switch-view', switchPeriod(DEFAULTS.TIME_PERIOD))
 
 router.get(
   WEEKLY_PATH,

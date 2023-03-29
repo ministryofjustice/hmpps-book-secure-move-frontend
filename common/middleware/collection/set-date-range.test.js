@@ -12,6 +12,7 @@ describe('Moves middleware', function () {
         params: {
           period: 'day',
         },
+        session: {},
       }
       res = {
         locals: {},
@@ -41,6 +42,7 @@ describe('Moves middleware', function () {
         req = {
           baseUrl: '/req-base',
           params: { date: 'Invalid date' },
+          session: {},
         }
 
         setDateRange(req, res, nextSpy, 'Invalid date')

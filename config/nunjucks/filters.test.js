@@ -545,8 +545,7 @@ describe('Nunjucks filters', function () {
           '2020-04-13',
           '2020-04-19',
         ])
-        expect(formattedRange).to.equal('13 to 19 Apr 2020')
-        // expect(formattedRange).to.equal('Next week')
+        expect(formattedRange).to.equal('Next week')
       })
     })
 
@@ -556,8 +555,7 @@ describe('Nunjucks filters', function () {
           '2020-03-30',
           '2020-04-05',
         ])
-        expect(formattedRange).to.equal('30 Mar to 5 Apr 2020')
-        // expect(formattedRange).to.equal('Last week')
+        expect(formattedRange).to.equal('Last week')
       })
     })
 

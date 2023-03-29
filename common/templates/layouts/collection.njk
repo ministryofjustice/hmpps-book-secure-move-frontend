@@ -13,6 +13,12 @@
   {% set displayDate = datetime | formatDateWithRelativeDay %}
 {% endif %}
 
+{% if period === 'week' %}
+  {% set other = 'day' %}
+{% else %}
+  {% set other = 'week' %}
+{% endif %}
+
 {% block pageTitle %}
   {{ t("collections::page_title_with_date", {
     context: context,
@@ -98,6 +104,15 @@
                   }) }}
               </a>
             </li>
+            {% if datePagination %}
+             <li>
+               <a href="{{ REQUEST_PATH }}/switch-view" class="app-icon app-icon--switch">
+                 {{ t("collections::switch_view", {
+                   other: other
+                    }) }}
+                  </a>
+                </li>
+            {% endif %}
           </ul>
         </div>
       {% endblock %}

@@ -35,6 +35,15 @@ $_icon-height: 20px;
   }
 }
 
+.app-icon--switch {
+  background-image: url("../images/switch-icon.png");
+
+  @include govuk-device-pixel-ratio {
+    background-image: url("../images/switch-icon@2x.png");
+  }
+}
+
+
 .app-icon--warning {
   background-image: url("../images/warning-icon.png");
 

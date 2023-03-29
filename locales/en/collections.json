@@ -48,6 +48,7 @@
   "download_csv_outgoing_moves": "Download moves (.csv)",
   "download_csv_incoming_moves": "Download moves (.csv)",
   "download_csv_single_requests": "Download moves (.csv)",
+  "switch_view" : "Switch to {{other}} view",
   "labels": {
     "vehicle_registration": "Vehicle registration",
     "awaiting_vehicle": "Awaiting vehicle",
@@ -75,7 +76,7 @@
     "move_status_proposed": "Proposed",
     "move_status_requested": "Requested",
     "move_status_booked": "Booked",
-    "move_status_in_transit": "In transet",
+    "move_status_in_transit": "In transit",
     "move_status_completed": "Completed",
     "move_status_cancelled": "Cancelled",
     "reference": "Reference"
