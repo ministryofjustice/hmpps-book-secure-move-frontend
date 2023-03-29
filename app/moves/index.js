@@ -13,6 +13,7 @@ const {
   setContext,
   setDateRange,
   setPagination,
+  switchPeriod,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 const setLocation = require('../../common/middleware/set-location')
@@ -126,6 +127,10 @@ viewRouter.get(
     setDownloadResultsMoves('incoming'),
   ],
   download
+)
+viewRouter.get(
+  COLLECTION_VIEW_PATH + '/switch-view',
+  switchPeriod(DEFAULTS.TIME_PERIOD)
 )
 
 router.get('/', redirectBaseUrl)

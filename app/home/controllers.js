@@ -10,6 +10,8 @@ async function dashboard(req, res) {
   const today = new Date().toISOString()
   let downtimeContent
   let whatsNewContent
+  req.session.period = undefined
+  req.session.viewDate = undefined
 
   try {
     downtimeContent = await new DowntimeService().fetchBanner()
