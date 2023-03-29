@@ -19,11 +19,6 @@ const { filter, kebabCase, startCase } = require('lodash')
 const pluralize = require('pluralize')
 
 const parse = require('../../common/parsers')
-const {
-  current_week: currentWeek,
-  next_week: nextWeek,
-  last_week: lastWeek,
-} = require('../../locales/en/actions.json')
 const { DATE_FORMATS } = require('../index')
 
 function _isRelativeDate(date) {
@@ -144,15 +139,15 @@ function formatDateRangeAsRelativeWeek(value) {
   }
 
   if (_isCurrentWeek(dates)) {
-    return currentWeek
+    return 'this week'
   }
 
   if (_isNextWeek(dates)) {
-    return nextWeek
+    return 'next week'
   }
 
   if (_isLastWeek(dates)) {
-    return lastWeek
+    return 'last week'
   }
 
   return formatDateRange(value)

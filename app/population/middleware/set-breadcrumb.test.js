@@ -44,7 +44,7 @@ describe('Population middleware', function () {
         middleware(req, res, next)
         expect(breadcrumbSpy.firstCall).to.have.been.calledWithExactly({
           href: '/population/week/2020-07-27',
-          text: 'population::breadcrumbs.home (This week)',
+          text: 'population::breadcrumbs.home (this week)',
         })
       })
     })

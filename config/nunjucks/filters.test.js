@@ -1,8 +1,10 @@
 const proxyquire = require('proxyquire')
 const timezoneMock = require('timezone-mock')
 
-const actions = {
-  current_week: 'This is the week that is',
+const relativeWeeks = {
+  current: 'this week',
+  previous: 'last week',
+  next: 'next week',
 }
 
 const mockFilesizeResponse = '10 MB'
@@ -18,7 +20,6 @@ const filters = proxyquire('./filters', {
       WITH_TIME_WITH_SECONDS_AND_DAY: "H:mm:ss 'on' EEEE d MMM yyyy",
     },
   },
-  '../../locales/en/actions.json': actions,
   filesize: mockFilesizejs,
 })
 
@@ -296,7 +297,7 @@ describe('Nunjucks filters', function () {
       it('should return date along with `This week`', function () {
         const formattedDate = filters.formatDateRangeWithRelativeWeek(dateRange)
         expect(formattedDate).to.equal(
-          `14 to 20 Aug 2017 (${actions.current_week})`
+          `14 to 20 Aug 2017 (${relativeWeeks.current})`
         )
       })
     })
@@ -516,7 +517,7 @@ describe('Nunjucks filters', function () {
             '2020-04-06',
             '2020-04-12',
           ])
-          expect(formattedRange).to.equal(actions.current_week)
+          expect(formattedRange).to.equal(relativeWeeks.current)
         })
       })
 
@@ -526,7 +527,7 @@ describe('Nunjucks filters', function () {
             '2020-04-08',
             '2020-04-12',
           ])
-          expect(formattedRange).to.equal(actions.current_week)
+          expect(formattedRange).to.equal(relativeWeeks.current)
         })
 
         it('should return `This week`', function () {
@@ -534,7 +535,7 @@ describe('Nunjucks filters', function () {
             '2020-04-06',
             '2020-04-10',
           ])
-          expect(formattedRange).to.equal(actions.current_week)
+          expect(formattedRange).to.equal(relativeWeeks.current)
         })
       })
     })
@@ -545,7 +546,7 @@ describe('Nunjucks filters', function () {
           '2020-04-13',
           '2020-04-19',
         ])
-        expect(formattedRange).to.equal('Next week')
+        expect(formattedRange).to.equal(relativeWeeks.next)
       })
     })
 
@@ -555,7 +556,7 @@ describe('Nunjucks filters', function () {
           '2020-03-30',
           '2020-04-05',
         ])
-        expect(formattedRange).to.equal('Last week')
+        expect(formattedRange).to.equal(relativeWeeks.previous)
       })
     })
 
