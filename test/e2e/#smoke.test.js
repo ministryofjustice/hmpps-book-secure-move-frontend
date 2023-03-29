@@ -42,7 +42,7 @@ const usersWhoHaveADashboard = [
     displayName: 'E. Allocation',
     homeSection: dashboardPage.nodes.singleRequestsSection,
     homeButton: dashboardPage.nodes.singleRequestsLink,
-    timePeriod: 'This week',
+    timePeriod: 'this week',
   },
 ]
 
