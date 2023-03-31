@@ -226,7 +226,12 @@ module.exports = async () => {
   // unsafe-inline is required as govuk-template injects `js-enabled` class via inline script
   app.use(
     helmet({
+      crossOriginEmbedderPolicy: false,
+      crossOriginOpenerPolicy: false,
+      crossOriginResourcePolicy: false,
+      originAgentCluster: false,
       contentSecurityPolicy: {
+        useDefaults: false,
         directives: {
           defaultSrc: ["'self'"],
           scriptSrc: [
