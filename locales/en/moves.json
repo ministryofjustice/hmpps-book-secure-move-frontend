@@ -71,6 +71,14 @@
       },
       "length": {
         "heading": "How many nights will they stay at the lodge location?"
+      },
+      "saved": {
+        "page_title": "Overnight lodge added",
+        "heading": "Overnight lodge added",
+        "content": "Move reference<br><strong>{{moveReference}}</strong>",
+        "detail": "The move for PERSON now includes an overnight lodge at <strong>{{location}}</strong> {{dateText | raw}}.",
+        "date": "on <strong>{{startDate | formatDateWithDay}}</strong>",
+        "date_long": "between <strong>{{startDate | formatDateWithDay}}</strong> and <strong>{{endDate | formatDateWithDay}}</strong>"
       }
     }
   },

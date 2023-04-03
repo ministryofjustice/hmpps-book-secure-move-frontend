@@ -9,20 +9,7 @@ export class BaseController extends UpdateBaseController {
   getErrors(req: any, res: any) {
     const errors = super.getErrors(req, res)
 
-    const referrer = req.get('referrer')
-    console.log(
-      'ERRORORORORORORS',
-      errors,
-      req.initialStep,
-      req.query.referrer,
-      referrer,
-      (this as any).getBaseUrl(req)
-    )
-
-    if (referrer) {
-      const { pathname } = new URL(referrer)
-      console.log(pathname)
-    }
+    console.log(errors)
 
     return errors
   }

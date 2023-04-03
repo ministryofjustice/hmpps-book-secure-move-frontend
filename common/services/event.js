@@ -19,7 +19,39 @@ const perEvents = [
 const personMoveEvents = ['PersonMoveUsedForce', 'PersonMoveDeathInCustody']
 
 class EventService extends BaseService {
-  postEvents(req, lockoutEvents, move, journeys, user) {
+  async getEvent(req, id) {
+    return (await restClient.get(req, `/events/${id}`)).data
+  }
+
+  async postEvent(req, eventData) {
+    const todaysDate = new Date()
+
+    const payload = {
+      data: {
+        type: 'events',
+        attributes: {
+          occurred_at: todaysDate.toISOString(),
+          recorded_at: todaysDate.toISOString(),
+          notes: '',
+          details: eventData.details || {},
+          event_type: eventData.type,
+        },
+        relationships: {
+          eventable: {
+            data: {
+              type: eventData.eventableType,
+              id: eventData.eventableId,
+            },
+          },
+          ...eventData.relationships,
+        },
+      },
+    }
+
+    return await restClient.post(req, '/events', payload)
+  }
+
+  postLockoutEvents(req, lockoutEvents, move, journeys, user) {
     const todaysDate = new Date()
     const events = []
 

@@ -137,7 +137,8 @@
   },
   "MoveOvernightLodge": {
     "heading": "Overnight lodge added",
-    "description": "Lodge added for $t(events::person) to stay at {{location.title}} on {{start_date, formatDateWithDay}}"
+    "description": "Lodge added for $t(events::person) to stay at {{location.title}} on {{start_date, formatDateWithDay}}",
+    "description_long": "Lodge added for $t(events::person) to stay at {{location.title}} between {{start_date, formatDateWithDay}} and {{end_date, formatDateWithDay}}"
   },
   "MoveLockout": {
     "contextKey": "reason",
