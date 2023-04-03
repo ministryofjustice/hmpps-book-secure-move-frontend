@@ -6,7 +6,7 @@ import {
 } from './controllers'
 
 export default {
-  '/new': {
+  '/': {
     controller: BaseController,
     entryPoint: true,
     reset: true,
@@ -23,12 +23,13 @@ export default {
   '/length': {
     controller: SetLengthController,
     pageTitle: 'moves::steps.lodge.length.heading',
-    fields: ['lodge_length'],
+    fields: ['lodge_length_type'],
     template: 'length',
     next: 'save',
   },
   '/save': {
     skip: true,
     controller: SaveController,
+    next: 'saved',
   },
 }

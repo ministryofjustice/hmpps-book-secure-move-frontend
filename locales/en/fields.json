@@ -82,7 +82,7 @@
     "label": "Move to"
   },
   "lodge_location": {
-    "label": "Lodge prison"
+    "label": "Lodge location"
   },
   "lodge_start": {
     "label": "Lodge start date"
@@ -132,7 +132,8 @@
     "label": "Name of prison or YOI"
   },
   "to_location_lodge": {
-    "label": "Name of lodge location"
+    "label": "Name of lodge location",
+    "error_message": "Enter the lodge location"
   },
   "to_location_hospital": {
     "label": "Name of hospital"
@@ -170,7 +171,7 @@
       }
     }
   },
-  "lodge_length": {
+  "lodge_length_type": {
     "items": {
       "one": {
         "label": "One"
@@ -182,6 +183,9 @@
         "label": "Other"
       }
     }
+  },
+  "lodge_length_custom": {
+    "label": "Lodge length"
   },
   "recall_information": {
     "label": "When did they return to police custody?",

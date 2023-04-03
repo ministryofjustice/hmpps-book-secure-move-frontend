@@ -12,7 +12,7 @@ const EventService = proxyquire('./event', {
 const eventService = new EventService({ apiClient })
 
 describe('Event Service', function () {
-  describe('#postEvents', function () {
+  describe('#postLockoutEvents', function () {
     beforeEach(function () {
       const now = new Date('2022-04-13T10:00:39.986Z')
       sinon.useFakeTimers(now.getTime())
@@ -139,7 +139,7 @@ describe('Event Service', function () {
 
     context('with a PER_EVENTS lockout event', function () {
       beforeEach(async function () {
-        await eventService.postEvents(
+        await eventService.postLockoutEvents(
           {},
           perMocklockoutEvents,
           move,
@@ -163,7 +163,7 @@ describe('Event Service', function () {
 
     context('with a PERSON_MOVE_EVENTS lockout event', function () {
       beforeEach(async function () {
-        await eventService.postEvents(
+        await eventService.postLockoutEvents(
           {},
           personMoveMocklockoutEvents,
           move,

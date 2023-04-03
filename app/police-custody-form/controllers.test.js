@@ -3,7 +3,7 @@ const controller = require('./controllers')
 describe('Police Custody Form controllers', function () {
   describe('#addEvents', function () {
     const eventService = {
-      postEvents: sinon.stub(),
+      postLockoutEvents: sinon.stub(),
     }
 
     const locals = {

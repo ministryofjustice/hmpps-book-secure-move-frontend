@@ -5,6 +5,7 @@ import * as formatters from '../../formatters'
 import { Event } from '../../types/event'
 import { EventDetails } from '../../types/event-details'
 
+const { formatDate } = require('../../../config/nunjucks/filters')
 const { getFullName } = require('../../services/user')
 
 const FORMATTED_SECTIONS: { [key: string]: string } = {
@@ -21,13 +22,18 @@ export async function getDescription(token: string, event: Event) {
 
   if (eventType === 'PerCompletion') {
     await populatePerCompletion(token, details)
-  }
-
-  if (eventType === 'PerUpdated') {
+  } else if (eventType === 'PerUpdated') {
     await populatePerUpdated(token, details)
-  }
+  } else if (eventType === 'MoveOvernightLodge') {
+    const startDate = new Date(details.start_date || '')
+    const endDate = new Date(details.end_date || '')
+    startDate.setDate(startDate.getDate() + 1)
+    const dateFormat = 'yyyy-MM-dd'
 
-  if (supplier === null) {
+    if (formatDate(startDate, dateFormat) !== formatDate(endDate, dateFormat)) {
+      details.context = 'long'
+    }
+  } else if (supplier === null) {
     details.context = 'without_supplier'
   }
 

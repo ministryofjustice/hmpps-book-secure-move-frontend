@@ -1,5 +1,8 @@
+// @ts-ignore // TODO: convert to ts
+import validators from '../../../validators'
+
 export const lodgeLengthCustom = {
-  validate: ['required', 'positive'],
+  validate: ['required', validators.positive],
   component: 'govukInput',
   name: 'lodge_length_custom',
   autocomplete: 'off',
