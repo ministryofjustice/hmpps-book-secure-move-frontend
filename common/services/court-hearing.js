@@ -1,6 +1,6 @@
 const { mapValues, pickBy } = require('lodash')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 class CourtHearingService extends BaseService {
   format(data) {

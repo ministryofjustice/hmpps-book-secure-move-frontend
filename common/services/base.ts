@@ -2,17 +2,18 @@ const { isObject, isString, isNil, isEmpty, omitBy } = require('lodash')
 
 const ApiClient = require('../lib/api-client')
 
-class BaseService {
-  constructor(req) {
+export class BaseService {
+  req: any
+  apiClient: any // TODO: convert ApiClient to TS
+
+  constructor(req: any) {
     this.req = req || {}
     this.apiClient = (req && req.apiClient) || new ApiClient()
   }
 
-  removeInvalid(input) {
-    return omitBy(input, v =>
+  removeInvalid(input: any) {
+    return omitBy(input, (v: any) =>
       isObject(v) || isString(v) ? isEmpty(v) : isNil(v)
     )
   }
 }
-
-module.exports = BaseService

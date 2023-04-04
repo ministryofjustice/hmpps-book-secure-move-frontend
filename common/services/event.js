@@ -1,6 +1,6 @@
 const restClient = require('../lib/api-client/rest-client')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 const perEvents = [
   'PerViolentDangerous',

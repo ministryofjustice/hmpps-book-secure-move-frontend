@@ -1,6 +1,6 @@
 const { mapValues, omitBy, isUndefined } = require('lodash')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 const noPopulationIdMessage = 'No population ID supplied'
 const noLocationIdMessage = 'No location ID supplied'

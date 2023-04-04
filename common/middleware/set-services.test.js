@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-const BaseService = require('../services/base')
+const { BaseService } = require('../services/base')
 
 class ServiceWithContext extends BaseService {
   method() {

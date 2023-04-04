@@ -1,6 +1,6 @@
 const FormData = require('form-data')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 class DocumentService extends BaseService {
   create(file, data) {

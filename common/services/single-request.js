@@ -1,7 +1,7 @@
 const dateFunctions = require('date-fns')
 const { mapValues, pick } = require('lodash')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 const MoveService = require('./move')
 
 const noMoveIdMessage = 'No move ID supplied'

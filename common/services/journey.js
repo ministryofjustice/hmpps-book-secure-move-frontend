@@ -1,4 +1,4 @@
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 const defaultInclude = ['from_location', 'to_location']
 
