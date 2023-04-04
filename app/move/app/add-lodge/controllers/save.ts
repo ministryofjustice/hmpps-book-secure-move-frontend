@@ -1,6 +1,5 @@
 import { parseISO } from 'date-fns'
 
-// @ts-ignore // TODO: convert to TS
 import { formatDate } from '../../../../../config/nunjucks/filters'
 
 import { BaseController } from './base'

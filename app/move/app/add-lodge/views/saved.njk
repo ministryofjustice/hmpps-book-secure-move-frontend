@@ -21,8 +21,9 @@
       <p>
         {{ t("moves::steps.lodge.saved.detail", {
           location: location,
-          dateText: dateText
-        }) | safe }}
+          href: "/move/" + move.id,
+          name: name
+        }) | safe }} {{dateText | safe}}.
       </p>
     </div>
   </div>

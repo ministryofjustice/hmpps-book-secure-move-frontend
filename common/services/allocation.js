@@ -1,7 +1,7 @@
 const dateFunctions = require('date-fns')
 const { mapValues, set } = require('lodash')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 class AllocationService extends BaseService {
   cancel(id, { reason, comment } = {}) {
