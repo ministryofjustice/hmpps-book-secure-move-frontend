@@ -4,7 +4,7 @@
   <div class="govuk-tabs" id="tabs">
     <ul class="govuk-tabs__list">
       {% for item in tabs %}
-        <li class="govuk-tabs__list-item {{- ' govuk-tabs__list-item--selected' if item.isActive }}" id="tab-{{ t(item.text) | kebabcase }}">
+        <li class="govuk-tabs__list-item {{- ' govuk-tabs__list-item--selected' if item.isActive }}" id="tab-{{ t(item.text) | kebabCase }}">
           <a class="govuk-tabs__tab" href="{{ item.url }}">
             {{ t(item.text) }}
           </a>

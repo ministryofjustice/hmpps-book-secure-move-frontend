@@ -1,70 +1,76 @@
-const mojFilters = require('@ministryofjustice/frontend/moj/filters/all')()
-const {
+import {
+  differenceInYears,
   format,
+  isDate,
+  isSameMonth,
+  isSameYear,
   isThisWeek,
   isToday,
   isTomorrow,
+  isValid as isValidDate,
   isYesterday,
-  differenceInYears,
   parseISO,
-  isValid: isValidDate,
-  isSameMonth,
-  isSameYear,
-  isDate,
-  addDays,
   subDays,
-} = require('date-fns')
-const filesizejs = require('filesize')
-const { filter, kebabCase, startCase } = require('lodash')
-const pluralize = require('pluralize')
+  addDays,
+} from 'date-fns'
+import filesizejs from 'filesize'
+import { filter } from 'lodash'
+import pluralizejs from 'pluralize'
 
-const parse = require('../../common/parsers')
+export const pluralize = pluralizejs
+export { kebabCase, startCase } from 'lodash'
+
+const mojFilters = require('@ministryofjustice/frontend/moj/filters/all')()
+
 const { DATE_FORMATS } = require('../index')
 
-function _isRelativeDate(date) {
-  const parsedDate = parseISO(date)
+function _parseDate(date: Date | string) {
+  return isDate(date) ? (date as Date) : parseISO(date as string)
+}
+
+function _isRelativeDate(date: string | Date) {
+  const parsedDate = _parseDate(date)
 
   return (
     isToday(parsedDate) || isTomorrow(parsedDate) || isYesterday(parsedDate)
   )
 }
 
-function _isCurrentWeek(date) {
-  const options = { weekStartsOn: 1 }
-  const [startDate, endDate] = date.map(date =>
-    isDate(date) ? date : parseISO(date)
-  )
+function _isCurrentWeek(dates: (Date | string)[]) {
+  const options: {
+    weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6
+  } = { weekStartsOn: 1 }
+  const [startDate, endDate] = dates.map(_parseDate)
   return isThisWeek(startDate, options) && isThisWeek(endDate, options)
 }
 
-function _isNextWeek(date) {
-  return _isCurrentWeek(
-    date.map(date => subDays(isDate(date) ? date : parseISO(date), 7))
-  )
+function _isNextWeek(dates: (Date | string)[]) {
+  return _isCurrentWeek(dates.map(date => subDays(_parseDate(date), 7)))
 }
 
-function _isLastWeek(date) {
-  return _isCurrentWeek(
-    date.map(date => addDays(isDate(date) ? date : parseISO(date), 7))
-  )
+function _isLastWeek(dates: (Date | string)[]) {
+  return _isCurrentWeek(dates.map(date => addDays(_parseDate(date), 7)))
 }
 
 /**
  * Formats a date into the desired string format
  *
- * @param  {Any} a any type
- * @param  {String} a string date format to return
  * @return {String} a formatted date
  *
  * @example {{ "2019-02-21" | formatDate }}
  * @example {{ "2019-02-21" | formatDate('DD/MM/YY') }}
+ * @param value
+ * @param formattedDateStr
  */
-function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
+export function formatDate(
+  value: string | Date,
+  formattedDateStr = DATE_FORMATS.LONG
+) {
   if (!value) {
     return value
   }
 
-  const date = isDate(value) ? value : parseISO(value)
+  const date = _parseDate(value)
 
   if (!isValidDate(date)) {
     return value
@@ -78,16 +84,16 @@ function formatDate(value, formattedDateStr = DATE_FORMATS.LONG) {
  *
  * With multiple dates it will join them using `to`
  *
- * @param  {Any} a any type
- * @param  {String} a string date format to return
  * @return {String} a formatted date
  *
  * @example {{ "2019-02-21" | formatDateRange }}
  * @example {{ ['2019-02-21'] | formatDateRange }}
  * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRange }}
  * @example {{ "2019-02-21" | formatDateRange('DD/MM/YY') }}
+ * @param value
+ * @param delimiter
  */
-function formatDateRange(value, delimiter = 'to') {
+export function formatDateRange(value: string | string[], delimiter = 'to') {
   const dates = filter(value)
 
   if (!value || !Array.isArray(value) || dates.length === 0) {
@@ -98,9 +104,7 @@ function formatDateRange(value, delimiter = 'to') {
     return formatDate(dates[0])
   }
 
-  const [startDate, endDate] = dates.map(date =>
-    isDate(date) ? date : parseISO(date)
-  )
+  const [startDate, endDate] = dates.map(_parseDate)
 
   const yearFormat = isSameYear(startDate, endDate) ? '' : ' yyyy'
   const monthFormat = isSameMonth(startDate, endDate) ? '' : ' MMM'
@@ -118,16 +122,15 @@ function formatDateRange(value, delimiter = 'to') {
  *
  * With multiple dates it will join them using `to`
  *
- * @param  {Any} a any type
- * @param  {String} a string date format to return
  * @return {String} a formatted date
  *
  * @example {{ "2019-02-21" | formatDateRange }}
  * @example {{ ['2019-02-21'] | formatDateRange }}
  * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRange }}
  * @example {{ "2019-02-21" | formatDateRange('DD/MM/YY') }}
+ * @param value
  */
-function formatDateRangeAsRelativeWeek(value) {
+export function formatDateRangeAsRelativeWeek(value: string | string[]) {
   const dates = filter(value)
 
   if (!value || !Array.isArray(value) || dates.length === 0) {
@@ -153,7 +156,7 @@ function formatDateRangeAsRelativeWeek(value) {
   return formatDateRange(value)
 }
 
-function formatISOWeek(dateRange) {
+export function formatISOWeek(dateRange: string | string[]) {
   if (!Array.isArray(dateRange) || dateRange.length !== 2) {
     return dateRange
   }
@@ -161,30 +164,34 @@ function formatISOWeek(dateRange) {
   const [startDate, endDate] = dateRange
   return startDate === endDate
     ? startDate
-    : format(parseISO(startDate), "yyyy-'W'II")
+    : format(_parseDate(startDate), "yyyy-'W'II")
 }
 
 /**
  * Formats a date to the long date format including day
  *
- * @param  {Any} a any type
  * @return {String} a formatted date with the day
  *
  * @example {{ "2019-02-21" | formatDateWithDay }}
+ * @param value
  */
-function formatDateWithDay(value) {
+export function formatDateWithDay(value: string | Date) {
   return formatDate(value, DATE_FORMATS.WITH_DAY)
 }
 
 /**
  * Formats a date with date and time
  *
- * @param  {Any} any type
  * @return {String} a formatted date with the day
  *
  * @example {{ "2019-02-21" | formatDateWithTimeAndDay }}
+ * @param value
+ * @param includeSeconds
  */
-function formatDateWithTimeAndDay(value, includeSeconds = false) {
+export function formatDateWithTimeAndDay(
+  value: string | Date,
+  includeSeconds = false
+) {
   const timeFormat = includeSeconds
     ? 'WITH_TIME_WITH_SECONDS_AND_DAY'
     : 'WITH_TIME_AND_DAY'
@@ -194,11 +201,11 @@ function formatDateWithTimeAndDay(value, includeSeconds = false) {
 /**
  * Formats a time for an event
  *
- * @param  {Any} a datetime
  * @return {String} a formatted time as string
  * @example {{ "2000-01-01T14:00:00Z" | formatDateTimeForEvents }}
+ * @param value
  */
-function formatDateTimeForEvents(value) {
+export function formatDateTimeForEvents(value: string | Date) {
   return formatDate(value, DATE_FORMATS.WITH_TIME_AND_DAY_FOR_EVENTS)
 }
 
@@ -207,25 +214,28 @@ function formatDateTimeForEvents(value) {
  * it will return that date formatted with day by default or in
  * the format supplied
  *
- * @param  {Any} a any type
  * @return {String} a formatted date
  *
  * @example {{ "2019-02-21" | formatDateAsRelativeDay }}
  * @example {{ "2019-02-21" | formatDateAsRelativeDay('DD/MM/YYYY') }}
+ * @param value
+ * @param formattedDateStr
  */
-function formatDateAsRelativeDay(
-  value,
+export function formatDateAsRelativeDay(
+  value: string | Date,
   formattedDateStr = DATE_FORMATS.WITH_DAY
 ) {
-  if (isToday(parseISO(value))) {
+  const date = _parseDate(value)
+
+  if (isToday(date)) {
     return 'today'
   }
 
-  if (isTomorrow(parseISO(value))) {
+  if (isTomorrow(date)) {
     return 'tomorrow'
   }
 
-  if (isYesterday(parseISO(value))) {
+  if (isYesterday(date)) {
     return 'yesterday'
   }
 
@@ -236,11 +246,11 @@ function formatDateAsRelativeDay(
  * Returns current date formatted with day along with
  * today, tomorrow or yesterday in brackets if they match
  *
- * @param  {Any} a any type
  *
  * @example {{ "2019-02-21" | formatDateWithRelativeDay }}
+ * @param value
  */
-function formatDateWithRelativeDay(value) {
+export function formatDateWithRelativeDay(value: string | Date) {
   if (!value) {
     return value
   }
@@ -256,11 +266,11 @@ function formatDateWithRelativeDay(value) {
  * Returns current date formatted with week along with
  * this week in brackets (when applicable)
  *
- * @param  {Any} a any type
  *
  * @example {{ ["2019-02-21", "2019-02-28"] | formatDateRangeWithRelativeWeek }}
+ * @param value
  */
-function formatDateRangeWithRelativeWeek(value) {
+export function formatDateRangeWithRelativeWeek(value: string[]) {
   const dates = filter(value)
 
   if (!value || !Array.isArray(value) || dates.length === 0) {
@@ -280,12 +290,12 @@ function formatDateRangeWithRelativeWeek(value) {
 
 /**
  * Returns an age based on a date
- * @param  {Any} a any type
  * @return {String} an age as a string
  * @example {{ "2000-02-21" | calculateAge }}
+ * @param value
  */
-function calculateAge(value) {
-  const parsedDate = parseISO(value)
+export function calculateAge(value: string | Date) {
+  const parsedDate = _parseDate(value)
 
   if (!isValidDate(parsedDate)) {
     return value
@@ -297,12 +307,12 @@ function calculateAge(value) {
 /**
  * Formats a time
  *
- * @param  {Any} a datetime
  * @return {String} a formatted time as string
  * @example {{ "2000-01-01T14:00:00Z" | formatTime }}
+ * @param value
  */
-function formatTime(value) {
-  const parsedDate = parse.date(value)
+export function formatTime(value: string | Date) {
+  const parsedDate = _parseDate(value)
 
   if (!value || !isValidDate(parsedDate)) {
     return value
@@ -315,12 +325,12 @@ function formatTime(value) {
  * Join a list of items using commas and `and` as
  * the final join
  *
- * @param  {Array} an array of items to join
- * @param  {String} last delimiter to use
  * @return {String} items joined using commas and the last delimiter
  * @example {{ ["one","two","three"] | oxfordJoin }}
+ * @param arr
+ * @param lastDelimiter
  */
-function oxfordJoin(arr = [], lastDelimiter = 'and') {
+export function oxfordJoin(arr: string[] = [], lastDelimiter = 'and') {
   if (!arr || !Array.isArray(arr)) {
     return arr
   } else if (arr.length === 1) {
@@ -337,12 +347,12 @@ function oxfordJoin(arr = [], lastDelimiter = 'and') {
  * Join a list of items using commas and `and` as
  * the final join
  *
- * @param  {Array} an array of items to join
- * @param  {String} last delimiter to use
  * @return {String} items joined using commas and the last delimiter
  * @example {{ ["one","two","three"] | nonOxfordJoin }}
+ * @param arr
+ * @param lastDelimiter
  */
-function nonOxfordJoin(arr = [], lastDelimiter = 'and') {
+export function nonOxfordJoin(arr: string[] = [], lastDelimiter = 'and') {
   if (!arr || !Array.isArray(arr)) {
     return arr
   } else if (arr.length === 1) {
@@ -355,35 +365,15 @@ function nonOxfordJoin(arr = [], lastDelimiter = 'and') {
   return arr.join(', ').replace(/, ([^,]*)$/, ` ${lastDelimiter} $1`)
 }
 
-function filesize(str) {
+export function filesize(str: string) {
+  // @ts-ignore
   return filesizejs(str, {
     round: 0,
   })
 }
 
-function containsElement(array = [], element) {
+export function containsElement(array: any[] = [], element: any) {
   return array.some(e => e.error === element)
 }
 
-module.exports = {
-  ...mojFilters,
-  formatDate,
-  formatDateRange,
-  formatDateRangeAsRelativeWeek,
-  formatDateRangeWithRelativeWeek,
-  formatDateWithDay,
-  formatDateWithTimeAndDay,
-  formatDateTimeForEvents,
-  formatDateWithRelativeDay,
-  formatDateAsRelativeDay,
-  formatISOWeek,
-  calculateAge,
-  formatTime,
-  kebabcase: kebabCase,
-  startCase,
-  pluralize,
-  oxfordJoin,
-  nonOxfordJoin,
-  filesize,
-  containsElement,
-}
+export const { date, mojDate } = mojFilters

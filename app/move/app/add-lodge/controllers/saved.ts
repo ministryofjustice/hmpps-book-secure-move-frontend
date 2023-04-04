@@ -1,12 +1,16 @@
 import { parseISO } from 'date-fns'
 
+import { findById } from '../../../../../common/services/location'
 import i18n from '../../../../../config/i18n'
-// @ts-ignore // TODO: convert to TS
-import { formatDate } from '../../../../../config/nunjucks/filters'
+import {
+  formatDate,
+  formatDateWithDay,
+} from '../../../../../config/nunjucks/filters'
 
 export async function SavedController(req: any, res: any) {
   const event = await req.services.event.getEvent(req, req.params.eventId)
-  const lodgeLocation = event.relationships.location
+  const lodgeLocationId = event.relationships.location.data.id
+  const lodgeLocation = await findById(req, lodgeLocationId, true)
   const startDate = parseISO(event.attributes.details.start_date)
   const endDate = parseISO(event.attributes.details.end_date)
   const startDatePlusOne = parseISO(event.attributes.details.start_date)
@@ -14,7 +18,10 @@ export async function SavedController(req: any, res: any) {
 
   const dateFormat = 'yyyy-MM-dd'
 
-  const details: any = { startDate, endDate }
+  const details: any = {
+    startDate: formatDateWithDay(startDate),
+    endDate: formatDateWithDay(endDate),
+  }
 
   if (
     formatDate(startDatePlusOne, dateFormat) !== formatDate(endDate, dateFormat)
@@ -24,7 +31,9 @@ export async function SavedController(req: any, res: any) {
 
   res.render('move/app/add-lodge/views/saved', {
     moveReference: req.move.reference,
-    location: lodgeLocation.data.id,
+    location: lodgeLocation?.title,
     dateText: i18n.t('moves::steps.lodge.saved.date', details),
+    move: req.move,
+    name: req.move.profile?.person?._fullname,
   })
 }

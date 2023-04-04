@@ -2,7 +2,7 @@ const proxyquire = require('proxyquire')
 
 function MockAPIClient() {}
 
-const BaseService = proxyquire('./base', {
+const { BaseService } = proxyquire('./base', {
   '../lib/api-client': MockAPIClient,
 })
 
