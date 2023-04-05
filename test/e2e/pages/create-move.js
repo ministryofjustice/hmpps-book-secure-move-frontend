@@ -5,7 +5,7 @@ import pluralize from 'pluralize'
 import { Selector, t } from 'testcafe'
 
 import * as parsers from '../../../common/parsers'
-import filters from '../../../config/nunjucks/filters'
+import * as filters from '../../../config/nunjucks/filters'
 import { fillInForm, generatePerson } from '../_helpers'
 
 import Page from './page'

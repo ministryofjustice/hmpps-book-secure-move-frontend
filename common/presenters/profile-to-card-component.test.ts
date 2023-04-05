@@ -3,9 +3,7 @@ import { format } from 'date-fns'
 import { noCallThru } from 'proxyquire'
 import sinon from 'sinon'
 
-// TODO: convert ../../config/nunjucks/filters to TS and remove this ignore
-// @ts-ignore
-import filters from '../../config/nunjucks/filters'
+import * as filters from '../../config/nunjucks/filters'
 import { Profile } from '../types/profile'
 
 import { CardComponent } from './profile-to-card-component'

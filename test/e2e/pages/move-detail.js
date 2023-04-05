@@ -1,6 +1,6 @@
 import { Selector, t } from 'testcafe'
 
-import filters from '../../../config/nunjucks/filters'
+import * as filters from '../../../config/nunjucks/filters'
 
 import Page from './page'
 

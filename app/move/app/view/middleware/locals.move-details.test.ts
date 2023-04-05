@@ -98,6 +98,7 @@ describe('Move view app', function () {
             ],
             _canEdit: true,
             _isPerLocked: false,
+            date: '2023-03-27',
           },
           moveId: '12345',
           moveIsEditable: true,
