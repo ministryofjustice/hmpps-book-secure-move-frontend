@@ -2,10 +2,7 @@ import { format } from 'date-fns'
 import { filter, isEmpty } from 'lodash'
 
 import i18n from '../../config/i18n'
-// TODO: convert ../../config/nunjucks/filters to TS and remove this ignore
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import filters from '../../config/nunjucks/filters'
+import * as filters from '../../config/nunjucks/filters'
 import { Person } from '../types/person'
 import { PersonEscortRecord } from '../types/person-escort-record'
 import { Profile } from '../types/profile'
@@ -176,8 +173,8 @@ function profileToCardComponent({
     if (showMeta) {
       const dateOfBirthLabel = i18n.t('age', {
         context: 'with_date_of_birth',
-        age: filters.calculateAge(dateOfBirth),
-        date_of_birth: filters.formatDate(dateOfBirth),
+        age: filters.calculateAge(dateOfBirth || ''),
+        date_of_birth: filters.formatDate(dateOfBirth || ''),
       })
 
       if (profile?.person && locationType) {
