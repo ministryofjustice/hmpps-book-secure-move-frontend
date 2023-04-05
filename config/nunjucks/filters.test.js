@@ -20,7 +20,7 @@ const filters = proxyquire('./filters', {
       WITH_TIME_WITH_SECONDS_AND_DAY: "H:mm:ss 'on' EEEE d MMM yyyy",
     },
   },
-  filesize: mockFilesizejs,
+  filesize: { filesize: mockFilesizejs },
 })
 
 describe('Nunjucks filters', function () {

@@ -627,6 +627,7 @@ describe('Presenters', function () {
                 html: {
                   govukButton: {
                     classes: 'govuk-button--primary',
+                    href: `/move/${mockMove.id}/lodge`,
                     preventDoubleClick: true,
                     text: 'actions::add_item',
                   },

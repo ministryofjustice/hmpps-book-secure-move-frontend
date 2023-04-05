@@ -13,7 +13,7 @@ import {
   subDays,
   addDays,
 } from 'date-fns'
-import filesizejs from 'filesize'
+import { filesize as filesizejs } from 'filesize'
 import { filter } from 'lodash'
 import pluralizejs from 'pluralize'
 
@@ -366,7 +366,6 @@ export function nonOxfordJoin(arr: string[] = [], lastDelimiter = 'and') {
 }
 
 export function filesize(str: string) {
-  // @ts-ignore
   return filesizejs(str, {
     round: 0,
   })
