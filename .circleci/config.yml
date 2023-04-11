@@ -266,8 +266,7 @@ workflows:
       - hmpps/build_docker:
           <<: *except_main
           name: build-docker-image
-          env:
-            publish: false
+          publish: false
           requires:
             - build
       # Deployment
