@@ -36,6 +36,11 @@ aliases:
       branches:
         only:
           - main
+  - &except_main
+    filters:
+      branches:
+        not:
+          - main
 
 jobs:
   build:
@@ -255,7 +260,14 @@ workflows:
             - build
       - hmpps/build_docker:
           <<: *only_main
+          name: build-store-docker-image
+          requires:
+            - build
+      - hmpps/build_docker:
+          <<: *except_main
           name: build-docker-image
+          env:
+            publish: false
           requires:
             - build
       # Deployment
