@@ -265,6 +265,8 @@ workflows:
             - build
       - hmpps/build_docker:
           <<: *except_main
+          - attach_workspace:
+            at: .
           name: build-docker-image
           publish: false
           requires:
