@@ -61,7 +61,7 @@ jobs:
     <<: *node_container
     steps:
       - attach_workspace:
-        at: .
+          at: .
       - run:
           name: Lint the code
           command: npm run circle:lint
@@ -72,7 +72,7 @@ jobs:
     <<: *node_container
     steps:
       - attach_workspace:
-        at: .
+          at: .
       - run:
           name: Run unit tests
           command: |
