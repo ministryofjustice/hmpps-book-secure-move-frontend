@@ -59,9 +59,9 @@ jobs:
   lint:
     <<: *node_container
     steps:
+      - checkout 
       - attach_workspace:
-          at: .
-      - checkout    
+          at: .  
       - run:
           name: Lint the code
           command: npm run circle:lint
