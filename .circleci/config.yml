@@ -67,8 +67,8 @@ jobs:
           name: Lint the code
           command: npm run circle:lint
       - store_artifacts:
-        path: ./reports/eslint/eslint.xml
-        destination: lint-report
+          path: ./reports/eslint/eslint.xml
+          destination: lint-report
 
       #Can't lint helm until we have charts
       #- hmpps/helm_lint
