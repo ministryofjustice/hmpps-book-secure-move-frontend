@@ -39,7 +39,7 @@ aliases:
   - &except_main
     filters:
       branches:
-        not:
+        ignore:
           - main
 
 jobs:
