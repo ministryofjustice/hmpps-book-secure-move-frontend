@@ -53,7 +53,10 @@ jobs:
           name: Build assets and frameworks
           command: npm run build
       - persist_to_workspace:
-          path: .
+          root: .
+          paths: 
+            - .build
+            - node_modules
   lint:
     <<: *node_container
     steps:
