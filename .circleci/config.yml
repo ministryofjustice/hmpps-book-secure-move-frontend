@@ -58,6 +58,7 @@ jobs:
     <<: *node_container
     steps:
       - checkout
+      - *restore_cache
       - run:
           name: Lint the code
           command: npm run circle:lint
@@ -67,6 +68,7 @@ jobs:
   unit-test:
     <<: *node_container
     steps:
+      - *restore_cache
       - run:
           name: Run unit tests
           command: |
@@ -232,7 +234,9 @@ workflows:
     jobs:
       # Tests
       - build
-      - lint
+      - lint:
+        requires:
+            - build
       - unit-test:
           requires:
             - build
