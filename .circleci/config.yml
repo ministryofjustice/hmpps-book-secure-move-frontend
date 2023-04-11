@@ -294,7 +294,7 @@ workflows:
       - hmpps/sentry_release_and_deploy:
           <<: *only_main
           name: publish-release-to-sentry-staging
-          sentry_project: hmpps-book-secure-move-frontendit -
+          sentry_project: book-a-secure-move-frontend
           sentry_environment: staging
           sentry_create_release: true
           requires:
@@ -302,18 +302,21 @@ workflows:
       - hmpps/sentry_release_and_deploy:
           <<: *only_main
           name: publish-release-to-sentry-uat
-          sentry_env: uat
+          sentry_project: book-a-secure-move-frontend
+          sentry_environment: uat
           requires:
             - deploy-uat
       - hmpps/sentry_release_and_deploy:
           <<: *only_main
           name: publish-release-to-sentry-preprod
-          sentry_env: preproduction
+          sentry_project: book-a-secure-move-frontend
+          sentry_environment: preproduction
           requires:
             - deploy-preprod
       - hmpps/sentry_release_and_deploy:
           <<: *only_main
           name: publish-release-to-sentry-production
+          sentry_project: book-a-secure-move-frontend
           sentry_environment: production
           requires:
             - deploy-production
