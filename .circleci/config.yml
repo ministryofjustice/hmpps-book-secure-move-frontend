@@ -243,6 +243,13 @@ jobs:
           steps:
             - *notify_slack_on_release_end
 
+  build_docker:
+    steps:
+      - attach_workspace:
+          at: .
+      - hmpps/build_docker:
+          publish: false
+
 workflows:
   continuous-deployment:
     jobs:
@@ -263,12 +270,9 @@ workflows:
           name: build-store-docker-image
           requires:
             - build
-      - hmpps/build_docker:
+      - build_docker:
           <<: *except_main
-          - attach_workspace:
-            at: .
           name: build-docker-image
-          publish: false
           requires:
             - build
       # Deployment
