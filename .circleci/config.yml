@@ -68,6 +68,7 @@ jobs:
   unit-test:
     <<: *node_container
     steps:
+      - checkout
       - *restore_cache
       - run:
           name: Run unit tests
@@ -89,6 +90,7 @@ jobs:
     parallelism: 8
     working_directory: ~/app
     steps:
+      - checkout
       - browser-tools/install-browser-tools
       - run:
           name: Run E2E tests (same instance)
