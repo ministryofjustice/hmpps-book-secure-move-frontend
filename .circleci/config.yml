@@ -235,7 +235,7 @@ workflows:
       # Tests
       - build
       - lint:
-        requires:
+          requires:
             - build
       - unit-test:
           requires:
