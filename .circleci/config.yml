@@ -244,6 +244,7 @@ jobs:
             - *notify_slack_on_release_end
 
   build_docker:
+    <<: *node_container
     steps:
       - attach_workspace:
           at: .
