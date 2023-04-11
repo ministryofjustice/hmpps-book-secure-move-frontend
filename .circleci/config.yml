@@ -60,8 +60,6 @@ jobs:
     <<: *node_container
     steps:
       - checkout 
-      - attach_workspace:
-          at: .  
       - *restore_cache
       - run:
           name: Lint the code
