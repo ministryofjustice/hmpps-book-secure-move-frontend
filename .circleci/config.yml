@@ -66,8 +66,6 @@ jobs:
 
   unit-test:
     <<: *node_container
-    requires:
-      - build
     steps:
       - run:
           name: Run unit tests
@@ -293,7 +291,7 @@ workflows:
       - hmmps/sentry_release_and_deploy:
           <<: *only_main
           name: publish-release-to-sentry-staging
-          sentry_project: hmpps-book-secure-move-frontend
+          sentry_project: hmpps-book-secure-move-frontendit -
           sentry_environment: staging
           sentry_create_release: true
           requires:
