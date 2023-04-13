@@ -58,7 +58,7 @@ jobs:
           name: Build assets and frameworks
           command: npm run build
       - persist_to_workspace:
-          root: .
+          root: ~/app
           paths: 
             - .
   lint:
@@ -80,7 +80,7 @@ jobs:
     <<: *node_container
     steps:
       - attach_workspace:
-          at: .
+          at: ~/app
       - run:
           name: Run unit tests
           command: |
@@ -102,7 +102,7 @@ jobs:
     working_directory: ~/app
     steps:
       - attach_workspace:
-          at: .
+          at: ~/app
       - browser-tools/install-browser-tools
       - run:
           name: Run E2E tests (same instance)
@@ -243,14 +243,6 @@ jobs:
           steps:
             - *notify_slack_on_release_end
 
-  build_docker:
-    <<: *node_container
-    steps:
-      - attach_workspace:
-          at: .
-      - hmpps/build_docker:
-          publish: false
-
 workflows:
   continuous-deployment:
     jobs:
@@ -271,9 +263,10 @@ workflows:
           name: build-store-docker-image
           requires:
             - build
-      - build_docker:
+      - hmpps/build_docker:
           <<: *except_main
           name: build-docker-image
+          publish: false
           requires:
             - build
       # Deployment
