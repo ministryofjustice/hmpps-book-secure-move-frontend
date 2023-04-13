@@ -7,6 +7,7 @@ RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 COPY --chown=node:node package*.json ./
 USER 1000
+RUN npm install typescript
 RUN npx tsc --project ./
 RUN npm install
 
