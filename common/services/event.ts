@@ -1,6 +1,13 @@
-const restClient = require('../lib/api-client/rest-client')
+import { User } from '@sentry/node'
 
-const { BaseService } = require('./base')
+// @ts-ignore // TODO: convert to TS
+import restClient from '../lib/api-client/rest-client'
+import { BasmRequest } from '../types/basm_request'
+import { EventDetails } from '../types/event-details'
+import { Journey } from '../types/journey'
+import { Move } from '../types/move'
+
+import { BaseService } from './base'
 
 const perEvents = [
   'PerViolentDangerous',
@@ -18,12 +25,53 @@ const perEvents = [
 
 const personMoveEvents = ['PersonMoveUsedForce', 'PersonMoveDeathInCustody']
 
-class EventService extends BaseService {
-  async getEvent(req, id) {
+interface PostEventData {
+  eventableType: 'moves'
+  eventableId: string
+  type: string
+  details?: EventDetails
+  relationships?: { [key: string]: { data: { id: string; type: string } } }
+}
+
+type LockoutEventType =
+  | 'PerViolentDangerous'
+  | 'PerWeapons'
+  | 'PerConcealed'
+  | 'PerSelfHarm'
+  | 'PerEscape'
+  | 'PerMedicalAid'
+  | 'PerMedicalDrugsAlcohol'
+  | 'PerMedicalMentalHealth'
+  | 'PerMedicalMedication'
+  | 'PerPropertyChange'
+  | 'PerGeneric'
+  | 'PersonMoveUsedForce'
+  | 'PersonMoveDeathInCustody'
+
+interface PostLockoutEventsData {
+  moveId: string
+  events: LockoutEventType[]
+  PerViolentDangerous: string
+  PerWeapons: string
+  PerConcealed: string
+  PerSelfHarm: string
+  PerEscape: string
+  PerMedicalAid: string[]
+  PerMedicalDrugsAlcohol: string
+  PerMedicalMentalHealth: string
+  PerMedicalMedication: string
+  PerPropertyChange: string
+  PerGeneric: string
+  PersonMoveUsedForce: string
+  PersonMoveDeathInCustody: string
+}
+
+export class EventService extends BaseService {
+  async getEvent(req: BasmRequest, id: string) {
     return (await restClient.get(req, `/events/${id}`)).data
   }
 
-  async postEvent(req, eventData) {
+  async postEvent(req: BasmRequest, eventData: PostEventData) {
     const todaysDate = new Date()
 
     const payload = {
@@ -51,7 +99,13 @@ class EventService extends BaseService {
     return await restClient.post(req, '/events', payload)
   }
 
-  postLockoutEvents(req, lockoutEvents, move, journeys, user) {
+  postLockoutEvents(
+    req: BasmRequest,
+    lockoutEvents: PostLockoutEventsData,
+    move: Move,
+    journeys: Journey[],
+    user: User
+  ) {
     const todaysDate = new Date()
     const events = []
 
@@ -61,14 +115,16 @@ class EventService extends BaseService {
       events.flat().map(async event => {
         let type
         let relationshipsId
-        let policePersonnelNumber
+        let policePersonnelNumber:
+          | 'police_personnel_number'
+          | 'police_personnel_numbers'
         let eventableType
 
         const eventDescription = lockoutEvents[event]
 
         if (perEvents.includes(event)) {
           type = 'person_escort_records'
-          relationshipsId = move.profile.person_escort_record.id
+          relationshipsId = move.profile?.person_escort_record?.id
           policePersonnelNumber = 'police_personnel_number'
           eventableType = event
         } else if (personMoveEvents.includes(event)) {
@@ -76,6 +132,8 @@ class EventService extends BaseService {
           relationshipsId = move.id
           policePersonnelNumber = 'police_personnel_numbers'
           eventableType = event
+        } else {
+          throw Error(`Unsupported event type: ${event}`)
         }
 
         const payload = {
@@ -115,5 +173,3 @@ class EventService extends BaseService {
     )
   }
 }
-
-module.exports = EventService

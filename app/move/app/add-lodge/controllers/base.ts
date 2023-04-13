@@ -6,14 +6,6 @@ export class BaseController extends UpdateBaseController {
     super.middlewareSetup()
   }
 
-  getErrors(req: any, res: any) {
-    const errors = super.getErrors(req, res)
-
-    console.log(errors)
-
-    return errors
-  }
-
   setNextStep(req: any, res: any, next: any) {
     next()
   }

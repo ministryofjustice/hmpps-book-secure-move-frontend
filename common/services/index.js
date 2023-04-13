@@ -1,7 +1,7 @@
 const allocation = require('./allocation')
 const courtHearing = require('./court-hearing')
 const document = require('./document')
-const event = require('./event')
+const { EventService: event } = require('./event')
 const frameworks = require('./frameworks')
 const journey = require('./journey')
 const locationsFreeSpaces = require('./locations-free-spaces')
