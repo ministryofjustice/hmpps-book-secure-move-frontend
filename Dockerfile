@@ -16,7 +16,7 @@ COPY --chown=node:node common/services/frameworks.js common/services/frameworks.
 COPY --chown=node:node common/assets common/assets
 COPY --chown=node:node common/components common/components
 COPY --chown=node:node mocks/assessment.js mocks/assessment.js
-COPY --chown=node:node app/home/development-tools.js app/home/development-tools.js
+COPY --chown=node:node app/home/development-tools.ts app/home/development-tools.ts
 
 # needed until hard-coded
 ENV API_VERSION default
