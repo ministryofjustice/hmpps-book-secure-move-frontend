@@ -1,6 +1,7 @@
-const { isObject, isString, isNil, isEmpty, omitBy } = require('lodash')
+import { isEmpty, isNil, isObject, isString, omitBy } from 'lodash'
 
-const ApiClient = require('../lib/api-client')
+// @ts-ignore // TODO: convert to TS
+import ApiClient from '../lib/api-client'
 
 export class BaseService {
   req: any
