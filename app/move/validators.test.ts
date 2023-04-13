@@ -1,7 +1,10 @@
-const validators = require('./validators')
+import { expect } from 'chai'
+import sinon from 'sinon'
+
+import * as validators from './validators'
 
 describe('Validators', function () {
-  let clock
+  let clock: sinon.SinonFakeTimers
 
   beforeEach(function () {
     const now = new Date('2014-11-05T15:09:00Z')
@@ -31,7 +34,7 @@ describe('Validators', function () {
 
       inputs.forEach(i => {
         it(`test for: "${i}"`, function () {
-          expect(validators.time(i)).not.to.be.ok
+          expect(validators.time(i as any)).not.to.be.ok
         })
       })
     })
@@ -76,7 +79,7 @@ describe('Validators', function () {
 
       inputs.forEach(i => {
         it(`test for: "${i}"`, function () {
-          expect(validators.datetime(i)).not.to.be.ok
+          expect(validators.datetime(i as any)).not.to.be.ok
         })
       })
     })
@@ -112,7 +115,7 @@ describe('Validators', function () {
           if (typeof i === 'string') {
             expect(validators.after(i)).not.to.be.ok
           } else {
-            expect(validators.after.apply(null, i)).not.to.be.ok
+            expect(validators.after.apply(null, i as any)).not.to.be.ok
           }
         })
       })
@@ -128,7 +131,7 @@ describe('Validators', function () {
 
       inputs.forEach(i => {
         it(`test for: "${i}"`, function () {
-          expect(validators.after.apply(null, i)).to.be.ok
+          expect(validators.after.apply(null, i as any)).to.be.ok
         })
       })
     })
@@ -148,7 +151,7 @@ describe('Validators', function () {
 
       inputs.forEach(i => {
         it(`test for: "${i}"`, function () {
-          expect(validators.prisonNumber(i)).not.to.be.ok
+          expect(validators.prisonNumber(i as any)).not.to.be.ok
         })
       })
     })
@@ -180,7 +183,7 @@ describe('Validators', function () {
 
       inputs.forEach(i => {
         it(`test for: "${i}"`, function () {
-          expect(validators.policeNationalComputerNumber(i)).not.to.be.ok
+          expect(validators.policeNationalComputerNumber(i as any)).not.to.be.ok
         })
       })
     })
@@ -201,6 +204,37 @@ describe('Validators', function () {
       inputs.forEach(i => {
         it(`test for: "${i}"`, function () {
           expect(validators.policeNationalComputerNumber(i)).to.be.ok
+        })
+      })
+    })
+  })
+
+  describe('#number()', function () {
+    describe('invalid values', function () {
+      const inputs = [
+        null,
+        '',
+        '996/0607652B',
+        '08012345P',
+        '08/012345',
+        '012345P',
+        'ABCDEF',
+        '08/P',
+      ]
+
+      inputs.forEach(i => {
+        it(`test for: "${i}"`, function () {
+          expect(validators.number(i as any)).not.to.be.ok
+        })
+      })
+    })
+
+    describe('valid values', function () {
+      const inputs = ['1', '-1', '3214', '-453534', '32']
+
+      inputs.forEach(i => {
+        it(`test for: "${i}"`, function () {
+          expect(validators.number(i)).to.be.ok
         })
       })
     })

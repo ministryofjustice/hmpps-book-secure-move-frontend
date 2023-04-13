@@ -3,18 +3,6 @@ const { startOfTomorrow, startOfYesterday } = require('date-fns')
 const movesApp = require('../../app/moves')
 const SERVICE_NAME = 'Book a secure move'
 
-function startOfDayAfterTomorrow() {
-  const now = new Date()
-  const year = now.getFullYear()
-  const month = now.getMonth()
-  const day = now.getDate()
-
-  const date = new Date(0)
-  date.setFullYear(year, month, day + 2)
-  date.setHours(0, 0, 0, 0)
-  return date
-}
-
 module.exports = function setLocals(req, res, next) {
   const protocol = req.encrypted ? 'https' : req.protocol
   const baseUrl = `${protocol}://${req.get('host')}`
@@ -22,7 +10,6 @@ module.exports = function setLocals(req, res, next) {
     CANONICAL_URL: baseUrl + req.path,
     TODAY: new Date(),
     TOMORROW: startOfTomorrow(),
-    DAY_AFTER_TOMORROW: startOfDayAfterTomorrow(),
     YESTERDAY: startOfYesterday(),
     REQUEST_PATH: req.path,
     USER: req.user,
