@@ -171,6 +171,7 @@ const pmuPermissions = [
   'allocations:view',
   'allocation:create',
   'allocation:cancel',
+  'allocation:update',
   'dashboard:view',
   'dashboard:view:population',
   'locations:all',

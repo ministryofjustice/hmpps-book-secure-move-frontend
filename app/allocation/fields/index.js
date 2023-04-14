@@ -41,7 +41,12 @@ const cancelFields = {
   cancellation_reason_other_comment: cancellationReasonOtherComment,
 }
 
+const editFields = {
+  date: allocationDate,
+}
+
 module.exports = {
   cancelFields,
   createFields,
+  editFields,
 }

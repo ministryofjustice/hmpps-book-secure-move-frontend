@@ -1,0 +1,26 @@
+{% extends "form-wizard.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Allocation details'});
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: t("actions::back_to_allocation"),
+    href: "/allocation/" + allocation.id
+  }) }}
+
+  {{ super() }}
+{% endblock %}
+
+{% block contentSidebar %}
+  <div class="sticky-sidebar">
+    <div class="sticky-sidebar__inner">
+      <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
+        {{ t("allocation::view.summary.heading") }}
+      </h3>
+
+      {{ appMetaList(summary) }}
+    </div>
+  </div>
+{% endblock %}

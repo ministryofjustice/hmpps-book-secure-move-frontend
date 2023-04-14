@@ -90,6 +90,13 @@ class AllocationService extends BaseService {
       .then(AllocationService.transform())
   }
 
+  update(data) {
+    return this.apiClient
+      .update('allocation', this.format(data))
+      .then(response => response.data)
+      .then(AllocationService.transform())
+  }
+
   getByDateAndLocation({
     moveDate = [],
     fromLocations = [],
