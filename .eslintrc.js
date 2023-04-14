@@ -5,8 +5,8 @@ module.exports = {
     node: true,
     jquery: true,
   },
-  extends: ['prettier', 'standard', 'plugin:import/typescript'],
-  plugins: ['prettier', 'import', '@typescript-eslint'],
+  extends: ['standard', 'plugin:import/typescript', 'prettier'],
+  plugins: ['import', '@typescript-eslint', 'prettier'],
   globals: {
     Atomics: 'readonly',
     MutationObserver: 'readonly',
@@ -18,19 +18,8 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'error',
-    'comma-dangle': [
-      'error',
-      {
-        arrays: 'always-multiline',
-        objects: 'always-multiline',
-        imports: 'never',
-        exports: 'never',
-        functions: 'ignore',
-      },
-    ],
     curly: ['error', 'all'],
     'space-before-function-paren': ['off'],
-    'object-curly-spacing': ['error', 'always'],
     'dot-notation': 'error',
     'no-process-env': 'error',
     'no-console': 'error',

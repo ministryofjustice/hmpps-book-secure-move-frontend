@@ -23,6 +23,7 @@
   "create_allocation": "Create allocation",
   "create_an_allocation": "Create an allocation",
   "cancel_allocation": "Cancel this allocation",
+  "update_allocation": "Update this allocation",
   "cancel_move": "Cancel this move",
   "confirm_cancellation": "Confirm cancellation",
   "answer_question": "Answer question",

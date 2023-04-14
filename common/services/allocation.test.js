@@ -792,4 +792,42 @@ describe('Allocation service', function () {
       expect(output).to.deep.equal(mockAllocations[0])
     })
   })
+
+  describe('#update', function () {
+    let output, transformStub
+    const mockData = {
+      count: 5,
+      category: 'C',
+    }
+
+    beforeEach(async function () {
+      transformStub = sinon.stub().returnsArg(0)
+      sinon.stub(AllocationService, 'transform').callsFake(() => transformStub)
+      sinon.stub(apiClient, 'update').resolves({
+        data: mockAllocations[0],
+      })
+      sinon.stub(allocationService, 'format').returns({
+        formattedData: {},
+      })
+      output = await allocationService.update(mockData)
+    })
+
+    it('formats the data', function () {
+      expect(allocationService.format).to.have.been.calledWithExactly(mockData)
+    })
+
+    it('sends the data to the api', function () {
+      expect(apiClient.update).to.have.been.calledWithExactly('allocation', {
+        formattedData: {},
+      })
+    })
+
+    it('should transform person object', function () {
+      expect(transformStub.callCount).to.equal(1)
+    })
+
+    it('returns the response', function () {
+      expect(output).to.deep.equal(mockAllocations[0])
+    })
+  })
 })

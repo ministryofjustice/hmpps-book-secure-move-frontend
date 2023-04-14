@@ -6,6 +6,7 @@ const { protectRoute } = require('../../common/middleware/permissions')
 const wizard = require('../../common/middleware/unique-form-wizard')
 const { setMove } = require('../move/middleware')
 
+const editRouter = require('./app/edit').default
 const { cancelConfig, removeMoveConfig, createConfig } = require('./config')
 const {
   createControllers,
@@ -25,6 +26,8 @@ router.use(
   protectRoute('allocation:create'),
   wizard(createSteps, createFields, createConfig, 'params.id')
 )
+
+router.use('/:allocationId/edit', protectRoute('allocation:update'), editRouter)
 
 router.get(
   '/:allocationId/confirmation',

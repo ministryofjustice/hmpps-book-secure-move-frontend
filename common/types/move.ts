@@ -3,7 +3,7 @@ import { Location } from './location'
 import { Profile } from './profile'
 
 export interface Move {
-  profile: Profile
+  profile?: Profile
   status:
     | 'proposed'
     | 'requested'
