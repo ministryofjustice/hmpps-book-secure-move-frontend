@@ -126,7 +126,7 @@ examples:
         - label:
             text: HTML
           html: <em>Foo</em>
-        - label: 
+        - label:
             text: Escaped HTML
           text: <em>Bar</em>
   - name: with tags
@@ -148,6 +148,7 @@ examples:
   - name: with isLockout param
     data:
       isLockout: true
+      isLodging: true
   - name: complete example
     data:
       title:

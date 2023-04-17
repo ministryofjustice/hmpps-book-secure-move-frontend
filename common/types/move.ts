@@ -39,4 +39,5 @@ export interface Move {
   is_lockout?: boolean
   _canEdit?: boolean
   _isPerLocked?: boolean
+  is_lodging?: boolean
 }
