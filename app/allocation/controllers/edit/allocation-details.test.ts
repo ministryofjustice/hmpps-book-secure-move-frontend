@@ -31,6 +31,7 @@ const locations: Location[] = [
 
 const moves: Move[] = [
   {
+    date: '',
     from_location: locations[0],
     id: '35957119-7e39-4c1f-9e0b-62f465ad007d',
     move_type: 'prison_transfer',
@@ -38,6 +39,7 @@ const moves: Move[] = [
     status: 'requested',
   },
   {
+    date: '',
     from_location: locations[0],
     id: 'ae8bbcdb-9b70-49f0-bce2-c6f512a3f202',
     move_type: 'prison_transfer',

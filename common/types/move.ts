@@ -41,4 +41,5 @@ export interface Move {
   _canEdit?: boolean
   _isPerLocked?: boolean
   supplier?: Supplier
+  is_lodging?: boolean
 }

@@ -30,6 +30,7 @@ const getTabsUrls = sinon.stub().returns('__tabs-urls__')
 const getTagLists = sinon.stub().returns({ tagLists: '__tag-lists__' })
 const getUpdateUrls = sinon.stub().returns(mockUpdateUrls)
 const mapUpdateLink = sinon.stub().returnsArg(0)
+const hasOvernightLodge = sinon.stub().returnsArg(0)
 
 const pathStubs = {
   '../../../config': {},
@@ -44,6 +45,7 @@ const pathStubs = {
   './get-tag-lists': getTagLists,
   './get-update-urls': getUpdateUrls,
   './map-update-link': mapUpdateLink,
+  './has-overnight-lodge': hasOvernightLodge,
 }
 
 const getLocals = proxyquire('./get-locals', pathStubs)
@@ -307,6 +309,7 @@ describe('Move helpers', function () {
           'additionalInfoSummary',
           'assessments',
           'courtHearings',
+          'isLodging',
           'messageBanner',
           'messageContent',
           'messageTitle',
@@ -339,6 +342,7 @@ describe('Move helpers', function () {
           'additionalInfoSummary',
           'assessments',
           'courtHearings',
+          'isLodging',
           'messageBanner',
           'messageContent',
           'messageTitle',
