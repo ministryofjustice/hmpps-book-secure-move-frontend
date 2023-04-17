@@ -1,7 +1,6 @@
 import I18n from '../../config/i18n'
 
 import { Allocation } from './allocation'
-import I18n from '../../config/i18n'
 
 import { Journey } from './journey'
 import { Move } from './move'
