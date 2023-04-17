@@ -51,11 +51,10 @@
 
 {% block tabContent %}
   {% if (isAllocationMove) %}
-    {# TODO: Get moves returned as part of an allocation so that we can determine the number #}
     {{ govukInsetText({
       html: t("messages::cancel_allocation_move.content", {
         context: "with_link" if canAccess("allocations:view"),
-        count: allocation.moves.length or allocation.moves_count,
+        count: allocation.moves_count,
         href: "/allocation/" + allocation.id
       }),
       classes: "govuk-!-margin-bottom-0"
