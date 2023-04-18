@@ -1,3 +1,4 @@
+import { Event } from '../../types/event'
 import { Move } from '../../types/move'
 import { expect } from 'chai'
 import { hasOvernightLodge } from './has-overnight-lodge'
@@ -24,13 +25,37 @@ const baseMove: Move = {
 
 }
 
+const mlsEvent: Event = {
+  id: '',
+  occurred_at: '',
+  details: {},
+  event_type: 'MoveLodgingStart'
+}
+
+const molEvent: Event = {
+  id: '',
+  occurred_at: '',
+  details: {},
+  event_type: 'MoveOvernightLodge'
+}
+
 
 describe ('Move' , function () {
-  // @ts-ignore
-
   context ('with no events', function() {
     it ('should not be marked as a lodging', function () {
       expect(equal(hasOvernightLodge(baseMove),false))
+    })
+  })
+  context ('with a MoveLodgingStart event', function() {
+    it ('should be marked as a lodging', function () {
+      baseMove.important_events  = [mlsEvent]
+      expect(equal(hasOvernightLodge(baseMove),true))
+    })
+  })
+  context ('with a MoveOvernightLodge event', function() {
+    it ('should be marked as a lodging', function () {
+      baseMove.timeline_events  = [molEvent]
+      expect(equal(hasOvernightLodge(baseMove),true))
     })
   })
 })
