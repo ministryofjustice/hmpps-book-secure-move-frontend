@@ -49,6 +49,7 @@ describe('Move view app', function () {
           journeys: [],
           t: I18n.t,
           form: { options: { fields: {}, next: '' }, values: {} },
+
         }
         res = {
           locals: {},
