@@ -78,7 +78,7 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
     featureFlags.ADD_LODGE_BUTTON &&
     move.status !== 'completed' &&
     move.status !== 'cancelled' &&
-    canAccess('allocation:create')
+    canAccess('move:lodging:create')
   ) {
     actions.push({
       html: componentService.getComponent('govukButton', {
