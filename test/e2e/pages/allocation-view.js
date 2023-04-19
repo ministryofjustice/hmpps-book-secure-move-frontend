@@ -34,6 +34,7 @@ class AllocationViewPage extends Page {
         'Remove from allocation'
       ),
       confirmationLink: count => Selector('a').withExactText(`${count} people`),
+      editDetailsLink: Selector('a').withText('Change date of allocation'),
     }
   }
 
