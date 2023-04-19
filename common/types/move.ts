@@ -8,7 +8,7 @@ export interface Move {
     | 'proposed'
     | 'requested'
     | 'booked'
-    | 'in-transit'
+    | 'in_transit'
     | 'completed'
     | 'cancelled'
   from_location: Location

@@ -169,6 +169,20 @@
       </h3>
 
       {{ appMetaList(summary) }}
+
+      {% if actions | length %}
+        <section class="govuk-!-padding-top-3 govuk-!-margin-bottom-7">
+          <ul class="govuk-list govuk-!-margin-0 govuk-!-font-size-16">
+            {% for action in actions %}
+              <li class="{{ action.itemClasses }}">
+                <a href="{{ action.url }}" class="{{ action.classes }}">
+                  {{ t(action.text) }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

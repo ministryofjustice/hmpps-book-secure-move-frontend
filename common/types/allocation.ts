@@ -15,7 +15,10 @@ export interface Allocation {
   complete_in_full?: boolean
   requested_by?: string
   other_criteria?: string
-  status?: string
+  status?:
+    | 'cancelled'
+    | 'filled'
+    | 'unfilled'
   cancellation_reason?: string
   cancellation_reason_comment?: string
   created_at?: string

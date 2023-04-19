@@ -185,8 +185,12 @@ describe('Allocation controllers', function () {
           expect(locals.allocation).to.deep.equal(allocationExample)
         })
 
+        it('should include actions', function () {
+          expect(locals.actions).to.deep.equal([])
+        })
+
         it('should contain correct number of locals', function () {
-          expect(Object.keys(locals)).to.have.length(10)
+          expect(Object.keys(locals)).to.have.length(11)
         })
       })
 
@@ -290,6 +294,13 @@ describe('Allocation controllers', function () {
             },
           },
         ])
+      })
+
+      it('should include the edit allocation details action', function () {
+        expect(locals.actions[0]).to.deep.equal({
+          text: 'Change date of allocation',
+          url: `/allocation/${allocationExample.id}/edit/allocation-details`,
+        })
       })
     })
   })
