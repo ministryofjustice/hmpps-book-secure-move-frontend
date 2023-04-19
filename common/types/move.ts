@@ -5,8 +5,6 @@ import { Profile } from './profile'
 export interface Move {
   date: string | Date
   profile?: Profile
-  date: string | Date
-  profile: Profile
   status:
     | 'proposed'
     | 'requested'
