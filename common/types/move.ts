@@ -3,8 +3,8 @@ import { Location } from './location'
 import { Profile } from './profile'
 
 export interface Move {
-  profile?: Profile
   date: string | Date
+  profile?: Profile
   status:
     | 'proposed'
     | 'requested'
@@ -39,4 +39,5 @@ export interface Move {
   is_lockout?: boolean
   _canEdit?: boolean
   _isPerLocked?: boolean
+  is_lodging?: boolean
 }

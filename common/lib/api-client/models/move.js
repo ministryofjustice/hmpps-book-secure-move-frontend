@@ -18,6 +18,7 @@ module.exports = {
     date_from: '',
     date_to: '',
     is_lockout: '',
+    is_lodging: '',
     recall_date: '',
     prison_transfer_reason: {
       jsonApi: 'hasOne',

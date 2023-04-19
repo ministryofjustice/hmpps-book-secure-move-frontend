@@ -20,6 +20,7 @@ describe('Move view app', function () {
             date: '2023-03-27',
             id: '12345',
             is_lockout: false,
+            is_lodging: false,
             profile: { id: 'profile', person: {} },
             status: 'in-transit',
             from_location: {
@@ -47,7 +48,8 @@ describe('Move view app', function () {
           },
           journeys: [],
           t: I18n.t,
-          form: { options: { fields: {} }, values: {} },
+          // @ts-ignore
+          form: { options: { fields: {}, next: '' }, values: {} },
         }
         res = {
           locals: {},
@@ -74,6 +76,7 @@ describe('Move view app', function () {
           moveDetails: {
             id: '12345',
             is_lockout: false,
+            is_lodging: false,
             profile: { id: 'profile', person: {} },
             status: 'in-transit',
             from_location: {
@@ -103,6 +106,7 @@ describe('Move view app', function () {
           moveId: '12345',
           moveIsEditable: true,
           moveIsLockout: false,
+          moveIsLodging: false,
         })
       })
 
