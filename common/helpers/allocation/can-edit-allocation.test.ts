@@ -68,4 +68,20 @@ describe('#canEditAllocation', function () {
       ).to.be.false
     })
   })
+
+  context('when an associated move is cancelled', function () {
+    beforeEach(function () {
+      const moves = [
+        moveFactory.build(),
+        moveFactory.build({ status: 'cancelled' }),
+      ]
+      allocation = allocationFactory.build({ moves })
+    })
+
+    it('returns true', function () {
+      expect(
+        canEditAllocation(allocation, canAccessFunction(permissions))
+      ).to.be.true
+    })
+  })
 })
