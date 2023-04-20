@@ -3,6 +3,7 @@ import { t } from 'testcafe'
 import AllocationCancelPage from './allocation-cancel'
 import AllocationCriteriaPage from './allocation-criteria'
 import AllocationDetailsPage from './allocation-details'
+import AllocationDetailsEditPage from './allocation-details-edit'
 import AllocationViewPage from './allocation-view'
 import Page from './page'
 
@@ -12,12 +13,14 @@ const allocationDetailsPage = new AllocationDetailsPage()
 const allocationCriteriaPage = new AllocationCriteriaPage()
 const allocationCancelPage = new AllocationCancelPage()
 const allocationViewPage = new AllocationViewPage()
+const allocationDetailsEditPage = new AllocationDetailsEditPage()
 
 class AllocationJourney extends Page {
   constructor() {
     super()
     this.allocationCancelPage = allocationCancelPage
     this.allocationCriteriaPage = allocationCriteriaPage
+    this.allocationDetailsEditPage = allocationDetailsEditPage
     this.allocationDetailsPage = allocationDetailsPage
     this.allocationViewPage = allocationViewPage
   }

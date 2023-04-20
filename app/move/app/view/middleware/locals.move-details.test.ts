@@ -19,7 +19,7 @@ describe('Move view app', function () {
             id: '12345',
             is_lockout: false,
             profile: { id: 'profile', person: {} },
-            status: 'in-transit',
+            status: 'in_transit',
             from_location: {
               key: 'key',
               title: 'Title',
@@ -71,7 +71,7 @@ describe('Move view app', function () {
             id: '12345',
             is_lockout: false,
             profile: { id: 'profile', person: {} },
-            status: 'in-transit',
+            status: 'in_transit',
             from_location: {
               key: 'key',
               title: 'Title',

@@ -1,11 +1,27 @@
 const { sortBy } = require('lodash')
 
 const {
+  canEditAllocation,
+} = require('../../../common/helpers/allocation/can-edit-allocation')
+const {
   canEditAssessment,
 } = require('../../../common/helpers/move/can-edit-assessment')
 const canEditMove = require('../../../common/helpers/move/can-edit-move')
 const { isPerLocked } = require('../../../common/helpers/move/is-per-locked')
 const presenters = require('../../../common/presenters')
+
+function getActions(allocation, canAccess) {
+  if (!canEditAllocation(allocation, canAccess)) {
+    return []
+  }
+
+  return [
+    {
+      text: 'Change date of allocation',
+      url: `/allocation/${allocation.id}/edit/allocation-details`,
+    },
+  ]
+}
 
 function viewAllocation(req, res) {
   const { allocation, canAccess } = req
@@ -31,6 +47,7 @@ function viewAllocation(req, res) {
   }
 
   const locals = {
+    actions: getActions(allocation, canAccess),
     allocation,
     // TODO: Find way to store the actual URL they came from: See similar solution within moves app
     dashboardUrl: '/allocations',
