@@ -93,9 +93,9 @@ describe('#getValues', function () {
     controller.getValues(req, res, callback)
   })
 
-  it('calls back with the date from the allocation', function () {
+  it('calls back with the formatted date from the allocation', function () {
     expect(callback).to.have.been.calledWithExactly(null, {
-      date: '2023-01-01',
+      date: 'Sunday 1 Jan 2023',
     })
   })
 })

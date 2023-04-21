@@ -2,6 +2,8 @@ import UpdateBaseController from './base'
 import { BasmRequest } from '../../../../common/types/basm_request'
 import { BasmResponse } from '../../../../common/types/basm_response'
 
+const filters = require('../../../../config/nunjucks/filters')
+
 const presenters = require('../../../../common/presenters')
 
 type FormValues = { date?: string }
@@ -15,9 +17,13 @@ class AllocationDetailsController extends UpdateBaseController {
         return callback(err)
       }
 
-      if (!values.date) {
+      const { date } = req.allocation
+
+      if (!date) {
         values.date = req.allocation.date
       }
+
+      values.date = filters.formatDateAsRelativeDay(date)
 
       callback(null, values)
     })
