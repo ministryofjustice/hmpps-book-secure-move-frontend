@@ -18,12 +18,35 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
   const assessment = move.profile[assessmentType] || {}
   const baseUrl = `/move/${move.id}/${kebabCase(assessmentType)}`
   const context = assessmentType
+  // There's a typescript function elsewhere that does this - has-overnight-lodge.ts
   const hasLodges =
-    move.timeline_events?.filter(
+    move.important_events?.filter(
       event =>
         event.event_type === 'MoveLodgingStart' &&
         event.details.reason === 'overnight_lodging'
+    ).length > 0 ||
+    move.timeline_events?.filter(
+      event => event.event_type === 'MoveOvernightLodge'
     ).length > 0
+
+  if (
+    featureFlags.ADD_LODGE_BUTTON &&
+    move.status !== 'completed' &&
+    move.status !== 'cancelled' &&
+    canAccess('move:lodging:create')
+  ) {
+    actions.push({
+      html: componentService.getComponent('govukButton', {
+        text: i18n.t('actions::add_item', {
+          context: hasLodges ? 'with_items' : '',
+          name: 'overnight lodge',
+        }),
+        href: `/move/${move.id}/lodge`,
+        classes: 'govuk-button--primary',
+        preventDoubleClick: true,
+      }),
+    })
+  }
 
   if (
     ['requested', 'booked'].includes(move.status) &&
@@ -70,25 +93,6 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
         text: i18n.t('actions::provide_confirmation', { context }),
         preventDoubleClick: true,
         href: `${baseUrl}/confirm`,
-      }),
-    })
-  }
-
-  if (
-    featureFlags.ADD_LODGE_BUTTON &&
-    move.status !== 'completed' &&
-    move.status !== 'cancelled' &&
-    canAccess('move:lodging:create')
-  ) {
-    actions.push({
-      html: componentService.getComponent('govukButton', {
-        text: i18n.t('actions::add_item', {
-          context: hasLodges ? 'with_items' : '',
-          name: 'overnight lodge',
-        }),
-        href: `/move/${move.id}/lodge`,
-        classes: 'govuk-button--primary',
-        preventDoubleClick: true,
       }),
     })
   }
