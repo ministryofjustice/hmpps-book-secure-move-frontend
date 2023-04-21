@@ -11,6 +11,8 @@ import DashboardPage from './dashboard'
 // @ts-ignore // TODO: convert to TS
 import MoveDetailPage from './move-detail'
 import { MoveLodgeLocationPage } from './move-lodge-location'
+import { MoveLodgeLengthPage } from './move-lodge-length'
+import { MoveLodgeSavedPage } from './move-lodge-saved'
 // @ts-ignore // TODO: convert to TS
 import MoveTimelinePage from './move-timeline'
 // @ts-ignore // TODO: convert to TS
@@ -28,6 +30,8 @@ export const page = new Page()
 export const allocationJourney = new AllocationJourney()
 export const moveDetailPage = new MoveDetailPage()
 export const moveLodgeLocationPage = new MoveLodgeLocationPage()
+export const moveLodgeLengthPage = new MoveLodgeLengthPage()
+export const moveLodgeSavedPage = new MoveLodgeSavedPage()
 export const moveTimelinePage = new MoveTimelinePage()
 export const movesDashboardPage = new MovesDashboardPage()
 export const createMovePage = new CreateMovePage()
