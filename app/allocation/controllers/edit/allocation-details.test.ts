@@ -71,7 +71,12 @@ const req: AllocationRequest = {
       update: () => {},
     },
   },
+  session: {
+    save: () => undefined,
+  },
   sessionModel: {
+    reset: () => undefined,
+    set: () => undefined,
     toJSON: () => ({}),
   },
 }
@@ -153,10 +158,7 @@ describe('#saveValues', function () {
   context('happy path', function () {
     beforeEach(async function () {
       allocationService = {
-        update: sinon.stub().resolves({
-          id: 9,
-          allocationCreated: true,
-        }),
+        update: sinon.stub().resolves({ ...allocation, date: '2023-01-02' }),
       }
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
@@ -195,6 +197,13 @@ describe('#saveValues', function () {
 
     it('calls next', function () {
       expect(next).to.have.been.calledOnce
+    })
+
+    it('updates the sessionModel with the allocation', function () {
+      expect(sessionModel.set).to.have.been.calledWithExactly('allocation', {
+        ...allocation,
+        date: '2023-01-02',
+      })
     })
   })
 

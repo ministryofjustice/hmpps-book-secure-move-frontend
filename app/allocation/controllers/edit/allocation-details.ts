@@ -5,7 +5,7 @@ import { BasmResponse } from '../../../../common/types/basm_response'
 const presenters = require('../../../../common/presenters')
 
 type FormValues = { date?: string }
-type AllocationRequest = Required<Pick<BasmRequest, 'allocation' | 'form' | 'services' | 'sessionModel'>>
+type AllocationRequest = Required<Pick<BasmRequest, 'allocation' | 'form' | 'services' | 'session' | 'sessionModel'>>
 
 class AllocationDetailsController extends UpdateBaseController {
 
@@ -45,12 +45,22 @@ class AllocationDetailsController extends UpdateBaseController {
       const id = req.allocation.id
       const date = req.form.values.date
 
-      await req.services.allocation.update({ id: id, date: date })
+      const allocation = await req.services.allocation.update({ id: id, date: date })
 
+      req.sessionModel.set('allocation', allocation)
       next()
     } catch (err) {
       next(err)
     }
+  }
+
+  render(req: AllocationRequest, res: BasmResponse, next: () => void) {
+    super.render(req, res, next)
+
+    // Discard the session model once we've rendered the error messages.
+    // We don't want the errors to hang around in the session after the user has been informed.
+    req.sessionModel.reset()
+    req.session.save()
   }
 }
 

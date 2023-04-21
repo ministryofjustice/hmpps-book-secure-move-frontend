@@ -20,5 +20,8 @@ export interface BasmRequest extends Express.Request {
   services?: {
     allocation: Service
   }
+  session?: {
+    save: () => void
+  }
   sessionModel?: SessionModel
 }
