@@ -62,6 +62,8 @@ const formOptions = {
 
 const req: AllocationRequest = {
   allocation,
+  canAccess: _string => true,
+  flash: () => undefined,
   form: {
     options: formOptions,
     values: {},
@@ -79,6 +81,7 @@ const req: AllocationRequest = {
     set: () => undefined,
     toJSON: () => ({}),
   },
+  t: (_keys, _options) => 'test',
 }
 
 const res: BasmResponse = {
@@ -153,6 +156,7 @@ describe('#saveValues', function () {
   let allocationService: any
   let sessionModel: any
   let next: any
+  let flash: any
   const mockData = { 'csrf-secret': '123', errors: null }
 
   context('happy path', function () {
@@ -165,9 +169,12 @@ describe('#saveValues', function () {
         set: sinon.stub(),
       }
       next = sinon.stub()
+      flash = sinon.stub()
+
       await controller.saveValues(
         {
           ...req,
+          flash,
           form: {
             options: formOptions,
             values: {
@@ -203,6 +210,13 @@ describe('#saveValues', function () {
       expect(sessionModel.set).to.have.been.calledWithExactly('allocation', {
         ...allocation,
         date: '2023-01-02',
+      })
+    })
+
+    it('sets the flash', function () {
+      expect(flash).to.have.been.calledWithExactly('success', {
+        title: 'test',
+        content: 'test',
       })
     })
   })

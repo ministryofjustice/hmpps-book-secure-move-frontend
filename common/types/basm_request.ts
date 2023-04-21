@@ -7,6 +7,7 @@ import { SessionModel } from './session_model'
 export interface BasmRequest extends Express.Request {
   allocation?: Allocation
   canAccess: (permission: string) => boolean
+  flash?: (yeah: any, nah: any) => void
   form?: {
     options: {
       fields: object
@@ -24,4 +25,5 @@ export interface BasmRequest extends Express.Request {
     save: () => void
   }
   sessionModel?: SessionModel
+  t?: (keys: string, options?: any) => string
 }

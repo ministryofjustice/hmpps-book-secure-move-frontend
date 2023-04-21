@@ -7,7 +7,7 @@ const filters = require('../../../../config/nunjucks/filters')
 const presenters = require('../../../../common/presenters')
 
 type FormValues = { date?: string }
-type AllocationRequest = Required<Pick<BasmRequest, 'allocation' | 'form' | 'services' | 'session' | 'sessionModel'>>
+type AllocationRequest = Omit<BasmRequest, 'journeys' | 'move'> & Required<Pick<BasmRequest, 'allocation' | 'flash' | 'form' | 'services' | 'session' | 'sessionModel' | 't'>>
 
 class AllocationDetailsController extends UpdateBaseController {
 
@@ -54,6 +54,8 @@ class AllocationDetailsController extends UpdateBaseController {
       const allocation = await req.services.allocation.update({ id: id, date: date })
 
       req.sessionModel.set('allocation', allocation)
+      this.setFlash(req)
+
       next()
     } catch (err) {
       next(err)
@@ -67,6 +69,16 @@ class AllocationDetailsController extends UpdateBaseController {
     // We don't want the errors to hang around in the session after the user has been informed.
     req.sessionModel.reset()
     req.session.save()
+  }
+
+  private setFlash(req: AllocationRequest) {
+    const firstMove = req.allocation.moves[0]
+    const supplier = firstMove.supplier?.name || req.t('supplier_fallback')
+
+    req.flash('success', {
+      title: req.t('allocations::update_flash.heading'),
+      content: req.t('allocations::update_flash.message', { supplier }),
+    })
   }
 }
 
