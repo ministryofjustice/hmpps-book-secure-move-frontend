@@ -7,6 +7,6 @@
   "hostname": "localhost",
   "quarantineMode": {
     "successThreshold": 2,
-    "attemptLimit": 10
+    "attemptLimit": 5
   }
 }
