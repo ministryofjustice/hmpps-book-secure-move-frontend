@@ -230,6 +230,9 @@ jobs:
           name: Build assets and frameworks
           command: npm run build
       - run:
+          name: Set Feature flags
+          command: export FEATURE_FLAG_ADD_LODGE_BUTTON=true
+      - run:
           name: Run E2E tests (same instance)
           environment:
             REDIS_URL: ""
