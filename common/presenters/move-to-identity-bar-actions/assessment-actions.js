@@ -30,9 +30,9 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
     ).length > 0
 
   if (
-    featureFlags.ADD_LODGE_BUTTON &&
-    move.status !== 'completed' &&
-    move.status !== 'cancelled' // &&
+    featureFlags.ADD_LODGE_BUTTON // &&
+    // move.status !== 'completed' &&
+    // move.status !== 'cancelled' &&
     // canAccess('move:lodging:create')
   ) {
     actions.push({
