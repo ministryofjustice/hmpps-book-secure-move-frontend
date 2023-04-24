@@ -17,8 +17,12 @@ export const mountpath = '/lodge'
 
 // Define shared middleware
 router.use(setMoveWithEvents)
-router.use(protectRoute('move:create'))
+router.use(protectRoute('move:lodging:create'))
 
 // Define routes
 router.use(wizard(steps, fields, config, 'params.moveId'))
-router.get('/:eventId/saved', protectRoute('move:create'), SavedController)
+router.get(
+  '/:eventId/saved',
+  protectRoute('move:lodging:create'),
+  SavedController
+)
