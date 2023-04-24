@@ -6,7 +6,12 @@ import { createMove } from '../../_move'
 import { pmuUser } from '../../_roles'
 // @ts-ignore // TODO: convert to TS
 import { home } from '../../_routes'
-import { moveDetailPage, moveLodgeLengthPage, moveLodgeLocationPage, moveLodgeSavedPage } from '../../pages'
+import {
+  moveDetailPage,
+  moveLodgeLengthPage,
+  moveLodgeLocationPage,
+  moveLodgeSavedPage,
+} from '../../pages'
 
 fixture('A move without any lodges').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(home)

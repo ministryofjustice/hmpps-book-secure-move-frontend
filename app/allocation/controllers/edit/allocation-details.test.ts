@@ -83,7 +83,7 @@ const req: AllocationRequest = {
     set: () => undefined,
     toJSON: () => ({}),
   },
-  t: (_keys, _options) => 'test',
+  t: ((_keys: string, _options: any) => 'test') as any,
 }
 
 const res: BasmResponse = {
