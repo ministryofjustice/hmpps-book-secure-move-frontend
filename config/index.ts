@@ -300,7 +300,7 @@ export const E2E = {
 }
 export const FEATURE_FLAGS = {
   GOT: /true/i.test(process.env.FEATURE_FLAG_GOT || ''),
-  ADD_LODGE_BUTTON: /true/i.test(process.env.FEATURE_FLAG_ADD_LODGE_BUTTON || ''),
+  ADD_LODGE_BUTTON: true, // /true/i.test(process.env.FEATURE_FLAG_ADD_LODGE_BUTTON || ''),
   DATE_OF_ARREST: /true/i.test(process.env.FEATURE_FLAG_DATE_OF_ARREST || ''),
 }
 export const FRAMEWORKS = {
