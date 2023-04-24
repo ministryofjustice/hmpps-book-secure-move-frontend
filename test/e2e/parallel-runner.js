@@ -232,7 +232,7 @@ const testcafeRuns = testBuckets.map((test, index) => {
     3999 + index
   } NOMIS_ELITE2_API_URL=http://localhost:${
     3999 + index
-  } node_modules/.bin/testcafe ${agent} ${test.join(
+  } FEATURE_FLAG_ADD_LODGE_BUTTON=true node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
   )} ${color} --retry-test-pages -q attemptLimit=10,successThreshold=2 ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
   return {
