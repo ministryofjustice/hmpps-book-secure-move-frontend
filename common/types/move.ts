@@ -1,6 +1,7 @@
 import { Event } from './event'
 import { Location } from './location'
 import { Profile } from './profile'
+import { Supplier } from './supplier'
 
 export interface Move {
   profile?: Profile
@@ -38,4 +39,5 @@ export interface Move {
   is_lockout?: boolean
   _canEdit?: boolean
   _isPerLocked?: boolean
+  supplier?: Supplier
 }

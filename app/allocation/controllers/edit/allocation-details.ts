@@ -2,10 +2,12 @@ import UpdateBaseController from './base'
 import { BasmRequest } from '../../../../common/types/basm_request'
 import { BasmResponse } from '../../../../common/types/basm_response'
 
+const filters = require('../../../../config/nunjucks/filters')
+
 const presenters = require('../../../../common/presenters')
 
 type FormValues = { date?: string }
-type AllocationRequest = Required<Pick<BasmRequest, 'allocation' | 'form' | 'services' | 'sessionModel'>>
+type AllocationRequest = Omit<BasmRequest, 'journeys' | 'move'> & Required<Pick<BasmRequest, 'allocation' | 'flash' | 'form' | 'services' | 'session' | 'sessionModel' | 't'>>
 
 class AllocationDetailsController extends UpdateBaseController {
 
@@ -15,9 +17,13 @@ class AllocationDetailsController extends UpdateBaseController {
         return callback(err)
       }
 
-      if (!values.date) {
+      const { date } = req.allocation
+
+      if (!date) {
         values.date = req.allocation.date
       }
+
+      values.date = filters.formatDateAsRelativeDay(date)
 
       callback(null, values)
     })
@@ -45,12 +51,34 @@ class AllocationDetailsController extends UpdateBaseController {
       const id = req.allocation.id
       const date = req.form.values.date
 
-      await req.services.allocation.update({ id: id, date: date })
+      const allocation = await req.services.allocation.update({ id: id, date: date })
+
+      req.sessionModel.set('allocation', allocation)
+      this.setFlash(req)
 
       next()
     } catch (err) {
       next(err)
     }
+  }
+
+  render(req: AllocationRequest, res: BasmResponse, next: () => void) {
+    super.render(req, res, next)
+
+    // Discard the session model once we've rendered the error messages.
+    // We don't want the errors to hang around in the session after the user has been informed.
+    req.sessionModel.reset()
+    req.session.save()
+  }
+
+  private setFlash(req: AllocationRequest) {
+    const firstMove = req.allocation.moves[0]
+    const supplier = firstMove.supplier?.name || req.t('supplier_fallback')
+
+    req.flash('success', {
+      title: req.t('allocations::update_flash.heading'),
+      content: req.t('allocations::update_flash.message', { supplier }),
+    })
   }
 }
 

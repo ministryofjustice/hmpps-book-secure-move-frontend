@@ -13,5 +13,9 @@
   },
   "allocation_cancellation_reason": {
     "page_title": "Cancel this allocation"
+  },
+  "update_flash": {
+    "heading": "Allocation updated",
+    "message": "This move has been updated with {{ supplier }}"
   }
 }

@@ -62,6 +62,8 @@ const formOptions = {
 
 const req: AllocationRequest = {
   allocation,
+  canAccess: _string => true,
+  flash: () => undefined,
   form: {
     options: formOptions,
     values: {},
@@ -71,9 +73,15 @@ const req: AllocationRequest = {
       update: () => {},
     },
   },
+  session: {
+    save: () => undefined,
+  },
   sessionModel: {
+    reset: () => undefined,
+    set: () => undefined,
     toJSON: () => ({}),
   },
+  t: (_keys, _options) => 'test',
 }
 
 const res: BasmResponse = {
@@ -88,9 +96,9 @@ describe('#getValues', function () {
     controller.getValues(req, res, callback)
   })
 
-  it('calls back with the date from the allocation', function () {
+  it('calls back with the formatted date from the allocation', function () {
     expect(callback).to.have.been.calledWithExactly(null, {
-      date: '2023-01-01',
+      date: 'Sunday 1 Jan 2023',
     })
   })
 })
@@ -148,24 +156,25 @@ describe('#saveValues', function () {
   let allocationService: any
   let sessionModel: any
   let next: any
+  let flash: any
   const mockData = { 'csrf-secret': '123', errors: null }
 
   context('happy path', function () {
     beforeEach(async function () {
       allocationService = {
-        update: sinon.stub().resolves({
-          id: 9,
-          allocationCreated: true,
-        }),
+        update: sinon.stub().resolves({ ...allocation, date: '2023-01-02' }),
       }
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
         set: sinon.stub(),
       }
       next = sinon.stub()
+      flash = sinon.stub()
+
       await controller.saveValues(
         {
           ...req,
+          flash,
           form: {
             options: formOptions,
             values: {
@@ -195,6 +204,20 @@ describe('#saveValues', function () {
 
     it('calls next', function () {
       expect(next).to.have.been.calledOnce
+    })
+
+    it('updates the sessionModel with the allocation', function () {
+      expect(sessionModel.set).to.have.been.calledWithExactly('allocation', {
+        ...allocation,
+        date: '2023-01-02',
+      })
+    })
+
+    it('sets the flash', function () {
+      expect(flash).to.have.been.calledWithExactly('success', {
+        title: 'test',
+        content: 'test',
+      })
     })
   })
 
