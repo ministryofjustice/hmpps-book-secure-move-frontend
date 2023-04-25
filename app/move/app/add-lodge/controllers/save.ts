@@ -1,4 +1,4 @@
-import { parseISO } from 'date-fns'
+import { addDays, parseISO } from 'date-fns'
 
 import { formatDate } from '../../../../../config/nunjucks/filters'
 
@@ -15,8 +15,7 @@ export class SaveController extends BaseController {
     const lodgeLocation = req.sessionModel.attributes.to_location_lodge
     const startDate = parseISO(req.sessionModel.attributes.lodge_start_date)
     const lodgeLength = Number(req.form.values.lodge_length)
-    const endDate = new Date(startDate.getTime())
-    endDate.setDate(endDate.getDate() + lodgeLength)
+    const endDate = addDays(startDate, lodgeLength)
 
     try {
       const result = await req.services.event.postEvent(req, {
