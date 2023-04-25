@@ -85,10 +85,13 @@ module.exports = async () => {
           samplingContext.transactionContext &&
           samplingContext.transactionContext.name
 
-        if (transactionName && transactionName.includes('ping')) {
+        if (
+          (transactionName && transactionName.includes('ping')) ||
+          transactionName.includes('/healthcheck')
+        ) {
           return 0
         } else {
-          return 0.1
+          return 0.01
         }
       },
     })
