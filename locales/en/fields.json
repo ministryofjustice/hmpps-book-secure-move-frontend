@@ -82,11 +82,7 @@
     "label": "Move to"
   },
   "lodge_location": {
-<<<<<<< HEAD
     "label": "Lodge location"
-=======
-    "label": "Lodge prison"
->>>>>>> f5133e5c (chore: WIP add lodge form)
   },
   "lodge_start": {
     "label": "Lodge start date"
@@ -175,11 +171,7 @@
       }
     }
   },
-<<<<<<< HEAD
   "lodge_length_type": {
-=======
-  "lodge_length": {
->>>>>>> f5133e5c (chore: WIP add lodge form)
     "items": {
       "one": {
         "label": "One"

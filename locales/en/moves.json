@@ -71,7 +71,6 @@
       },
       "length": {
         "heading": "How many nights will they stay at the lodge location?"
-<<<<<<< HEAD
       },
       "saved": {
         "page_title": "Overnight lodge added",
@@ -80,8 +79,6 @@
         "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> now includes an overnight lodge at <strong>{{location}}</strong>",
         "date": "on <strong>{{startDate}}</strong>",
         "date_long": "between <strong>{{startDate}}</strong> and <strong>{{endDate}}</strong>"
-=======
->>>>>>> f5133e5c (chore: WIP add lodge form)
       }
     }
   },

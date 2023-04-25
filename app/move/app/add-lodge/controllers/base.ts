@@ -1,43 +1,11 @@
 // @ts-ignore // TODO: convert to ts
-<<<<<<< HEAD
 import UpdateBaseController from '../../edit/controllers/base'
-=======
-<<<<<<<< HEAD:app/move/app/edit/controllers/add-lodge.ts
-import EditBase from './base'
-========
-import UpdateBaseController from '../../edit/controllers/base'
->>>>>>>> f5133e5c (chore: WIP add lodge form):app/move/app/add-lodge/controllers/base.ts
->>>>>>> f5133e5c (chore: WIP add lodge form)
 
 export class BaseController extends UpdateBaseController {
   middlewareSetup() {
     super.middlewareSetup()
   }
 
-<<<<<<< HEAD
-=======
-  getErrors(req: any, res: any) {
-    const errors = super.getErrors(req, res)
-
-    const referrer = req.get('referrer')
-    console.log(
-      'ERRORORORORORORS',
-      errors,
-      req.initialStep,
-      req.query.referrer,
-      referrer,
-      (this as any).getBaseUrl(req)
-    )
-
-    if (referrer) {
-      const { pathname } = new URL(referrer)
-      console.log(pathname)
-    }
-
-    return errors
-  }
-
->>>>>>> f5133e5c (chore: WIP add lodge form)
   setNextStep(req: any, res: any, next: any) {
     next()
   }

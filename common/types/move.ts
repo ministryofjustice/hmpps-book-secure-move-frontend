@@ -5,11 +5,7 @@ import { Supplier } from './supplier'
 
 export interface Move {
   date: string | Date
-<<<<<<< HEAD
   profile?: Profile
-=======
-  profile: Profile
->>>>>>> f5133e5c (chore: WIP add lodge form)
   status:
     | 'proposed'
     | 'requested'
