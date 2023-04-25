@@ -1,6 +1,8 @@
 import { Factory } from 'fishery'
+
 import { moveTransformer } from '../common/lib/api-client/transformers'
 import { Move } from '../common/types/move'
+
 import locationFactory from './location'
 
 const moveFactory = Factory.define<Move>(({ afterBuild }) => {
@@ -14,6 +16,7 @@ const moveFactory = Factory.define<Move>(({ afterBuild }) => {
     move_type: 'prison_transfer',
     profile: undefined,
     status: 'requested',
+    date: '2022-01-01',
   }
 })
 

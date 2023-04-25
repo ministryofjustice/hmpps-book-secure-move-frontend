@@ -17,6 +17,7 @@ class HandoverController extends ConfirmAssessmentController {
   setMoveDetails(req, res, next) {
     res.locals.moveId = req.move.id
     res.locals.moveIsLockout = req.move.is_lockout
+    res.locals.moveIsLodging = req.move.is_lodging
     next()
   }
 

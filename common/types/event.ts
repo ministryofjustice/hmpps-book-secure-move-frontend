@@ -13,7 +13,7 @@ export interface Event {
   notes?: string | null
   created_by?: string | null
   eventable?: Journey | Move | PersonEscortRecord | Person
-  supplier?: string
+  supplier?: string | null
   details: EventDetails
   _index?: number
 }

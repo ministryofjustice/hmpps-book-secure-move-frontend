@@ -212,6 +212,7 @@ jobs:
     <<: *node_container
     resource_class: large
     parallelism: 8
+    working_directory: ~/app
     steps:
       - checkout
       - browser-tools/install-browser-tools
@@ -241,7 +242,7 @@ jobs:
       - store_test_results:
           path: reports/testcafe
       - store_artifacts:
-          path: artifacts
+          path: ~/app/artifacts
       - *notify_slack_on_failure
 
   publish-release-to-sentry:

@@ -22,7 +22,13 @@ exports.addEvents = async function (req, res) {
     return res.render('police-custody-form/police-custody-form')
   }
 
-  await req.services.event.postEvents(req, lockoutEvents, move, journeys, user)
+  await req.services.event.postLockoutEvents(
+    req,
+    lockoutEvents,
+    move,
+    journeys,
+    user
+  )
 
   const fullName = move.profile.person._fullname
 

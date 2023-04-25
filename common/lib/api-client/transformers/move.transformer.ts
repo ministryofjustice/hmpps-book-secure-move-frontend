@@ -2,6 +2,7 @@
 import { get } from 'lodash'
 
 import i18n from '../../../../config/i18n'
+import { hasOvernightLodge } from '../../../helpers/move/has-overnight-lodge'
 import { Event } from '../../../types/event'
 import { Move } from '../../../types/move'
 
@@ -112,6 +113,9 @@ const addReasonToMoveLodgingEndEvents = (move: Move) => {
     })
   }
 }
+const setIsLodging = (move: Move) => {
+  move.is_lodging = hasOvernightLodge(move)
+}
 
 export function moveTransformer(move: Move) {
   addImportantEvents(move)
@@ -121,4 +125,5 @@ export function moveTransformer(move: Move) {
   setVehicleRegistration(move)
   setExpectedTime(move)
   setExtraStates(move)
+  setIsLodging(move)
 }

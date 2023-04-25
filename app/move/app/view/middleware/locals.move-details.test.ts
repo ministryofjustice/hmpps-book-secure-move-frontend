@@ -4,6 +4,7 @@ import sinon from 'sinon'
 // @ts-ignore // TODO: convert to ts
 import presenters from '../../../../../common/presenters'
 import { BasmRequest } from '../../../../../common/types/basm_request'
+import I18n from '../../../../../config/i18n'
 
 import middleware from './locals.move-details'
 
@@ -16,8 +17,10 @@ describe('Move view app', function () {
         req = {
           canAccess: sinon.stub(),
           move: {
+            date: '2023-03-27',
             id: '12345',
             is_lockout: false,
+            is_lodging: false,
             profile: { id: 'profile', person: {} },
             status: 'in_transit',
             from_location: {
@@ -44,6 +47,8 @@ describe('Move view app', function () {
             _isPerLocked: false,
           },
           journeys: [],
+          t: I18n.t,
+          form: { options: { fields: {}, next: '' }, values: {} },
         }
         res = {
           locals: {},
@@ -70,6 +75,7 @@ describe('Move view app', function () {
           moveDetails: {
             id: '12345',
             is_lockout: false,
+            is_lodging: false,
             profile: { id: 'profile', person: {} },
             status: 'in_transit',
             from_location: {
@@ -94,10 +100,12 @@ describe('Move view app', function () {
             ],
             _canEdit: true,
             _isPerLocked: false,
+            date: '2023-03-27',
           },
           moveId: '12345',
           moveIsEditable: true,
           moveIsLockout: false,
+          moveIsLodging: false,
         })
       })
 

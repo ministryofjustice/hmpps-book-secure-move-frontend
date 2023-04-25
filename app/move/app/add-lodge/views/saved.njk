@@ -1,0 +1,30 @@
+{% extends "layouts/base.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Allocation requested'});
+{% endblock %}
+
+{% block pageTitle %}
+  {{ t("moves::steps.lodge.saved.page_title") }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {{ govukPanel({
+        classes: "govuk-!-margin-bottom-7",
+        titleText: t("moves::steps.lodge.saved.heading"),
+        html: t("moves::steps.lodge.saved.content", { moveReference: moveReference })
+      }) }}
+
+      <p>
+        {{ t("moves::steps.lodge.saved.detail", {
+          location: location,
+          href: "/move/" + move.id,
+          name: name
+        }) | safe }} {{dateText | safe}}.
+      </p>
+    </div>
+  </div>
+{% endblock %}

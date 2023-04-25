@@ -6,6 +6,7 @@ const mockMove = {
   id: '12345',
   reference: 'AB12FS45',
   status: 'requested',
+  is_lodging: false,
   is_lockout: false,
   profile: {
     person: {
@@ -27,6 +28,7 @@ const mockLockoutMove = {
   reference: 'AB12FS45',
   status: 'requested',
   is_lockout: true,
+  is_lodging: false,
   profile: {
     person: {
       _fullname: 'Name, Full',
@@ -105,6 +107,7 @@ describe('Presenters', function () {
                 text: '__translated__',
               },
               isLockout: false,
+              isLodging: false,
               caption: undefined,
               tags: [{ items: 'moveToImportantEventsTagListComponent' }],
             })
@@ -326,6 +329,7 @@ describe('Presenters', function () {
           status: undefined,
           caption: undefined,
           isLockout: false,
+          isLodging: false,
         })
       })
     })
@@ -363,6 +367,7 @@ describe('Presenters', function () {
           tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           caption: undefined,
           isLockout: true,
+          isLodging: false,
         })
       })
     })
@@ -403,6 +408,7 @@ describe('Presenters', function () {
           status: undefined,
           caption: undefined,
           isLockout: false,
+          isLodging: false,
         })
       })
     })
@@ -431,6 +437,7 @@ describe('Presenters', function () {
             status: undefined,
             caption: undefined,
             isLockout: false,
+            isLodging: false,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
@@ -467,6 +474,7 @@ describe('Presenters', function () {
             status: undefined,
             caption: undefined,
             isLockout: false,
+            isLodging: false,
           })
         })
       })
@@ -481,6 +489,7 @@ describe('Presenters', function () {
             ...mockPersonCardComponent,
             classes: mockClasses,
             isLockout: false,
+            isLodging: false,
             status: {
               text: '__translated__',
             },

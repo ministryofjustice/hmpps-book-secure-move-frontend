@@ -1,6 +1,6 @@
 const { flattenDeep, omitBy, isEmpty, groupBy } = require('lodash')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 class LocationsFreeSpacesService extends BaseService {
   getLocationsFreeSpaces({

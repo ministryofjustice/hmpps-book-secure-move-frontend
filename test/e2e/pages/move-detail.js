@@ -1,6 +1,6 @@
 import { Selector, t } from 'testcafe'
 
-import filters from '../../../config/nunjucks/filters'
+import * as filters from '../../../config/nunjucks/filters'
 
 import Page from './page'
 
@@ -65,6 +65,12 @@ class MoveDetailPage extends Page {
       getUpdateLink: category => {
         return Selector(`[data-update-link="${category}"]`)
       },
+      addLodgeButton: Selector('.app-identity-bar__inner')
+        .find('.govuk-button')
+        .withText('Add overnight lodge'),
+      addAnotherLodgeButton: Selector('.app-identity-bar__inner')
+        .find('.govuk-button')
+        .withText('Add another overnight lodge'),
     }
   }
 

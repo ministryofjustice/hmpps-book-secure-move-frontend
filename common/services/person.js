@@ -1,6 +1,6 @@
 const { mapKeys, mapValues, omitBy, isNil } = require('lodash')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 const unformat = require('./person/person.unformat')
 
 const relationshipKeys = ['gender', 'ethnicity']

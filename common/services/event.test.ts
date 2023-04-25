@@ -1,18 +1,21 @@
-const proxyquire = require('proxyquire')
+import { expect } from 'chai'
+import proxyquire from 'proxyquire'
+import sinon from 'sinon'
 
 const apiClient = require('../lib/api-client')()
 
-const restClient = sinon.stub()
-restClient.post = sinon.stub()
+const restClient = {
+  post: sinon.stub(),
+}
 
-const EventService = proxyquire('./event', {
+const { EventService } = proxyquire('./event', {
   '../lib/api-client/rest-client': restClient,
 })
 
 const eventService = new EventService({ apiClient })
 
 describe('Event Service', function () {
-  describe('#postEvents', function () {
+  describe('#postLockoutEvents', function () {
     beforeEach(function () {
       const now = new Date('2022-04-13T10:00:39.986Z')
       sinon.useFakeTimers(now.getTime())
@@ -139,7 +142,7 @@ describe('Event Service', function () {
 
     context('with a PER_EVENTS lockout event', function () {
       beforeEach(async function () {
-        await eventService.postEvents(
+        await eventService.postLockoutEvents(
           {},
           perMocklockoutEvents,
           move,
@@ -163,7 +166,7 @@ describe('Event Service', function () {
 
     context('with a PERSON_MOVE_EVENTS lockout event', function () {
       beforeEach(async function () {
-        await eventService.postEvents(
+        await eventService.postLockoutEvents(
           {},
           personMoveMocklockoutEvents,
           move,
@@ -177,6 +180,87 @@ describe('Event Service', function () {
           {},
           '/events',
           mockedPersonMovePayload
+        )
+      })
+    })
+  })
+
+  describe('#postEvent', function () {
+    beforeEach(function () {
+      const now = new Date('2022-04-13T10:00:39.986Z')
+      sinon.useFakeTimers(now.getTime())
+    })
+
+    const move = {
+      id: '12345-1213144-24343',
+      type: 'moves',
+      to_location: {
+        id: '1235-2513453223-423523523',
+      },
+      profile: {
+        person_escort_record: {
+          id: '1235-2513453223-423523523',
+        },
+      },
+    }
+
+    const mockData = {
+      type: 'MoveOvernightLodge',
+      eventableType: 'moves',
+      eventableId: move.id,
+      details: {
+        start_date: '2022-02-02',
+        end_date: '2022-02-05',
+      },
+      relationships: {
+        location: {
+          data: {
+            id: 'locationId',
+            type: 'locations',
+          },
+        },
+      },
+    }
+    const mockedPayload = {
+      data: {
+        type: 'events',
+        attributes: {
+          occurred_at: '2022-04-13T10:00:39.986Z',
+          recorded_at: '2022-04-13T10:00:39.986Z',
+          notes: '',
+          details: {
+            start_date: '2022-02-02',
+            end_date: '2022-02-05',
+          },
+          event_type: 'MoveOvernightLodge',
+        },
+        relationships: {
+          eventable: {
+            data: {
+              type: 'moves',
+              id: move.id,
+            },
+          },
+          location: {
+            data: {
+              id: 'locationId',
+              type: 'locations',
+            },
+          },
+        },
+      },
+    }
+
+    context('with a MoveOvernightLodge event', function () {
+      beforeEach(async function () {
+        await eventService.postEvent({}, mockData)
+      })
+
+      it('will be called with the correct payload', function () {
+        expect(restClient.post).to.be.calledWithExactly(
+          {},
+          '/events',
+          mockedPayload
         )
       })
     })

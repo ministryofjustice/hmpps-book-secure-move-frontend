@@ -7,7 +7,7 @@ const canEditMove = require('../helpers/move/can-edit-move')
 const { isPerLocked } = require('../helpers/move/is-per-locked')
 const restClient = require('../lib/api-client/rest-client')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 const defaultInclude = [
   'allocation',

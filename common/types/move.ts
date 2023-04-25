@@ -4,6 +4,7 @@ import { Profile } from './profile'
 import { Supplier } from './supplier'
 
 export interface Move {
+  date: string | Date
   profile?: Profile
   status:
     | 'proposed'
@@ -40,4 +41,5 @@ export interface Move {
   _canEdit?: boolean
   _isPerLocked?: boolean
   supplier?: Supplier
+  is_lodging?: boolean
 }

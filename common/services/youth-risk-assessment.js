@@ -1,6 +1,6 @@
 const { FRAMEWORKS } = require('../../config')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 const noIdMessage = 'No resource ID supplied'
 

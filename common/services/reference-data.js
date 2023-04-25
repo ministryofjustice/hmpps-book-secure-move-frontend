@@ -2,7 +2,7 @@ const { flattenDeep, sortBy } = require('lodash')
 
 const restClient = require('../lib/api-client/rest-client')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 
 const locationInclude = ['suppliers']
 const regionInclude = ['locations']

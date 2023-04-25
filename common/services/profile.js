@@ -1,6 +1,6 @@
 const { get } = require('lodash')
 
-const BaseService = require('./base')
+const { BaseService } = require('./base')
 const unformat = require('./profile/profile.unformat')
 
 const assessmentKeys = [

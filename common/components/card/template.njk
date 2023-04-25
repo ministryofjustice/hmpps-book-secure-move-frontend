@@ -77,7 +77,13 @@
           iconFallbackText: "Warning"
         }) }}
       </div>
-    {% endif %}
-
+    {% elif params.isLodging %}
+        <div class="govuk-!-padding-top-3">
+          {{ govukWarningText({
+            text: t("moves::is_lodging"),
+            iconFallbackText: "Warning"
+          }) }}
+        </div>
+      {% endif %}
   </div>
 </div>

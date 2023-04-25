@@ -1,7 +1,11 @@
 {
   "date": {
     "hint": "For example 28/11/2020, 28 November 2020 or next Friday",
+    "hint_limited": "For example, 27/07/2022 or 27 July 2022.",
     "label_with_error": "Date"
+  },
+  "number": {
+    "hint": "For example, 5 or 6."
   },
   "date_select": {
     "label": "Date you want to view",
@@ -77,6 +81,12 @@
   "to_location": {
     "label": "Move to"
   },
+  "lodge_location": {
+    "label": "Lodge location"
+  },
+  "lodge_start": {
+    "label": "Lodge start date"
+  },
   "move_type": {
     "label": "Move to",
     "short_label": "To",
@@ -121,6 +131,10 @@
   "to_location_prison_transfer": {
     "label": "Name of prison or YOI"
   },
+  "to_location_lodge": {
+    "label": "Name of lodge location",
+    "error_message": "Enter the lodge location"
+  },
   "to_location_hospital": {
     "label": "Name of hospital"
   },
@@ -149,10 +163,29 @@
       "tomorrow": {
         "label": "Tomorrow ({{date}})"
       },
+      "overmorrow": {
+        "label": "The day after tomorrow ({{date}})"
+      },
       "another": {
         "label": "Another date"
       }
     }
+  },
+  "lodge_length_type": {
+    "items": {
+      "one": {
+        "label": "One"
+      },
+      "two": {
+        "label": "Two"
+      },
+      "another": {
+        "label": "Other"
+      }
+    }
+  },
+  "lodge_length_custom": {
+    "label": "Lodge length"
   },
   "recall_information": {
     "label": "When did they return to police custody?",

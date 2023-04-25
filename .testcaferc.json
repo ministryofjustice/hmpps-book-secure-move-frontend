@@ -1,12 +1,13 @@
 {
-  "assertionTimeout": 20000,
-  "selectorTimeout": 30000,
-  "pageLoadTimeout": 120000,
-  "pageRequestTimeout": 90000,
+  "assertionTimeout": 2000,
+  "selectorTimeout": 5000,
+  "pageLoadTimeout": 12000,
+  "pageRequestTimeout": 9000,
   "retryTestPages": true,
   "hostname": "localhost",
   "quarantineMode": {
     "successThreshold": 2,
-    "attemptLimit": 10
-  }
+    "attemptLimit": 5
+  },
+  "stopOnFirstFail": true
 }
