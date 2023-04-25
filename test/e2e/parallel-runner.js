@@ -232,7 +232,7 @@ const testcafeRuns = testBuckets.map((test, index) => {
     3999 + index
   } NOMIS_ELITE2_API_URL=http://localhost:${
     3999 + index
-  } FEATURE_FLAG_ADD_LODGE_BUTTON=true node_modules/.bin/testcafe ${agent} ${test.join(
+  } node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
   )} ${color} --retry-test-pages -q attemptLimit=10,successThreshold=2 ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
   return {
@@ -271,7 +271,9 @@ const runTests = async () => {
         3999 + i
       } SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
         3000 + i
-      } NOMIS_ELITE2_API_URL=http://localhost:${3999 + i} node start.js`
+      } NOMIS_ELITE2_API_URL=http://localhost:${
+        3999 + i
+      } FEATURE_FLAG_ADD_LODGE_BUTTON=true node start.js`
   )
   const authCommandStrings = testBuckets.map(
     (_, i) =>

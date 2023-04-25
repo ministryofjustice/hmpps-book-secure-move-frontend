@@ -230,14 +230,10 @@ jobs:
           name: Build assets and frameworks
           command: npm run build
       - run:
-          name: Set Feature flags
-          command: export FEATURE_FLAG_ADD_LODGE_BUTTON=true
-      - run:
           name: Run E2E tests (same instance)
           environment:
             REDIS_URL: ""
             NODE_OPTIONS: --max-old-space-size=12288
-            FEATURE_FLAG_ADD_LODGE_BUTTON: true
           command: |
             npm run test-e2e -- --test $(circleci tests glob "test/e2e/**/*.test.js" | circleci tests split --split-by=timings)
       - run:
