@@ -4,7 +4,6 @@ const moveHelpers = require('../../../../../common/helpers/move')
 const {
   canEditMoveDate,
   canEditMoveDestination,
-  canEditMove,
 } = require('../../../../../common/helpers/move')
 const presenters = require('../../../../../common/presenters')
 
@@ -23,11 +22,11 @@ function renderDetails(req, res) {
 
   const updateUrls = moveHelpers.getUpdateUrls(move, canAccess)
 
-  if (!canEditMoveDate(move, canEditMove)) {
+  if (!canEditMoveDate(move, canAccess)) {
     delete updateUrls.date
   }
 
-  if (!canEditMoveDestination(move, canEditMove)) {
+  if (!canEditMoveDestination(move, canAccess)) {
     delete updateUrls.move
   }
 

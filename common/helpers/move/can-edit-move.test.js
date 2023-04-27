@@ -1,4 +1,4 @@
-const canEditMove = require('./can-edit-move')
+const { canEditMove } = require('./can-edit-move')
 
 describe('Move helpers', function () {
   describe('#canEditMove', function () {
