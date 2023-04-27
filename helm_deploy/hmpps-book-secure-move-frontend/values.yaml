@@ -12,7 +12,6 @@ generic-service:
   ingress:
     annotations:
       nginx.ingress.kubernetes.io/custom-http-errors: "502,504"
-      nginx.ingress.kubernetes.io/server-snippet: add_header X-Robots-Tag "noindex, nofollow";
     enabled: true
     host: app-hostname.local    # override per environment
     tlsSecretName: hmpps-book-secure-move-frontend-cert
