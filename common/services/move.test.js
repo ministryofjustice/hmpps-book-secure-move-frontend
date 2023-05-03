@@ -1058,6 +1058,7 @@ describe('Move Service', function () {
             _canEdit: true,
             _canEditPer: true,
             _isPerLocked: false,
+            is_lodging: false,
           })
         })
       })
