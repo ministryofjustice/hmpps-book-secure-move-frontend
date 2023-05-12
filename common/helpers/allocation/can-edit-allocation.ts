@@ -14,5 +14,17 @@ export function canEditAllocation(
     return false
   }
 
-  return !allocation.moves.some(move => !canEditMoveDate(move, canAccess))
+  if (allocation.status === 'cancelled') {
+    return false
+  }
+
+  if (allocation.moves_count === 0) {
+    return false
+  }
+
+  if (allocation.moves.some(move => !canEditMove(move, canAccess))) {
+    return false
+  }
+
+  return return !allocation.moves.some(move => !canEditMoveDate(move, canAccess))
 }

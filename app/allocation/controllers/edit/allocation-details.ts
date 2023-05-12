@@ -1,6 +1,7 @@
 import UpdateBaseController from './base'
 import { BasmRequest } from '../../../../common/types/basm_request'
 import { BasmResponse } from '../../../../common/types/basm_response'
+import { Move } from '../../../../common/types/move'
 
 const filters = require('../../../../config/nunjucks/filters')
 
@@ -72,8 +73,8 @@ class AllocationDetailsController extends UpdateBaseController {
   }
 
   private setFlash(req: AllocationRequest) {
-    const firstMove = req.allocation.moves[0]
-    const supplier = firstMove.supplier?.name || req.t('supplier_fallback')
+    const firstMove = req.allocation.moves[0] as Move | undefined
+    const supplier = firstMove?.supplier?.name || req.t('supplier_fallback')
 
     req.flash('success', {
       title: req.t('allocations::update_flash.heading'),
