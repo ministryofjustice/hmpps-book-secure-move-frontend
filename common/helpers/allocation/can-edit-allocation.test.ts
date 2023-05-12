@@ -53,6 +53,21 @@ describe('#canEditAllocation', function () {
     })
   })
 
+  context('when the moves count is zero (all moves cancelled)', function () {
+    beforeEach(function () {
+      allocation = allocationFactory.build({
+        moves: moveFactory.buildList(2, { status: 'cancelled' }),
+        moves_count: 0,
+      })
+    })
+
+    it('returns false', function () {
+      expect(
+        canEditAllocation(allocation, canAccessFunction(permissions))
+      ).to.be.false
+    })
+  })
+
   context('when an associated move cannot be edited', function () {
     beforeEach(function () {
       const moves = [

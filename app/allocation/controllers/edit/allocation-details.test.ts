@@ -223,6 +223,55 @@ describe('#saveValues', function () {
     })
   })
 
+  context('when count is zero (all moves cancelled)', function () {
+    const emptyAllocation = {
+      ...allocation,
+      moves: [],
+      moves_count: 0,
+    }
+
+    beforeEach(async function () {
+      allocationService = {
+        update: sinon
+          .stub()
+          .resolves({ ...emptyAllocation, date: '2023-01-02' }),
+      }
+      sessionModel = {
+        toJSON: sinon.stub().returns(mockData),
+        set: sinon.stub(),
+      }
+      next = sinon.stub()
+      flash = sinon.stub()
+
+      await controller.saveValues(
+        {
+          ...req,
+          allocation: emptyAllocation,
+          flash,
+          form: {
+            options: formOptions,
+            values: {
+              date: '2023-01-02',
+            },
+          },
+          sessionModel,
+          services: {
+            allocation: allocationService,
+          },
+        },
+        res,
+        next
+      )
+    })
+
+    it('sets the flash without error', function () {
+      expect(flash).to.have.been.calledWithExactly('success', {
+        title: 'test',
+        content: 'test',
+      })
+    })
+  })
+
   context('unhappy path', function () {
     const error = new Error('bad!')
 

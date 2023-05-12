@@ -11,6 +11,10 @@ export function canEditAllocation(allocation: Allocation, canAccess: (permission
     return false
   }
 
+  if (allocation.moves_count === 0) {
+    return false
+  }
+
   if (allocation.moves.some(move => !canEditMove(move, canAccess))) {
     return false
   }
