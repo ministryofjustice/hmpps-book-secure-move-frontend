@@ -1,7 +1,7 @@
 import { expect } from 'chai'
+
 import sinon from 'sinon'
 import moveFactory from '../../../factories/move'
-
 import { Move } from '../../types/move'
 
 import { canEditMove } from './can-edit-move'
