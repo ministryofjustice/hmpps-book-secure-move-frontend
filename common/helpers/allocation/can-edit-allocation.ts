@@ -8,7 +8,6 @@ export function canEditAllocation(
 ): boolean {
   if (
     !canAccess('allocation:update') ||
-    allocation.status === 'cancelled' ||
     allocation.moves.some(move => !canEditMove(move, canAccess))
   ) {
     return false
