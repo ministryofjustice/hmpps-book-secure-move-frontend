@@ -19,6 +19,7 @@ const restClient = async (req, url, args, options = {}) => {
   if (args && options[argsType] === undefined) {
     options[argsType] = args
   }
+
   const response = await axios(`${BASE_URL}${url}`, {
     ...options,
     headers,

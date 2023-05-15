@@ -1,9 +1,8 @@
-import { canEditMove } from './can-edit-move'
 import { expect } from 'chai'
 import sinon from 'sinon'
-import { Move } from '../../types/move'
 import moveFactory from '../../../factories/move'
-
+import { canEditMove } from './can-edit-move'
+import { Move } from '../../types/move'
 
 describe('Move helpers', function () {
   describe('#canEditMove', function () {
@@ -21,13 +20,10 @@ describe('Move helpers', function () {
     })
 
     context('with move that has left custody', function () {
-
       const mockMove: Move = moveFactory.build()
       mockMove._hasLeftCustody = true
       it('should return false', function () {
-        expect(
-          canEditMove(mockMove, canAccessStub)
-        ).to.be.false
+        expect(canEditMove(mockMove, canAccessStub)).to.be.false
       })
 
       context('with access', function () {
