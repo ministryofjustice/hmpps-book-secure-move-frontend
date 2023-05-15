@@ -1,7 +1,11 @@
+const proxyquire = require('proxyquire')
+
 const moveHelpers = require('../../../../../common/helpers/move')
 const presenters = require('../../../../../common/presenters')
 
-const controller = require('./render-details')
+const controller = proxyquire('./render-details', {
+  '../../../../../common/helpers/move': moveHelpers,
+})
 
 describe('Move view app', function () {
   describe('Controllers', function () {
@@ -29,6 +33,9 @@ describe('Move view app', function () {
       ]
 
       beforeEach(function () {
+        sinon.stub(moveHelpers, 'canEditMoveDate').returns(true)
+        sinon.stub(moveHelpers, 'canEditMoveDestination').returns(true)
+        sinon.stub(moveHelpers, 'canEditMove').returns(true)
         sinon.stub(moveHelpers, 'getUpdateUrls').returns(mockUpdateUrls)
         sinon.stub(moveHelpers, 'mapUpdateLink').returnsArg(0)
         sinon
@@ -52,6 +59,7 @@ describe('Move view app', function () {
           move: {
             id: '12345',
             move_type: 'prison_transfer',
+            _canEdit: true,
           },
           journeys: [],
           t: sinon.stub().returnsArg(0),

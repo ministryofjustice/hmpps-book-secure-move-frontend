@@ -1,6 +1,10 @@
 const { isNil, mapValues } = require('lodash')
 
 const moveHelpers = require('../../../../../common/helpers/move')
+const {
+  canEditMoveDate,
+  canEditMoveDestination,
+} = require('../../../../../common/helpers/move')
 const presenters = require('../../../../../common/presenters')
 
 function _filterCourtMoves(move) {
@@ -17,6 +21,15 @@ function renderDetails(req, res) {
   const uneditableCategories = ['risk', 'health']
 
   const updateUrls = moveHelpers.getUpdateUrls(move, canAccess)
+
+  if (!canEditMoveDate(move, canAccess)) {
+    delete updateUrls.date
+  }
+
+  if (!canEditMoveDestination(move, canAccess)) {
+    delete updateUrls.move
+  }
+
   const updateLinks = mapValues(updateUrls, moveHelpers.mapUpdateLink)
 
   const moveSummary = presenters.moveToSummaryListComponent(move, journeys, {

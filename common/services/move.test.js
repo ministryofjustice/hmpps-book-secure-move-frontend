@@ -13,7 +13,9 @@ const MoveService = proxyquire('./move', {
   },
   '../lib/api-client/rest-client': restClient,
   '../helpers/move/can-cancel-move': sinon.stub().returns(true),
-  '../helpers/move/can-edit-move': sinon.stub().returns(true),
+  '../helpers/move/can-edit-move': {
+    canEditMove: sinon.stub().returns(true),
+  },
 })
 
 const moveService = new MoveService({
@@ -1056,6 +1058,7 @@ describe('Move Service', function () {
             _canEdit: true,
             _canEditPer: true,
             _isPerLocked: false,
+            is_lodging: false,
           })
         })
       })

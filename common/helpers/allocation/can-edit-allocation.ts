@@ -1,9 +1,12 @@
-import { Allocation } from "../../types/allocation"
+import { Allocation } from '../../types/allocation'
 
-const canEditMove = require('../../../common/helpers/move/can-edit-move')
+const { canEditMoveDate, canEditMove } = require('../../../common/helpers/move')
 
-export function canEditAllocation(allocation: Allocation, canAccess: (permission: string) => boolean): boolean {
-  if (!canAccess('allocation:update')) {
+export function canEditAllocation(
+  allocation: Allocation,
+  canAccess: (permission: string) => boolean
+): boolean {
+  if ( !canAccess('allocation:update')) {
     return false
   }
 
@@ -15,9 +18,5 @@ export function canEditAllocation(allocation: Allocation, canAccess: (permission
     return false
   }
 
-  if (allocation.moves.some(move => !canEditMove(move, canAccess))) {
-    return false
-  }
-
-  return true
+  return !allocation.moves.some(move => !canEditMoveDate(move, canAccess))
 }

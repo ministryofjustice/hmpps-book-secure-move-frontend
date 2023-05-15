@@ -19,11 +19,17 @@ import { SENTRY } from '../../config'
 import { formatDate } from '../../config/nunjucks/filters'
 import assessmentFixtures from '../../mocks/assessment'
 
-const personService = new PersonService()
-const personEscortRecordService = new PersonEscortRecordService()
-const moveService = new MoveService()
-const profileService = new ProfileService()
-const referenceDataService = new ReferenceDataService()
+const req = {
+  canAccess: function () {
+    return true
+  },
+}
+
+const personService = new PersonService(req)
+const personEscortRecordService = new PersonEscortRecordService(req)
+const moveService = new MoveService(req)
+const profileService = new ProfileService(req)
+const referenceDataService = new ReferenceDataService(req)
 
 if (SENTRY.DSN) {
   Sentry.init({

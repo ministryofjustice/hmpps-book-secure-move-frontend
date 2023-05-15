@@ -3,7 +3,8 @@ const { mapValues, omitBy, pickBy, isUndefined, isEmpty } = require('lodash')
 
 const canCancelMove = require('../helpers/move/can-cancel-move')
 const { canEditAssessment } = require('../helpers/move/can-edit-assessment')
-const canEditMove = require('../helpers/move/can-edit-move')
+const { canEditMove } = require('../helpers/move/can-edit-move')
+const { hasOvernightLodge } = require('../helpers/move/has-overnight-lodge')
 const { isPerLocked } = require('../helpers/move/is-per-locked')
 const restClient = require('../lib/api-client/rest-client')
 
@@ -297,6 +298,7 @@ class MoveService extends BaseService {
         _canEdit: canEditMove(move, canAccess),
         _isPerLocked: isPerLocked(move),
         _canEditPer: canEditAssessment(move, canAccess),
+        is_lodging: hasOvernightLodge(move),
       }
     })
   }

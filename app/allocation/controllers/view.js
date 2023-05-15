@@ -6,7 +6,7 @@ const {
 const {
   canEditAssessment,
 } = require('../../../common/helpers/move/can-edit-assessment')
-const canEditMove = require('../../../common/helpers/move/can-edit-move')
+const { canEditMove } = require('../../../common/helpers/move/can-edit-move')
 const { isPerLocked } = require('../../../common/helpers/move/is-per-locked')
 const presenters = require('../../../common/presenters')
 
