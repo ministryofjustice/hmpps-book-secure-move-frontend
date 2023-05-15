@@ -6,10 +6,7 @@ export function canEditAllocation(
   allocation: Allocation,
   canAccess: (permission: string) => boolean
 ): boolean {
-  if (
-    !canAccess('allocation:update') ||
-    allocation.moves.some(move => !canEditMove(move, canAccess))
-  ) {
+  if ( !canAccess('allocation:update')) {
     return false
   }
 
@@ -18,10 +15,6 @@ export function canEditAllocation(
   }
 
   if (allocation.moves_count === 0) {
-    return false
-  }
-
-  if (allocation.moves.some(move => !canEditMove(move, canAccess))) {
     return false
   }
 

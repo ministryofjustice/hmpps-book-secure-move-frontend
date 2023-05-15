@@ -310,7 +310,7 @@
     "coverage:open": "npm run coverage && open-cli ./coverage/index.html",
     "develop": "run-p watch:js:*",
     "git:checkbranch": "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD); if [ \"$CURRENT_BRANCH\" = \"main\" ]; then echo 'Committing to the main branch is not allowed'; exit 1; fi",
-    "lint": "eslint . --cache --fix",
+    "lint": "eslint . --cache",
     "lint-staged": "lint-staged",
     "postinstall": "husky install",
     "postpublish": "pinst --enable",

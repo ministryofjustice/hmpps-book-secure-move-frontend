@@ -4,7 +4,15 @@ export function canEditMove(
   move: Move,
   canAccess: (permission: string) => boolean
 ) {
-  if (move === undefined || move._hasLeftCustody || !canAccess('move:update')) {
+  if (move === undefined) {
+    return false
+  }
+
+  if (move._hasLeftCustody) {
+    return false
+  }
+
+  if (!canAccess('move:update')) {
     return false
   }
 
