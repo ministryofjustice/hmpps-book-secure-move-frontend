@@ -1,8 +1,11 @@
 import { expect } from 'chai'
+
 import sinon from 'sinon'
+
 import moveFactory from '../../../factories/move'
-import { canEditMove } from './can-edit-move'
+
 import { Move } from '../../types/move'
+import { canEditMove } from './can-edit-move'
 
 describe('Move helpers', function () {
   describe('#canEditMove', function () {
@@ -31,9 +34,7 @@ describe('Move helpers', function () {
         mockMove._hasLeftCustody = true
         it('should return false', function () {
           canAccessStub.returns(true)
-          expect(
-            canEditMove(mockMove, canAccessStub)
-          ).to.be.false
+          expect(canEditMove(mockMove, canAccessStub)).to.be.false
         })
       })
     })
@@ -42,7 +43,7 @@ describe('Move helpers', function () {
       let mockMove: Move
 
       beforeEach(function () {
-        mockMove =  moveFactory.build({
+        mockMove = moveFactory.build({
           _hasLeftCustody: false,
           move_type: 'court_appearance',
         })
