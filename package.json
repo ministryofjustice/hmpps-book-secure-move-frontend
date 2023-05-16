@@ -144,6 +144,7 @@
     "@sentry/tracing": "7.36.0",
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.2.1",
+    "applicationinsights": "^2.6.0",
     "audit-ci": "6.6.1",
     "axios": "0.27.2",
     "axios-debug-log": "0.8.4",
