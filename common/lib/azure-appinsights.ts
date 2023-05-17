@@ -18,6 +18,7 @@ export const initialiseAppInsights = () => {
     appInsights.defaultClient.context.tags['ai.cloud.role'] = packageData.name
     appInsights.defaultClient.context.tags['ai.application.ver'] = packageData.version
     appInsights.defaultClient.addTelemetryProcessor(addUserDataToRequests)
+    appInsights.defaultClient.addTelemetryProcessor(ignorePathsProcessor)
     return appInsights.defaultClient
   }
   return null
@@ -36,6 +37,20 @@ export const addUserDataToRequests = (envelope: EnvelopeTelemetry, contextObject
         activeCaseLoadId,
         ...envelope.data.baseData!.properties,
       }
+    }
+  }
+  return true
+}
+
+export const ignorePathsProcessor = (envelope: EnvelopeTelemetry) => {
+  const prefixesToIgnore = ['GET /healthcheck/ping']
+
+  const isRequest = envelope.data.baseType === Contracts.TelemetryTypeString.Request
+  if (isRequest) {
+    const requestData = envelope.data.baseData
+    if (requestData instanceof Contracts.RequestData) {
+      const { name } = requestData
+      return prefixesToIgnore.every(prefix => !name.startsWith(prefix))
     }
   }
   return true
