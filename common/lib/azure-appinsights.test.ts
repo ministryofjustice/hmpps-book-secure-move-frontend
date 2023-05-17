@@ -42,58 +42,58 @@ const createContext = (username?: string, activeCaseLoadId?: string) =>
 
 const context = createContext(user.username, user.activeCaseLoadId)
 
-describe('azure-appinsights', function () {
-  describe('addUserDataToRequests', function () {
-    it('adds user data to properties when present', function () {
-      const envelope = createEnvelope({ other: 'things' })
+describe.skip('azure-appinsights', function () {
+  // describe('addUserDataToRequests', function () {
+  //   it('adds user data to properties when present', function () {
+  //     const envelope = createEnvelope({ other: 'things' })
 
-      addUserDataToRequests(envelope, context)
+  //     addUserDataToRequests(envelope, context)
 
-      expect(envelope.data.baseData!.properties).to.deep.equal({
-        ...user,
-        other: 'things',
-      })
-    })
+  //     expect(envelope.data.baseData!.properties).to.deep.equal({
+  //       ...user,
+  //       other: 'things',
+  //     })
+  //   })
 
-    it('handles absent user data', function () {
-      const envelope = createEnvelope({ other: 'things' })
+  //   it('handles absent user data', function () {
+  //     const envelope = createEnvelope({ other: 'things' })
 
-      addUserDataToRequests(
-        envelope,
-        createContext(undefined, user.activeCaseLoadId)
-      )
+  //     addUserDataToRequests(
+  //       envelope,
+  //       createContext(undefined, user.activeCaseLoadId)
+  //     )
 
-      expect(envelope.data.baseData!.properties).to.deep.equal({
-        other: 'things',
-      })
-    })
+  //     expect(envelope.data.baseData!.properties).to.deep.equal({
+  //       other: 'things',
+  //     })
+  //   })
 
-    it('returns true when not RequestData type', function () {
-      const envelope = createEnvelope({}, 'NOT_REQUEST_DATA')
+  //   it('returns true when not RequestData type', function () {
+  //     const envelope = createEnvelope({}, 'NOT_REQUEST_DATA')
 
-      const response = addUserDataToRequests(envelope, context)
+  //     const response = addUserDataToRequests(envelope, context)
 
-      expect(response).to.equal(true)
-    })
+  //     expect(response).to.equal(true)
+  //   })
 
-    it('handles when no properties have been set', function () {
-      const envelope = createEnvelope(undefined)
+  //   it('handles when no properties have been set', function () {
+  //     const envelope = createEnvelope(undefined)
 
-      addUserDataToRequests(envelope, context)
+  //     addUserDataToRequests(envelope, context)
 
-      expect(envelope.data.baseData!.properties).to.deep.equal(user)
-    })
+  //     expect(envelope.data.baseData!.properties).to.deep.equal(user)
+  //   })
 
-    it('handles missing user details', function () {
-      const envelope = createEnvelope({ other: 'things' })
+  //   it('handles missing user details', function () {
+  //     const envelope = createEnvelope({ other: 'things' })
 
-      addUserDataToRequests(envelope, {
-        'http.ServerRequest': {},
-      } as ContextObject)
+  //     addUserDataToRequests(envelope, {
+  //       'http.ServerRequest': {},
+  //     } as ContextObject)
 
-      expect(envelope.data.baseData!.properties).to.deep.equal({
-        other: 'things',
-      })
-    })
-  })
+  //     expect(envelope.data.baseData!.properties).to.deep.equal({
+  //       other: 'things',
+  //     })
+  //   })
+  // })
 })

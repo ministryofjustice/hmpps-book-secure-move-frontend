@@ -11,7 +11,7 @@ export type ContextObject = {
 } | undefined
 
 export const initialiseAppInsights = () => {
-  if (process.env.APPINSIGHTS_INSTRUMENTATIONKEY) {
+  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
     // eslint-disable-next-line no-console
     console.log('Enabling azure application insights')
     appInsights.setup().setDistributedTracingMode(appInsights.DistributedTracingModes.AI_AND_W3C).start()
