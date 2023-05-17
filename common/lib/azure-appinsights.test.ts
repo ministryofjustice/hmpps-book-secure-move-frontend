@@ -42,6 +42,7 @@ const createContext = (username?: string, activeCaseLoadId?: string) =>
 
 const context = createContext(user.username, user.activeCaseLoadId)
 
+// prettier-ignore
 describe.skip('azure-appinsights', function () {
   // describe('addUserDataToRequests', function () {
   //   it('adds user data to properties when present', function () {
