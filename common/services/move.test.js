@@ -718,6 +718,7 @@ describe('Move Service', function () {
           include: [
             'from_location',
             'important_events',
+            'timeline_events',
             'profile',
             'profile.person',
             'profile.person.gender',
@@ -772,6 +773,7 @@ describe('Move Service', function () {
           include: [
             'from_location',
             'important_events',
+            'timeline_events',
             'profile',
             'profile.person',
             'profile.person.gender',
