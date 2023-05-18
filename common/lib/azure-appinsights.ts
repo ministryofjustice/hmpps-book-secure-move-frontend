@@ -43,7 +43,7 @@ export const addUserDataToRequests = (envelope: EnvelopeTelemetry, contextObject
 }
 
 export const ignorePathsProcessor = (envelope: EnvelopeTelemetry) => {
-  const prefixesToIgnore = ['GET /healthcheck/ping']
+  const prefixesToIgnore = ['GET /healthcheck/ping', 'GET /metrics']
 
   const isRequest = envelope.data.baseType === Contracts.TelemetryTypeString.Request
   if (isRequest) {
