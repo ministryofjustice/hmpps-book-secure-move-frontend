@@ -71,7 +71,12 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
     ) {
       actions.push({
         html: componentService.getComponent('govukButton', {
-          text: i18n.t('actions::continue_assessment', { context }),
+          text: i18n.t(
+            assessment.status === 'not_started'
+              ? 'actions::start_assessment'
+              : 'actions::continue_assessment',
+            { context }
+          ),
           preventDoubleClick: true,
           href: baseUrl,
         }),
