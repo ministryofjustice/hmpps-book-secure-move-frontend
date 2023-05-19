@@ -216,6 +216,7 @@ class MoveService extends BaseService {
       include: [
         'from_location',
         'important_events',
+        'timeline_events',
         'profile',
         'profile.person',
         'profile.person.gender',
