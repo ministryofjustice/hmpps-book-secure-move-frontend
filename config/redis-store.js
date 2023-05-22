@@ -20,7 +20,7 @@ module.exports = async function redisStore(options = defaultOptions) {
     return store
   }
 
-  const client = redis.createClient({ ...options, legacyMode: true })
+  const client = redis.createClient({ ...options })
   await client.connect()
   bluebird.promisifyAll(client)
 
