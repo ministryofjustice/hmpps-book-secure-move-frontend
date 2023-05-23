@@ -15,7 +15,8 @@ function _filterCourtMoves(move) {
 
 function renderDetails(req, res) {
   const { canAccess, move, journeys } = req
-  const hasPersonEscortRecord = !isNil(move?.profile?.person_escort_record)
+  const per = move?.profile?.person_escort_record
+  const perStarted = !isNil(per) && per.status !== 'not_started'
   const hasProfile = !isNil(move?.profile)
   const { assessment_answers: assessmentAnswers = [] } = move.profile || {}
   const uneditableCategories = ['risk', 'health']
@@ -56,7 +57,7 @@ function renderDetails(req, res) {
   let uneditableSections
   let editableSections
 
-  if (hasPersonEscortRecord) {
+  if (perStarted) {
     uneditableSections = uneditableAssessments
     editableSections = [
       singleRequestInfo,
