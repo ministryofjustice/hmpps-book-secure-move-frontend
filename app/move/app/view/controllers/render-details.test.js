@@ -211,12 +211,13 @@ describe('Move view app', function () {
             })
           })
 
-          context('with Person Escort Record', function () {
+          context('with completed Person Escort Record', function () {
             beforeEach(function () {
               req.move.profile = {
                 id: '_profile_id_',
                 person_escort_record: {
                   id: '_per_id_',
+                  status: 'completed',
                 },
               }
               controller(req, res)
@@ -252,6 +253,50 @@ describe('Move view app', function () {
                 { key: 'risk' },
                 { key: 'health' },
               ])
+            })
+          })
+
+          context('with unstarted Person Escort Record', function () {
+            beforeEach(function () {
+              req.move.profile = {
+                id: '_profile_id_',
+                person_escort_record: {
+                  id: '_per_id_',
+                  status: 'not_started',
+                },
+              }
+              controller(req, res)
+            })
+
+            it('sections should contain correct keys', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.sections).to.have.all.keys([
+                'editable',
+                'uneditable',
+              ])
+            })
+
+            it('should include correct editable sections', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.sections.editable).to.deep.equal([
+                '_singleRequestToSummaryListComponent_',
+                '_moveToAdditionalInfoListComponent_',
+                { key: 'other' },
+                { key: 'risk' },
+                { key: 'health' },
+              ])
+            })
+
+            it('should exlude court information from non-court moves', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.sections.editable).not.to.deep.include({
+                key: 'court',
+              })
+            })
+
+            it('should not include any uneditable sections', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.sections.uneditable).to.be.undefined
             })
           })
 

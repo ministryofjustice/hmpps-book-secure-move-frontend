@@ -96,7 +96,12 @@ const mockValues = {
 describe('Move controllers', function () {
   describe('Save', function () {
     describe('#saveValues()', function () {
-      let req, nextSpy, courtHearingService, profileService, moveService
+      let req,
+        nextSpy,
+        courtHearingService,
+        profileService,
+        perService,
+        moveService
 
       beforeEach(function () {
         const journeyGetStub = sinon.stub()
@@ -114,6 +119,9 @@ describe('Move controllers', function () {
         }
         profileService = {
           update: sinon.stub().resolves({}),
+        }
+        perService = {
+          create: sinon.stub().resolves({}),
         }
         moveService = {
           create: sinon.stub().resolves(mockMove),
@@ -134,12 +142,59 @@ describe('Move controllers', function () {
           services: {
             courtHearing: courtHearingService,
             profile: profileService,
+            personEscortRecord: perService,
             move: moveService,
           },
         }
       })
 
       context('when move save is successful', function () {
+        context('when the profile already has a PER', function () {
+          beforeEach(async function () {
+            req = {
+              ...req,
+              sessionModel: {
+                ...req.sessionModel,
+                toJSON: () => ({
+                  ...mockValues,
+                  profile: {
+                    ...mockValues.profile,
+                    person_escort_record: { it: 'exists' },
+                  },
+                }),
+              },
+            }
+            await controller.saveValues(req, {}, nextSpy)
+          })
+
+          it('does not create a PER', function () {
+            expect(perService.create).not.to.be.called
+          })
+        })
+
+        context('when the profile does not yet have a PER', function () {
+          beforeEach(async function () {
+            req = {
+              ...req,
+              sessionModel: {
+                ...req.sessionModel,
+                toJSON: () => ({
+                  ...mockValues,
+                  profile: {
+                    ...mockValues.profile,
+                    person_escort_record: null,
+                  },
+                }),
+              },
+            }
+            await controller.saveValues(req, {}, nextSpy)
+          })
+
+          it('creates a new PER', function () {
+            expect(perService.create).to.be.calledOnceWithExactly(mockMove.id)
+          })
+        })
+
         context('without court hearings', function () {
           beforeEach(async function () {
             await controller.saveValues(req, {}, nextSpy)
