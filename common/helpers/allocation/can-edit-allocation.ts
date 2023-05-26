@@ -18,5 +18,5 @@ export function canEditAllocation(
     return false
   }
 
-  return !allocation.moves.some(move => !canEditMoveDate(move, canAccess))
+  return !allocation.moves.some(move => !canEditMoveDate(move, canAccess, 'update_allocation'))
 }

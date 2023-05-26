@@ -339,7 +339,6 @@ describe('Move view app', function () {
             const locals = res.render.args[0][1]
             expect(locals.updateLinks).to.deep.equal({
               move: '/move-url',
-              date: '/date-url',
             })
           })
         })
