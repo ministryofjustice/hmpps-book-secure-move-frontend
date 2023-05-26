@@ -1,3 +1,4 @@
+import { Allocation } from './allocation'
 import { Event } from './event'
 import { Location } from './location'
 import { Profile } from './profile'
@@ -42,4 +43,5 @@ export interface Move {
   _isPerLocked?: boolean
   supplier?: Supplier
   is_lodging?: boolean
+  allocation?: Allocation
 }
