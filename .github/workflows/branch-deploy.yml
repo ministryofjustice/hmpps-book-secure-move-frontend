@@ -156,9 +156,9 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.number }}
           REPOSITORY: ${{ vars.STAGING_ECR_REPOSITORY }}
-          ECR_URL: ${{ secrets.ECR_URL }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          DOCKER_IMAGE_URL="${ECR_URL}/${REPOSITORY}:pr-${PR_NUMBER}.latest"
+          DOCKER_IMAGE_URL="${REGISTRY}/${REPOSITORY}:pr-${PR_NUMBER}.latest"
           echo "DOCKER_IMAGE_URL=${DOCKER_IMAGE_URL}" >> $GITHUB_ENV
 
           docker tag app $DOCKER_IMAGE_URL
