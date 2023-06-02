@@ -146,7 +146,7 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.STAGING_ECR_ROLE_TO_ASSUME }}
-          aws-region: ${{ vars.ECR_REGION }}
+          aws-region: ${{ vars.STAGING_ECR_REGION }}
 
         # Login to container repository
       - uses: aws-actions/amazon-ecr-login@v1
@@ -155,8 +155,10 @@ jobs:
       - name: Push docker image to ECR
         env:
           PR_NUMBER: ${{ github.event.number }}
+          REPOSITORY: ${{ vars.STAGING_ECR_REPOSITORY }}
+          ECR: ${{ secrets.ECR_URL }}
         run: |
-          DOCKER_IMAGE_URL="${ECR_ENDPOINT}/${GITHUB_TEAM_NAME_SLUG}/${{ github.event.repository.name }}:pr-${PR_NUMBER}.latest"
+          DOCKER_IMAGE_URL="${ECR}/${REPOSITORY}:pr-${PR_NUMBER}.latest"
           echo "DOCKER_IMAGE_URL=${DOCKER_IMAGE_URL}" >> $GITHUB_ENV
 
           docker tag app $DOCKER_IMAGE_URL
