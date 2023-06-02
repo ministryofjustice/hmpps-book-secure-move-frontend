@@ -11,6 +11,7 @@ env:
   AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   ECR_ENDPOINT: ${{ secrets.ECR_ENDPOINT }}
+  ECR_URL: ${{ secrets.ECR_URL }}
   KUBE_CACERT: ${{ secrets.KUBE_CACERT }}
   KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
   KUBE_NAME: ${{ secrets.KUBE_NAME }}
@@ -156,7 +157,7 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.number }}
           REPOSITORY: ${{ vars.STAGING_ECR_REPOSITORY }}
-          ECR: ${{ secrets.ECR_URL }}
+          ECR: ${ECR_URL}
         run: |
           DOCKER_IMAGE_URL="${ECR}/${REPOSITORY}:pr-${PR_NUMBER}.latest"
           echo "DOCKER_IMAGE_URL=${DOCKER_IMAGE_URL}" >> $GITHUB_ENV
