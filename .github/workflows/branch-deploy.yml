@@ -25,6 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       deployments: write
+      id-token: write
+      contents: read
     steps:
       - id: create_deployment
         name: Create deployment
@@ -140,9 +142,15 @@ jobs:
           kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=circleci --namespace=${KUBE_NAMESPACE}
           kubectl config use-context ${KUBE_CLUSTER}
 
-      - name: Login to ECR
-        run: |
-          aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_ENDPOINT
+      # Assume role in Cloud Platform
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.ECR_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.ECR_REGION }}
+
+        # Login to container repository
+      - uses: aws-actions/amazon-ecr-login@v1
+        id: login-ecr
 
       - name: Push docker image to ECR
         env:
