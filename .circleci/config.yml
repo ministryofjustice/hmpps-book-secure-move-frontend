@@ -47,6 +47,12 @@ jobs:
       - *install_dependencies
       - *save_cache
       - run:
+          name: Write eslintignore
+          command: npx tsc --listFilesOnly | grep -v 'node_modules' | sed 's/\.ts/\.js/' | sed "s#$(pwd)/##" > ./.eslintignore
+      - run:
+          name: Lint the code
+          command: npm run circle:lint
+      - run:
           name: Compile typescript
           command: npx tsc --project ./
       - run:
@@ -54,14 +60,14 @@ jobs:
           command: npm run build
       - persist_to_workspace:
           root: .
-          paths: 
+          paths:
             - .
   lint:
     <<: *node_container
     steps:
-      - checkout 
+      - checkout
       - attach_workspace:
-          at: .  
+          at: .
       - *restore_cache
       - run:
           name: Lint the code

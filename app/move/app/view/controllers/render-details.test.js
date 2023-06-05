@@ -1,7 +1,11 @@
+const proxyquire = require('proxyquire')
+
 const moveHelpers = require('../../../../../common/helpers/move')
 const presenters = require('../../../../../common/presenters')
 
-const controller = require('./render-details')
+const controller = proxyquire('./render-details', {
+  '../../../../../common/helpers/move': moveHelpers,
+})
 
 describe('Move view app', function () {
   describe('Controllers', function () {
@@ -29,6 +33,9 @@ describe('Move view app', function () {
       ]
 
       beforeEach(function () {
+        sinon.stub(moveHelpers, 'canEditMoveDate').returns(true)
+        sinon.stub(moveHelpers, 'canEditMoveDestination').returns(true)
+        sinon.stub(moveHelpers, 'canEditMove').returns(true)
         sinon.stub(moveHelpers, 'getUpdateUrls').returns(mockUpdateUrls)
         sinon.stub(moveHelpers, 'mapUpdateLink').returnsArg(0)
         sinon
@@ -52,6 +59,7 @@ describe('Move view app', function () {
           move: {
             id: '12345',
             move_type: 'prison_transfer',
+            _canEdit: true,
           },
           journeys: [],
           t: sinon.stub().returnsArg(0),
@@ -203,12 +211,13 @@ describe('Move view app', function () {
             })
           })
 
-          context('with Person Escort Record', function () {
+          context('with completed Person Escort Record', function () {
             beforeEach(function () {
               req.move.profile = {
                 id: '_profile_id_',
                 person_escort_record: {
                   id: '_per_id_',
+                  status: 'completed',
                 },
               }
               controller(req, res)
@@ -244,6 +253,50 @@ describe('Move view app', function () {
                 { key: 'risk' },
                 { key: 'health' },
               ])
+            })
+          })
+
+          context('with unstarted Person Escort Record', function () {
+            beforeEach(function () {
+              req.move.profile = {
+                id: '_profile_id_',
+                person_escort_record: {
+                  id: '_per_id_',
+                  status: 'not_started',
+                },
+              }
+              controller(req, res)
+            })
+
+            it('sections should contain correct keys', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.sections).to.have.all.keys([
+                'editable',
+                'uneditable',
+              ])
+            })
+
+            it('should include correct editable sections', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.sections.editable).to.deep.equal([
+                '_singleRequestToSummaryListComponent_',
+                '_moveToAdditionalInfoListComponent_',
+                { key: 'other' },
+                { key: 'risk' },
+                { key: 'health' },
+              ])
+            })
+
+            it('should exlude court information from non-court moves', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.sections.editable).not.to.deep.include({
+                key: 'court',
+              })
+            })
+
+            it('should not include any uneditable sections', function () {
+              const locals = res.render.args[0][1]
+              expect(locals.sections.uneditable).to.be.undefined
             })
           })
 
@@ -286,7 +339,6 @@ describe('Move view app', function () {
             const locals = res.render.args[0][1]
             expect(locals.updateLinks).to.deep.equal({
               move: '/move-url',
-              date: '/date-url',
             })
           })
         })

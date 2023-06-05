@@ -56,6 +56,8 @@ module.exports = async () => {
     redisStore = await require('./config/redis-store')()
   }
 
+  require('./common/lib/azure-appinsights').initialiseAppInsights()
+
   // Global constants
   const app = express()
 
@@ -243,6 +245,7 @@ module.exports = async () => {
             'cdnjs.cloudflare.com',
             'www.googletagmanager.com',
             'www.google-analytics.com',
+            'region1.google-analytics.com',
             'cdn.jsdelivr.net',
           ],
           connectSrc: [
@@ -250,11 +253,13 @@ module.exports = async () => {
             "'unsafe-inline'",
             'www.googletagmanager.com',
             'www.google-analytics.com',
+            'region1.google-analytics.com',
             'api.os.uk',
           ],
           imgSrc: [
             "'self'",
             'www.google-analytics.com',
+            'region1.google-analytics.com',
             'api.os.uk',
             'data: blob:',
             'images.ctfassets.net',

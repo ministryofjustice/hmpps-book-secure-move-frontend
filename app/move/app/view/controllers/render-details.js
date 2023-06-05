@@ -1,6 +1,10 @@
 const { isNil, mapValues } = require('lodash')
 
 const moveHelpers = require('../../../../../common/helpers/move')
+const {
+  canEditMoveDate,
+  canEditMoveDestination,
+} = require('../../../../../common/helpers/move')
 const presenters = require('../../../../../common/presenters')
 
 function _filterCourtMoves(move) {
@@ -11,12 +15,22 @@ function _filterCourtMoves(move) {
 
 function renderDetails(req, res) {
   const { canAccess, move, journeys } = req
-  const hasPersonEscortRecord = !isNil(move?.profile?.person_escort_record)
+  const per = move?.profile?.person_escort_record
+  const perStarted = !isNil(per) && per.status !== 'not_started'
   const hasProfile = !isNil(move?.profile)
   const { assessment_answers: assessmentAnswers = [] } = move.profile || {}
   const uneditableCategories = ['risk', 'health']
 
   const updateUrls = moveHelpers.getUpdateUrls(move, canAccess)
+
+  if (!canEditMoveDate(move, canAccess)) {
+    delete updateUrls.date
+  }
+
+  if (!canEditMoveDestination(move, canAccess)) {
+    delete updateUrls.move
+  }
+
   const updateLinks = mapValues(updateUrls, moveHelpers.mapUpdateLink)
 
   const moveSummary = presenters.moveToSummaryListComponent(move, journeys, {
@@ -43,7 +57,7 @@ function renderDetails(req, res) {
   let uneditableSections
   let editableSections
 
-  if (hasPersonEscortRecord) {
+  if (perStarted) {
     uneditableSections = uneditableAssessments
     editableSections = [
       singleRequestInfo,

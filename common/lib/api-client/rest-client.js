@@ -14,7 +14,6 @@ const restClient = async (req, url, args, options = {}) => {
     ...authorizationHeader,
     ...requestHeaders,
   }
-
   const argsType = options.method === 'post' ? 'data' : 'params'
 
   if (args && options[argsType] === undefined) {

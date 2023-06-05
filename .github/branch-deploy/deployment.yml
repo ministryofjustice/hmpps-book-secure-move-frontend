@@ -58,6 +58,11 @@ spec:
               secretKeyRef:
                 name: hmpps-book-secure-move-frontend-secrets-staging
                 key: api_secret_key
+          - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: hmpps-book-secure-move-frontend-secrets-staging
+                key: APPLICATIONINSIGHTS_CONNECTION_STRING
           - name: AUTH_PROVIDER_KEY
             valueFrom:
               secretKeyRef:

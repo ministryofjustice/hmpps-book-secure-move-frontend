@@ -27,6 +27,7 @@ class SaveController extends CreateBaseController {
   async saveValues(req, res, next) {
     const courtHearingService = req.services.courtHearing
     const profileService = req.services.profile
+    const perService = req.services.personEscortRecord
 
     try {
       const sessionData = req.sessionModel.toJSON()
@@ -66,6 +67,10 @@ class SaveController extends CreateBaseController {
             documents,
           })
         )
+
+        if (!data.profile?.person_escort_record) {
+          promises.push(perService.create(move.id))
+        }
       } else {
         const journeyName = req.form?.options?.journeyName || ''
         const normalisedJourneyName = snakeCase(
