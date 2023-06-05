@@ -36,7 +36,6 @@ aliases:
       branches:
         only:
           - main
-
 jobs:
   build:
     <<: *node_container
