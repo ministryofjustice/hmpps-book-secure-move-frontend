@@ -158,7 +158,6 @@ workflows:
             - build-docker-image
             # - end-to-end-test
             - lint
-            - set-staging-envs
       - hmpps/deploy_env:
           <<: *only_main
           name: deploy-preprod
