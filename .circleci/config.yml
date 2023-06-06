@@ -30,7 +30,7 @@ commands:
             echo "export KUBE_ENV_NAME=\"${!NAME_VAR}\"" >> $BASH_ENV
             echo "export KUBE_ENV_NAMESPACE=\"${!NAMESPACE_VAR}\"" >> $BASH_ENV
             echo "export KUBE_ENV_TOKEN=\"${!TOKEN_VAR}\"" >> $BASH_ENV
-       - hmpps/deploy_env:
+      - hmpps/deploy_env:
           env: << parameters.env >>
           requires:
             - build-docker-image
