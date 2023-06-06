@@ -36,6 +36,7 @@ aliases:
       branches:
         only:
           - main
+          - P4-3763/DPS-like-ci-pipeline-3
 jobs:
   build:
     <<: *node_container
