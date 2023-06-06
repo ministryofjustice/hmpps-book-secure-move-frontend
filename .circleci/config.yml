@@ -4,6 +4,38 @@ orbs:
   slack: circleci/slack@4.12.1
   hmpps: ministryofjustice/hmpps@7.2.1
   kubernetes: circleci/kubernetes@1.3.1
+commands:
+  deploy:
+    description: "Exports kube vars for the chosen environment and cluster."
+    parameters:
+      env:
+        type: string
+      cluster:
+        type: string
+        default: "live"
+    steps:
+      - run:
+          command: |
+            ENV_UPCASED=$(echo "<< parameters.env >>" | tr '[:lower:]' '[:upper:]')
+            [[ "<< parameters.cluster >>" = "live" ]] && CLUSTER_SUFFIX="_LIVE"
+
+            CLUSTER_VAR="KUBE_CLUSTER${CLUSTER_SUFFIX}"
+            CACERT_VAR="KUBE_ENV_${ENV_UPCASED}_CACERT${CLUSTER_SUFFIX}"
+            NAME_VAR="KUBE_ENV_${ENV_UPCASED}_NAME"
+            NAMESPACE_VAR="KUBE_ENV_${ENV_UPCASED}_NAMESPACE"
+            TOKEN_VAR="KUBE_ENV_${ENV_UPCASED}_TOKEN${CLUSTER_SUFFIX}"
+
+            echo "export KUBE_ENV_CLUSTER=\"${!CLUSTER_VAR}\"" >> $BASH_ENV
+            echo "export KUBE_ENV_CACERT=\"${!CACERT_VAR}\"" >> $BASH_ENV
+            echo "export KUBE_ENV_NAME=\"${!NAME_VAR}\"" >> $BASH_ENV
+            echo "export KUBE_ENV_NAMESPACE=\"${!NAMESPACE_VAR}\"" >> $BASH_ENV
+            echo "export KUBE_ENV_TOKEN=\"${!TOKEN_VAR}\"" >> $BASH_ENV
+       - hmpps/deploy_env:
+          env: << parameters.env >>
+          requires:
+            - build-docker-image
+            - end-to-end-test
+            - lint
 aliases:
   # Shared containers
   - &node_container
@@ -146,7 +178,7 @@ workflows:
           requires:
             - build
       # Deployment
-      - hmpps/deploy_env:
+      - deploy:
           <<: *only_main
           name: deploy-staging
           env: 'staging'
