@@ -122,32 +122,6 @@ jobs:
       - store_artifacts:
           path: artifacts
 
-  set-kube-envs:
-    <<: *node_container
-    parameters:
-      env:
-        type: string
-      cluster:
-        type: string
-        default: "live"
-    steps:
-      - run:
-          command: |
-            ENV_UPCASED=$(echo "<< parameters.env >>" | tr '[:lower:]' '[:upper:]')
-            [[ "<< parameters.cluster >>" = "live" ]] && CLUSTER_SUFFIX="_LIVE"
-
-            CLUSTER_VAR="KUBE_CLUSTER${CLUSTER_SUFFIX}"
-            CACERT_VAR="KUBE_ENV_${ENV_UPCASED}_CACERT${CLUSTER_SUFFIX}"
-            NAME_VAR="KUBE_ENV_${ENV_UPCASED}_NAME"
-            NAMESPACE_VAR="KUBE_ENV_${ENV_UPCASED}_NAMESPACE"
-            TOKEN_VAR="KUBE_ENV_${ENV_UPCASED}_TOKEN${CLUSTER_SUFFIX}"
-
-            echo "export KUBE_ENV_CLUSTER=\"${!CLUSTER_VAR}\"" >> $BASH_ENV
-            echo "export KUBE_ENV_CACERT=\"${!CACERT_VAR}\"" >> $BASH_ENV
-            echo "export KUBE_ENV_NAME=\"${!NAME_VAR}\"" >> $BASH_ENV
-            echo "export KUBE_ENV_NAMESPACE=\"${!NAMESPACE_VAR}\"" >> $BASH_ENV
-            echo "export KUBE_ENV_TOKEN=\"${!TOKEN_VAR}\"" >> $BASH_ENV    
-
 workflows:
   continuous-deployment:
     jobs:
@@ -173,15 +147,13 @@ workflows:
           requires:
             - build
       # Deployment
-      - set-kube-envs:
-          name: set-staging-envs
-          env: staging
       - hmpps/deploy_env:
           name: deploy-staging
           env: 'staging'
           <<: *only_main
           context:
             - hmpps-common-vars
+            - basm-fe-staging
           requires:
             - build-docker-image
             # - end-to-end-test
