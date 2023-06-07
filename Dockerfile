@@ -33,6 +33,8 @@ USER 1000
 
 COPY --chown=node:node --from=build-stage /home/node/app /home/node/app
 
+RUN npx tsc
+
 ARG APP_BUILD_DATE
 ENV APP_BUILD_DATE ${APP_BUILD_DATE}
 
