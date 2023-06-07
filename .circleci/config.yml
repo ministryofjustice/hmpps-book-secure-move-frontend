@@ -150,7 +150,7 @@ workflows:
       - hmpps/deploy_env:
           name: deploy-staging
           env: 'staging'
-          helm-timeout: 30m
+          helm_timeout: 30m
           <<: *only_main
           context:
             - hmpps-common-vars
