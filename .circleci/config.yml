@@ -123,7 +123,7 @@ jobs:
           path: reports/testcafe
       - store_artifacts:
           path: artifacts
-  build_docker:
+    build_docker:
         <<: *node_container
         description: |
             Build docker image, also creates an app version string and pushes image to repo.
