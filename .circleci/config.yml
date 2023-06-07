@@ -124,9 +124,9 @@ jobs:
       - store_artifacts:
           path: artifacts
   build_docker:
+        <<: *node_container
         description: |
             Build docker image, also creates an app version string and pushes image to repo.
-        <<: *node_container
         parameters:
             additional_docker_build_args:
                 default: ""
