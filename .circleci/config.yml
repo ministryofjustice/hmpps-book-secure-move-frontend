@@ -11,7 +11,6 @@ aliases:
     executor:
       name: hmpps/node
       tag: 18.14-browsers
-      working_directory: ~/app
   # Common steps
   - &install_dependencies
     run:
