@@ -126,9 +126,7 @@ jobs:
   build_docker:
         description: |
             Build docker image, also creates an app version string and pushes image to repo.
-        executor:
-            name: hmpps/default
-            tag: "3.10"
+        <<: *node_container
         parameters:
             additional_docker_build_args:
                 default: ""
@@ -166,6 +164,15 @@ jobs:
             - setup_remote_docker:
                 docker_layer_caching: true
             - hmpps/create_app_version
+            - *set_package_version
+            - *restore_cache
+            - *install_dependencies
+            - run:
+          name: Compile typescript
+          command: npx tsc --project ./
+            - run:
+          name: Build assets and frameworks
+          command: npm run build
             - run:
                 command: |
                     IMAGE_NAME="<< parameters.image_name >>"
