@@ -123,8 +123,8 @@ jobs:
           path: reports/testcafe
       - store_artifacts:
           path: artifacts
-    build_docker:
-        <<: *node_container
+  build_docker:
+    <<: *node_container
         description: |
             Build docker image, also creates an app version string and pushes image to repo.
         parameters:
@@ -168,11 +168,11 @@ jobs:
             - *restore_cache
             - *install_dependencies
             - run:
-          name: Compile typescript
-          command: npx tsc --project ./
+              name: Compile typescript
+              command: npx tsc --project ./
             - run:
-          name: Build assets and frameworks
-          command: npm run build
+              name: Build assets and frameworks
+              command: npm run build
             - run:
                 command: |
                     IMAGE_NAME="<< parameters.image_name >>"
