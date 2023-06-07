@@ -4,7 +4,8 @@ orbs:
   slack: circleci/slack@4.12.1
   hmpps: ministryofjustice/hmpps@7.2.1
   kubernetes: circleci/kubernetes@1.3.1
- 
+  mem: circleci/rememborb@0.0.2
+
 aliases:
   # Shared containers
   - &node_container
@@ -122,7 +123,108 @@ jobs:
           path: reports/testcafe
       - store_artifacts:
           path: artifacts
-
+  build_docker:
+        description: |
+            Build docker image, also creates an app version string and pushes image to repo.
+        executor:
+            name: hmpps/default
+            tag: "3.10"
+        parameters:
+            additional_docker_build_args:
+                default: ""
+                type: string
+            additional_docker_tag:
+                default: ""
+                description: Additional docker tag that can be used to specify stable tags
+                type: string
+            dockerfile_dir:
+                default: .
+                type: string
+            git-lfs:
+                default: false
+                type: boolean
+            image_name:
+                default: quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}
+                type: string
+            jira_update:
+                default: false
+                description: When true, updates any referenced Jira tickets with build status. Note that Jira integration must be enabled in your CircleCI project settings.
+                type: boolean
+            no_output_timeout:
+                default: 30m
+                description: Configure the no_output_timeout setting for the container build step
+                type: string
+            persist_container_image:
+                default: false
+                description: Make the built container image available for subsequent jobs
+                type: boolean
+            publish:
+                default: true
+                type: boolean
+        steps:
+            - checkout
+            - run:
+                name: Compile typescript
+                command: npx tsc --project ./
+            - setup_remote_docker:
+                docker_layer_caching: true
+            - hmpps/create_app_version
+            - run:
+                command: |
+                    IMAGE_NAME="<< parameters.image_name >>"
+                    echo "export IMAGE_NAME=$IMAGE_NAME" >> $BASH_ENV
+                name: Create IMAGE_NAME env var
+            - mem/remember:
+                env_var: IMAGE_NAME
+                value: ${IMAGE_NAME}
+            - run:
+                command: |
+                    docker build --pull \
+                      --rm=false << parameters.dockerfile_dir >> \
+                      --build-arg BUILD_NUMBER=$APP_VERSION \
+                      --build-arg GIT_REF=$CIRCLE_SHA1 \
+                      --tag "${IMAGE_NAME}:${APP_VERSION}" \
+                      --label "maintainer=dps-hmpps@digital.justice.gov.uk" \
+                      --label "app.version=${APP_VERSION}" \
+                      --label "build.version=${APP_VERSION}" \
+                      --label "build.number=${CIRCLE_BUILD_NUM}" \
+                      --label "build.url=${CIRCLE_BUILD_URL}" \
+                      --label "build.gitref=${CIRCLE_SHA1}" \
+                      << parameters.additional_docker_build_args >>
+                name: Build container image
+                no_output_timeout: << parameters.no_output_timeout >>
+            - when:
+                condition: << parameters.persist_container_image >>
+                steps:
+                    - run:
+                        command: |
+                            mkdir -p docker_cache
+                            docker save ${IMAGE_NAME}:${APP_VERSION} -o docker_cache/build_image.tar
+                        name: Persist container image to workspace
+                    - persist_to_workspace:
+                        paths:
+                            - docker_cache
+                        root: ~/app
+            - when:
+                condition: <<parameters.publish>>
+                steps:
+                    - run:
+                        command: |
+                            #push to quay.io
+                            docker login -u="${QUAYIO_USERNAME}" -p="${QUAYIO_PASSWORD}" quay.io
+                            docker tag "<< parameters.image_name >>:${APP_VERSION}" "<< parameters.image_name >>:latest"
+                            docker push "<< parameters.image_name >>:${APP_VERSION}"
+                            docker push "<< parameters.image_name >>:latest"
+                            TAG="<< parameters.additional_docker_tag >>"
+                            echo "export TAG=$TAG" >> $BASH_ENV
+                            NUM=$(echo -n $TAG | wc -c)
+                            echo "export NUM=$NUM" >> $BASH_ENV
+                            if [ $NUM -gt 0 ]; then
+                              docker tag "<< parameters.image_name >>:${APP_VERSION}" "<< parameters.image_name >>:<< parameters.additional_docker_tag >>"
+                              docker push "<< parameters.image_name >>:<< parameters.additional_docker_tag >>"
+                            fi
+                        name: Publish image to repository
+    
 workflows:
   continuous-deployment:
     jobs:
@@ -142,7 +244,7 @@ workflows:
           name: end-to-end-test
           requires:
             - build
-      - hmpps/build_docker:
+      - build_docker:
           <<: *only_main
           name: build-docker-image
           requires:
