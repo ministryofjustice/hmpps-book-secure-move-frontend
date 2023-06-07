@@ -126,9 +126,7 @@ jobs:
   build_docker:
         description: |
             Build docker image, also creates an app version string and pushes image to repo.
-        executor:
-            name: hmpps/default
-            tag: "3.10"
+        <<: *node_container
         parameters:
             additional_docker_build_args:
                 default: ""
