@@ -81,6 +81,9 @@ jobs:
       - attach_workspace:
           at: .
       - run:
+          name: Compile typescript, build assets and frameworks
+          command: npm run build
+      - run:
           name: Run unit tests
           command: |
             npm run circle:coverage
@@ -103,6 +106,9 @@ jobs:
       - attach_workspace:
           at: .
       - browser-tools/install-browser-tools
+      - run:
+          name: Compile typescript, build assets and frameworks
+          command: npm run build
       - run:
           name: Run E2E tests (same instance)
           environment:
