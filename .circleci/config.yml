@@ -1,10 +1,7 @@
 version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.1
-  slack: circleci/slack@4.12.1
-  hmpps: ministryofjustice/hmpps@7.2.1
-  kubernetes: circleci/kubernetes@1.3.1
-  mem: circleci/rememborb@0.0.2
+  hmpps: ministryofjustice/hmpps@7.3.1
 
 aliases:
   # Shared containers
@@ -38,7 +35,6 @@ aliases:
       branches:
         only:
           - main
-          - P4-3763/DPS-like-ci-pipeline-3
 jobs:
   build:
     <<: *node_container
@@ -81,6 +77,9 @@ jobs:
       - attach_workspace:
           at: .
       - run:
+          name: Compile typescript, build assets and frameworks
+          command: npm run build
+      - run:
           name: Run unit tests
           command: |
             npm run circle:coverage
@@ -103,6 +102,9 @@ jobs:
       - attach_workspace:
           at: .
       - browser-tools/install-browser-tools
+      - run:
+          name: Compile typescript, build assets and frameworks
+          command: npm run build
       - run:
           name: Run E2E tests (same instance)
           environment:
