@@ -248,7 +248,7 @@ workflows:
           name: end-to-end-test
           requires:
             - build
-      - build_docker:
+      - hmpps/build_docker:
           <<: *only_main
           name: build-docker-image
           requires:
