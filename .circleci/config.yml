@@ -35,6 +35,11 @@ aliases:
       branches:
         only:
           - main
+  - &not_main
+    filters:
+      branches:
+        exclude:
+          - main
 jobs:
   build:
     <<: *node_container
@@ -137,6 +142,11 @@ workflows:
             - build
       - end-to-end-test:
           name: end-to-end-test
+          requires:
+            - build
+      - hmpps/build_docker:
+          <<: *not_main
+          name: test-build-docker
           requires:
             - build
       - hmpps/build_docker:
