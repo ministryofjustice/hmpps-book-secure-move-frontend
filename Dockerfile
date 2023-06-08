@@ -19,7 +19,7 @@ COPY --chown=node:node common/assets common/assets
 COPY --chown=node:node common/components common/components
 COPY --chown=node:node mocks/assessment.js mocks/assessment.js
 COPY --chown=node:node app/home/development-tools.ts app/home/development-tools.ts
-
+COPY --chown=node:node . .
 # needed until hard-coded
 ENV API_VERSION default
 RUN npx tsc
