@@ -125,7 +125,7 @@ jobs:
         run: |
           export BUILD_DATE=$(date -Is)
           docker buildx build \
-            --platform linux/amd64,linux/arm64 --pull \
+            --pull \
             --label build.git.sha=$GITHUB_SHA \
             --label build.git.branch=$GITHUB_HEAD_REF \
             --label build.date=$BUILD_DATE \
