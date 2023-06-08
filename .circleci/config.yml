@@ -171,20 +171,29 @@ workflows:
           <<: *only_main
           name: deploy-preprod
           env: 'preprod'
+          context:
+            - hmpps-common-vars
+            - basm-fe-preprod
           requires:
             - preprod-approval
       - hmpps/deploy_env:
           <<: *only_main
           name: deploy-uat
           env: 'uat'
+          context:
+            - hmpps-common-vars
+            - basm-fe-uat
           requires:
             - uat-approval
       - hmpps/deploy_env:
           <<: *only_main
           name: deploy-production
           env: 'production'
+          context:
+            - hmpps-common-vars
+            - basm-fe-prod
           slack_notification: true
-          slack_channel_name: pecs-dev
+          slack_channel_name: move-a-prisoner-digital
           requires:
             - prod-approval
 
