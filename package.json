@@ -306,7 +306,7 @@
     "circle:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml",
     "clean": "del .build/",
     "clear-cache-reference-data": "node tasks/clear-cache-reference-data.js",
-    "compile": "npx tsc",
+    "compile": "tsc",
     "contributors": "(git-authors-cli && finepack && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
     "coverage": "nyc --reporter=html --reporter=lcov npm test",
     "coverage:open": "npm run coverage && open-cli ./coverage/index.html",
