@@ -38,7 +38,7 @@ aliases:
   - &not_main
     filters:
       branches:
-        exclude:
+        ignore:
           - main
 jobs:
   build:
