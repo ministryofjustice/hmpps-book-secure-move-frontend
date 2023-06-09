@@ -1,0 +1,48 @@
+---
+generic-service:
+  nameOverride: hmpps-book-secure-move-frontend
+
+  replicaCount: 4
+
+  image:
+    repository: quay.io/hmpps/hmpps-book-secure-move-frontend
+    tag: app_version    # override at deployment time
+    port: 3000
+
+  ingress:
+    annotations:
+      nginx.ingress.kubernetes.io/custom-http-errors: "502,504"
+    enabled: true
+    host: app-hostname.local    # override per environment
+    tlsSecretName: hmpps-book-secure-move-frontend-cert
+    v1_2_enabled: true
+    v0_47_enabled: false
+
+  livenessProbe:
+    httpGet:
+      path: /healthcheck/ping
+
+  readinessProbe:
+    httpGet:
+      path: /healthcheck/ping
+
+  # Environment variables to load into the deployment
+  env:
+    API_AUTH_PATH: "/oauth/token"
+    API_HEALTHCHECK_PATH: "/ping.xml"
+    API_PATH: "/api"
+    API_TIMEOUT: "60000"
+    API_VERSION: "2"
+    FEATURE_FLAG_GOT: "true"
+    FEATURE_FLAG_MOVE_PREVIEW: "true"
+    FEATURE_FLAG_POPULATION_DASHBOARD: "true"
+    LOG_LEVEL: "debug"
+    NODE_ENV: "production"
+    ORDNANCE_MAP_API_URL: "https://api.os.uk"
+    PROMETHEUS_MOUNTPATH: "/metrics"
+    SUPPORT_EMAIL: "bookasecuremove@digital.justice.gov.uk"
+
+  allowlist: false
+
+  poddisruptionbudget:
+    minAvailable: 50%

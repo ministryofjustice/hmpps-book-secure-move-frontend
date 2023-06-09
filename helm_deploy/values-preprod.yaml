@@ -1,0 +1,41 @@
+---
+# Per environment values which override defaults in hmpps-book-secure-move-frontend/values.yaml
+
+generic-service:
+  replicaCount: 4
+
+  ingress:
+    annotations:
+      nginx.ingress.kubernetes.io/server-snippet: add_header X-Robots-Tag "noindex, nofollow";
+    hosts:
+      - hmpps-book-secure-move-frontend-preprod.apps.live-1.cloud-platform.service.justice.gov.uk
+
+  env:
+    API_BASE_URL: "https://hmpps-book-secure-move-api-preprod.apps.live-1.cloud-platform.service.justice.gov.uk"
+    AUTH_PROVIDER_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk"
+    FEEDBACK_URL: "https://eu.surveymonkey.com/r/3CKYXSC"
+    GOOGLE_ANALYTICS_ID: "UA-106741063-11"
+    MOVE_DESIGN_FEEDBACK_URL: "https://eu.surveymonkey.com/r/BKZC8BV"
+    NOMIS_ELITE2_API_URL: "https://api-preprod.prison.service.justice.gov.uk"
+    SENTRY_ENVIRONMENT: "preproduction"
+    SERVER_HOST: "hmpps-book-secure-move-frontend-preprod.apps.live-1.cloud-platform.service.justice.gov.uk"
+
+  # Pre-existing kubernetes secrets to load as environment variables in the deployment.
+  # namespace_secrets:
+  #   [name of kubernetes secret]:
+  #     [name of environment variable as seen by app]: [key of kubernetes secret to load]
+  namespace_secrets:
+    hmpps-book-secure-move-frontend-secrets-preprod:
+      API_CLIENT_ID: api_client_id_key
+      API_SECRET: api_secret_key
+      AUTH_PROVIDER_KEY: auth_provider_key_key
+      AUTH_PROVIDER_SECRET: auth_provider_secret_key
+      CONTENTFUL_SPACE_ID: contentful_space_id
+      CONTENTFUL_ACCESS_TOKEN: contentful_access_token
+      SENTRY_DSN: sentry_dsn
+      SESSION_SECRET: session_secret_key
+      ORDNANCE_MAP_API_KEY: ordnance_map_api_key
+      ORDNANCE_MAP_API_SECRET: ordnance_map_api_secret
+    elasticache-hmpps-book-secure-move-frontend-preprod:
+      REDIS_AUTH_TOKEN: auth_token
+      REDIS_HOST: primary_endpoint_address
