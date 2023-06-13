@@ -8,6 +8,7 @@ generic-service:
     hosts:
       - bookasecuremove.service.justice.gov.uk
       - hmpps-book-secure-move-frontend-production.apps.cloud-platform.service.justice.gov.uk
+      - hmpps-book-secure-move-frontend-production.apps.live-1.cloud-platform.service.justice.gov.uk
     tlsSecretName: hmpps-book-secure-move-frontend-production-cert
 
   env:
