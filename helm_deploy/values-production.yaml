@@ -19,6 +19,7 @@ generic-service:
     NOMIS_ELITE2_API_URL: "https://api.prison.service.justice.gov.uk"
     SENTRY_ENVIRONMENT: "production"
     SERVER_HOST: "bookasecuremove.service.justice.gov.uk"
+    FEATURE_FLAG_ADD_LODGE_BUTTON: "false"
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
