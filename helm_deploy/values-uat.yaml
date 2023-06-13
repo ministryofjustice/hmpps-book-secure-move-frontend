@@ -8,7 +8,7 @@ generic-service:
     annotations:
       nginx.ingress.kubernetes.io/server-snippet: add_header X-Robots-Tag "noindex, nofollow";
     hosts:
-      - hmpps-book-secure-move-frontend-uat.apps.live-1.cloud-platform.service.justice.gov.uk
+      - hmpps-book-secure-move-frontend-uat.apps.cloud-platform.service.justice.gov.uk
 
   env:
     API_BASE_URL: "https://hmpps-book-secure-move-api-uat.apps.live-1.cloud-platform.service.justice.gov.uk"
@@ -17,7 +17,7 @@ generic-service:
     GOOGLE_ANALYTICS_ID: "UA-106741063-10"
     NOMIS_ELITE2_API_URL: "https://api-dev.prison.service.justice.gov.uk"
     SENTRY_ENVIRONMENT: "uat"
-    SERVER_HOST: "hmpps-book-secure-move-frontend-uat.apps.live-1.cloud-platform.service.justice.gov.uk"
+    SERVER_HOST: "hmpps-book-secure-move-frontend-uat.apps.cloud-platform.service.justice.gov.uk"
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
