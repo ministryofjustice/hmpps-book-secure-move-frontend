@@ -9,7 +9,6 @@ generic-service:
       nginx.ingress.kubernetes.io/server-snippet: add_header X-Robots-Tag "noindex, nofollow";
     hosts:
       - hmpps-book-secure-move-frontend-staging.apps.cloud-platform.service.justice.gov.uk
-      - hmpps-book-secure-move-frontend-staging.apps.live-1.cloud-platform.service.justice.gov.uk
 
   env:
     API_BASE_URL: "https://hmpps-book-secure-move-api-staging.apps.cloud-platform.service.justice.gov.uk"
