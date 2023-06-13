@@ -13,9 +13,9 @@ spec:
   ingressClassName: default
   tls:
   - hosts:
-    - hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.live-1.cloud-platform.service.justice.gov.uk
+    - hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.cloud-platform.service.justice.gov.uk
   rules:
-  - host: hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.live-1.cloud-platform.service.justice.gov.uk
+  - host: hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.cloud-platform.service.justice.gov.uk
     http:
       paths:
       - path: /

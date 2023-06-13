@@ -5,7 +5,7 @@ metadata:
   namespace: hmpps-book-secure-move-frontend-staging
 data:
   API_AUTH_PATH: "/oauth/token"
-  API_BASE_URL: "https://hmpps-book-secure-move-api-staging.apps.live-1.cloud-platform.service.justice.gov.uk"
+  API_BASE_URL: "https://hmpps-book-secure-move-api-staging.apps.cloud-platform.service.justice.gov.uk"
   API_HEALTHCHECK_PATH: "/ping.xml"
   API_PATH: "/api"
   API_VERSION: "2"
@@ -20,7 +20,7 @@ data:
   NOMIS_ELITE2_API_URL: "https://api-dev.prison.service.justice.gov.uk"
   PROMETHEUS_MOUNTPATH: "/metrics"
   SENTRY_ENVIRONMENT: "staging"
-  SERVER_HOST: "hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.live-1.cloud-platform.service.justice.gov.uk"
+  SERVER_HOST: "hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.cloud-platform.service.justice.gov.uk"
   SUPPORT_EMAIL: "fakeemail@fakedomain"
   ENABLE_COMPONENTS_LIBRARY: "true"
   FEATURE_FLAG_POPULATION_DASHBOARD: "true"
