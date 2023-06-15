@@ -28,13 +28,14 @@ module.exports = (move, journeys, { formatDate = filters.formatDate } = {}) => {
   const hasJourneysOnDifferentDay =
     filteredJourneys.filter(({ date }) => date !== move.date).length !== 0
 
-  const overnightLodges = move.timeline_events
-    ?.filter(e => e.event_type === 'MoveOvernightLodge')
-    .sort((a, b) =>
-      (b.details.end_date || '') > (a.details.end_date || '') ? -1 : 1
-    )
+  const overnightLodges =
+    move.timeline_events
+      ?.filter(e => e.event_type === 'MoveOvernightLodge')
+      .sort((a, b) =>
+        (b.details.end_date || '') > (a.details.end_date || '') ? -1 : 1
+      ) || []
 
-  if (!hasJourneysOnDifferentDay && !overnightLodges?.length) {
+  if (!hasJourneysOnDifferentDay && !overnightLodges.length) {
     if (move.is_lockout) {
       return presentLockout(move, formatDate)
     }

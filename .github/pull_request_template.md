@@ -1,5 +1,5 @@
 <!--- Provide a general summary of your changes in the Title above -->
-<!--- Include the Jira ticket number in square brackets as prefix, eg `[P4-XXXX] PR Title` -->
+<!--- Include the Jira ticket number in square brackets as prefix, eg `[MAP-XXXX] PR Title` -->
 
 ## Proposed changes
 
@@ -15,7 +15,7 @@
 <!--- List any related Jira tickets or GitHub issues --->
 <!--- Delete/copy as appropriate --->
 
-- [P4-XXXX]()
+- MAP-
 
 ## Screenshots
 <!--- (Optional) Include screenshots if changes update interfaces or components -->
