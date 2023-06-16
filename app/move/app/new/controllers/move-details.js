@@ -9,6 +9,12 @@ class MoveDetailsController extends CreateBaseController {
     super.middlewareSetup()
     this.use(this.setMoveTypes)
     this.use(
+      commonMiddleware.setLocationItems(
+        'approved_premises',
+        'to_location_approved_premises'
+      )
+    )
+    this.use(
       commonMiddleware.setLocationItems('court', 'to_location_court_appearance')
     )
     this.use(
@@ -40,12 +46,12 @@ class MoveDetailsController extends CreateBaseController {
     )
   }
 
-  isFromPoliceLocation(req) {
+  isFromGivenLocationType(req, locationType) {
     const move = req.getMove()
     // location type is stored differently for new/edit actions
     return (
-      move.from_location_type === 'police' ||
-      move.from_location?.location_type === 'police'
+      move.from_location_type === locationType ||
+      move.from_location?.location_type === locationType
     )
   }
 
@@ -55,7 +61,17 @@ class MoveDetailsController extends CreateBaseController {
       .map(permission => permission.replace('move:create:', ''))
       .filter(
         permission =>
-          !(!this.isFromPoliceLocation(req) && permission === 'prison_recall')
+          !(
+            !this.isFromGivenLocationType(req, 'police') &&
+            permission === 'prison_recall'
+          )
+      )
+      .filter(
+        permission =>
+          !(
+            !this.isFromGivenLocationType(req, 'prison') &&
+            permission === 'approved_premises'
+          )
       )
 
     const existingItems = req.form.options.fields.move_type.items

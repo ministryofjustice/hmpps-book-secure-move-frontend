@@ -51,6 +51,11 @@ const moveType = {
       text: 'fields::move_type.items.secure_training_centre.label',
       conditional: 'to_location_secure_training_centre',
     },
+    {
+      value: 'approved_premises',
+      text: 'fields::move_type.items.approved_premises.label',
+      conditional: 'to_location_approved_premises',
+    },
   ],
 }
 

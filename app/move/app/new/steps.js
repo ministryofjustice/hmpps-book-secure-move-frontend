@@ -233,6 +233,7 @@ module.exports = {
       'to_location_police_transfer',
       'to_location_secure_training_centre',
       'to_location_secure_childrens_home',
+      'to_location_secure_approved_premises',
       'prison_recall_comments',
       'video_remand_comments',
     ],
