@@ -24,7 +24,7 @@ describe('Move controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(7)
+        expect(controller.use.callCount).to.equal(8)
       })
 
       it('should call setMoveType middleware', function () {
@@ -34,30 +34,39 @@ describe('Move controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(commonMiddleware.setLocationItems.callCount).to.equal(6)
+        expect(commonMiddleware.setLocationItems.callCount).to.equal(7)
+      })
+
+      it('should call setLocationItems middleware to set AP locations', function () {
+        expect(
+          commonMiddleware.setLocationItems.getCall(0)
+        ).to.have.been.calledWith(
+          'approved_premises',
+          'to_location_approved_premises'
+        )
       })
 
       it('should call setLocationItems middleware to set court locations', function () {
         expect(
-          commonMiddleware.setLocationItems.getCall(0)
+          commonMiddleware.setLocationItems.getCall(1)
         ).to.have.been.calledWith('court', 'to_location_court_appearance')
       })
 
       it('should call setLocationItems middleware to set prison locations', function () {
         expect(
-          commonMiddleware.setLocationItems.getCall(1)
+          commonMiddleware.setLocationItems.getCall(2)
         ).to.have.been.calledWith('prison', 'to_location_prison_transfer')
       })
 
       it('should call setLocationItems middleware to set police locations', function () {
         expect(
-          commonMiddleware.setLocationItems.getCall(2)
+          commonMiddleware.setLocationItems.getCall(3)
         ).to.have.been.calledWith('police', 'to_location_police_transfer')
       })
 
       it('should call setLocationItems middleware to set hospital locations', function () {
         expect(
-          commonMiddleware.setLocationItems.getCall(3)
+          commonMiddleware.setLocationItems.getCall(4)
         ).to.have.been.calledWith(
           ['hospital', 'high_security_hospital'],
           'to_location_hospital'
@@ -66,7 +75,7 @@ describe('Move controllers', function () {
 
       it('should call setLocationItems middleware to set SCH locations', function () {
         expect(
-          commonMiddleware.setLocationItems.getCall(4)
+          commonMiddleware.setLocationItems.getCall(5)
         ).to.have.been.calledWith(
           'secure_childrens_home',
           'to_location_secure_childrens_home'
@@ -75,7 +84,7 @@ describe('Move controllers', function () {
 
       it('should call setLocationItems middleware to set STC locations', function () {
         expect(
-          commonMiddleware.setLocationItems.getCall(5)
+          commonMiddleware.setLocationItems.getCall(6)
         ).to.have.been.calledWith(
           'secure_training_centre',
           'to_location_secure_training_centre'
@@ -119,6 +128,10 @@ describe('Move controllers', function () {
                       value: 'video_remand',
                       conditional: 'additional_information',
                     },
+                    {
+                      value: 'approved_premises',
+                      conditional: 'to_location_approved_premises',
+                    },
                   ],
                 },
                 to_location_court_appearance: {},
@@ -159,6 +172,7 @@ describe('Move controllers', function () {
         beforeEach(function () {
           req.session.user = {
             permissions: [
+              'move:create:approved_premises',
               'move:create:court_appearance',
               'move:create:prison_transfer',
               'move:create:police_transfer',
@@ -175,11 +189,11 @@ describe('Move controllers', function () {
             controller.setMoveTypes(req, res, nextSpy)
           })
 
-          it('should not remove any items from move_type', function () {
+          it('should remove just one item from move_type', function () {
             expect(req.form.options.fields.move_type.items.length).to.equal(6)
           })
 
-          it('should keep all conditional fields', function () {
+          it('should remove just AP', function () {
             expect(req.form.options.fields).to.deep.equal({
               move_type: {
                 items: [
@@ -229,23 +243,23 @@ describe('Move controllers', function () {
               controller.setMoveTypes(req, res, nextSpy)
             })
 
-            it('should not remove any items from move_type', function () {
+            it('should remove one item from move_type', function () {
               expect(req.form.options.fields.move_type.items.length).to.equal(6)
             })
           }
         )
 
-        context('when from non-police location', function () {
+        context('when from non-police or non-prison location', function () {
           beforeEach(function () {
-            getMoveStub.returns({ from_location_type: 'prison' })
+            getMoveStub.returns({ from_location_type: 'court' })
             controller.setMoveTypes(req, res, nextSpy)
           })
 
-          it('should remove one item from move_type', function () {
+          it('should remove two items from move_type', function () {
             expect(req.form.options.fields.move_type.items.length).to.equal(5)
           })
 
-          it('should remove the prison_recall field', function () {
+          it('should remove the prison_recall and approved_premises fields', function () {
             expect(req.form.options.fields).to.deep.equal({
               move_type: {
                 items: [
@@ -268,6 +282,54 @@ describe('Move controllers', function () {
                   {
                     value: 'video_remand',
                     conditional: 'additional_information',
+                  },
+                ],
+              },
+              to_location_court_appearance: {},
+              to_location_prison_transfer: {},
+              to_location_police_transfer: {},
+              to_location_hospital: {},
+              unrelated_field: {},
+            })
+          })
+        })
+        context('when from police location', function () {
+          beforeEach(function () {
+            getMoveStub.returns({ from_location_type: 'prison' })
+            controller.setMoveTypes(req, res, nextSpy)
+          })
+
+          it('should remove one item from move_type', function () {
+            expect(req.form.options.fields.move_type.items.length).to.equal(6)
+          })
+
+          it('should remove the prison_recall field only', function () {
+            expect(req.form.options.fields).to.deep.equal({
+              move_type: {
+                items: [
+                  {
+                    value: 'court_appearance',
+                    conditional: 'to_location_court_appearance',
+                  },
+                  {
+                    value: 'prison_transfer',
+                    conditional: 'to_location_prison_transfer',
+                  },
+                  {
+                    value: 'police_transfer',
+                    conditional: 'to_location_police_transfer',
+                  },
+                  {
+                    value: 'hospital',
+                    conditional: 'to_location_hospital',
+                  },
+                  {
+                    value: 'video_remand',
+                    conditional: 'additional_information',
+                  },
+                  {
+                    value: 'approved_premises',
+                    conditional: 'to_location_approved_premises',
                   },
                 ],
               },

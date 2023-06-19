@@ -32,6 +32,7 @@ const servingYouthSentence = require('./serving-youth-sentence')
 const shouldSaveCourtHearings = require('./should-save-court-hearings')
 const timeDue = require('./time-due')
 const toLocation = require('./to-location')
+const toLocationApprovedPremises = require('./to-location-approved-premises')
 const toLocationCourtAppearance = require('./to-location-court-appearance')
 const toLocationHospital = require('./to-location-hospital')
 const toLocationPoliceTransfer = require('./to-location-police-transfer')
@@ -95,6 +96,7 @@ const fields = {
   should_save_court_hearings: shouldSaveCourtHearings,
   time_due: timeDue,
   to_location: toLocation,
+  to_location_approved_premises: toLocationApprovedPremises,
   to_location_court_appearance: toLocationCourtAppearance,
   to_location_hospital: toLocationHospital,
   to_location_police_transfer: toLocationPoliceTransfer,

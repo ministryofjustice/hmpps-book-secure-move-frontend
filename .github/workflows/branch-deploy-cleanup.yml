@@ -9,10 +9,6 @@ on:
 
 # Environment variables available to all jobs and steps in this workflow
 env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  ECR_ENDPOINT: ${{ secrets.ECR_ENDPOINT }}
   KUBE_CACERT: ${{ secrets.KUBE_CACERT }}
   KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
   KUBE_NAME: ${{ secrets.KUBE_NAME }}
@@ -35,24 +31,6 @@ jobs:
           kubectl config set-credentials circleci --token=${KUBE_TOKEN}
           kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=circleci --namespace=${KUBE_NAMESPACE}
           kubectl config use-context ${KUBE_CLUSTER}
-
-      # Assume role in Cloud Platform
-      - uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.STAGING_ECR_ROLE_TO_ASSUME }}
-          aws-region: ${{ vars.STAGING_ECR_REGION }}
-
-        # Login to container repository
-      - uses: aws-actions/amazon-ecr-login@v1
-        id: login-ecr
-
-      - name: Delete docker image from ECR
-        env:
-          PR_NUMBER: ${{ github.event.number }}
-          REPOSITORY: ${{ vars.STAGING_ECR_REPOSITORY }}
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        run: |
-          aws ecr batch-delete-image --repository-name "${REPOSITORY}" --image-ids imageTag="pr-${PR_NUMBER}.latest"
 
       - name: Delete kube configs
         env:

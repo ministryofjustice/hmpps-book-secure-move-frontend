@@ -1,5 +1,5 @@
 <!--- Provide a general summary of your changes in the Title above -->
-<!--- Include the Jira ticket number in square brackets as prefix, eg `[P4-XXXX] PR Title` -->
+<!--- Include the Jira ticket number in square brackets as prefix, eg `[MAP-XXXX] PR Title` -->
 
 ## Proposed changes
 
@@ -15,7 +15,7 @@
 <!--- List any related Jira tickets or GitHub issues --->
 <!--- Delete/copy as appropriate --->
 
-- [P4-XXXX]()
+- [MAP-XXXX]()
 
 ## Screenshots
 <!--- (Optional) Include screenshots if changes update interfaces or components -->
@@ -51,9 +51,7 @@ Has been tested in the following browsers:
 <!--- Delete if changes DO NOT include new environment variables -->
 - [ ] Documented in the [README](ministryofjustice/hmpps-book-secure-move-frontend/blob/main/README.md)
 - [ ] Added to [continous integration](https://app.circleci.com/pipelines/github/ministryofjustice/hmpps-book-secure-move-frontend)
-- [ ] Added to staging environment (deployment repository)
-- [ ] Added to preproduction environment (deployment repository)
-- [ ] Added to production environment (deployment repository)
+- [ ] Added to Helm config
 
 ### Other considerations
 
