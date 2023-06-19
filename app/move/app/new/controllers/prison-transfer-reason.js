@@ -33,7 +33,7 @@ class PrisonTransferReasonController extends CreateBaseController {
       req,
       'form.options.fields.prison_transfer_type.items',
       moveType === 'approved_premises'
-        ? items.filter(r => r.key === 'mappa')
+        ? items.filter(r => ['mappa', 'another_reason'].includes(r.key))
         : items
     )
 
