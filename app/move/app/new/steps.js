@@ -195,6 +195,11 @@ module.exports = {
             next: 'transfer-reason',
           },
           {
+            field: 'to_location_type',
+            value: 'approved_premises',
+            next: 'transfer-reason',
+          },
+          {
             fn: Base.prototype.requiresYouthAssessment,
             next: 'save',
           },
@@ -210,7 +215,14 @@ module.exports = {
     controller: PrisonTransferReason,
     pageTitle: 'moves::steps.prison_transfer_reason.heading',
     fields: ['prison_transfer_type', 'prison_transfer_comments'],
-    next: 'agreement-status',
+    next: [
+      {
+        field: 'to_location_type',
+        value: 'approved_premises',
+        next: 'special-vehicle',
+      },
+      'agreement-status',
+    ],
   },
   '/move-details': {
     editable: true,

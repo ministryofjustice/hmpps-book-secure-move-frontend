@@ -24,11 +24,18 @@ class PrisonTransferReasonController extends CreateBaseController {
   }
 
   setTransferReasonItems(req, res, next) {
+    const { move_type: moveType } = req.models.move
     const items = req.prisonTransferReasons
       .filter(referenceDataHelpers.filterDisabled())
       .map(fieldHelpers.mapReferenceDataToOption)
 
-    set(req, 'form.options.fields.prison_transfer_type.items', items)
+    set(
+      req,
+      'form.options.fields.prison_transfer_type.items',
+      moveType === 'approved_premises'
+        ? items.filter(r => r.key === 'mappa')
+        : items
+    )
 
     next()
   }
