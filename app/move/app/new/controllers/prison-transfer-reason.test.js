@@ -133,6 +133,11 @@ describe('Move controllers', function () {
               },
             },
           },
+          models: {
+            move: {
+              move_type: 'prison_transfer',
+            },
+          },
         }
 
         sinon.stub(fieldHelpers, 'mapReferenceDataToOption').returnsArg(0)
