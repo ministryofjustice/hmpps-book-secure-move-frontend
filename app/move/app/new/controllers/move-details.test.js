@@ -179,7 +179,6 @@ describe('Move controllers', function () {
               'move:create:hospital',
               'move:create:prison_recall',
               'move:create:video_remand',
-              'move:create:approved_premises',
             ],
           }
         })
