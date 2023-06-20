@@ -51,9 +51,7 @@ Has been tested in the following browsers:
 <!--- Delete if changes DO NOT include new environment variables -->
 - [ ] Documented in the [README](ministryofjustice/hmpps-book-secure-move-frontend/blob/main/README.md)
 - [ ] Added to [continous integration](https://app.circleci.com/pipelines/github/ministryofjustice/hmpps-book-secure-move-frontend)
-- [ ] Added to staging environment (deployment repository)
-- [ ] Added to preproduction environment (deployment repository)
-- [ ] Added to production environment (deployment repository)
+- [ ] Added to Helm config
 
 ### Other considerations
 

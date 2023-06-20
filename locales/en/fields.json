@@ -117,10 +117,16 @@
       "secure_training_centre": {
         "label": "Secure Training Centre (STC)"
       },
+      "approved_premises": {
+        "label": "Approved Premises (AP)"
+      },
       "unknown": {
         "label": "Unknown"
       }
     }
+  },
+  "to_location_approved_premises": {
+    "label": "Name of approved premises"
   },
   "to_location_court_appearance": {
     "label": "Name of court"

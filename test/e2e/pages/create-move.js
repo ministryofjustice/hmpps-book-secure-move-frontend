@@ -36,6 +36,7 @@ class CreateMovePage extends Page {
       secureChildrensHomeLocation: Selector(
         '#to_location_secure_childrens_home'
       ),
+      approvedPremisesLocation: Selector('#to_location_approved_premises'),
       secureTrainingCentreLocation: Selector(
         '#to_location_secure_training_centre'
       ),
@@ -296,6 +297,13 @@ class CreateMovePage extends Page {
     if (moveType === 'SCH') {
       fields.secureChildrensHomeLocation = {
         selector: this.fields.secureChildrensHomeLocation,
+        type: 'autocomplete',
+      }
+    }
+
+    if (moveType === 'AP') {
+      fields.approvedPremisesLocation = {
+        selector: this.fields.approvedPremisesLocation,
         type: 'autocomplete',
       }
     }
