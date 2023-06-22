@@ -4,7 +4,7 @@ import { Move } from './move'
 import { Person } from './person'
 import { PersonEscortRecord } from './person-escort-record'
 
-export interface Event {
+export interface GenericEvent {
   id: string
   event_type?: string
   classification?: string

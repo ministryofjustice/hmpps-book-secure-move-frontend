@@ -2,7 +2,7 @@ import { equal } from 'assert'
 
 import { expect } from 'chai'
 
-import { Event } from '../../types/event'
+import { GenericEvent } from '../../types/generic_event'
 import { Move } from '../../types/move'
 
 import { hasOvernightLodge } from './has-overnight-lodge'
@@ -27,14 +27,14 @@ const baseMove: Move = {
   timeline_events: undefined,
 }
 
-const mlsEvent: Event = {
+const mlsEvent: GenericEvent = {
   id: '',
   occurred_at: '',
   details: {},
   event_type: 'MoveLodgingStart',
 }
 
-const molEvent: Event = {
+const molEvent: GenericEvent = {
   id: '',
   occurred_at: '',
   details: {},

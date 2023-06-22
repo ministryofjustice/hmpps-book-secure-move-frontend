@@ -1,11 +1,11 @@
 import { Allocation } from './allocation'
-import { Event } from './event'
+import { GenericEvent } from './generic_event'
 import { Location } from './location'
 import { Profile } from './profile'
 import { Supplier } from './supplier'
 
 export interface Move {
-  date: string | Date
+  date: string
   profile?: Profile
   status:
     | 'proposed'
@@ -31,8 +31,8 @@ export interface Move {
   _expectedArrivalTime?: string
   _hasLeftCustody?: boolean
   _hasArrived?: boolean
-  important_events?: Event[]
-  timeline_events?: Event[]
+  important_events?: GenericEvent[]
+  timeline_events?: GenericEvent[]
   meta?: {
     vehicle_registration?: string | null
     expected_collection_time?: string | null

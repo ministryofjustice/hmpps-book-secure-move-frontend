@@ -3,15 +3,15 @@ import { Factory } from 'fishery'
 import { moveTransformer } from '../common/lib/api-client/transformers'
 import { Move } from '../common/types/move'
 
-import locationFactory from './location'
+import { LocationFactory } from './location'
 
-const moveFactory = Factory.define<Move>(({ afterBuild }) => {
+export const MoveFactory = Factory.define<Move>(({ afterBuild }) => {
   afterBuild(move => {
     moveTransformer(move)
   })
 
   return {
-    from_location: locationFactory.build(),
+    from_location: LocationFactory.build(),
     id: '35957119-7e39-4c1f-9e0b-62f465ad007d',
     move_type: 'prison_transfer',
     profile: undefined,
@@ -19,5 +19,3 @@ const moveFactory = Factory.define<Move>(({ afterBuild }) => {
     date: '2022-01-01',
   }
 })
-
-export default moveFactory

@@ -2,8 +2,8 @@ import { TOptions } from 'i18next'
 
 import i18n from '../../../config/i18n'
 import * as formatters from '../../formatters'
-import { Event } from '../../types/event'
 import { EventDetails } from '../../types/event-details'
+import { GenericEvent } from '../../types/generic_event'
 
 const { formatDate } = require('../../../config/nunjucks/filters')
 const { getFullName } = require('../../services/user')
@@ -15,7 +15,7 @@ const FORMATTED_SECTIONS: { [key: string]: string } = {
   'risk-information': 'Risk information',
 }
 
-export async function getDescription(token: string, event: Event) {
+export async function getDescription(token: string, event: GenericEvent) {
   const { event_type: eventType, details, supplier } = event
   details.vehicle_reg =
     details.vehicle_reg || details.journey?.vehicle?.registration

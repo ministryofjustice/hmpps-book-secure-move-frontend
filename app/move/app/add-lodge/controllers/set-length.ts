@@ -1,6 +1,6 @@
 import { isDate, parseISO } from 'date-fns'
 
-import { Event } from '../../../../../common/types/event'
+import { GenericEvent } from '../../../../../common/types/generic_event'
 // @ts-ignore // TODO: convert to TS
 import { Move } from '../../../../../common/types/move'
 
@@ -17,10 +17,10 @@ export class SetLengthController extends BaseController {
     res.locals.lodgeLocation = req.sessionModel.attributes.to_location_lodge
     const { date, timeline_events: events } = req.move as Move
     let startDate: Date = isDate(date)
-      ? (date as Date)
+      ? (date as unknown as Date)
       : parseISO(date as string)
     const overnightLodges = events
-      ?.filter((e: Event) => e.event_type === 'MoveOvernightLodge')
+      ?.filter((e: GenericEvent) => e.event_type === 'MoveOvernightLodge')
       .sort((a, b) =>
         (a.details.end_date || '') > (b.details.end_date || '') ? -1 : 1
       )

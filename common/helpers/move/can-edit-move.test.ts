@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
 
-import moveFactory from '../../../factories/move'
+import { MoveFactory } from '../../../factories/move'
 import { Move } from '../../types/move'
 
 import { canEditMove } from './can-edit-move'
@@ -22,14 +22,14 @@ describe('Move helpers', function () {
     })
 
     context('with move that has left custody', function () {
-      const mockMove: Move = moveFactory.build()
+      const mockMove: Move = MoveFactory.build()
       mockMove._hasLeftCustody = true
       it('should return false', function () {
         expect(canEditMove(mockMove, canAccessStub)).to.be.false
       })
 
       context('with access', function () {
-        const mockMove: Move = moveFactory.build()
+        const mockMove: Move = MoveFactory.build()
         mockMove._hasLeftCustody = true
         it('should return false', function () {
           canAccessStub.returns(true)
@@ -42,7 +42,7 @@ describe('Move helpers', function () {
       let mockMove: Move
 
       beforeEach(function () {
-        mockMove = moveFactory.build({
+        mockMove = MoveFactory.build({
           _hasLeftCustody: false,
           move_type: 'court_appearance',
         })

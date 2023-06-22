@@ -5,7 +5,7 @@ const filters = require('../../config/nunjucks/filters')
 const mapUpdateLink = require('../helpers/move/map-update-link')
 
 const moveToHandoversSummary = require('./move-to-handovers-summary')
-const moveToJourneysSummary = require('./move-to-journeys-summary')
+const { moveToJourneysSummary } = require('./move-to-journeys-summary')
 
 /**
  * Convert a move into the structure required to render
