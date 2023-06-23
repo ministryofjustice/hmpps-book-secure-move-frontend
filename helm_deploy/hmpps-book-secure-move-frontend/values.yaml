@@ -37,6 +37,7 @@ generic-service:
     FEATURE_FLAG_MOVE_PREVIEW: "true"
     FEATURE_FLAG_POPULATION_DASHBOARD: "true"
     FEATURE_FLAG_ADD_LODGE_BUTTON: "true"
+    FEATURE_FLAG_DATE_OF_ARREST: "true"
     LOG_LEVEL: "debug"
     NODE_ENV: "production"
     ORDNANCE_MAP_API_URL: "https://api.os.uk"
