@@ -1,5 +1,4 @@
 import { expect } from 'chai'
-import { parseISO } from 'date-fns'
 
 import { JourneyFactory } from '../../factories/journey'
 import { LocationFactory } from '../../factories/location'

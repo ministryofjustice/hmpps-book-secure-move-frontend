@@ -5,7 +5,6 @@ import sinon from 'sinon'
 import { GenericEventFactory } from '../../../factories/generic_event'
 import { LocationFactory } from '../../../factories/location'
 import { GenericEvent } from '../../types/generic_event'
-import { Location } from '../../types/location'
 
 const i18nStub = {
   t: sinon.stub().returnsArg(0),
