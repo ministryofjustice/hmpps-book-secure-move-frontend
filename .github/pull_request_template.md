@@ -15,7 +15,7 @@
 <!--- List any related Jira tickets or GitHub issues --->
 <!--- Delete/copy as appropriate --->
 
-- [MAP-XXXX]()
+- MAP-
 
 ## Screenshots
 <!--- (Optional) Include screenshots if changes update interfaces or components -->

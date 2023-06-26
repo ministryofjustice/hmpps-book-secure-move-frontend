@@ -6,7 +6,7 @@ const i18n = require('../../config/i18n').default
 const filters = require('../../config/nunjucks/filters')
 const mapUpdateLink = require('../helpers/move/map-update-link')
 
-const moveToJourneysSummary = require('./move-to-journeys-summary')
+const { moveToJourneysSummary } = require('./move-to-journeys-summary')
 
 /**
  * Convert a move into the structure required to render

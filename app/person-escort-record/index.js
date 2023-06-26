@@ -16,6 +16,7 @@ const {
   setRecord,
 } = require('../../common/middleware/framework')
 const { protectRoute } = require('../../common/middleware/permissions')
+const { setMoveWithEvents } = require('../move/middleware')
 
 const confirmApp = require('./app/confirm')
 const newApp = require('./app/new')
@@ -28,6 +29,7 @@ router.use(newApp.mountpath, newApp.router)
 
 // Define shared middleware
 router.use(protectRoute('person_escort_record:view'))
+router.use(setMoveWithEvents)
 router.use(setRecord('personEscortRecord', 'personEscortRecord', 'getById'))
 router.use(setAssessment('personEscortRecord'))
 router.use(breadcrumbs.setHome())

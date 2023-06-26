@@ -3,7 +3,7 @@ import { get } from 'lodash'
 
 import i18n from '../../../../config/i18n'
 import { hasOvernightLodge } from '../../../helpers/move/has-overnight-lodge'
-import { Event } from '../../../types/event'
+import { GenericEvent } from '../../../types/generic_event'
 import { Move } from '../../../types/move'
 
 const setMissingToLocation = (move: Move) => {
@@ -58,7 +58,7 @@ const addImportantEvents = (move: Move) => {
   }
 }
 
-const getCountEventType = (event: Event): string => {
+const getCountEventType = (event: GenericEvent): string => {
   if (
     ['MoveLodgingStart', 'MoveLodgingEnd'].includes(event.event_type || '') &&
     ['lockout', 'overnight_lodging'].includes(event.details?.reason || '')
@@ -84,7 +84,7 @@ const addEventCountToEvents = (move: Move) => {
     )
 
     multiEventTypes.forEach(multiEventType => {
-      ;(move.important_events as Event[])
+      ;(move.important_events as GenericEvent[])
         .filter(event => getCountEventType(event) === multiEventType)
         .forEach((event, index) => {
           event._index = index + 1
@@ -95,7 +95,7 @@ const addEventCountToEvents = (move: Move) => {
 
 const addReasonToMoveLodgingEndEvents = (move: Move) => {
   if (move.timeline_events) {
-    let lastLodgingStartEvent: Event
+    let lastLodgingStartEvent: GenericEvent
 
     move.timeline_events.forEach(event => {
       if (event.event_type === 'MoveLodgingStart') {
@@ -113,6 +113,7 @@ const addReasonToMoveLodgingEndEvents = (move: Move) => {
     })
   }
 }
+
 const setIsLodging = (move: Move) => {
   move.is_lodging = hasOvernightLodge(move)
 }

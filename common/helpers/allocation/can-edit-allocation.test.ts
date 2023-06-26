@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 
-import allocationFactory from '../../../factories/allocation'
-import moveFactory from '../../../factories/move'
+import { AllocationFactory } from '../../../factories/allocation'
+import { MoveFactory } from '../../../factories/move'
 
 import { canEditAllocation } from './can-edit-allocation'
 
 describe('#canEditAllocation', function () {
-  let allocation = allocationFactory.build()
+  let allocation = AllocationFactory.build()
   let permissions: string[]
 
   function canAccessFunction(permissions: string[]) {
@@ -43,7 +43,7 @@ describe('#canEditAllocation', function () {
 
   context('when the allocation is cancelled', function () {
     beforeEach(function () {
-      allocation = allocationFactory.build({ status: 'cancelled' })
+      allocation = AllocationFactory.build({ status: 'cancelled' })
     })
 
     it('returns false', function () {
@@ -55,8 +55,8 @@ describe('#canEditAllocation', function () {
 
   context('when the moves count is zero (all moves cancelled)', function () {
     beforeEach(function () {
-      allocation = allocationFactory.build({
-        moves: moveFactory.buildList(2, { status: 'cancelled' }),
+      allocation = AllocationFactory.build({
+        moves: MoveFactory.buildList(2, { status: 'cancelled' }),
         moves_count: 0,
       })
     })
@@ -71,10 +71,10 @@ describe('#canEditAllocation', function () {
   context('when an associated move cannot be edited', function () {
     beforeEach(function () {
       const moves = [
-        moveFactory.build(),
-        moveFactory.build({ status: 'in_transit' }),
+        MoveFactory.build(),
+        MoveFactory.build({ status: 'in_transit' }),
       ]
-      allocation = allocationFactory.build({ moves })
+      allocation = AllocationFactory.build({ moves })
     })
 
     it('returns false', function () {
@@ -87,10 +87,10 @@ describe('#canEditAllocation', function () {
   context('when an associated move is cancelled', function () {
     beforeEach(function () {
       const moves = [
-        moveFactory.build(),
-        moveFactory.build({ status: 'cancelled' }),
+        MoveFactory.build(),
+        MoveFactory.build({ status: 'cancelled' }),
       ]
-      allocation = allocationFactory.build({ moves })
+      allocation = AllocationFactory.build({ moves })
     })
 
     it('returns true', function () {

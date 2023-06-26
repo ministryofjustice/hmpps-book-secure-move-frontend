@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
 
-import allocationFactory from '../../../factories/allocation'
-import moveFactory from '../../../factories/move'
+import { AllocationFactory } from '../../../factories/allocation'
+import { MoveFactory } from '../../../factories/move'
 import { Move } from '../../types/move'
 
 import { canEditMoveDate } from './can-edit-move-date'
@@ -10,7 +10,7 @@ import { canEditMoveDate } from './can-edit-move-date'
 describe('Move date helper', function () {
   describe('#canEditMoveDate', function () {
     let canAccessStub: sinon.SinonStub<any[], any>
-    const mockMove: Move = moveFactory.build()
+    const mockMove: Move = MoveFactory.build()
 
     beforeEach(function () {
       canAccessStub = sinon.stub().returns(true)
@@ -55,7 +55,7 @@ describe('Move date helper', function () {
 
       context('when part of an allocation', function () {
         beforeEach(function () {
-          mockMove.allocation = allocationFactory.build()
+          mockMove.allocation = AllocationFactory.build()
         })
 
         it('should return false', function () {

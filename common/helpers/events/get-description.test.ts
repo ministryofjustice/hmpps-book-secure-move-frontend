@@ -2,8 +2,9 @@ import { expect } from 'chai'
 import proxyquire from 'proxyquire'
 import sinon from 'sinon'
 
-import { Event } from '../../types/event'
-import { Location } from '../../types/location'
+import { GenericEventFactory } from '../../../factories/generic_event'
+import { LocationFactory } from '../../../factories/location'
+import { GenericEvent } from '../../types/generic_event'
 
 const i18nStub = {
   t: sinon.stub().returnsArg(0),
@@ -17,52 +18,32 @@ const { getDescription } = proxyquire('./get-description', {
   },
 })
 
-const baseEvent: Event = {
-  id: '',
-  event_type: '',
-  classification: '',
-  occurred_at: '',
-  recorded_at: '',
-  notes: null,
-  created_by: null,
-  details: {},
-}
-
-const baseLocation: Location = {
-  key: 'key',
-  title: 'Title',
-  id: 'id',
-  type: 'locations',
-  location_type: 'prison',
-}
-
 describe('Helpers', function () {
   beforeEach(function () {
     i18nStub.t.resetHistory()
   })
 
   describe('Events', function () {
-    let mockEvent: Event
+    let mockEvent: GenericEvent
 
     describe('#getDescription', function () {
       let description: string
 
       context('when fetching the description', function () {
         beforeEach(async function () {
-          mockEvent = {
-            ...baseEvent,
+          mockEvent = GenericEventFactory.build({
             id: 'eventId',
             event_type: 'eventType',
             details: {
               journey: {
-                from_location: baseLocation,
-                to_location: baseLocation,
+                from_location: LocationFactory.build(),
+                to_location: LocationFactory.build(),
                 vehicle: { registration: 'fallback reg' },
               },
             },
             supplier: '12341-12312132',
             occurred_at: '2020-10-10T14:00:00Z',
-          }
+          })
           i18nStub.t
             .onFirstCall()
             .returns(' <br><br>description<br>more description')
@@ -89,14 +70,13 @@ describe('Helpers', function () {
 
       context('when the event is PerCompletion', function () {
         beforeEach(function () {
-          mockEvent = {
-            ...baseEvent,
+          mockEvent = GenericEventFactory.build({
             id: 'eventId',
             event_type: 'PerCompletion',
             details: {},
             supplier: '12341-12312132',
             occurred_at: '2020-10-10T14:00:00Z',
-          }
+          })
           i18nStub.t
             .onFirstCall()
             .returns(' <br><br>description<br>more description')
@@ -158,14 +138,13 @@ describe('Helpers', function () {
 
       context('when the event is PerUpdated', function () {
         beforeEach(function () {
-          mockEvent = {
-            ...baseEvent,
+          mockEvent = GenericEventFactory.build({
             id: 'eventId',
             event_type: 'PerUpdated',
             details: {},
             supplier: '12341-12312132',
             occurred_at: '2020-10-10T14:00:00Z',
-          }
+          })
           i18nStub.t
             .onFirstCall()
             .returns(' <br><br>description<br>more description')
@@ -245,8 +224,7 @@ describe('Helpers', function () {
       context('when the event is MoveOvernightLodge', function () {
         context('when the lodge is only 1 night long', function () {
           beforeEach(async function () {
-            mockEvent = {
-              ...baseEvent,
+            mockEvent = GenericEventFactory.build({
               id: 'eventId',
               event_type: 'MoveOvernightLodge',
               details: {
@@ -255,7 +233,7 @@ describe('Helpers', function () {
               },
               supplier: '12341-12312132',
               occurred_at: '2020-10-10T14:00:00Z',
-            }
+            })
             description = await getDescription('token', mockEvent)
           })
 
@@ -265,8 +243,7 @@ describe('Helpers', function () {
         })
         context('when the lodge is more than 1 night long', function () {
           beforeEach(async function () {
-            mockEvent = {
-              ...baseEvent,
+            mockEvent = GenericEventFactory.build({
               id: 'eventId',
               event_type: 'MoveOvernightLodge',
               details: {
@@ -275,7 +252,7 @@ describe('Helpers', function () {
               },
               supplier: '12341-12312132',
               occurred_at: '2020-10-10T14:00:00Z',
-            }
+            })
             description = await getDescription('token', mockEvent)
           })
 
@@ -286,14 +263,13 @@ describe('Helpers', function () {
       })
       context('when the event has no supplier', function () {
         beforeEach(async function () {
-          mockEvent = {
-            ...baseEvent,
+          mockEvent = GenericEventFactory.build({
             id: 'eventId',
             event_type: 'something else',
             details: {},
             supplier: null,
             occurred_at: '2020-10-10T14:00:00Z',
-          }
+          })
           description = await getDescription('token', mockEvent)
         })
 

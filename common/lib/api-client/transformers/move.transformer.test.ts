@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import sinon from 'sinon'
 
 import i18n from '../../../../config/i18n'
-import { Event } from '../../../types/event'
+import { GenericEvent } from '../../../types/generic_event'
 import { Move } from '../../../types/move'
 
 import { moveTransformer } from './move.transformer'
@@ -25,7 +25,7 @@ const baseMove: Move = {
   move_type: 'court_appearance',
 }
 
-const baseEvent: Event = {
+const baseEvent: GenericEvent = {
   id: '',
   event_type: '',
   classification: '',
