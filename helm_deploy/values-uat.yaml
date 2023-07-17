@@ -27,6 +27,7 @@ generic-service:
     hmpps-book-secure-move-frontend-secrets-uat:
       API_CLIENT_ID: api_client_id_key
       API_SECRET: api_secret_key
+      APPLICATIONINSIGHTS_CONNECTION_STRING: APPLICATIONINSIGHTS_CONNECTION_STRING
       AUTH_PROVIDER_KEY: auth_provider_key_key
       AUTH_PROVIDER_SECRET: auth_provider_secret_key
       CONTENTFUL_SPACE_ID: contentful_space_id
