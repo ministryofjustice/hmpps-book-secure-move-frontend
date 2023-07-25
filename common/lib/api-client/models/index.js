@@ -21,6 +21,7 @@ const gender = require('./gender')
 const image = require('./image')
 const journey = require('./journey')
 const location = require('./location')
+const lodging = require('./lodging')
 const move = require('./move')
 const person = require('./person')
 const personEscortRecord = require('./person-escort-record')
@@ -59,6 +60,7 @@ module.exports = {
   image,
   journey,
   location,
+  lodging,
   move,
   person,
   person_escort_record: personEscortRecord,

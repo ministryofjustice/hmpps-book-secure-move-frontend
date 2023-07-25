@@ -64,6 +64,10 @@ module.exports = {
       jsonApi: 'hasMany',
       type: 'events',
     },
+    lodgings: {
+      jsonApi: 'hasMany',
+      type: 'lodging',
+    },
   },
   options: {
     deserializer: transformResource(moveTransformer),
