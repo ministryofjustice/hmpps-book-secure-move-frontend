@@ -39,6 +39,7 @@ const defaultInclude = [
   'profile.youth_risk_assessment.responses.question.descendants.**',
   'supplier',
   'to_location',
+  'lodgings',
 ]
 const noMoveIdMessage = 'No move ID supplied'
 
@@ -63,6 +64,25 @@ class MoveService extends BaseService {
     if (youthTransfer.includes(data.move_type)) {
       data.move_type = 'prison_transfer'
     }
+
+    // eslint-disable-next-line no-console
+    console.log('??!?!??!?!?!?!?!')
+    // eslint-disable-next-line no-console
+    console.log('??!?!??!?!?!?!?!')
+    // eslint-disable-next-line no-console
+    console.log('??!?!??!?!?!?!?!')
+    // eslint-disable-next-line no-console
+    console.log('??!?!??!?!?!?!?!')
+    // eslint-disable-next-line no-console
+    console.log(data)
+    // eslint-disable-next-line no-console
+    console.log('??!?!??!?!?!?!?!')
+    // eslint-disable-next-line no-console
+    console.log('??!?!??!?!?!?!?!')
+    // eslint-disable-next-line no-console
+    console.log('??!?!??!?!?!?!?!')
+    // eslint-disable-next-line no-console
+    console.log('??!?!??!?!?!?!?!')
 
     return mapValues(omitBy(data, isUndefined), (value, key) => {
       if (booleansAndNulls.includes(key)) {
@@ -120,6 +140,9 @@ class MoveService extends BaseService {
     include,
     sort = {},
   } = {}) {
+    // eslint-disable-next-line no-console
+    console.log('getall?', filter, params, page)
+
     return this.apiClient
       .all('move')
       .all('filtered')
@@ -223,6 +246,7 @@ class MoveService extends BaseService {
         'profile.person_escort_record.flags',
         'profile.youth_risk_assessment',
         'to_location',
+        'lodgings',
       ],
       params: {
         meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',
@@ -293,6 +317,19 @@ class MoveService extends BaseService {
     return this.apiClient.find('move', id, options).then(response => {
       const move = response.data
 
+      // eslint-disable-next-line no-console
+      console.log('??!!!???')
+      // eslint-disable-next-line no-console
+      console.log('??!!!???')
+      // eslint-disable-next-line no-console
+      console.log('??!!!???start')
+      // eslint-disable-next-line no-console
+      console.log(move)
+      // eslint-disable-next-line no-console
+      console.log('??!!!???end')
+      // eslint-disable-next-line no-console
+      console.log('??!!!???')
+
       return {
         ...move,
         _canCancel: canCancelMove(move, canAccess),
@@ -327,7 +364,10 @@ class MoveService extends BaseService {
       'journeys.from_location',
     ]
 
-    return this._getById(id, { include })
+    const getById1 = this._getById(id, { include })
+    // eslint-disable-next-line no-console
+    getById1.then(d => console.log(d))
+    return getById1
   }
 
   create(data, { include } = {}) {

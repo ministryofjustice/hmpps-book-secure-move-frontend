@@ -28,6 +28,9 @@ function setResultsMoves(bodyKey, locationKey) {
         move.is_lodging = hasOvernightLodge(move)
       })
 
+      // eslint-disable-next-line no-console
+      console.log(activeMoves)
+
       if (groupBy === 'vehicle') {
         req.resultsAsCards = presenters.movesByVehicle({
           moves: activeMoves,

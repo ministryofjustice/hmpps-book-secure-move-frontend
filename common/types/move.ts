@@ -1,6 +1,7 @@
 import { Allocation } from './allocation'
 import { GenericEvent } from './generic_event'
 import { Location } from './location'
+import { Lodging } from './lodging'
 import { Profile } from './profile'
 import { Supplier } from './supplier'
 
@@ -44,4 +45,5 @@ export interface Move {
   supplier?: Supplier
   is_lodging?: boolean
   allocation?: Allocation
+  lodgings?: Lodging[]
 }
