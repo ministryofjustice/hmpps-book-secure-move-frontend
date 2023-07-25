@@ -12,11 +12,6 @@ module.exports = async (req, res, next) => {
       data: await req.services.move.getAll({ filter, include }),
     }
 
-    // eslint-disable-next-line no-console
-    console.log('??????????????')
-    // eslint-disable-next-line no-console
-    console.log(req.results)
-
     req.resultsAsTable = presenters.movesToTableComponent({ query: req.query })(
       req.results.data
     )

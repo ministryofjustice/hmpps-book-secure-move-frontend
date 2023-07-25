@@ -136,8 +136,6 @@ async function getSupplierLocations(req, supplierId, permissions) {
 
   if (permissions.includes('locations:contract_delivery_manager')) {
     const suppliers = await referenceDataService.getSuppliers()
-    // eslint-disable-next-line no-console
-    console.log(suppliers)
     const supplierLocations = await Promise.all(
       suppliers.map(supplier =>
         referenceDataService.getLocationsBySupplierId(req, supplier.id)

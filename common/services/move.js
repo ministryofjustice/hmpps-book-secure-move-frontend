@@ -65,25 +65,6 @@ class MoveService extends BaseService {
       data.move_type = 'prison_transfer'
     }
 
-    // eslint-disable-next-line no-console
-    console.log('??!?!??!?!?!?!?!')
-    // eslint-disable-next-line no-console
-    console.log('??!?!??!?!?!?!?!')
-    // eslint-disable-next-line no-console
-    console.log('??!?!??!?!?!?!?!')
-    // eslint-disable-next-line no-console
-    console.log('??!?!??!?!?!?!?!')
-    // eslint-disable-next-line no-console
-    console.log(data)
-    // eslint-disable-next-line no-console
-    console.log('??!?!??!?!?!?!?!')
-    // eslint-disable-next-line no-console
-    console.log('??!?!??!?!?!?!?!')
-    // eslint-disable-next-line no-console
-    console.log('??!?!??!?!?!?!?!')
-    // eslint-disable-next-line no-console
-    console.log('??!?!??!?!?!?!?!')
-
     return mapValues(omitBy(data, isUndefined), (value, key) => {
       if (booleansAndNulls.includes(key)) {
         try {
@@ -140,9 +121,6 @@ class MoveService extends BaseService {
     include,
     sort = {},
   } = {}) {
-    // eslint-disable-next-line no-console
-    console.log('getall?', filter, params, page)
-
     return this.apiClient
       .all('move')
       .all('filtered')
@@ -317,19 +295,6 @@ class MoveService extends BaseService {
     return this.apiClient.find('move', id, options).then(response => {
       const move = response.data
 
-      // eslint-disable-next-line no-console
-      console.log('??!!!???')
-      // eslint-disable-next-line no-console
-      console.log('??!!!???')
-      // eslint-disable-next-line no-console
-      console.log('??!!!???start')
-      // eslint-disable-next-line no-console
-      console.log(move)
-      // eslint-disable-next-line no-console
-      console.log('??!!!???end')
-      // eslint-disable-next-line no-console
-      console.log('??!!!???')
-
       return {
         ...move,
         _canCancel: canCancelMove(move, canAccess),
@@ -364,10 +329,7 @@ class MoveService extends BaseService {
       'journeys.from_location',
     ]
 
-    const getById1 = this._getById(id, { include })
-    // eslint-disable-next-line no-console
-    getById1.then(d => console.log(d))
-    return getById1
+    return this._getById(id, { include })
   }
 
   create(data, { include } = {}) {

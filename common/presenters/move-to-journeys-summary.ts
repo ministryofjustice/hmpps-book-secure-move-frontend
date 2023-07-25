@@ -52,8 +52,6 @@ export function moveToJourneysSummary(
   const hasJourneysOnDifferentDay =
     filteredJourneys.filter(({ date }) => date !== move.date).length !== 0
 
-  console.log(move.lodgings)
-
   if (!move.lodgings?.length) {
     if (!hasJourneysOnDifferentDay) {
       if (move.is_lockout) {
