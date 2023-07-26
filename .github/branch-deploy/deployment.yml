@@ -20,6 +20,7 @@ spec:
         app: hmpps-book-secure-move-frontend-web-pr-{PR_NUMBER}
         tier: frontend
     spec:
+      serviceAccountName: book-a-secure-move-frontend
       containers:
       - name: webapp
         image: {DOCKER_IMAGE_URL}
