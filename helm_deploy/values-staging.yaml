@@ -4,6 +4,8 @@
 generic-service:
   replicaCount: 4
 
+  serviceAccountName: book-a-secure-move-frontend
+
   ingress:
     annotations:
       nginx.ingress.kubernetes.io/server-snippet: add_header X-Robots-Tag "noindex, nofollow";
