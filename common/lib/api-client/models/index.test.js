@@ -276,7 +276,7 @@ describe('API client models', function () {
       ) => {
         describe(`${statusCode} status code`, function () {
           forEach(getStatusMethods(modelName, statusCode), testCase => {
-            describe(`#${testCase.method}()`, function () {
+            describe(`${modelName}#${testCase.method}()`, function () {
               let response
 
               beforeEach(async function () {
