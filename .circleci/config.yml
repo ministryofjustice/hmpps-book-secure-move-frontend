@@ -107,7 +107,7 @@ jobs:
       - attach_workspace:
           at: .
       - browser-tools/install-browser-tools :
-          chrome-version: 114.0.5735.198
+          chrome-version: latest
       - run:
           name: Compile typescript, build assets and frameworks
           command: npm run build
@@ -155,6 +155,7 @@ workflows:
           name: build-docker-image
           requires:
             - build
+            - end-to-end-test
       # Deployment
       - hmpps/deploy_env:
           name: deploy-staging
