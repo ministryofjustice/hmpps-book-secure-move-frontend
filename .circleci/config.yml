@@ -133,6 +133,7 @@ jobs:
       name: hmpps/default
       tag: "3.10"  
     steps:
+      - hmpps/create_app_version
       - mem/recall:
           env_var: APP_VERSION
       - run:
