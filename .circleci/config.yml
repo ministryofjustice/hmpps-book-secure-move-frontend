@@ -2,6 +2,8 @@ version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.1
   hmpps: ministryofjustice/hmpps@7.3.1
+  mem: circleci/rememborb@0.0.2
+
 
 aliases:
   # Shared containers
@@ -40,6 +42,15 @@ aliases:
       branches:
         ignore:
           - main
+commands:
+    tag-git-repo:
+        description: Tags the git repository with the current app version
+        parameters:
+            tag:
+                default: APP_VERSION
+                type: string
+        steps:
+            
 jobs:
   build:
     <<: *node_container
@@ -125,6 +136,18 @@ jobs:
           path: reports/testcafe
       - store_artifacts:
           path: artifacts
+  tag-repo:
+    executor:
+      name: hmpps/default
+      tag: "3.10"  
+    steps:
+      - mem/recall:
+          env_var: APP_VERSION
+      - run:
+          command: |
+              git tag $APP_VERSION
+              git push --tags
+          name: Create and push tag
 
 workflows:
   continuous-deployment:
@@ -155,6 +178,7 @@ workflows:
           name: build-docker-image
           requires:
             - build
+      - tag-repo
       # Deployment
       - hmpps/deploy_env:
           name: deploy-staging
