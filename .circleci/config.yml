@@ -42,14 +42,6 @@ aliases:
       branches:
         ignore:
           - main
-commands:
-    tag-git-repo:
-        description: Tags the git repository with the current app version
-        parameters:
-            tag:
-                default: APP_VERSION
-                type: string
-        steps:
             
 jobs:
   build:
