@@ -148,6 +148,7 @@ workflows:
       - hmpps/build_docker:
           <<: *not_main
           name: test-build-docker
+          publish: false
           requires:
             - build
       - hmpps/build_docker:
