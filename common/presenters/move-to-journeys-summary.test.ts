@@ -2,8 +2,8 @@ import { expect } from 'chai'
 
 import { JourneyFactory } from '../../factories/journey'
 import { LocationFactory } from '../../factories/location'
+import { LodgingFactory } from '../../factories/lodging'
 import { MoveFactory } from '../../factories/move'
-import { MoveOvernightLodgeFactory } from '../../factories/move_overnight_lodge'
 import { Journey } from '../types/journey'
 import { Move } from '../types/move'
 
@@ -169,13 +169,11 @@ describe('Presenters', function () {
           is_lockout: false,
           from_location: LOCATIONS.guildford,
           to_location: LOCATIONS.brixton,
-          timeline_events: [
-            MoveOvernightLodgeFactory.build({
+          lodgings: [
+            LodgingFactory.build({
               location: LOCATIONS.exeter,
-              details: {
-                start_date: '2020-10-07',
-                end_date: '2020-10-08',
-              },
+              start_date: '2020-10-07',
+              end_date: '2020-10-08',
             }),
           ],
         })
@@ -240,20 +238,16 @@ describe('Presenters', function () {
           is_lockout: false,
           from_location: LOCATIONS.guildford,
           to_location: LOCATIONS.brixton,
-          timeline_events: [
-            MoveOvernightLodgeFactory.build({
+          lodgings: [
+            LodgingFactory.build({
               location: LOCATIONS.exeter,
-              details: {
-                start_date: '2020-10-07',
-                end_date: '2020-10-12',
-              },
+              start_date: '2020-10-07',
+              end_date: '2020-10-12',
             }),
-            MoveOvernightLodgeFactory.build({
+            LodgingFactory.build({
               location: LOCATIONS.wetherby,
-              details: {
-                start_date: '2020-10-12',
-                end_date: '2020-10-14',
-              },
+              start_date: '2020-10-12',
+              end_date: '2020-10-14',
             }),
           ],
         })

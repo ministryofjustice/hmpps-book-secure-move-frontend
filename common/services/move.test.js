@@ -87,6 +87,7 @@ describe('Move Service', function () {
         'profile.youth_risk_assessment.responses.question.descendants.**',
         'supplier',
         'to_location',
+        'lodgings',
       ])
     })
   })
@@ -725,6 +726,7 @@ describe('Move Service', function () {
             'profile.person_escort_record.flags',
             'profile.youth_risk_assessment',
             'to_location',
+            'lodgings',
           ],
           params: {
             meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',
@@ -780,6 +782,7 @@ describe('Move Service', function () {
             'profile.person_escort_record.flags',
             'profile.youth_risk_assessment',
             'to_location',
+            'lodgings',
           ],
           filter: {
             status: undefined,

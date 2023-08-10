@@ -67,6 +67,9 @@
       },
       "timeline_events": {
         "data": []
+      },
+      "lodgings": {
+        "data": []
       }
     }
   },

@@ -1,8 +1,8 @@
 import { addDays, differenceInDays, format, parseISO } from 'date-fns'
 
-import { MoveOvernightLodge } from '../types/generic_events/move_overnight_lodge'
 import { Journey } from '../types/journey'
 import { Location } from '../types/location'
+import { Lodging } from '../types/lodging'
 import { Move } from '../types/move'
 
 const filters = require('../../config/nunjucks/filters')
@@ -13,7 +13,7 @@ interface PresentParameters {
   from_location?: Location
   to_location?: Location
   isLodge?: boolean
-  lodge?: MoveOvernightLodge
+  lodge?: Lodging
   timestamp: number
 }
 
@@ -52,13 +52,7 @@ export function moveToJourneysSummary(
   const hasJourneysOnDifferentDay =
     filteredJourneys.filter(({ date }) => date !== move.date).length !== 0
 
-  const overnightLodges = (move.timeline_events
-    ?.filter(e => e.event_type === 'MoveOvernightLodge')
-    .sort((a, b) =>
-      (b.details.end_date || '') > (a.details.end_date || '') ? -1 : 1
-    ) || []) as MoveOvernightLodge[]
-
-  if (!overnightLodges.length) {
+  if (!move.lodgings?.length) {
     if (!hasJourneysOnDifferentDay) {
       if (move.is_lockout) {
         return presentLockout(move, formatDate)
@@ -80,18 +74,21 @@ export function moveToJourneysSummary(
     }),
   ]
 
-  if (overnightLodges.length) {
-    const lodgesPresentData = overnightLodges.map((lodge, i) => {
-      const from = i > 0 ? overnightLodges[i - 1].location : move.from_location
+  if (move.lodgings?.length) {
+    const lodgesPresentData = move.lodgings.map((lodge, i) => {
+      const from =
+        i > 0
+          ? (move.lodgings as Lodging[])[i - 1].location
+          : move.from_location
 
       return {
-        date: lodge.details.start_date as string, // casting because start_date is validated by api
+        date: lodge.start_date,
         status: 'proposed',
         from_location: from,
         to_location: lodge.location,
         isLodge: true,
         lodge,
-        timestamp: Date.parse(lodge.occurred_at.replace(' +', '+')),
+        timestamp: Date.parse(lodge.start_date),
       }
     })
 
@@ -129,7 +126,7 @@ export function moveToJourneysSummary(
     //   lodge to complete the move
     if (lastJourney.isLodge && lastJourney.lodge) {
       journeysWithLodges.push({
-        date: lastJourney.lodge.details.end_date as string,
+        date: lastJourney.lodge.end_date,
         status: 'proposed',
         from_location: lastJourney.lodge.location,
         to_location: move.to_location,
@@ -140,8 +137,8 @@ export function moveToJourneysSummary(
 
       if (lastJourney.lodge) {
         const lodgeLength = differenceInDays(
-          parseISO(lastJourney.lodge.details.end_date as string),
-          parseISO(lastJourney.lodge.details.start_date as string)
+          parseISO(lastJourney.lodge.end_date),
+          parseISO(lastJourney.lodge.start_date)
         )
         date = format(
           addDays(parseISO(lastJourney.date), lodgeLength),

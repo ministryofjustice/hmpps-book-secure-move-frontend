@@ -39,6 +39,7 @@ const defaultInclude = [
   'profile.youth_risk_assessment.responses.question.descendants.**',
   'supplier',
   'to_location',
+  'lodgings',
 ]
 const noMoveIdMessage = 'No move ID supplied'
 
@@ -223,6 +224,7 @@ class MoveService extends BaseService {
         'profile.person_escort_record.flags',
         'profile.youth_risk_assessment',
         'to_location',
+        'lodgings',
       ],
       params: {
         meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',

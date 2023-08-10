@@ -68,6 +68,9 @@
         },
         "timeline_events": {
           "data": []
+        },
+        "lodgings": {
+          "data": []
         }
       }
     },
@@ -138,6 +141,9 @@
           "data": []
         },
         "timeline_events": {
+          "data": []
+        },
+        "lodgings": {
           "data": []
         }
       }
@@ -210,6 +216,9 @@
         },
         "timeline_events": {
           "data": []
+        },
+        "lodgings": {
+          "data": []
         }
       }
     },
@@ -281,6 +290,9 @@
         },
         "timeline_events": {
           "data": []
+        },
+        "lodgings": {
+          "data": []
         }
       }
     },
@@ -351,6 +363,9 @@
           "data": []
         },
         "timeline_events": {
+          "data": []
+        },
+        "lodgings": {
           "data": []
         }
       }
