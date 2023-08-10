@@ -65,12 +65,14 @@
           </div>
 
           <div class="govuk-grid-column-one-half govuk-!-text-align-right">
-            {% if canAccess('move:lodging:add_events') and not moveLodgingEnded %}
-              <a href="/move/{{moveId}}/police-custody-form" class="govuk-button">Add events</a>
-            {% endif %}
+            {% if moveLodgingStarted %}
+              {% if canAccess('move:lodging:add_events') and not moveLodgingEnded %}
+                <a href="/move/{{moveId}}/police-custody-form" class="govuk-button">Add events</a>
+              {% endif %}
 
-            {% if canAccess('move:lodging:handover') and moveLodgingHandover and not moveLodgingHandover.recorded %}
-              <a href="/move/{{moveId}}/person-escort-record/confirm" class="govuk-button">Record handover</a>
+              {% if canAccess('move:lodging:handover') and moveLodgingHandover and not moveLodgingHandover.recorded %}
+                <a href="/move/{{moveId}}/person-escort-record/confirm" class="govuk-button">Record handover</a>
+              {% endif %}
             {% endif %}
           </div>
         </div>
