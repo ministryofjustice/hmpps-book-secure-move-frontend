@@ -34,8 +34,12 @@ export default function localsMoveDetails(
 
   const handovers = presenters.moveToHandoversSummary(move, journeys, true)
 
-  if (move.is_lockout && handovers.length >= 2) {
-    res.locals.moveLockoutHandover = handovers[handovers.length - 1]
+  if (handovers.length >= 1) {
+    if (move.is_lockout) {
+      res.locals.moveLockoutHandover = handovers[handovers.length - 1]
+    } else if (move.is_lodging) {
+      res.locals.moveLodgingHandover = handovers[handovers.length - 1]
+    }
   }
 
   next()

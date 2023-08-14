@@ -32,7 +32,12 @@ function renderPermissions(req, res) {
 }
 
 function updatePermissions(req, res) {
-  const roles = req.body.roles || []
+  let roles = req.body.roles || []
+
+  if (roles.includes('ALL')) {
+    roles = Object.keys(permissionsByRole)
+  }
+
   const permissions = rolesToPermissions(roles)
 
   req.session.activeRoles = roles

@@ -59,6 +59,20 @@
       }) }}
     {% endfor %}
 
+    {{ govukCheckboxes({
+      idPrefix: "roles-all",
+      name: "roles[]",
+      formGroup: {
+        classes: "govuk-!-margin-0"
+      },
+      items: [
+        {
+          value: "ALL",
+          html: "ALL"
+        }
+      ]
+    }) }}
+
     <div class="govuk-!-margin-top-6">
       {{ govukButton({
         text: "Use roles",
