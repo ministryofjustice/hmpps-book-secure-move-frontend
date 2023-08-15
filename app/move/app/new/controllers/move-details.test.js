@@ -1,9 +1,15 @@
 const FormController = require('hmpo-form-wizard').Controller
+const proxyquire = require('proxyquire')
 
 const commonMiddleware = require('../../../../../common/middleware')
 
 const BaseController = require('./base')
-const Controller = require('./move-details')
+
+const FEATURE_FLAGS = {}
+
+const Controller = proxyquire('./move-details', {
+  '../../../../../config': { FEATURE_FLAGS },
+})
 
 const controller = new Controller({ route: '/' })
 
@@ -150,8 +156,8 @@ describe('Move controllers', function () {
       })
 
       context('with no permissions', function () {
-        beforeEach(function () {
-          controller.setMoveTypes(req, res, nextSpy)
+        beforeEach(async function () {
+          await controller.setMoveTypes(req, res, nextSpy)
         })
 
         it('should remove all items from move_type', function () {
@@ -184,9 +190,9 @@ describe('Move controllers', function () {
         })
 
         context('when from police location', function () {
-          beforeEach(function () {
+          beforeEach(async function () {
             getMoveStub.returns({ from_location_type: 'police' })
-            controller.setMoveTypes(req, res, nextSpy)
+            await controller.setMoveTypes(req, res, nextSpy)
           })
 
           it('should remove just one item from move_type', function () {
@@ -236,11 +242,11 @@ describe('Move controllers', function () {
         context(
           'when from police location and move already exists',
           function () {
-            beforeEach(function () {
+            beforeEach(async function () {
               getMoveStub.returns({
                 from_location: { location_type: 'police' },
               })
-              controller.setMoveTypes(req, res, nextSpy)
+              await controller.setMoveTypes(req, res, nextSpy)
             })
 
             it('should remove one item from move_type', function () {
@@ -250,9 +256,9 @@ describe('Move controllers', function () {
         )
 
         context('when from non-police or non-prison location', function () {
-          beforeEach(function () {
+          beforeEach(async function () {
             getMoveStub.returns({ from_location_type: 'court' })
-            controller.setMoveTypes(req, res, nextSpy)
+            await controller.setMoveTypes(req, res, nextSpy)
           })
 
           it('should remove two items from move_type', function () {
@@ -293,10 +299,10 @@ describe('Move controllers', function () {
             })
           })
         })
-        context('when from police location', function () {
-          beforeEach(function () {
+        context('when from prison location', function () {
+          beforeEach(async function () {
             getMoveStub.returns({ from_location_type: 'prison' })
-            controller.setMoveTypes(req, res, nextSpy)
+            await controller.setMoveTypes(req, res, nextSpy)
           })
 
           it('should remove one item from move_type', function () {
@@ -340,15 +346,78 @@ describe('Move controllers', function () {
               unrelated_field: {},
             })
           })
+
+          context('with AP moves disabled for a supplier', function () {
+            const mockLocationDetail = {
+              title: 'mock to location',
+              location_type: 'prison',
+              suppliers: [
+                {
+                  key: 'serco',
+                },
+              ],
+            }
+
+            beforeEach(async function () {
+              FEATURE_FLAGS.AP_DISABLED_SUPPLIERS = ['serco']
+              req = {
+                ...req,
+                services: {
+                  referenceData: {
+                    getLocationById: sinon.stub().resolves(mockLocationDetail),
+                  },
+                },
+              }
+              await controller.setMoveTypes(req, res, nextSpy)
+            })
+
+            it('should remove two items from move_type', function () {
+              expect(req.form.options.fields.move_type.items.length).to.equal(5)
+            })
+
+            it('should remove AP in addition to recall', function () {
+              expect(req.form.options.fields).to.deep.equal({
+                move_type: {
+                  items: [
+                    {
+                      value: 'court_appearance',
+                      conditional: 'to_location_court_appearance',
+                    },
+                    {
+                      value: 'prison_transfer',
+                      conditional: 'to_location_prison_transfer',
+                    },
+                    {
+                      value: 'police_transfer',
+                      conditional: 'to_location_police_transfer',
+                    },
+                    {
+                      value: 'hospital',
+                      conditional: 'to_location_hospital',
+                    },
+                    {
+                      value: 'video_remand',
+                      conditional: 'additional_information',
+                    },
+                  ],
+                },
+                to_location_court_appearance: {},
+                to_location_prison_transfer: {},
+                to_location_police_transfer: {},
+                to_location_hospital: {},
+                unrelated_field: {},
+              })
+            })
+          })
         })
       })
 
       context('with permissions for only some move types', function () {
-        beforeEach(function () {
+        beforeEach(async function () {
           req.session.user = {
             permissions: ['move:create:court_appearance'],
           }
-          controller.setMoveTypes(req, res, nextSpy)
+          await controller.setMoveTypes(req, res, nextSpy)
         })
 
         it('should remove unpermitted items from move_type', function () {
