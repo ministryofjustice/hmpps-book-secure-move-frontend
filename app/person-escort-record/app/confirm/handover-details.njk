@@ -13,6 +13,8 @@
     {% markdown %}
       {% if moveIsLockout %}
         {{ t("assessment::handover.before_handover.content", { context: 'lockout', per_href: "/move/" + moveId + "/police-custody-form" }) | safe }}
+      {% elif moveIsLodging %}
+        {{ t("assessment::handover.before_handover.content", { context: 'lodging', per_href: "/move/" + moveId + "/police-custody-form" }) | safe }}
       {% else %}
         {{ t("assessment::handover.before_handover.content", { per_href: "/move/" + moveId + "/person-escort-record" }) | safe }}
       {% endif %}

@@ -77,7 +77,8 @@
     "before_handover": {
       "heading": "Before you handover",
       "content": "Check that you have:\n\n- <a href=\"{{ per_href }}\">reviewed the Person Escort Record</a> and the information is up to date\n- confirmed the correct person is being moved\n- completed the correct level of search\n- communicated risk and health information with the receiving officer",
-      "content_lockout": "Check that you have:\n\n- <a href=\"{{ per_href }}\">added all lockout events</a> and the information is up to date\n- confirmed the correct person is being moved\n- completed the correct level of search\n- communicated risk and health information with the receiving officer"
+      "content_lockout": "Check that you have:\n\n- <a href=\"{{ per_href }}\">added all lockout events</a> and the information is up to date\n- confirmed the correct person is being moved\n- completed the correct level of search\n- communicated risk and health information with the receiving officer",
+      "content_lodging": "Check that you have:\n\n- <a href=\"{{ per_href }}\">added all lodging events</a>\n- confirmed the correct person is being moved\n- completed the correct level of search\n- communicated risk and health information with the receiving officer"
     },
     "not_fit_to_travel": "If this person is not fit to travel you must <a href=\"{{cancel_href}}\" class=\"app-link--destructive\">cancel this move</a>.",
     "dispatching_officer": "Dispatching officer",
