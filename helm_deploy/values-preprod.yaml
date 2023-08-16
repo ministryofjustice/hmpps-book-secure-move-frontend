@@ -14,13 +14,14 @@ generic-service:
   env:
     API_BASE_URL: "https://hmpps-book-secure-move-api-preprod.apps.cloud-platform.service.justice.gov.uk"
     AUTH_PROVIDER_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk"
+    FEATURE_FLAG_ADD_LODGE_BUTTON: "true"
+    FEATURE_FLAG_AP_DISABLED_SUPPLIERS: "serco"
     FEEDBACK_URL: "https://eu.surveymonkey.com/r/3CKYXSC"
     GOOGLE_ANALYTICS_ID: "G-3LCJP1TWQC"
     MOVE_DESIGN_FEEDBACK_URL: "https://eu.surveymonkey.com/r/BKZC8BV"
     NOMIS_ELITE2_API_URL: "https://api-preprod.prison.service.justice.gov.uk"
     SENTRY_ENVIRONMENT: "preproduction"
     SERVER_HOST: "hmpps-book-secure-move-frontend-preprod.apps.cloud-platform.service.justice.gov.uk"
-    FEATURE_FLAG_ADD_LODGE_BUTTON: "true"
 
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.

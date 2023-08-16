@@ -71,9 +71,10 @@
 
 ## Feature Flags
 
-| Name                                    | Description                                                                  | Default |
-| :-------------------------------------- | :--------------------------------------------------------------------------- | :------ |
-| FEATURE_FLAG_GOT | This will enable Got as the request library for the API instead of axios. | false |
+| Name                               | Description                                                                               | Default |
+| :--------------------------------- | :---------------------------------------------------------------------------------------- | :------ |
+| FEATURE_FLAG_GOT                   | This will enable Got as the request library for the API instead of axios.                 | false   |
+| FEATURE_FLAG_AP_DISABLED_SUPPLIERS | Comma-separated list of keys of suppliers that cannot yet accept approved premises moves. |         |
 
 ## Development specific
 
