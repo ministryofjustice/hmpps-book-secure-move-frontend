@@ -57,6 +57,11 @@
       text: t("assessment::handover.warning_text", { context: 'lockout' }),
       iconFallbackText: "Warning"
     }) }}
+  {% elif moveIsLodging %}
+    {{ govukWarningText({
+      text: t("assessment::handover.warning_text", { context: 'lodging' }),
+      iconFallbackText: "Warning"
+    }) }}
   {% else %}
     {{ govukWarningText({
       text: t("assessment::handover.warning_text"),

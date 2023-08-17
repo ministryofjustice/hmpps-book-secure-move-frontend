@@ -84,7 +84,8 @@
     "dispatching_officer": "Dispatching officer",
     "receiving_officer": "Receiving officer",
     "warning_text": "Once you’ve confirmed handover for this person, you will no longer be able to update their Person Escort Record.",
-    "warning_text_lockout": "Once you’ve confirmed handover for this person, you will no longer be able to add any new lockout events."
+    "warning_text_lockout": "Once you’ve confirmed handover for this person, you will no longer be able to add any new lockout events.",
+    "warning_text_lodging": "Once you’ve confirmed handover for this person, you will no longer be able to add any new events related to the overnight lodge."
   },
   "handover_status": {
     "heading": "Handover status",
