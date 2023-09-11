@@ -17,7 +17,7 @@ data:
   GOOGLE_ANALYTICS_ID: "UA-106741063-10"
   LOG_LEVEL: "debug"
   NODE_ENV: "production"
-  NOMIS_ELITE2_API_URL: "https://api-dev.prison.service.justice.gov.uk"
+  NOMIS_ELITE2_API_URL: "https://prison-api-dev.prison.service.justice.gov.uk"
   PROMETHEUS_MOUNTPATH: "/metrics"
   SENTRY_ENVIRONMENT: "staging"
   SERVER_HOST: "hmpps-book-secure-move-frontend-pr-{PR_NUMBER}.apps.cloud-platform.service.justice.gov.uk"
