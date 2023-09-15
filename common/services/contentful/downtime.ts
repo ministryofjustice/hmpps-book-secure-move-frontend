@@ -29,7 +29,7 @@ export class DowntimeContent extends ContentfulContent {
   private start: Date
   private end: Date
 
-  constructor(data: { start: Date; end: Date; daysNotice: number }) {
+  constructor(data: { start: Date; end: Date; daysNotice: number, bannerText: string }) {
     const date = new Date(data.start)
     date.setDate(date.getDate() - data.daysNotice)
 
@@ -41,7 +41,7 @@ export class DowntimeContent extends ContentfulContent {
     super({
       title: '',
       body: i18n.t('downtime::page_text', formattedDates),
-      bannerText: i18n.t('downtime::banner_text', formattedDates),
+      bannerText: i18n.t('downtime::banner_text', { message : data.bannerText} ).split('\n').join('<br/>'),
       date,
       expiry: data.end,
     })
@@ -67,6 +67,7 @@ export class DowntimeService extends ContentfulService {
       start: new Date(fields.start),
       end: new Date(fields.end),
       daysNotice: fields.daysNotice,
+      bannerText: fields.briefBannerText
     })
   }
 
