@@ -62,7 +62,7 @@ describe('DowntimeContent', function () {
       start: new Date(2022, 4, 9, 16),
       end: new Date(2022, 4, 9, 18),
       daysNotice: 7,
-      bannerText: "This is a test outage message"
+      bannerText: 'This is a test outage message',
     })
   })
 
