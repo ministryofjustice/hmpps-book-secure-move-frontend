@@ -2,7 +2,7 @@
 
 {% set html %}
   <p class="govuk-notification-banner__heading">
-    {{ params.body }}
+    {{ params.body | safe }}
   </p>
 {% endset %}
 
