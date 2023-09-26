@@ -12,7 +12,7 @@ generic-service:
     tlsSecretName: hmpps-book-secure-move-frontend-production-cert
 
   env:
-    API_BASE_URL: "https://hmpps-book-secure-move-api-production.apps.live-1.cloud-platform.service.justice.gov.uk"
+    API_BASE_URL: "https://hmpps-book-secure-move-api-production.apps.cloud-platform.service.justice.gov.uk"
     AUTH_PROVIDER_URL: "https://sign-in.hmpps.service.justice.gov.uk"
     FEATURE_FLAG_ADD_LODGE_BUTTON: "false"
     FEATURE_FLAG_AP_DISABLED_SUPPLIERS: "serco"

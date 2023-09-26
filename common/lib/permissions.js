@@ -143,6 +143,8 @@ const prisonPermissions = [
   'move:cancel',
   'move:update',
   'move:update:approved_premises',
+  'move:update:court_appearance',
+  'move:update:hospital',
   'person_escort_record:view',
   'person_escort_record:create',
   'person_escort_record:update',
