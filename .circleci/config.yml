@@ -98,6 +98,16 @@ jobs:
       - store_artifacts:
           path: coverage.tar
 
+  security-audit:
+    <<: *node_container
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Compile typescript, build assets and frameworks
+          command: npm run security_audit
+
   end-to-end-test:
     <<: *node_container
     resource_class: large
@@ -244,3 +254,24 @@ workflows:
           sentry_environment: production
           requires:
             - deploy-production
+  daily-e2e:
+    triggers:
+      - schedule:
+          cron: "30 7 * * 1-5"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - end-to-end-test
+      
+  security:
+    triggers:
+      - schedule:
+          cron: "4 5 * * 1-5"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      -  security-audit
