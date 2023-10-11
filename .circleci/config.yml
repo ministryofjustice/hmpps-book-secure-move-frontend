@@ -257,7 +257,7 @@ workflows:
   daily-e2e:
     triggers:
       - schedule:
-          cron: "15 10 * * 1-5"
+          cron: "17 10 * * 1-5"
           filters:
             branches:
               only:
