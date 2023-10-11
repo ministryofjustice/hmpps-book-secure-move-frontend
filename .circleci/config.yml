@@ -257,14 +257,17 @@ workflows:
   daily-e2e:
     triggers:
       - schedule:
-          cron: "30 7 * * 1-5"
+          cron: "15 10 * * 1-5"
           filters:
             branches:
               only:
                 - main
     jobs:
-      - end-to-end-test
-      
+      - build
+      - end-to-end-test:
+          requires:
+            build
+
   security:
     triggers:
       - schedule:
@@ -274,4 +277,4 @@ workflows:
               only:
                 - main
     jobs:
-      -  security-audit
+      - security-audit
