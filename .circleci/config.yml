@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
-  browser-tools: circleci/browser-tools@1.4.1
-  hmpps: ministryofjustice/hmpps@7.3.1
+  browser-tools: circleci/browser-tools@1.4.6
+  hmpps: ministryofjustice/hmpps@7.4.1
 
 aliases:
   # Shared containers
@@ -257,14 +257,17 @@ workflows:
   daily-e2e:
     triggers:
       - schedule:
-          cron: "30 7 * * 1-5"
+          cron: "17 10 * * 1-5"
           filters:
             branches:
               only:
                 - main
     jobs:
-      - end-to-end-test
-      
+      - build
+      - end-to-end-test:
+          requires:
+            - build
+
   security:
     triggers:
       - schedule:
@@ -274,4 +277,4 @@ workflows:
               only:
                 - main
     jobs:
-      -  security-audit
+      - security-audit
