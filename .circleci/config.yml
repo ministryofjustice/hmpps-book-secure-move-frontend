@@ -266,7 +266,7 @@ workflows:
       - build
       - end-to-end-test:
           requires:
-            build
+            - build
 
   security:
     triggers:
