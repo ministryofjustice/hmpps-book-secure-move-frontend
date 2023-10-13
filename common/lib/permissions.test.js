@@ -324,6 +324,7 @@ describe('Permissions', function () {
           'allocations:view',
           'locations:contract_delivery_manager',
           'locations:all',
+          'moves:download',
           'moves:view:outgoing',
           'moves:view:incoming',
           'moves:view:proposed',

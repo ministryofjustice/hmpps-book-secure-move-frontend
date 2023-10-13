@@ -44,6 +44,7 @@ const contractDeliveryManagerPermissions = [
   'moves:view:proposed',
   'move:view',
   'move:view:journeys',
+  'moves:download',
   'person_escort_record:view',
   'person_escort_record:print',
   'youth_risk_assessment:view',
