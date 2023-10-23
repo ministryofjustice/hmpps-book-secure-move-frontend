@@ -15,7 +15,6 @@ generic-service:
     API_BASE_URL: "https://hmpps-book-secure-move-api-production.apps.cloud-platform.service.justice.gov.uk"
     AUTH_PROVIDER_URL: "https://sign-in.hmpps.service.justice.gov.uk"
     FEATURE_FLAG_ADD_LODGE_BUTTON: "false"
-    FEATURE_FLAG_AP_DISABLED_SUPPLIERS: "serco"
     FEEDBACK_URL: "https://eu.surveymonkey.com/r/3CKYXSC"
     GOOGLE_ANALYTICS_ID: "G-58WMNWR101"
     MOVE_DESIGN_FEEDBACK_URL: "https://eu.surveymonkey.com/r/BKZC8BV"
