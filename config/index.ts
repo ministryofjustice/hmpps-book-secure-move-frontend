@@ -25,6 +25,7 @@ export const SERVER_HOST = process.env.HEROKU_APP_NAME
 const BASE_URL = `${IS_PRODUCTION ? 'https' : 'http'}://${SERVER_HOST}`
 const API_BASE_URL = process.env.API_BASE_URL || ''
 export const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
+export const MANAGE_USERS_API_BASE_URL = process.env.MANAGE_USERS_API_URL
 const AUTH_KEY = process.env.AUTH_PROVIDER_KEY
 const NOMIS_ELITE2_API_BASE_URL = process.env.NOMIS_ELITE2_API_URL
 const NOMIS_ELITE2_API_HEALTHCHECK_PATH =
@@ -77,6 +78,12 @@ try {
 
 function _authUrl(path: string) {
   return AUTH_BASE_URL ? new URL(path, AUTH_BASE_URL).href : ''
+}
+
+function _manageUsersApiUrl(path: string) {
+  return MANAGE_USERS_API_BASE_URL
+    ? new URL(path, MANAGE_USERS_API_BASE_URL).href
+    : ''
 }
 
 export const AUTH_EXPIRY_MARGIN = process.env.AUTH_EXPIRY_MARGIN || 5 * 60 // 5 minutes
@@ -170,9 +177,8 @@ export const AUTH_PROVIDERS = {
     logout_url: _authUrl(
       `/auth/logout?client_id=${AUTH_KEY}&redirect_uri=${BASE_URL}`
     ),
-    groups_url: (username: string) =>
-      _authUrl(`/auth/api/authuser/${username}/groups`),
-    user_url: (username: string) => _authUrl(`/auth/api/user/${username}`),
+    groups_url: _manageUsersApiUrl(`/users/me/groups`),
+    user_url: (username: string) => _manageUsersApiUrl(`/users/${username}`),
     key: AUTH_KEY,
     secret: process.env.AUTH_PROVIDER_SECRET,
   },
@@ -304,12 +310,10 @@ export const FEATURE_FLAGS = {
     process.env.FEATURE_FLAG_ADD_LODGE_BUTTON || ''
   ),
   DATE_OF_ARREST: /true/i.test(process.env.FEATURE_FLAG_DATE_OF_ARREST || ''),
-  AP_DISABLED_SUPPLIERS: (
-      (process.env.FEATURE_FLAG_AP_DISABLED_SUPPLIERS || '')
-          .split(',')
-          .filter(supplier => supplier != '')
-          .map(supplier => supplier.trim())
-  ),
+  AP_DISABLED_SUPPLIERS: (process.env.FEATURE_FLAG_AP_DISABLED_SUPPLIERS || '')
+    .split(',')
+    .filter(supplier => supplier != '')
+    .map(supplier => supplier.trim()),
 }
 export const FRAMEWORKS = {
   CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
