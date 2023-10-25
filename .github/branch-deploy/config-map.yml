@@ -16,6 +16,7 @@ data:
   PERSON_ESCORT_RECORD_FEEDBACK_URL: "#"
   GOOGLE_ANALYTICS_ID: "UA-106741063-10"
   LOG_LEVEL: "debug"
+  MANAGE_USERS_API_URL: "https://manage-users-api-dev.hmpps.service.justice.gov.uk"
   NODE_ENV: "production"
   NOMIS_ELITE2_API_URL: "https://prison-api-dev.prison.service.justice.gov.uk"
   PROMETHEUS_MOUNTPATH: "/metrics"

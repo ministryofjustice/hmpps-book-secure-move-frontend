@@ -17,6 +17,7 @@ generic-service:
     FEATURE_FLAG_ADD_LODGE_BUTTON: "true"
     FEEDBACK_URL: "https://eu.surveymonkey.com/r/3CKYXSC"
     GOOGLE_ANALYTICS_ID: "G-3LCJP1TWQC"
+    MANAGE_USERS_API_URL: "https://manage-users-api-preprod.hmpps.service.justice.gov.uk"
     MOVE_DESIGN_FEEDBACK_URL: "https://eu.surveymonkey.com/r/BKZC8BV"
     NOMIS_ELITE2_API_URL: "https://api-preprod.prison.service.justice.gov.uk"
     SENTRY_ENVIRONMENT: "preproduction"
