@@ -271,7 +271,7 @@ const runTests = async () => {
     (_, i) =>
       `PORT=${3000 + i} AUTH_PROVIDER_URL=http://localhost:${
         3999 + i
-      } MANAGER_USERS_API_URL=http://localhost:${
+      } MANAGE_USERS_API_URL=http://localhost:${
         3999 + i
       } SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
         3000 + i
