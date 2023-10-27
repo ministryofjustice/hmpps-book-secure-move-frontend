@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.136.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.135.0...v2.136.0) (2023-10-27)
+
+
+### Features
+
+* MAP-270 Display message field for downtime banner ([886ef4b](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/886ef4b2e2ed98f98c844c3ff6df1c182f086558))
+* MAP-270 Fix linting ([5db9d4d](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/5db9d4d459c38b1bab6df17e8bc69297a806ea9c))
+
+
+### Bug Fixes
+
+* MAP-345 add download moves permission to CDM ([25bd86a](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/commit/25bd86af9df5a5ec2d4f0c9ddbf5aa34a03efbfa))
+
 ## [2.134.0](https://github.com/ministryofjustice/hmpps-book-secure-move-frontend/compare/v2.135.0...v2.134.0) (2023-10-27)
 
 
