@@ -275,7 +275,7 @@
     "mocha": "10.2.0",
     "mocha-junit-reporter": "2.2.0",
     "mock-fs": "5.2.0",
-    "nock": "13.3.0",
+    "nock": "13.3.7",
     "nodemon": "2.0.20",
     "npm-check-updates": "16.7.9",
     "nyc": "15.1.0",
