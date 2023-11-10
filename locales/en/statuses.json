@@ -26,6 +26,7 @@
   "description_supplier_declined_to_move": "Reason — $t(fields::cancellation_reason.items.supplier_declined_to_move.label)",
   "description_cancelled_by_pmu": "Reason — $t(fields::cancellation_reason.items.cancelled_by_pmu.label) — {{comment}}",
   "description_database_correction": "Reason — $t(fields::cancellation_reason.items.database_correction.label)",
+  "description_incomplete_per": "Reason — $t(fields::cancellation_reason.items.incomplete_per.label)",
   "description_other": "Reason — {{comment}}",
   "description_rejected": "Comments — {{comment}}",
   "description_no_transport_available": "<p>Reason — $t(fields::rejection_reason.items.no_transport_available)</p> $t(statuses::description_cancelled_rejected)",
