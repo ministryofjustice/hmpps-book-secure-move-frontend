@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.6
-  hmpps: ministryofjustice/hmpps@7.4.1
+  hmpps: ministryofjustice/hmpps@7
 
 aliases:
   # Shared containers
@@ -116,7 +116,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - browser-tools/install-browser-tools :
+      - browser-tools/install-browser-tools:
           chrome-version: 114.0.5735.198
       - run:
           name: Compile typescript, build assets and frameworks
