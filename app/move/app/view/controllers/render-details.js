@@ -78,6 +78,9 @@ function renderDetails(req, res) {
     isPerLocked: move._isPerLocked,
     canEditPer: move._canEditPer,
     isAllocationMove: !isNil(move.allocation),
+    lodgings: move.lodgings?.sort((a, b) =>
+      a.start_date.localeCompare(b.start_date)
+    ),
     moveSummary,
     sections: {
       uneditable: uneditableSections

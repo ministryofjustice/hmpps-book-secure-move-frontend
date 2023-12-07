@@ -44,7 +44,7 @@ function moveToSummaryListComponent(
         text: i18n.t('fields::to_location.label'),
       },
       value: {
-        text: journeysSummary.map(({ toLocation }) => toLocation).join(' and '),
+        text: journeysSummary[journeysSummary.length - 1].toLocation,
       },
       updateJourneyKey: 'move',
     },
@@ -53,7 +53,7 @@ function moveToSummaryListComponent(
         text: i18n.t('fields::date_custom.label'),
       },
       value: {
-        text: journeysSummary.map(({ date }) => date).join(' to '),
+        text: getMovePeriod(journeysSummary),
       },
       updateJourneyKey: 'date',
     },
@@ -142,6 +142,18 @@ function moveToSummaryListComponent(
         }
       }),
   }
+}
+
+function getMovePeriod(journeysSummary) {
+  if (journeysSummary.length === 1) {
+    return journeysSummary[0].date
+  }
+
+  return (
+    journeysSummary[0].date +
+    ' to ' +
+    journeysSummary[journeysSummary.length - 1].date
+  )
 }
 
 module.exports = moveToSummaryListComponent
