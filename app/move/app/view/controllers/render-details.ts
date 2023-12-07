@@ -1,19 +1,31 @@
-const { isNil, mapValues } = require('lodash')
+import { isNil, mapValues } from 'lodash'
 
-const moveHelpers = require('../../../../../common/helpers/move')
-const {
-  canEditMoveDate,
-  canEditMoveDestination,
-} = require('../../../../../common/helpers/move')
-const presenters = require('../../../../../common/presenters')
+// @ts-ignore
+// eslint-disable-next-line import/no-duplicates
+import { canEditMoveDate } from '../../../../../common/helpers/move'
+// @ts-ignore
+// eslint-disable-next-line import/no-duplicates
+import { canEditMoveDestination } from '../../../../../common/helpers/move'
+// @ts-ignore
+// eslint-disable-next-line import/no-duplicates
+import { getUpdateUrls } from '../../../../../common/helpers/move'
+// @ts-ignore
+// eslint-disable-next-line import/no-duplicates
+import { mapUpdateLink } from '../../../../../common/helpers/move'
+// @ts-ignore
+import presenters from '../../../../../common/presenters'
+import { AssessmentCategory } from '../../../../../common/types/assessment-category'
+import { BasmRequest } from '../../../../../common/types/basm_request'
+import { BasmResponse } from '../../../../../common/types/basm_response'
+import { Move } from '../../../../../common/types/move'
 
-function _filterCourtMoves(move) {
-  return category => {
+function _filterCourtMoves(move: Move) {
+  return (category: AssessmentCategory) => {
     return !(move.move_type !== 'court_appearance' && category?.key === 'court')
   }
 }
 
-function renderDetails(req, res) {
+export function renderDetails(req: BasmRequest, res: BasmResponse) {
   const { canAccess, move, journeys } = req
   const per = move?.profile?.person_escort_record
   const perStarted = !isNil(per) && per.status !== 'not_started'
@@ -21,7 +33,7 @@ function renderDetails(req, res) {
   const { assessment_answers: assessmentAnswers = [] } = move.profile || {}
   const uneditableCategories = ['risk', 'health']
 
-  const updateUrls = moveHelpers.getUpdateUrls(move, canAccess)
+  const updateUrls = getUpdateUrls(move, canAccess)
 
   if (!canEditMoveDate(move, canAccess)) {
     delete updateUrls.date
@@ -31,7 +43,7 @@ function renderDetails(req, res) {
     delete updateUrls.move
   }
 
-  const updateLinks = mapValues(updateUrls, moveHelpers.mapUpdateLink)
+  const updateLinks = mapValues(updateUrls, mapUpdateLink)
 
   const moveSummary = presenters.moveToSummaryListComponent(move, journeys, {
     updateUrls,
@@ -48,10 +60,15 @@ function renderDetails(req, res) {
     presenters.assessmentAnswersByCategory(assessmentAnswers)
   const editableAssessments = assessmentsByCategory
     .filter(_filterCourtMoves(move))
-    .filter(category => !uneditableCategories.includes(category?.key))
+    .filter(
+      (category: AssessmentCategory) =>
+        !uneditableCategories.includes(category?.key)
+    )
     .map(presenters.assessmentCategoryToSummaryListComponent)
   const uneditableAssessments = assessmentsByCategory
-    .filter(category => uneditableCategories.includes(category?.key))
+    .filter((category: AssessmentCategory) =>
+      uneditableCategories.includes(category?.key)
+    )
     .map(presenters.assessmentCategoryToSummaryListComponent)
 
   let uneditableSections
@@ -93,5 +110,3 @@ function renderDetails(req, res) {
 
   res.render('move/app/view/views/details', locals)
 }
-
-module.exports = renderDetails

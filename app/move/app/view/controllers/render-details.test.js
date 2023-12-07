@@ -3,7 +3,7 @@ const proxyquire = require('proxyquire')
 const moveHelpers = require('../../../../../common/helpers/move')
 const presenters = require('../../../../../common/presenters')
 
-const controller = proxyquire('./render-details', {
+const { renderDetails } = proxyquire('./render-details', {
   '../../../../../common/helpers/move': moveHelpers,
 })
 
@@ -79,7 +79,7 @@ describe('Move view app', function () {
               id: '_allocation_',
             }
 
-            controller(req, res)
+            renderDetails(req, res)
           })
 
           it('should set allocation property', function () {
@@ -94,7 +94,7 @@ describe('Move view app', function () {
           beforeEach(function () {
             req.move._canEditPer = true
 
-            controller(req, res)
+            renderDetails(req, res)
           })
 
           it('should set canEditPer property', function () {
@@ -110,7 +110,7 @@ describe('Move view app', function () {
                 id: '_allocation_',
               }
 
-              controller(req, res)
+              renderDetails(req, res)
             })
 
             it('should set isAllocationMove property', function () {
@@ -123,7 +123,7 @@ describe('Move view app', function () {
             beforeEach(function () {
               req.move.allocation = null
 
-              controller(req, res)
+              renderDetails(req, res)
             })
 
             it('should set isAllocationMove property', function () {
@@ -135,7 +135,7 @@ describe('Move view app', function () {
 
         describe('moveSummary', function () {
           beforeEach(function () {
-            controller(req, res)
+            renderDetails(req, res)
           })
 
           it('should call moveToSummaryListComponent', function () {
@@ -158,7 +158,7 @@ describe('Move view app', function () {
         describe('sections', function () {
           context('without profile', function () {
             beforeEach(function () {
-              controller(req, res)
+              renderDetails(req, res)
             })
 
             it('should not include any sections', function () {
@@ -176,7 +176,7 @@ describe('Move view app', function () {
                 id: '_profile_id_',
                 person_escort_record: null,
               }
-              controller(req, res)
+              renderDetails(req, res)
             })
 
             it('sections should contain correct keys', function () {
@@ -220,7 +220,7 @@ describe('Move view app', function () {
                   status: 'completed',
                 },
               }
-              controller(req, res)
+              renderDetails(req, res)
             })
 
             it('sections should contain correct keys', function () {
@@ -265,7 +265,7 @@ describe('Move view app', function () {
                   status: 'not_started',
                 },
               }
-              controller(req, res)
+              renderDetails(req, res)
             })
 
             it('sections should contain correct keys', function () {
@@ -307,7 +307,7 @@ describe('Move view app', function () {
                 id: '_profile_id_',
                 person_escort_record: null,
               }
-              controller(req, res)
+              renderDetails(req, res)
             })
 
             it('should exlude court information from non-court moves', function () {
@@ -319,7 +319,7 @@ describe('Move view app', function () {
 
         describe('updateLinks', function () {
           beforeEach(function () {
-            controller(req, res)
+            renderDetails(req, res)
           })
 
           it('should call getUpdateUrls', function () {
@@ -335,17 +335,15 @@ describe('Move view app', function () {
             )
           })
 
-          it('should call getUpdateUrls', function () {
+          it('should set locals.updateLinks', function () {
             const locals = res.render.args[0][1]
-            expect(locals.updateLinks).to.deep.equal({
-              move: '/move-url',
-            })
+            expect(locals.updateLinks).to.deep.equal(mockUpdateUrls)
           })
         })
       })
 
       it('should render a template', function () {
-        controller(req, res)
+        renderDetails(req, res)
         expect(res.render.args[0][0]).to.equal('move/app/view/views/details')
       })
     })
