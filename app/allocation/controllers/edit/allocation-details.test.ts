@@ -88,6 +88,7 @@ const req: AllocationRequest = {
 
 const res: BasmResponse = {
   locals: {},
+  render: () => {},
 }
 
 describe('#getValues', function () {
