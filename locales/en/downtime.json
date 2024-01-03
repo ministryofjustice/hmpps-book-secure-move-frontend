@@ -1,4 +1,4 @@
 {
-  "banner_text": "Book a secure move will be unavailable on {{ start.date }} from {{ start.time }} to {{ end.time }}.",
+  "banner_text": "{{ message }}",
   "page_text": "You will be able to use the service again from {{ end.time }} on {{ end.date }}."
 }

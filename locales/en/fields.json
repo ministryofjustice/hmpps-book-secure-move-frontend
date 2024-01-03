@@ -337,6 +337,9 @@
       "database_correction": {
         "label": "Actual cancellation reason and time unknown due to missing supplier data"
       },
+      "incomplete_per": {
+        "label": "Cancelled due to incomplete PER"
+      },
       "other": {
         "label": "Another reason"
       }

@@ -1,4 +1,5 @@
 import {
+  addDays,
   differenceInYears,
   format,
   isDate,
@@ -11,7 +12,6 @@ import {
   isYesterday,
   parseISO,
   subDays,
-  addDays,
 } from 'date-fns'
 import { filesize as filesizejs } from 'filesize'
 import { filter } from 'lodash'
@@ -177,6 +177,64 @@ export function formatISOWeek(dateRange: string | string[]) {
  */
 export function formatDateWithDay(value: string | Date) {
   return formatDate(value, DATE_FORMATS.WITH_DAY)
+}
+
+const ordinals = [
+  'First',
+  'Second',
+  'Third',
+  'Fourth',
+  'Fifth',
+  'Sixth',
+  'Seventh',
+  'Eighth',
+  'Ninth',
+  'Tenth',
+]
+
+/**
+ * Converts a number to its full ordinal form.
+ *
+ * This function only supports 1-10, numbers outside of this range will return addOrdinal(value) instead.
+ *
+ * @return {String} the ordinal form
+ *
+ * @example {{ 4 | toFullOrdinal }}
+ * @param value
+ */
+export function toFullOrdinal(value: number) {
+  if (value > 0 && value <= ordinals.length) {
+    return ordinals[value - 1]
+  }
+
+  return addOrdinal(value)
+}
+
+/**
+ * Adds the correct ordinal to a number
+ *
+ * @return {String} the number with ordinal prefix
+ *
+ * @example {{ 4 | addOrdinal }}
+ * @param value
+ */
+export function addOrdinal(value: number) {
+  const j = value % 10
+  const k = value % 100
+
+  if (j === 1 && k !== 11) {
+    return value + 'st'
+  }
+
+  if (j === 2 && k !== 12) {
+    return value + 'nd'
+  }
+
+  if (j === 3 && k !== 13) {
+    return value + 'rd'
+  }
+
+  return value + 'th'
 }
 
 /**
