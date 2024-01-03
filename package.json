@@ -2,7 +2,7 @@
   "name": "hmpps-book-secure-move-frontend",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "version": "2.132.1",
+  "version": "2.136.0",
   "main": "start.js",
   "contributors": [
     {
@@ -30,6 +30,10 @@
       "email": "georgeschena@hotmail.com"
     },
     {
+      "name": "Daniel Benton",
+      "email": "daniel.benton@digital.justice.gov.uk"
+    },
+    {
       "name": "Ben Chidgey",
       "email": "ben@feedmypixel.com"
     },
@@ -46,8 +50,8 @@
       "email": "barbara@kitsch-en.net"
     },
     {
-      "name": "Daniel Benton",
-      "email": "daniel.benton@digital.justice.gov.uk"
+      "name": "danbenton-mojdt",
+      "email": "113102670+danbenton-mojdt@users.noreply.github.com"
     },
     {
       "name": "Matt Crowson",
@@ -66,24 +70,28 @@
       "email": "steve@stevelorek.com"
     },
     {
-      "name": "danbenton-mojdt",
-      "email": "113102670+danbenton-mojdt@users.noreply.github.com"
+      "name": "Jim Bailey",
+      "email": "jim.bailey@digital.justice.gov.uk"
     },
     {
       "name": "Tyom Semonov",
       "email": "inspiro@gmail.com"
     },
     {
+      "name": "jimbali",
+      "email": "40831617+jimbali@users.noreply.github.com"
+    },
+    {
       "name": "Ryan Brooks",
       "email": "ryan@slatehorse.com"
     },
     {
-      "name": "Jim Bailey",
-      "email": "jim.bailey@justice.digital.gov.uk"
-    },
-    {
       "name": "Ed Brindley",
       "email": "ed@maidavale.org"
+    },
+    {
+      "name": "connormaglynn",
+      "email": "connor.glynn@digital.justice.gov.uk"
     },
     {
       "name": "Miguel Afonso",
@@ -98,12 +106,12 @@
       "email": "andy@wireworldmedia.co.uk"
     },
     {
-      "name": "jimbali",
-      "email": "40831617+jimbali@users.noreply.github.com"
-    },
-    {
       "name": "Martin Ballhatchet",
       "email": "64074996+martin-ballhatchet-moj@users.noreply.github.com"
+    },
+    {
+      "name": "Peter Phillips",
+      "email": "peter@greenthistle.co.uk"
     }
   ],
   "repository": {
@@ -213,7 +221,7 @@
     "yargs": "17.7.1"
   },
   "devDependencies": {
-    "@babel/core": "7.21.0",
+    "@babel/core": "7.23.7",
     "@babel/preset-env": "7.20.2",
     "@commitlint/cli": "17.4.4",
     "@commitlint/config-conventional": "17.4.4",
@@ -267,7 +275,7 @@
     "mocha": "10.2.0",
     "mocha-junit-reporter": "2.2.0",
     "mock-fs": "5.2.0",
-    "nock": "13.3.0",
+    "nock": "13.4.0",
     "nodemon": "2.0.20",
     "npm-check-updates": "16.7.9",
     "nyc": "15.1.0",
@@ -296,7 +304,7 @@
   },
   "engines": {
     "node": "18",
-    "npm": "9"
+    "npm": "10"
   },
   "files": [],
   "scripts": {

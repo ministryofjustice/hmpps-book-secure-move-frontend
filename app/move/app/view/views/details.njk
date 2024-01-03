@@ -65,6 +65,39 @@
     {{ govukSummaryList(moveSummary) }}
   {% endcall %}
 
+  {% if lodgings | length %}
+    {% call _section("Overnight lodge details") %}
+      {% for lodging in lodgings %}
+        {{ govukSummaryList({
+             card: {
+               title: {
+                 text: (loop.index | toFullOrdinal) + " lodge"
+               }
+             },
+             rows: [
+               {
+                 key: {
+                  text: "Location"
+                 },
+                 value: {
+                  text: lodging.location.title
+                 }
+               },
+               {
+                 key: {
+                  text: "Date"
+                 },
+                 value: {
+                  text: (lodging.start_date | formatDateWithDay) + " to " + (lodging.end_date | formatDateWithDay)
+                 }
+               }
+             ]
+           })
+        }}
+      {% endfor %}
+    {% endcall %}
+  {% endif %}
+
   {% for section in sections.editable %}
     {% call _section(section.heading) %}
       {{ _renderAssessmentComponent(section) }}
