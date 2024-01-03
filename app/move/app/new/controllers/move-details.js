@@ -159,9 +159,8 @@ class MoveDetailsController extends CreateBaseController {
       const { to_location: toLocationId } = req.sessionModel.toJSON()
 
       if (toLocationId) {
-        const locationDetail = await req.services.referenceData.getLocationById(
-          toLocationId
-        )
+        const locationDetail =
+          await req.services.referenceData.getLocationById(toLocationId)
 
         req.sessionModel.set('to_location', locationDetail)
         req.sessionModel.set('to_location_type', locationDetail.location_type)

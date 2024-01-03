@@ -143,9 +143,8 @@ describe('Presenters', function () {
           })
 
           it('should set people header', function () {
-            expect(
-              output.every(group => group.header[2].label === 'people')
-            ).to.be.true
+            expect(output.every(group => group.header[2].label === 'people')).to
+              .be.true
 
             expect(
               output.every(
