@@ -142,13 +142,13 @@ jobs:
           kubectl config use-context ${KUBE_CLUSTER}
 
       # Assume role in Cloud Platform
-      - uses: aws-actions/configure-aws-credentials@v2
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.STAGING_ECR_ROLE_TO_ASSUME }}
           aws-region: ${{ vars.STAGING_ECR_REGION }}
 
         # Login to container repository
-      - uses: aws-actions/amazon-ecr-login@v1
+      - uses: aws-actions/amazon-ecr-login@v2
         id: login-ecr
 
       - name: Push docker image to ECR
