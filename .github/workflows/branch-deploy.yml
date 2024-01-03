@@ -148,7 +148,7 @@ jobs:
           aws-region: ${{ vars.STAGING_ECR_REGION }}
 
         # Login to container repository
-      - uses: aws-actions/amazon-ecr-login@v1
+      - uses: aws-actions/amazon-ecr-login@v2
         id: login-ecr
 
       - name: Push docker image to ECR
