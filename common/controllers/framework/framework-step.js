@@ -2,6 +2,8 @@ const { isEmpty, fromPairs, snakeCase } = require('lodash')
 
 const fieldHelpers = require('../../helpers/field')
 const frameworksHelpers = require('../../helpers/frameworks')
+const canEditAssessment =
+  require('../../helpers/move/can-edit-assessment').canEditAssessment
 const setMoveSummary = require('../../middleware/set-move-summary')
 const FormWizardController = require('../form-wizard')
 
@@ -12,9 +14,10 @@ class FrameworkStepController extends FormWizardController {
   }
 
   checkEditable(req, res, next) {
-    const { editable, framework } = req.assessment
-
-    if (!editable || !req.canAccess(`${snakeCase(framework.name)}:update`)) {
+    if (
+      !canEditAssessment(req.move, req.canAccess) ||
+      !['requested', 'booked'].includes(req.move.status)
+    ) {
       return res.redirect(req.baseUrl)
     }
 
