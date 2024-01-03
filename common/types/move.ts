@@ -8,6 +8,7 @@ import { Supplier } from './supplier'
 export interface Move {
   date: string
   profile?: Profile
+  time_due?: Date | string
   status:
     | 'proposed'
     | 'requested'
@@ -42,6 +43,7 @@ export interface Move {
   is_lockout?: boolean
   _canEdit?: boolean
   _isPerLocked?: boolean
+  _canEditPer?: boolean
   supplier?: Supplier
   is_lodging?: boolean
   allocation?: Allocation

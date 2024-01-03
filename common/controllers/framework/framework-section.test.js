@@ -292,6 +292,12 @@ describe('Framework controllers', function () {
             },
           },
           canAccess: sinon.stub().returns(true),
+          move: {
+            profile: {
+              person_escort_record: {},
+            },
+            status: 'requested',
+          },
         }
         mockRes = {
           locals: {},
@@ -300,8 +306,7 @@ describe('Framework controllers', function () {
 
       context('when Person Escort Record is not editable', function () {
         beforeEach(function () {
-          mockReq.assessment.editable = false
-
+          mockReq.move.status = 'cancelled'
           controller.setEditableStatus(mockReq, mockRes, nextSpy)
         })
 
@@ -316,6 +321,7 @@ describe('Framework controllers', function () {
 
       context('when Person Escort Record is editable', function () {
         beforeEach(function () {
+          mockReq.move.status = 'requested'
           controller.setEditableStatus(mockReq, mockRes, nextSpy)
         })
 
