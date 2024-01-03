@@ -239,6 +239,12 @@ describe('Framework controllers', function () {
           },
           baseUrl: '/base-url',
           canAccess: sinon.stub().returns(true),
+          move: {
+            profile: {
+              person_escort_record: {},
+            },
+            status: 'requested',
+          },
         }
         mockRes = {
           redirect: sinon.spy(),
@@ -247,7 +253,7 @@ describe('Framework controllers', function () {
 
       context('when Person Escort Record is not editable', function () {
         beforeEach(function () {
-          mockReq.assessment.editable = false
+          mockReq.move.status = 'cancelled'
 
           controller.checkEditable(mockReq, mockRes, nextSpy)
         })
