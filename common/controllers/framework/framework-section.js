@@ -1,6 +1,8 @@
 const { filter, snakeCase } = require('lodash')
 
 const i18n = require('../../../config/i18n').default
+const canEditAssessment =
+  require('../../helpers/move/can-edit-assessment').canEditAssessment
 const setPreviousNextFrameworkSection = require('../../middleware/framework/set-previous-next-framework-section')
 const setMoveSummary = require('../../middleware/set-move-summary')
 const presenters = require('../../presenters')
@@ -61,10 +63,9 @@ class FrameworkSectionController extends FormWizardController {
   }
 
   setEditableStatus(req, res, next) {
-    const { editable, framework } = req.assessment
-
     res.locals.isEditable =
-      editable && req.canAccess(`${snakeCase(framework.name)}:update`)
+      canEditAssessment(req.move, req.canAccess) &&
+      ['requested', 'booked'].includes(req.move.status)
 
     next()
   }

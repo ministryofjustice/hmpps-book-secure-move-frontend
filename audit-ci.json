@@ -1,5 +1,5 @@
 {
   "low": true,
   "registry": "https://registry.npmjs.org",
-  "allowlist": [1213, 1674, 1751, 1753, 1754, 1755]
+  "allowlist": ["GHSA-ff7x-qrg7-qggm", "GHSA-cf4h-3jhx-xvhq", "GHSA-ww39-953v-wcq6", "GHSA-7p7h-4mm5-852v", "GHSA-q8pj-2vqx-8ggc", "GHSA-px4h-xg32-q955"]
 }

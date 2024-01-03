@@ -260,7 +260,7 @@ describe('Single request service', function () {
             expect(moveService.get.args[0][0].filter).to.deep.include({
               status: 'cancelled',
               cancellation_reason:
-                'made_in_error,supplier_declined_to_move,cancelled_by_pmu,other',
+                'made_in_error,supplier_declined_to_move,cancelled_by_pmu,incomplete_per,other',
             })
           })
         })
