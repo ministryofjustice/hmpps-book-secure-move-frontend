@@ -766,8 +766,9 @@ describe('Framework controllers', function () {
         })
 
         it('should not call parent success handler', function () {
-          expect(FormWizardController.prototype.successHandler).not.to.have.been
-            .called
+          expect(
+            FormWizardController.prototype.successHandler
+          ).not.to.have.been.called
         })
       })
 
@@ -782,8 +783,9 @@ describe('Framework controllers', function () {
           })
 
           it('should call parent success handler', function () {
-            expect(FormWizardController.prototype.successHandler).to.have.been
-              .calledOnce
+            expect(
+              FormWizardController.prototype.successHandler
+            ).to.have.been.calledOnce
           })
         })
 
@@ -801,8 +803,9 @@ describe('Framework controllers', function () {
           })
 
           it('should not call parent success handler', function () {
-            expect(FormWizardController.prototype.successHandler).not.to.have
-              .been.called
+            expect(
+              FormWizardController.prototype.successHandler
+            ).not.to.have.been.called
           })
         })
       })
