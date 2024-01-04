@@ -1,4 +1,3 @@
-const dns = require('dns')
 // Core dependencies
 const path = require('path')
 
@@ -274,8 +273,6 @@ module.exports = async () => {
       },
     })
   )
-
-  dns.setDefaultResultOrder('ipv4first')
 
   // Ensure body processed after reauthentication
   app.use(processOriginalRequestBody())
