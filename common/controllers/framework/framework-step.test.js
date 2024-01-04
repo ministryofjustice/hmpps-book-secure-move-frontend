@@ -239,6 +239,12 @@ describe('Framework controllers', function () {
           },
           baseUrl: '/base-url',
           canAccess: sinon.stub().returns(true),
+          move: {
+            profile: {
+              person_escort_record: {},
+            },
+            status: 'requested',
+          },
         }
         mockRes = {
           redirect: sinon.spy(),
@@ -247,7 +253,7 @@ describe('Framework controllers', function () {
 
       context('when Person Escort Record is not editable', function () {
         beforeEach(function () {
-          mockReq.assessment.editable = false
+          mockReq.move.status = 'cancelled'
 
           controller.checkEditable(mockReq, mockRes, nextSpy)
         })
@@ -760,9 +766,8 @@ describe('Framework controllers', function () {
         })
 
         it('should not call parent success handler', function () {
-          expect(
-            FormWizardController.prototype.successHandler
-          ).not.to.have.been.called
+          expect(FormWizardController.prototype.successHandler).not.to.have.been
+            .called
         })
       })
 
@@ -777,9 +782,8 @@ describe('Framework controllers', function () {
           })
 
           it('should call parent success handler', function () {
-            expect(
-              FormWizardController.prototype.successHandler
-            ).to.have.been.calledOnce
+            expect(FormWizardController.prototype.successHandler).to.have.been
+              .calledOnce
           })
         })
 
@@ -797,9 +801,8 @@ describe('Framework controllers', function () {
           })
 
           it('should not call parent success handler', function () {
-            expect(
-              FormWizardController.prototype.successHandler
-            ).not.to.have.been.called
+            expect(FormWizardController.prototype.successHandler).not.to.have
+              .been.called
           })
         })
       })
