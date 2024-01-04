@@ -259,9 +259,8 @@ describe('Person Escort Record controllers', function () {
           })
 
           it('should call parent method', function () {
-            expect(
-              ConfirmAssessmentController.prototype.validateFields
-            ).to.have.been.calledOnce
+            expect(ConfirmAssessmentController.prototype.validateFields).to.have
+              .been.calledOnce
           })
 
           it('should call callback with existing errors', function () {
@@ -331,9 +330,8 @@ describe('Person Escort Record controllers', function () {
           })
 
           it('should call parent method', function () {
-            expect(
-              ConfirmAssessmentController.prototype.validateFields
-            ).to.have.been.calledOnce
+            expect(ConfirmAssessmentController.prototype.validateFields).to.have
+              .been.calledOnce
           })
 
           it('should call callback with existing errors', function () {

@@ -64,9 +64,8 @@ describe('Population middleware', function () {
       })
 
       it('should call locationsToPopulationTable presenter', function () {
-        expect(
-          locationsToPopulationComponent.locationsToPopulationTable
-        ).to.have.been.calledOnce
+        expect(locationsToPopulationComponent.locationsToPopulationTable).to
+          .have.been.calledOnce
       })
 
       it('should call decorateAsDateTable decorator', function () {

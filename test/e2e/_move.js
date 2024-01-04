@@ -32,9 +32,8 @@ export async function createMove(options = {}) {
       .expect(page.nodes.locationMeta.getAttribute('content'))
       .ok('should contain a current location')
 
-    const currentLocationId = await page.nodes.locationMeta.getAttribute(
-      'content'
-    )
+    const currentLocationId =
+      await page.nodes.locationMeta.getAttribute('content')
 
     options.moveOverrides = {
       from_location: currentLocationId,

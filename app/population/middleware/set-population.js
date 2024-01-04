@@ -21,9 +21,8 @@ async function setPopulation(req, res, next) {
     }
 
     if (populationId) {
-      req.population = await req.services.population.getByIdWithMoves(
-        populationId
-      )
+      req.population =
+        await req.services.population.getByIdWithMoves(populationId)
     }
 
     req.date = dateRange[0]

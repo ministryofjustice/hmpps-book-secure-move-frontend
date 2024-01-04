@@ -183,20 +183,20 @@ describe('Helpers', function () {
         )
 
         context('when event.details.section is an invalid value', function () {
-          ;[null, ['abc', '123'], 123, 'some-other-section'].forEach(function (
-            value
-          ) {
-            context(`value: ${value}`, function () {
-              beforeEach(async function () {
-                mockEvent.details.section = value as any
-                description = await getDescription('token', mockEvent)
-              })
+          ;[null, ['abc', '123'], 123, 'some-other-section'].forEach(
+            function (value) {
+              context(`value: ${value}`, function () {
+                beforeEach(async function () {
+                  mockEvent.details.section = value as any
+                  description = await getDescription('token', mockEvent)
+                })
 
-              it(`sets the updateSection field to 'Updated'`, function () {
-                expect(mockEvent.details.updateSection).to.equal('Updated')
+                it(`sets the updateSection field to 'Updated'`, function () {
+                  expect(mockEvent.details.updateSection).to.equal('Updated')
+                })
               })
-            })
-          })
+            }
+          )
         })
 
         context('when event.details.section is a valid value', function () {

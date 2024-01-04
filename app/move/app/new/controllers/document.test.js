@@ -316,9 +316,8 @@ describe('Move controllers', function () {
           })
 
           it('should not call parent error handler', function () {
-            expect(
-              BaseController.prototype.errorHandler
-            ).not.to.have.been.called
+            expect(BaseController.prototype.errorHandler).not.to.have.been
+              .called
           })
         })
       })
@@ -377,9 +376,8 @@ describe('Move controllers', function () {
           })
 
           it('should not call parent success handler', function () {
-            expect(
-              BaseController.prototype.successHandler
-            ).not.to.have.been.called
+            expect(BaseController.prototype.successHandler).not.to.have.been
+              .called
           })
         })
 
@@ -399,9 +397,8 @@ describe('Move controllers', function () {
             })
 
             it('should not call parent success handler', function () {
-              expect(
-                BaseController.prototype.successHandler
-              ).not.to.have.been.called
+              expect(BaseController.prototype.successHandler).not.to.have.been
+                .called
             })
           })
 
@@ -420,9 +417,8 @@ describe('Move controllers', function () {
             })
 
             it('should not call parent success handler', function () {
-              expect(
-                BaseController.prototype.successHandler
-              ).not.to.have.been.called
+              expect(BaseController.prototype.successHandler).not.to.have.been
+                .called
             })
           })
         })
