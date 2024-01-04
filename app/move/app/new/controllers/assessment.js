@@ -9,9 +9,10 @@ class AssessmentController extends CreateBaseController {
   async configure(req, res, next) {
     try {
       const { fields, assessmentCategory } = req.form.options
-      const questions = await req.services.referenceData.getAssessmentQuestions(
-        assessmentCategory
-      )
+      const questions =
+        await req.services.referenceData.getAssessmentQuestions(
+          assessmentCategory
+        )
 
       req.form.options.fields = fieldHelpers.populateAssessmentFields(
         fields,

@@ -72,9 +72,8 @@ describe('Location "service"', function () {
       )
 
       afterEach(function () {
-        expect(
-          req.services.referenceData.getLocationById
-        ).to.not.have.been.called
+        expect(req.services.referenceData.getLocationById).to.not.have.been
+          .called
       })
     })
 
@@ -118,9 +117,8 @@ describe('Location "service"', function () {
         })
 
         it('does not call the api', function () {
-          expect(
-            req.services.referenceData.getLocationById
-          ).to.not.have.been.called
+          expect(req.services.referenceData.getLocationById).to.not.have.been
+            .called
         })
       })
 
