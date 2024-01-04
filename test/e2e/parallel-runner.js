@@ -230,6 +230,8 @@ const testcafeRuns = testBuckets.map((test, index) => {
     3000 + index
   } AUTH_PROVIDER_URL=http://localhost:${
     3999 + index
+  } MANAGE_USERS_API_URL=http://localhost:${
+    3999 + index
   } NOMIS_ELITE2_API_URL=http://localhost:${
     3999 + index
   } node_modules/.bin/testcafe ${agent} ${test.join(
@@ -268,6 +270,8 @@ const runTests = async () => {
   const serverCommandStrings = testBuckets.map(
     (_, i) =>
       `PORT=${3000 + i} AUTH_PROVIDER_URL=http://localhost:${
+        3999 + i
+      } MANAGE_USERS_API_URL=http://localhost:${
         3999 + i
       } SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
         3000 + i

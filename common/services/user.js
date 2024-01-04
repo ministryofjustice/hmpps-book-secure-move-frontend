@@ -102,10 +102,8 @@ async function getSupplierId(token) {
 }
 
 function getAuthGroups(token) {
-  const { user_name: userName } = decodeAccessToken(token)
-
   return axiosInstance
-    .get(AUTH_PROVIDERS.hmpps.groups_url(userName), {
+    .get(AUTH_PROVIDERS.hmpps.groups_url, {
       headers: getAuthHeader(token),
     })
     .then(response => response.data)

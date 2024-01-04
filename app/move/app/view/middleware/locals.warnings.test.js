@@ -239,9 +239,8 @@ describe('Move view app', function () {
           })
 
           it('should call correct presenter', function () {
-            expect(
-              presenters.moveToImportantEventsTagListComponent
-            ).not.to.have.been.called
+            expect(presenters.moveToImportantEventsTagListComponent).not.to.have
+              .been.called
           })
 
           it('should set tagList variable as undefined', function () {
@@ -259,9 +258,8 @@ describe('Move view app', function () {
           })
 
           it('should call correct presenter', function () {
-            expect(
-              presenters.moveToImportantEventsTagListComponent
-            ).not.to.have.been.called
+            expect(presenters.moveToImportantEventsTagListComponent).not.to.have
+              .been.called
           })
 
           it('should set tagList variable as undefined', function () {

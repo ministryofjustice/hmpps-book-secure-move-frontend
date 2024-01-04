@@ -61,9 +61,8 @@ describe('Allocation criteria controller', function () {
         await controller.configure(req, {}, next)
       })
       it('calls the reference service', function () {
-        expect(
-          referenceDataService.getAllocationComplexCases
-        ).to.have.been.calledOnce
+        expect(referenceDataService.getAllocationComplexCases).to.have.been
+          .calledOnce
       })
       it('sets the items as items on the complex cases field', function () {
         expect(req.form.options.fields.complex_cases.items).to.exist

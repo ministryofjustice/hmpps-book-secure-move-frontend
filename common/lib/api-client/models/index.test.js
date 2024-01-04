@@ -219,7 +219,9 @@ const getResponse = ({ modelName, model, testCase } = {}) => {
   const { statusCode } = testCase
 
   const apiPath = get(model, 'options.collectionPath') || pluralize(modelName)
-  const fixture = require(`${fixturesPath}/${modelName}.${testCase.method}.json`)
+  const fixture = require(
+    `${fixturesPath}/${modelName}.${testCase.method}.json`
+  )
 
   const nockedResponse =
     fixture.response !== undefined ? fixture.response : fixture

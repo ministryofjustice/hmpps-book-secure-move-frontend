@@ -148,9 +148,8 @@ describe('API Client', function () {
               })
 
               it('should not deserialize as a collection', function () {
-                expect(
-                  payload.jsonApi.deserialize.collection
-                ).not.have.been.called
+                expect(payload.jsonApi.deserialize.collection).not.have.been
+                  .called
               })
 
               if (testCase.shouldDeserialize) {
@@ -210,9 +209,8 @@ describe('API Client', function () {
               })
 
               it('should not deserialize as a resource', function () {
-                expect(
-                  payload.jsonApi.deserialize.resource
-                ).not.have.been.called
+                expect(payload.jsonApi.deserialize.resource).not.have.been
+                  .called
               })
 
               if (testCase.shouldDeserialize) {

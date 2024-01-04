@@ -70,7 +70,7 @@ app.get('/auth/logout', (req, res) => {
   res.redirect(req.query.redirect_uri)
 })
 
-app.get('/auth/api/user/:USERNAME', (req, res) => {
+app.get('/users/:USERNAME', (req, res) => {
   const username =
     req.params.USERNAME !== 'me'
       ? req.params.USERNAME
@@ -85,7 +85,7 @@ app.get('/auth/api/user/:USERNAME', (req, res) => {
   })
 })
 
-app.get('/auth/api/authuser/:ROLE/groups', (req, res) => {
+app.get('/users/me/groups', (req, res) => {
   const { user_name: username } = getUserFromToken(req)
   const { locations = [] } = getUserFromUsername(username)
   const groupCodes = locations.map(location => {
