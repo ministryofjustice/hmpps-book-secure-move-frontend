@@ -172,9 +172,8 @@ describe('Message component', function () {
         expect($component.html()).to.contain(
           'A message with <strong>bold text</strong>'
         )
-        expect(
-          $('.app-message__content').hasClass('an-example-class')
-        ).to.be.true
+        expect($('.app-message__content').hasClass('an-example-class')).to.be
+          .true
       })
     })
 

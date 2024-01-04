@@ -7,5 +7,6 @@ export interface Profile {
   person: Person
   person_escort_record?: PersonEscortRecord
   youth_risk_assessment?: YouthRiskAssessment
+  assessment_answers?: any
   requires_youth_risk_assessment?: boolean
 }

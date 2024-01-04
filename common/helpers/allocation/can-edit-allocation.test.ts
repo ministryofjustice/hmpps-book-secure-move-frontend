@@ -23,9 +23,8 @@ describe('#canEditAllocation', function () {
 
   context('when it can be edited', function () {
     it('returns true', function () {
-      expect(
-        canEditAllocation(allocation, canAccessFunction(permissions))
-      ).to.be.true
+      expect(canEditAllocation(allocation, canAccessFunction(permissions))).to
+        .be.true
     })
   })
 
@@ -35,9 +34,8 @@ describe('#canEditAllocation', function () {
     })
 
     it('returns false', function () {
-      expect(
-        canEditAllocation(allocation, canAccessFunction(permissions))
-      ).to.be.false
+      expect(canEditAllocation(allocation, canAccessFunction(permissions))).to
+        .be.false
     })
   })
 
@@ -47,9 +45,8 @@ describe('#canEditAllocation', function () {
     })
 
     it('returns false', function () {
-      expect(
-        canEditAllocation(allocation, canAccessFunction(permissions))
-      ).to.be.false
+      expect(canEditAllocation(allocation, canAccessFunction(permissions))).to
+        .be.false
     })
   })
 
@@ -62,9 +59,8 @@ describe('#canEditAllocation', function () {
     })
 
     it('returns false', function () {
-      expect(
-        canEditAllocation(allocation, canAccessFunction(permissions))
-      ).to.be.false
+      expect(canEditAllocation(allocation, canAccessFunction(permissions))).to
+        .be.false
     })
   })
 
@@ -78,9 +74,8 @@ describe('#canEditAllocation', function () {
     })
 
     it('returns false', function () {
-      expect(
-        canEditAllocation(allocation, canAccessFunction(permissions))
-      ).to.be.false
+      expect(canEditAllocation(allocation, canAccessFunction(permissions))).to
+        .be.false
     })
   })
 
@@ -94,9 +89,8 @@ describe('#canEditAllocation', function () {
     })
 
     it('returns true', function () {
-      expect(
-        canEditAllocation(allocation, canAccessFunction(permissions))
-      ).to.be.true
+      expect(canEditAllocation(allocation, canAccessFunction(permissions))).to
+        .be.true
     })
   })
 })

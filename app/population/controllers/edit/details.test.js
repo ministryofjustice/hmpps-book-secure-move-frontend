@@ -372,14 +372,12 @@ describe('Population controllers', function () {
         })
 
         it('should not update the hint text for unlock', function () {
-          expect(
-            req.sessionModel.options.fields.unlock.hint?.text
-          ).to.be.undefined
+          expect(req.sessionModel.options.fields.unlock.hint?.text).to.be
+            .undefined
         })
         it('should not update the hint text for discharges', function () {
-          expect(
-            req.sessionModel.options.fields.discharges.hint?.text
-          ).to.be.undefined
+          expect(req.sessionModel.options.fields.discharges.hint?.text).to.be
+            .undefined
         })
 
         it('should call next', function () {

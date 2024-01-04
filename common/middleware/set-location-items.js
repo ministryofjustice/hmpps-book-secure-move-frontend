@@ -25,9 +25,8 @@ function setLocationItems(locationTypes, fieldName) {
         locationTypes = [locationTypes]
       }
 
-      const locations = await req.services.referenceData.getLocationsByType(
-        locationTypes
-      )
+      const locations =
+        await req.services.referenceData.getLocationsByType(locationTypes)
 
       const items = getLocationItems(locationTypes[0], locations)
 

@@ -17,28 +17,37 @@ interface PresentParameters {
   timestamp: number
 }
 
+export interface JourneySummary {
+  context: string
+  date: string
+  fromLocation?: string
+  toLocation?: string
+}
+
 const presentMoveOrJourney = (
   moveOrJourney: Move | PresentParameters,
   formatDate: typeof filters.formatDate
-) => ({
-  context: moveOrJourney.status,
-  date: formatDate(moveOrJourney.date),
-  fromLocation: moveOrJourney.from_location?.title,
-  toLocation: moveOrJourney.to_location?.title,
-})
+) =>
+  ({
+    context: moveOrJourney.status,
+    date: formatDate(moveOrJourney.date),
+    fromLocation: moveOrJourney.from_location?.title,
+    toLocation: moveOrJourney.to_location?.title,
+  } as JourneySummary)
 
-const presentLockout = (move: Move, formatDate: typeof filters.formatDate) => [
-  {
-    fromLocation: move.from_location?.title,
-    toLocation: '(awaiting destination)',
-    date: formatDate(move.date),
-  },
-  {
-    fromLocation: '(awaiting location)',
-    toLocation: move.to_location?.title,
-    date: '(awaiting date)',
-  },
-]
+const presentLockout = (move: Move, formatDate: typeof filters.formatDate) =>
+  [
+    {
+      fromLocation: move.from_location?.title,
+      toLocation: '(awaiting destination)',
+      date: formatDate(move.date),
+    },
+    {
+      fromLocation: '(awaiting location)',
+      toLocation: move.to_location?.title,
+      date: '(awaiting date)',
+    },
+  ] as JourneySummary[]
 
 export function moveToJourneysSummary(
   move: Move,

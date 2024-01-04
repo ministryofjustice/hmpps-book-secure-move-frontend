@@ -9,7 +9,7 @@ const configStub = {
   AUTH_PROVIDERS: {
     hmpps: {
       user_url: username => `http://test.com/user/${username}`,
-      groups_url: () => 'http://test.com/',
+      groups_url: 'http://test.com/',
     },
   },
   NOMIS_ELITE2_API: {
@@ -139,7 +139,7 @@ describe('User service', function () {
 
     context('when supplier exists', function () {
       beforeEach(async function () {
-        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url)
           .get('/')
           .reply(200, JSON.stringify(authGroups))
 
@@ -165,7 +165,7 @@ describe('User service', function () {
 
     context('when no supplier role', function () {
       beforeEach(async function () {
-        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url)
           .get('/')
           .reply(200, JSON.stringify(authGroups))
 
@@ -185,9 +185,7 @@ describe('User service', function () {
 
     context('when no authorities', function () {
       beforeEach(async function () {
-        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
-          .get('/')
-          .reply(200, [])
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url).get('/').reply(200, [])
 
         tokenData = { authorities: ['ROLE_PECS_SUPPLIER'] }
 
@@ -205,7 +203,7 @@ describe('User service', function () {
 
     context('when supplier does not exist', function () {
       beforeEach(async function () {
-        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url)
           .get('/')
           .reply(
             200,
@@ -232,7 +230,7 @@ describe('User service', function () {
 
     context('when supplier call errors', function () {
       beforeEach(function () {
-        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+        nock(configStub.AUTH_PROVIDERS.hmpps.groups_url)
           .get('/')
           .reply(
             200,
@@ -268,7 +266,7 @@ describe('User service', function () {
 
         context('with other roles', function () {
           beforeEach(async function () {
-            nock(configStub.AUTH_PROVIDERS.hmpps.groups_url('test'))
+            nock(configStub.AUTH_PROVIDERS.hmpps.groups_url)
               .get('/')
               .reply(200, JSON.stringify(authGroups))
 
