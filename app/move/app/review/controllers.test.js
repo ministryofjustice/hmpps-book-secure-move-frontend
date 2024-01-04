@@ -695,9 +695,8 @@ describe('Move controllers', function () {
           })
 
           it('should not call parent error handler', function () {
-            expect(
-              FormWizardController.prototype.errorHandler
-            ).not.to.have.been.called
+            expect(FormWizardController.prototype.errorHandler).not.to.have.been
+              .called
           })
 
           it('should render a template', function () {
