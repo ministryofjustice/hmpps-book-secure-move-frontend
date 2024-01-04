@@ -1,3 +1,6 @@
+import { setDefaultResultOrder } from 'dns'
+setDefaultResultOrder('ipv4first')
+
 // Core dependencies
 const path = require('path')
 

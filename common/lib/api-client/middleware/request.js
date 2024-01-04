@@ -1,6 +1,3 @@
-import { setDefaultResultOrder } from 'dns'
-setDefaultResultOrder('ipv4first')
-
 const Sentry = require('@sentry/node')
 const debug = require('debug')('app:api-client:request')
 const cacheDebug = require('debug')('app:api-client:cache')
