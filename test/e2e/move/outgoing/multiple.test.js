@@ -32,8 +32,7 @@ test.before(async t => {
     .expect(secondLocationTitle)
     .eql(reloadedLocationTitle, 'first and second locations are different')
 
-  const initialLocationContent = await Selector('span').withText(
-    initialLocationTitle
-  ).exists
+  const initialLocationContent =
+    await Selector('span').withText(initialLocationTitle).exists
   await t.expect(initialLocationContent).ok('first location not found on page')
 })

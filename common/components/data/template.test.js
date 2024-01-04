@@ -29,15 +29,13 @@ describe('Data component', function () {
     })
 
     it('should render value first', function () {
-      expect(
-        $component.children().first().hasClass('app-data__value')
-      ).to.be.true
+      expect($component.children().first().hasClass('app-data__value')).to.be
+        .true
     })
 
     it('should render label second', function () {
-      expect(
-        $component.children().last().hasClass('app-data__label')
-      ).to.be.true
+      expect($component.children().last().hasClass('app-data__label')).to.be
+        .true
     })
   })
 
@@ -50,15 +48,13 @@ describe('Data component', function () {
     })
 
     it('should render label first', function () {
-      expect(
-        $component.children().first().hasClass('app-data__label')
-      ).to.be.true
+      expect($component.children().first().hasClass('app-data__label')).to.be
+        .true
     })
 
     it('should render value second', function () {
-      expect(
-        $component.children().last().hasClass('app-data__value')
-      ).to.be.true
+      expect($component.children().last().hasClass('app-data__value')).to.be
+        .true
     })
   })
 

@@ -192,9 +192,8 @@ describe('Reference Data Service', function () {
           })
           .resolves(mockResponse)
 
-        response = await referenceDataService.getAssessmentQuestions(
-          mockCategory
-        )
+        response =
+          await referenceDataService.getAssessmentQuestions(mockCategory)
       })
 
       it('should call API client with category', function () {
@@ -466,9 +465,8 @@ describe('Reference Data Service', function () {
       const mockAgencyId = 'PNT'
 
       beforeEach(async function () {
-        locations = await referenceDataService.getLocationByNomisAgencyId(
-          mockAgencyId
-        )
+        locations =
+          await referenceDataService.getLocationByNomisAgencyId(mockAgencyId)
       })
 
       it('should call et methods', function () {
@@ -514,15 +512,15 @@ describe('Reference Data Service', function () {
             .onThirdCall()
             .resolves({ key: 'AFR', title: 'Aylesbury Court' })
 
-          locations = await referenceDataService.getLocationsByNomisAgencyId(
-            mockAgencyIds
-          )
+          locations =
+            await referenceDataService.getLocationsByNomisAgencyId(
+              mockAgencyIds
+            )
         })
 
         it('should attempt to map each location', function () {
-          expect(
-            referenceDataService.mapLocationIdsToLocations
-          ).to.be.calledOnce
+          expect(referenceDataService.mapLocationIdsToLocations).to.be
+            .calledOnce
           expect(
             referenceDataService.getLocationByNomisAgencyId.callCount
           ).to.equal(mockAgencyIds.length)
@@ -543,15 +541,15 @@ describe('Reference Data Service', function () {
             .stub(referenceDataService, 'getLocationByNomisAgencyId')
             .rejects()
 
-          locations = await referenceDataService.getLocationsByNomisAgencyId(
-            mockAgencyIds
-          )
+          locations =
+            await referenceDataService.getLocationsByNomisAgencyId(
+              mockAgencyIds
+            )
         })
 
         it('should attempt to map each location', function () {
-          expect(
-            referenceDataService.mapLocationIdsToLocations
-          ).to.be.calledOnce
+          expect(referenceDataService.mapLocationIdsToLocations).to.be
+            .calledOnce
           expect(
             referenceDataService.getLocationByNomisAgencyId.callCount
           ).to.equal(mockAgencyIds.length)

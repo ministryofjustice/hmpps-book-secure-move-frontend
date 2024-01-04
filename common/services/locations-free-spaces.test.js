@@ -288,9 +288,8 @@ describe('Locations Free Spaces Service', function () {
       })
 
       it('should call getLocationsFreeSpaces methods', function () {
-        expect(
-          locationsFreeSpacesService.getLocationsFreeSpaces
-        ).to.be.calledOnce
+        expect(locationsFreeSpacesService.getLocationsFreeSpaces).to.be
+          .calledOnce
       })
 
       it('should return first result', function () {
@@ -338,9 +337,8 @@ describe('Locations Free Spaces Service', function () {
       })
 
       it('should call getLocationsFreeSpaces methods', function () {
-        expect(
-          locationsFreeSpacesService.getLocationsFreeSpaces
-        ).to.be.calledOnce
+        expect(locationsFreeSpacesService.getLocationsFreeSpaces).to.be
+          .calledOnce
       })
 
       it('should return first result', function () {
