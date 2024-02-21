@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block pageTitle %}
-  {{ t("moves::steps.lodge.saved.page_title") }}
+  {{ t("moves::steps.lodging.new.saved.page_title") }}
 {% endblock %}
 
 {% block content %}
@@ -14,12 +14,12 @@
 
       {{ govukPanel({
         classes: "govuk-!-margin-bottom-7",
-        titleText: t("moves::steps.lodge.saved.heading"),
-        html: t("moves::steps.lodge.saved.content", { moveReference: moveReference })
+        titleText: t("moves::steps.lodging.new.saved.heading"),
+        html: t("moves::steps.lodging.new.saved.content", { moveReference: moveReference })
       }) }}
 
       <p>
-        {{ t("moves::steps.lodge.saved.detail", {
+        {{ t("moves::steps.lodging.new.saved.detail", {
           location: location,
           href: "/move/" + move.id,
           name: name

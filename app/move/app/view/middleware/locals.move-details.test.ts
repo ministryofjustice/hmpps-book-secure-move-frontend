@@ -5,8 +5,10 @@ import sinon from 'sinon'
 import presenters from '../../../../../common/presenters'
 import { BasmRequest } from '../../../../../common/types/basm_request'
 import I18n from '../../../../../config/i18n'
+import { BasmRequestFactory } from '../../../../../factories/basm_request'
 import { GenericEventFactory } from '../../../../../factories/generic_event'
 import { JourneyFactory } from '../../../../../factories/journey'
+import { MoveFactory } from '../../../../../factories/move'
 
 import middleware from './locals.move-details'
 
@@ -16,9 +18,9 @@ describe('Move view app', function () {
       let req: BasmRequest, res: any, nextSpy: any
 
       beforeEach(function () {
-        req = {
+        req = BasmRequestFactory.build({
           canAccess: sinon.stub(),
-          move: {
+          move: MoveFactory.build({
             date: '2023-03-27',
             id: '12345',
             is_lockout: false,
@@ -47,11 +49,12 @@ describe('Move view app', function () {
             ],
             _canEdit: true,
             _isPerLocked: false,
-          },
+          }),
           journeys: [],
           t: I18n.t,
           form: { options: { fields: {}, next: '' }, values: {} },
-        }
+          params: {},
+        })
         res = {
           locals: {},
         }

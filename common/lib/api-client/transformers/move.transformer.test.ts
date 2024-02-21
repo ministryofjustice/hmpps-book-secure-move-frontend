@@ -2,39 +2,11 @@ import { expect } from 'chai'
 import sinon from 'sinon'
 
 import i18n from '../../../../config/i18n'
-import { GenericEvent } from '../../../types/generic_event'
+import { GenericEventFactory } from '../../../../factories/generic_event'
+import { MoveFactory } from '../../../../factories/move'
 import { Move } from '../../../types/move'
 
 import { moveTransformer } from './move.transformer'
-
-const baseMove: Move = {
-  date: '',
-  id: '',
-  profile: {
-    id: '',
-    person: {},
-  },
-  from_location: {
-    id: '',
-    key: '',
-    title: '',
-    type: 'locations',
-    location_type: 'court',
-  },
-  status: 'requested',
-  move_type: 'court_appearance',
-}
-
-const baseEvent: GenericEvent = {
-  id: '',
-  event_type: '',
-  classification: '',
-  occurred_at: '',
-  recorded_at: '',
-  notes: null,
-  created_by: null,
-  details: {},
-}
 
 describe('API Client', function () {
   describe('Transformers', function () {
@@ -43,132 +15,114 @@ describe('API Client', function () {
 
       describe('when move has timeline events', function () {
         beforeEach(function () {
-          move = {
-            ...baseMove,
+          move = MoveFactory.build({
             timeline_events: [
-              {
-                ...baseEvent,
+              GenericEventFactory.build({
                 id: 'none',
                 event_type: 'None',
-              },
-              {
-                ...baseEvent,
+              }),
+              GenericEventFactory.build({
                 id: 'default',
                 classification: 'default',
                 event_type: 'Default',
-              },
-              {
-                ...baseEvent,
+              }),
+              GenericEventFactory.build({
                 id: 'medical',
                 classification: 'medical',
                 event_type: 'Medical',
-              },
-              {
-                ...baseEvent,
+              }),
+              GenericEventFactory.build({
                 id: 'incident',
                 classification: 'incident',
                 event_type: 'Incident',
-              },
+              }),
             ],
-          }
+          })
           moveTransformer(move)
         })
 
         it('should copy and filter those events by classification to important events', function () {
           expect(move.important_events).to.deep.equal([
-            {
-              ...baseEvent,
+            GenericEventFactory.build({
               id: 'medical',
               classification: 'medical',
               event_type: 'Medical',
-            },
-            {
-              ...baseEvent,
+            }),
+            GenericEventFactory.build({
               id: 'incident',
               classification: 'incident',
               event_type: 'Incident',
-            },
+            }),
           ])
         })
       })
 
       describe('when move has has both important and timeline events', function () {
         beforeEach(function () {
-          move = {
-            ...baseMove,
+          move = MoveFactory.build({
             timeline_events: [
-              {
-                ...baseEvent,
+              GenericEventFactory.build({
                 id: 'medical',
                 classification: 'medical',
-              },
+              }),
             ],
             important_events: [
-              {
-                ...baseEvent,
+              GenericEventFactory.build({
                 id: 'foo',
                 classification: 'foo',
-              },
+              }),
             ],
-          }
+          })
           moveTransformer(move)
         })
 
         it('should leave original important events untouched', function () {
           expect(move.important_events).to.deep.equal([
-            {
-              ...baseEvent,
+            GenericEventFactory.build({
               id: 'foo',
               classification: 'foo',
-            },
+            }),
           ])
         })
       })
 
       describe('when move has important events', function () {
         beforeEach(function () {
-          move = {
-            ...baseMove,
+          move = MoveFactory.build({
             important_events: [
-              {
-                ...baseEvent,
+              GenericEventFactory.build({
                 id: 'foo1',
                 event_type: 'foo',
-              },
-              {
-                ...baseEvent,
+              }),
+              GenericEventFactory.build({
                 id: 'foo2',
                 event_type: 'foo',
-              },
-              {
-                ...baseEvent,
+              }),
+              GenericEventFactory.build({
                 id: 'bar',
                 event_type: 'bar',
-              },
+              }),
             ],
-          }
+          })
           moveTransformer(move)
         })
 
         it('should add a count to important events', function () {
           expect(move.important_events).to.deep.equal([
-            {
-              ...baseEvent,
+            GenericEventFactory.build({
               id: 'foo1',
               event_type: 'foo',
               _index: 1,
-            },
-            {
-              ...baseEvent,
+            }),
+            GenericEventFactory.build({
               id: 'foo2',
               event_type: 'foo',
               _index: 2,
-            },
-            {
-              ...baseEvent,
+            }),
+            GenericEventFactory.build({
               id: 'bar',
               event_type: 'bar',
-            },
+            }),
           ])
         })
       })
@@ -176,12 +130,11 @@ describe('API Client', function () {
       describe('Vehicle registration', function () {
         context('with registration', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               meta: {
                 vehicle_registration: 'FM12 AOS',
               },
-            }
+            })
             moveTransformer(move)
           })
 
@@ -192,7 +145,7 @@ describe('API Client', function () {
 
         context('without registration', function () {
           beforeEach(function () {
-            move = { ...baseMove }
+            move = MoveFactory.build()
             moveTransformer(move)
           })
 
@@ -203,12 +156,11 @@ describe('API Client', function () {
 
         context('with null registration', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               meta: {
                 vehicle_registration: null,
               },
-            }
+            })
             moveTransformer(move)
           })
 
@@ -221,13 +173,12 @@ describe('API Client', function () {
       describe('Expected times', function () {
         context('with times', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               meta: {
                 expected_collection_time: '2020-10-10T12:18:00Z',
                 expected_time_of_arrival: '2020-10-10T14:18:00Z',
               },
-            }
+            })
             moveTransformer(move)
           })
 
@@ -241,7 +192,7 @@ describe('API Client', function () {
 
         context('without times', function () {
           beforeEach(function () {
-            move = { ...baseMove }
+            move = MoveFactory.build()
             moveTransformer(move)
           })
 
@@ -253,13 +204,12 @@ describe('API Client', function () {
 
         context('with null times', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               meta: {
                 expected_collection_time: null,
                 expected_time_of_arrival: null,
               },
-            }
+            })
             moveTransformer(move)
           })
 
@@ -277,11 +227,10 @@ describe('API Client', function () {
 
         context('with prison recall', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               id: '1',
               move_type: 'prison_recall',
-            }
+            })
             moveTransformer(move)
           })
 
@@ -298,11 +247,10 @@ describe('API Client', function () {
 
         context('with video remand hearing', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               id: '1',
               move_type: 'video_remand',
-            }
+            })
             moveTransformer(move)
           })
 
@@ -319,12 +267,11 @@ describe('API Client', function () {
 
         context('with unknown location type', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               id: '1',
               // @ts-ignore
               move_type: 'unknown_type',
-            }
+            })
             moveTransformer(move)
           })
 
@@ -341,11 +288,10 @@ describe('API Client', function () {
 
         context('without to location', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               id: '1',
               move_type: 'court_appearance',
-            }
+            })
             moveTransformer(move)
           })
 
@@ -362,8 +308,7 @@ describe('API Client', function () {
 
         context('with existing to location', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               id: '1',
               move_type: 'court_appearance',
               to_location: {
@@ -373,7 +318,7 @@ describe('API Client', function () {
                 title: 'Barrow in Furness County Court',
                 location_type: 'court',
               },
-            }
+            })
             moveTransformer(move)
           })
 
@@ -421,10 +366,9 @@ describe('API Client', function () {
         tests.forEach(test => {
           context(`with ${test.status} move`, function () {
             beforeEach(function () {
-              move = {
-                ...baseMove,
+              move = MoveFactory.build({
                 status: test.status as any,
-              }
+              })
               moveTransformer(move)
             })
 
@@ -442,23 +386,20 @@ describe('API Client', function () {
       describe('MoveLodgingStart and MoveLodgingEnd', function () {
         context('with just MoveLodgingEnd events', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               timeline_events: [
-                {
-                  ...baseEvent,
+                GenericEventFactory.build({
                   id: 'end1',
                   event_type: 'MoveLodgingEnd',
                   details: {},
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'end2',
                   event_type: 'MoveLodgingEnd',
                   details: {},
-                },
+                }),
               ],
-            }
+            })
             moveTransformer(move)
           })
 
@@ -472,87 +413,75 @@ describe('API Client', function () {
 
         context('with MoveLodgingStart and MoveLodgingEnd events', function () {
           beforeEach(function () {
-            move = {
-              ...baseMove,
+            move = MoveFactory.build({
               timeline_events: [
-                {
-                  ...baseEvent,
+                GenericEventFactory.build({
                   id: 'start1',
                   event_type: 'MoveLodgingStart',
                   details: {
                     reason: 'lockout',
                   },
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'end1',
                   event_type: 'MoveLodgingEnd',
                   details: {},
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'start2',
                   event_type: 'MoveLodgingStart',
                   details: {
                     reason: 'lockout',
                   },
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'end2',
                   event_type: 'MoveLodgingEnd',
                   details: {},
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'end2a',
                   event_type: 'MoveLodgingEnd',
                   details: {},
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'start3',
                   event_type: 'MoveLodgingStart',
                   details: {
                     reason: 'overnight_lodging',
                   },
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'end3',
                   event_type: 'MoveLodgingEnd',
                   details: {},
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'start4',
                   event_type: 'MoveLodgingStart',
                   details: {
                     reason: 'operation_tornado',
                   },
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'end4',
                   event_type: 'MoveLodgingEnd',
                   details: {},
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'start5',
                   event_type: 'MoveLodgingStart',
                   details: {
                     reason: 'operation_hmcts',
                   },
-                },
-                {
-                  ...baseEvent,
+                }),
+                GenericEventFactory.build({
                   id: 'end5',
                   event_type: 'MoveLodgingEnd',
                   details: {},
-                },
+                }),
               ],
-            }
+            })
             moveTransformer(move)
           })
 

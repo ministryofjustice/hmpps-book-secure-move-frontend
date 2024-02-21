@@ -1,5 +1,5 @@
 // @ts-ignore // TODO: convert to ts
-import UpdateBaseController from '../../edit/controllers/base'
+import UpdateBaseController from '../../../edit/controllers/base'
 
 export class BaseController extends UpdateBaseController {
   middlewareSetup() {
@@ -25,11 +25,13 @@ export class BaseController extends UpdateBaseController {
     const nextStep = this.getNextStep(req, res)
     const steps = Object.keys(req.form.options.steps)
     const lastStep = steps[steps.length - 1]
-    const buttonText = nextStep.includes(lastStep)
-      ? 'actions::add_lodge'
-      : 'actions::continue'
 
-    req.form.options.buttonText = req.form.options.buttonText || buttonText
+    if (nextStep.includes(lastStep)) {
+      req.form.options.buttonText = 'actions::confirm_cancel_lodge'
+      req.form.options.buttonClasses = 'govuk-button--warning'
+    } else {
+      req.form.options.buttonText = 'actions::continue'
+    }
 
     next()
   }

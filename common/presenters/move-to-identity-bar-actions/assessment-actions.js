@@ -41,7 +41,7 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
           context: hasLodges ? 'with_items' : '',
           name: 'overnight lodge',
         }),
-        href: `/move/${move.id}/lodge`,
+        href: `/move/${move.id}/lodging/new`,
         classes: 'govuk-button--primary',
         preventDoubleClick: true,
       }),

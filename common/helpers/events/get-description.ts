@@ -24,7 +24,7 @@ export async function getDescription(token: string, event: GenericEvent) {
     await populatePerCompletion(token, details)
   } else if (eventType === 'PerUpdated') {
     await populatePerUpdated(token, details)
-  } else if (eventType === 'MoveOvernightLodge') {
+  } else if (eventType === 'LodgingCreate' || eventType === 'LodgingCancel') {
     const startDate = new Date(details.start_date || '')
     const endDate = new Date(details.end_date || '')
     startDate.setDate(startDate.getDate() + 1)

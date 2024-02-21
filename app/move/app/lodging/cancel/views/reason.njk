@@ -1,0 +1,12 @@
+{% extends "form-wizard.njk" %}
+
+{% block header %}
+  {{ super() }}
+
+  <div class="govuk-width-container">
+    {{ govukBackLink({
+      text: t("actions::back_to_move"),
+      href: "/move/" + moveId
+    }) }}
+  </div>
+{% endblock %}

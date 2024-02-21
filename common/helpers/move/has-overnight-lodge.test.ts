@@ -2,30 +2,12 @@ import { equal } from 'assert'
 
 import { expect } from 'chai'
 
+import { MoveFactory } from '../../../factories/move'
 import { GenericEvent } from '../../types/generic_event'
-import { Move } from '../../types/move'
 
 import { hasOvernightLodge } from './has-overnight-lodge'
 
-const baseMove: Move = {
-  date: '',
-  id: '',
-  profile: {
-    id: '',
-    person: {},
-  },
-  from_location: {
-    id: '',
-    key: '',
-    title: '',
-    type: 'locations',
-    location_type: 'court',
-  },
-  status: 'requested',
-  move_type: 'court_appearance',
-  important_events: undefined,
-  timeline_events: undefined,
-}
+const baseMove = MoveFactory.build()
 
 const mlsEvent: GenericEvent = {
   id: '',

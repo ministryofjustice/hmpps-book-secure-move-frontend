@@ -1,4 +1,4 @@
-import { number, positive } from '../../../validators'
+import { number, positive } from '../../../../validators'
 
 export const lodgeLengthCustom = {
   validate: ['required', number, positive],

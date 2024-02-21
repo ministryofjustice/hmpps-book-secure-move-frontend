@@ -5,10 +5,10 @@ import { Allocation } from '../../../../common/types/allocation'
 import { BasmResponse } from '../../../../common/types/basm_response'
 import { Location } from '../../../../common/types/location'
 import { Move } from '../../../../common/types/move'
+import { AllocationRequestFactory } from '../../../../factories/allocation_request'
+import { MoveFactory } from '../../../../factories/move'
 
-import AllocationDetailsController, {
-  AllocationRequest,
-} from './allocation-details'
+import AllocationDetailsController from './allocation-details'
 
 const controller = new AllocationDetailsController({ route: '/' })
 
@@ -30,22 +30,22 @@ const locations: Location[] = [
 ]
 
 const moves: Move[] = [
-  {
+  MoveFactory.build({
     date: '',
     from_location: locations[0],
     id: '35957119-7e39-4c1f-9e0b-62f465ad007d',
     move_type: 'prison_transfer',
     profile: undefined,
     status: 'requested',
-  },
-  {
+  }),
+  MoveFactory.build({
     date: '',
     from_location: locations[0],
     id: 'ae8bbcdb-9b70-49f0-bce2-c6f512a3f202',
     move_type: 'prison_transfer',
     profile: undefined,
     status: 'requested',
-  },
+  }),
 ]
 
 const allocation: Allocation = {
@@ -62,29 +62,7 @@ const formOptions = {
   next: '/',
 }
 
-const req: AllocationRequest = {
-  allocation,
-  canAccess: _string => true,
-  flash: () => undefined,
-  form: {
-    options: formOptions,
-    values: {},
-  },
-  services: {
-    allocation: {
-      update: () => {},
-    },
-  },
-  session: {
-    save: () => undefined,
-  },
-  sessionModel: {
-    reset: () => undefined,
-    set: () => undefined,
-    toJSON: () => ({}),
-  },
-  t: ((_keys: string, _options: any) => 'test') as any,
-}
+const req = AllocationRequestFactory.build()
 
 const res: BasmResponse = {
   locals: {},
@@ -160,12 +138,18 @@ describe('#saveValues', function () {
   let sessionModel: any
   let next: any
   let flash: any
-  const mockData = { 'csrf-secret': '123', errors: null }
+  const mockData = {
+    'csrf-secret': '123',
+    errors: null,
+  }
 
   context('happy path', function () {
     beforeEach(async function () {
       allocationService = {
-        update: sinon.stub().resolves({ ...allocation, date: '2023-01-02' }),
+        update: sinon.stub().resolves({
+          ...allocation,
+          date: '2023-01-02',
+        }),
       }
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
@@ -175,8 +159,7 @@ describe('#saveValues', function () {
       flash = sinon.stub()
 
       await controller.saveValues(
-        {
-          ...req,
+        AllocationRequestFactory.build({
           flash,
           form: {
             options: formOptions,
@@ -188,7 +171,7 @@ describe('#saveValues', function () {
           services: {
             allocation: allocationService,
           },
-        },
+        }),
         res,
         next
       )
@@ -233,9 +216,10 @@ describe('#saveValues', function () {
 
     beforeEach(async function () {
       allocationService = {
-        update: sinon
-          .stub()
-          .resolves({ ...emptyAllocation, date: '2023-01-02' }),
+        update: sinon.stub().resolves({
+          ...emptyAllocation,
+          date: '2023-01-02',
+        }),
       }
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
@@ -245,8 +229,7 @@ describe('#saveValues', function () {
       flash = sinon.stub()
 
       await controller.saveValues(
-        {
-          ...req,
+        AllocationRequestFactory.build({
           allocation: emptyAllocation,
           flash,
           form: {
@@ -259,7 +242,7 @@ describe('#saveValues', function () {
           services: {
             allocation: allocationService,
           },
-        },
+        }),
         res,
         next
       )
@@ -285,8 +268,7 @@ describe('#saveValues', function () {
       next = sinon.stub()
 
       await controller.saveValues(
-        {
-          ...req,
+        AllocationRequestFactory.build({
           form: {
             options: formOptions,
             values: {
@@ -297,7 +279,7 @@ describe('#saveValues', function () {
           services: {
             allocation: allocationService,
           },
-        },
+        }),
         res,
         next
       )
