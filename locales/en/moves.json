@@ -86,6 +86,22 @@
           "date": "on <strong>{{startDate}}</strong>",
           "date_long": "between <strong>{{startDate}}</strong> and <strong>{{endDate}}</strong>"
         }
+      },
+      "edit": {
+        "location": {
+          "heading": "Where would you like to lodge this person?"
+        },
+        "length": {
+          "heading": "How many nights will they stay at the lodge location?"
+        },
+        "saved": {
+          "page_title": "Overnight lodge updated",
+          "heading": "Overnight lodge updated",
+          "content": "Move reference<br><strong>{{moveReference}}</strong>",
+          "detail": "The move for <strong><a href=\"{{href}}\">{{name}}</a></strong> now includes an overnight lodge at <strong>{{location}}</strong>",
+          "date": "on <strong>{{startDate}}</strong>",
+          "date_long": "between <strong>{{startDate}}</strong> and <strong>{{endDate}}</strong>"
+        }
       }
     }
   },

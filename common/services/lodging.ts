@@ -199,10 +199,9 @@ export class LodgingService extends BaseService {
 
     return this.apiClient
       .one('move', moveId)
-      .update(
-        'lodging',
+      .one('lodging', id)
+      .patch(
         this.format({
-          id,
           location_id: locationId,
           start_date: startDate,
           end_date: endDate,

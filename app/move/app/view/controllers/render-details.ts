@@ -12,6 +12,7 @@ import { getUpdateUrls } from '../../../../../common/helpers/move'
 // @ts-ignore
 // eslint-disable-next-line import/no-duplicates
 import { mapUpdateLink } from '../../../../../common/helpers/move'
+import { canEditLodging } from '../../../../../common/helpers/move/lodging/can-edit-lodging'
 // @ts-ignore
 import presenters from '../../../../../common/presenters'
 import { AssessmentCategory } from '../../../../../common/types/assessment-category'
@@ -91,13 +92,19 @@ export function renderDetails(req: BasmRequest, res: BasmResponse) {
   }
 
   const locals = {
+    moveId: move.id,
     allocation: move.allocation,
     isPerLocked: move._isPerLocked,
     canEditPer: move._canEditPer,
     isAllocationMove: !isNil(move.allocation),
-    lodgings: move.lodgings?.sort((a, b) =>
-      a.start_date.localeCompare(b.start_date)
-    ),
+    lodgings: move.lodgings
+      ?.sort((a, b) => a.start_date.localeCompare(b.start_date))
+      .map(l => {
+        return {
+          ...l,
+          canEdit: canEditLodging(l, canAccess),
+        }
+      }),
     moveSummary,
     sections: {
       uneditable: uneditableSections
