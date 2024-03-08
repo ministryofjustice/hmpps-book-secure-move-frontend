@@ -424,7 +424,7 @@ export function nonOxfordJoin(arr: string[] = [], lastDelimiter = 'and') {
 }
 
 export function filesize(str: string) {
-  return filesizejs(str, {
+  return filesizejs(Number(str), {
     round: 0,
   })
 }
