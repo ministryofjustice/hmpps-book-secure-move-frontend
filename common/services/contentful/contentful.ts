@@ -64,6 +64,11 @@ export interface ContentfulFields {
   bannerExpiry: string
 }
 
+export interface ContentfulEntry {
+  fields: ContentfulFields
+  contentTypeId: string
+}
+
 const convertToHTMLFormat = (body: any) => documentToHtmlString(body, options)
 const formatDate = (date: any) => format(date, DATE_FORMATS.WITH_MONTH)
 
@@ -121,7 +126,7 @@ export class ContentfulContent {
 // Don't use this class, use a class that extends it. The constructor should be
 //   protected, but if we set it to protected then we can't test it.
 export class ContentfulService {
-  protected client: contentful.ContentfulClientApi
+  protected client: contentful.ContentfulClientApi<undefined>
   protected contentType: string = ''
 
   protected constructor() {
@@ -145,14 +150,14 @@ export class ContentfulService {
   async fetchEntries() {
     const entries = (await this.client.getEntries({
       content_type: this.contentType,
-    })) as contentful.EntryCollection<ContentfulFields>
+    })) as contentful.EntryCollection<ContentfulEntry>
 
-    if (!entries.items?.length) {
+    if (!entries.includes?.Entry?.length) {
       return []
     }
 
-    return entries.items
-      .map(e => this.createContent(e.fields))
+    return entries.includes?.Entry
+      .map(e => this.createContent(e))
       .sort((a, b) => {
         return b.date.getTime() - a.date.getTime()
       })
