@@ -62,7 +62,7 @@ const formOptions = {
   next: '/',
 }
 
-const req = AllocationRequestFactory.build()
+const req = AllocationRequestFactory.build({ allocation })
 
 const res: BasmResponse = {
   locals: {},
@@ -160,6 +160,7 @@ describe('#saveValues', function () {
 
       await controller.saveValues(
         AllocationRequestFactory.build({
+          allocation,
           flash,
           form: {
             options: formOptions,
@@ -183,7 +184,7 @@ describe('#saveValues', function () {
 
     it('ignores the errors and csrf from session model', function () {
       expect(allocationService.update).to.have.been.calledWithExactly({
-        id: 'f0a99b8e-18ab-454f-83ce-600237c46d7e',
+        id: allocation.id,
         date: '2023-01-02',
       })
     })
@@ -201,8 +202,8 @@ describe('#saveValues', function () {
 
     it('sets the flash', function () {
       expect(flash).to.have.been.calledWithExactly('success', {
-        title: 'test',
-        content: 'test',
+        title: 'Allocation updated',
+        content: 'This move has been updated with the supplier',
       })
     })
   })
@@ -250,8 +251,8 @@ describe('#saveValues', function () {
 
     it('sets the flash without error', function () {
       expect(flash).to.have.been.calledWithExactly('success', {
-        title: 'test',
-        content: 'test',
+        title: 'Allocation updated',
+        content: 'This move has been updated with the supplier',
       })
     })
   })

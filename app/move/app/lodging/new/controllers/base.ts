@@ -6,6 +6,10 @@ import * as filters from '../../../../../../config/nunjucks/filters'
 import UpdateBaseController from '../../../edit/controllers/base'
 
 export class BaseController extends UpdateBaseController {
+  constructor(options = {}) {
+    super(options)
+  }
+
   middlewareSetup() {
     super.middlewareSetup()
   }

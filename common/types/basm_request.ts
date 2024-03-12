@@ -15,6 +15,8 @@ export interface BasmRequest extends Express.Request {
     options: {
       fields: { [key: string]: any }
       next: string
+      steps?: any
+      [x: string]: unknown
     }
     values: { [key: string]: any }
   }

@@ -22,7 +22,7 @@ export const defaultParams = {
   sessionModel: {
     reset: () => {},
     set: () => {},
-    toJSON: () => {},
+    toJSON: () => ({}),
   },
   services: {
     allocation: {
@@ -34,5 +34,10 @@ export const defaultParams = {
 }
 
 export const BasmRequestFactory = Factory.define<BasmRequest>(
-  () => defaultParams
+  () => ({
+    ...defaultParams,
+    getMove: function() {
+      return this.move
+    },
+  })
 )

@@ -7,12 +7,16 @@ import {
   formatDate,
   formatDateWithDay,
 } from '../../../../../../config/nunjucks/filters'
+import { BasmError } from '../../../../../../common/types/basm_error'
 
-export async function SavedController(req: BasmRequest, res: any) {
+export async function SavedController(req: BasmRequest, res: any, next: any) {
   const lodging = req.move.lodgings!.find(l => l.id === req.params.lodgingId)
 
   if (!lodging) {
-    return res.status(404).send('lodging not found')
+    const error = new Error('Lodging not found') as BasmError
+    error.statusCode = 404
+
+    return next(error)
   }
 
   const lodgeLocation = await findById(req, lodging.location.id, true)

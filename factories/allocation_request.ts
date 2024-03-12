@@ -9,7 +9,7 @@ export const AllocationRequestFactory = Factory.define<AllocationRequest>(
   () => ({
     ...defaultParams,
     allocation: AllocationFactory.build(),
-    flash: (yeah: any, nah: any) => {},
+    flash: (key: any, value: any) => {},
     form: {
       options: {
         fields: {},

@@ -33,6 +33,9 @@ describe('Development tools controllers', function () {
     }
     reqMock = {
       params: {},
+      query: {
+        r: 'http://example.com/some-path',
+      },
       session: {},
     }
   })
@@ -50,6 +53,7 @@ describe('Development tools controllers', function () {
     it('should set locals', function () {
       expect(resMock.render.args[0][1]).to.deep.equal({
         activeRoles: reqMock.session.activeRoles,
+        redirect: 'http://example.com/some-path',
         roles: permissionsStub.permissionsByRole,
       })
     })

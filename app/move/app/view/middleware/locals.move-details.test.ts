@@ -73,24 +73,39 @@ describe('Move view app', function () {
       })
 
       it('should set move details on locals', function () {
+        console.log(res.locals.moveDetails)
         expect(res.locals).to.be.deep.equal({
           isPerLocked: false,
           moveLodgingStarted: false,
           moveLodgingEnded: true,
           moveDetails: {
+            from_location: {
+              id: 'id',
+              key: 'key',
+              location_type: 'prison',
+              title: 'Title',
+              type: 'locations'
+            },
             id: '12345',
-            is_lockout: false,
-            is_lodging: false,
+            move_type: 'prison_transfer',
             profile: { id: 'profile', person: {} },
             status: 'in_transit',
-            from_location: {
-              key: 'key',
-              title: 'Title',
-              id: 'id',
-              type: 'locations',
+            date: '2023-03-27',
+            reference: 'ABC1234D',
+            to_location: {
+              id: 'unknown',
+              key: 'unknown__prison_transfer',
+              title: 'Unknown',
               location_type: 'prison',
+              type: 'locations'
             },
-            move_type: 'prison_transfer',
+            _vehicleRegistration: undefined,
+            _expectedCollectionTime: undefined,
+            _expectedArrivalTime: undefined,
+            _hasLeftCustody: true,
+            _hasArrived: false,
+            is_lodging: false,
+            is_lockout: false,
             important_events: [
               {
                 id: 'lodging-end',
@@ -100,12 +115,11 @@ describe('Move view app', function () {
                 recorded_at: '2020-10-10T14:20:00Z',
                 notes: null,
                 created_by: null,
-                details: {},
-              },
+                details: {}
+              }
             ],
             _canEdit: true,
-            _isPerLocked: false,
-            date: '2023-03-27',
+            _isPerLocked: false
           },
           moveId: '12345',
           moveIsEditable: true,
