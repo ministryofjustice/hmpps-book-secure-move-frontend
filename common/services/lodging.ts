@@ -1,6 +1,6 @@
-const { mapValues, omitBy, isUndefined } = require('lodash')
+import { mapValues, omitBy, isUndefined } from 'lodash'
 
-const { BaseService } = require('./base')
+import { BaseService } from './base'
 
 const noMoveIdMessage = 'No move ID supplied'
 const noLodgingIdMessage = 'No lodging ID supplied'
@@ -90,6 +90,10 @@ interface CancelAllParams {
 }
 
 export class LodgingService extends BaseService {
+  constructor(req = {}) {
+    super(req)
+  }
+
   format(data: any) {
     const relationships = ['location']
 

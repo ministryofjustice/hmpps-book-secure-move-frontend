@@ -84,6 +84,38 @@ describe('Move view app', function () {
           })
         })
       })
+
+      context('when lodging can be cancelled', function () {
+        beforeEach(function () {
+          req.canAccess.withArgs('move:lodging:cancel').returns(true)
+
+          middleware(req, res, nextSpy)
+        })
+
+        it('should add cancel lodging action to locals', function () {
+          expect(res.locals.actions).to.deep.include({
+            text: 'actions::cancel_lodge',
+            classes: 'app-link--destructive',
+            url: '/move/12345/lodging/cancel',
+          })
+        })
+      })
+
+      context('when lodging cannot be cancelled', function () {
+        beforeEach(function () {
+          req.canAccess.withArgs('move:lodging:cancel').returns(false)
+
+          middleware(req, res, nextSpy)
+        })
+
+        it('should not add cancel lodging action', function () {
+          expect(res.locals.actions).not.to.deep.include({
+            text: 'actions::cancel_lodge',
+            classes: 'app-link--destructive',
+            url: '/move/12345/lodging/cancel',
+          })
+        })
+      })
     })
   })
 })
