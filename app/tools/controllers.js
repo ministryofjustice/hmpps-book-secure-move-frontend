@@ -46,7 +46,11 @@ function updatePermissions(req, res) {
   req.session.user = req.session.user || {}
   req.session.user.permissions = permissions
 
-  res.redirect(req.body.redirect || '/')
+  const redirectUrl = req.body.redirect?.startsWith('/')
+    ? req.body.redirect
+    : '/'
+
+  res.redirect(redirectUrl)
 }
 
 async function updateMoveStatus(req, res, next) {
