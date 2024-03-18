@@ -42,8 +42,8 @@ const estate = {
       conditional: 'prisoner_young_offender_male',
     },
     {
-      value: 'other',
-      text: 'fields::estate.items.other',
+      value: 'other_estate',
+      text: 'fields::estate.items.other_estate',
       conditional: 'estate_comment',
     },
   ],

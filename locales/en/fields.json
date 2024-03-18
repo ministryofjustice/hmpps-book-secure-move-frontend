@@ -483,7 +483,7 @@
       "juvenile_male": "Juvenile male (ages under 18)",
       "young_offender_female": "Youth offender female (ages 18 to 21)",
       "young_offender_male": "Youth offender male (ages 18 to 21)",
-      "other": "Other"
+      "other_estate": "Other"
     }
   },
   "estate_other": {

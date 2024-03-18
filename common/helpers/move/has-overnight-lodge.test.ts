@@ -2,6 +2,7 @@ import { equal } from 'assert'
 
 import { expect } from 'chai'
 
+import { LodgingFactory } from '../../../factories/lodging'
 import { MoveFactory } from '../../../factories/move'
 import { GenericEvent } from '../../types/generic_event'
 
@@ -16,13 +17,6 @@ const mlsEvent: GenericEvent = {
   event_type: 'MoveLodgingStart',
 }
 
-const molEvent: GenericEvent = {
-  id: '',
-  occurred_at: '',
-  details: {},
-  event_type: 'MoveOvernightLodge',
-}
-
 describe('Move', function () {
   context('with no events', function () {
     it('should not be marked as a lodging', function () {
@@ -35,9 +29,9 @@ describe('Move', function () {
       expect(equal(hasOvernightLodge(baseMove), true))
     })
   })
-  context('with a MoveOvernightLodge event', function () {
+  context('when the move has Lodgings', function () {
     it('should be marked as a lodging', function () {
-      baseMove.timeline_events = [molEvent]
+      baseMove.lodgings = [LodgingFactory.build()]
       expect(equal(hasOvernightLodge(baseMove), true))
     })
   })

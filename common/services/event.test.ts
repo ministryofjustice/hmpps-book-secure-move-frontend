@@ -205,7 +205,7 @@ describe('Event Service', function () {
     }
 
     const mockData = {
-      type: 'MoveOvernightLodge',
+      type: 'MoveLodgingStart',
       eventableType: 'moves',
       eventableId: move.id,
       details: {
@@ -232,7 +232,7 @@ describe('Event Service', function () {
             start_date: '2022-02-02',
             end_date: '2022-02-05',
           },
-          event_type: 'MoveOvernightLodge',
+          event_type: 'MoveLodgingStart',
         },
         relationships: {
           eventable: {
@@ -251,7 +251,7 @@ describe('Event Service', function () {
       },
     }
 
-    context('with a MoveOvernightLodge event', function () {
+    context('with a MoveLodgingStart event', function () {
       beforeEach(async function () {
         await eventService.postEvent({}, mockData)
       })
