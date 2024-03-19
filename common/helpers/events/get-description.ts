@@ -33,6 +33,25 @@ export async function getDescription(token: string, event: GenericEvent) {
     if (formatDate(startDate, dateFormat) !== formatDate(endDate, dateFormat)) {
       details.context = 'long'
     }
+  } else if (eventType === 'LodgingUpdate') {
+    const changedFieds = []
+
+    if (
+      details.old_start_date &&
+      details.start_date !== details.old_start_date
+    ) {
+      changedFieds.push('start_date')
+    }
+
+    if (details.old_end_date && details.end_date !== details.old_end_date) {
+      changedFieds.push('end_date')
+    }
+
+    if (details.old_location && details.location !== details.old_location) {
+      changedFieds.push('location')
+    }
+
+    details.context = changedFieds.join('_and_')
   } else if (supplier === null) {
     details.context = 'without_supplier'
   }

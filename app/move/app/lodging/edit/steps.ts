@@ -1,6 +1,19 @@
-import { SaveController, SetLengthController } from './controllers'
+import {
+  SaveController,
+  SetLengthController,
+  SetLocationController,
+} from './controllers'
 
 export default {
+  '/location': {
+    controller: SetLocationController,
+    entryPoint: true,
+    reset: true,
+    resetJourney: true,
+    pageTitle: 'moves::steps.lodging.edit.location.heading',
+    fields: ['to_location_lodge'],
+    next: 'save',
+  },
   '/length': {
     controller: SetLengthController,
     entryPoint: true,

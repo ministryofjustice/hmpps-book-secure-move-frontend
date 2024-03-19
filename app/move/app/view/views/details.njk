@@ -80,7 +80,8 @@
                   text: "Location"
                  },
                  value: {
-                  text: lodging.location.title
+                  html: lodging.location.title
+                    + (" <a href=\"/move/" + moveId + "/lodging/" + lodging.id + "/edit/location\">change</a>" if lodging.canEdit else "")
                  }
                },
                {

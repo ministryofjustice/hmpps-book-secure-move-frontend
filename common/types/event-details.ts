@@ -1,4 +1,5 @@
 import { Journey } from './journey'
+import { Location } from './location'
 import { Move } from './move'
 import { Person } from './person'
 import { PersonEscortRecord } from './person-escort-record'
@@ -66,5 +67,9 @@ export interface EventDetails {
   healthUsers?: string
   propertyUsers?: string
   start_date?: string
+  old_start_date?: string
   end_date?: string
+  old_end_date?: string
+  location?: Location
+  old_location?: Location
 }

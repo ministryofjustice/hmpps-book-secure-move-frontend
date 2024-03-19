@@ -4,4 +4,10 @@ import { SavedController } from './saved'
 import { SetLengthController } from './set-length'
 import { SetLocationController } from './set-location'
 
-export { BaseController, SaveController, SavedController, SetLengthController }
+export {
+  BaseController,
+  SaveController,
+  SavedController,
+  SetLengthController,
+  SetLocationController,
+}

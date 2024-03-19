@@ -1,18 +1,33 @@
-import UpdateBaseController from './base'
 import { BasmRequest } from '../../../../common/types/basm_request'
 import { BasmResponse } from '../../../../common/types/basm_response'
 import { Move } from '../../../../common/types/move'
 
-const filters = require('../../../../config/nunjucks/filters')
+import UpdateBaseController from './base'
 
 const presenters = require('../../../../common/presenters')
+const filters = require('../../../../config/nunjucks/filters')
 
 type FormValues = { date?: string }
-type AllocationRequest = Omit<BasmRequest, 'journeys' | 'move'> & Required<Pick<BasmRequest, 'allocation' | 'flash' | 'form' | 'services' | 'session' | 'sessionModel' | 't'>>
+type AllocationRequest = Omit<BasmRequest, 'journeys' | 'move'> &
+  Required<
+    Pick<
+      BasmRequest,
+      | 'allocation'
+      | 'flash'
+      | 'form'
+      | 'services'
+      | 'session'
+      | 'sessionModel'
+      | 't'
+    >
+  >
 
 class AllocationDetailsController extends UpdateBaseController {
-
-  getValues(req: AllocationRequest, res: BasmResponse, callback: (err: any, values?: FormValues) => void) {
+  getValues(
+    req: AllocationRequest,
+    res: BasmResponse,
+    callback: (err: any, values?: FormValues) => void
+  ) {
     return super.getValues(req, res, (err: any, values: FormValues) => {
       if (err) {
         return callback(err)
@@ -39,20 +54,31 @@ class AllocationDetailsController extends UpdateBaseController {
     next()
   }
 
-  locals(req: AllocationRequest, _res: BasmResponse, callback: (err: any, locals?: object) => any) {
+  locals(
+    req: AllocationRequest,
+    _res: BasmResponse,
+    callback: (err: any, locals?: object) => any
+  ) {
     const locals = {
       cancelUrl: this.getReturnUrl(req),
-      summary: presenters.allocationToMetaListComponent(req.allocation)
+      summary: presenters.allocationToMetaListComponent(req.allocation),
     }
     callback(null, locals)
   }
 
-  async saveValues(req: AllocationRequest, _res: BasmResponse, next: (err?: any) => any) {
+  async saveValues(
+    req: AllocationRequest,
+    _res: BasmResponse,
+    next: (err?: any) => any
+  ) {
     try {
       const id = req.allocation.id
       const date = req.form.values.date
 
-      const allocation = await req.services.allocation.update({ id: id, date: date })
+      const allocation = await req.services.allocation.update({
+        id,
+        date,
+      })
 
       req.sessionModel.set('allocation', allocation)
       this.setFlash(req)

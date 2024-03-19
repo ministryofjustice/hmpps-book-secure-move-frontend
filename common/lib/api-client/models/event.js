@@ -10,6 +10,10 @@ module.exports = {
     eventable: {
       jsonApi: 'hasOne',
     },
+    old_location: {
+      jsonApi: 'hasOne',
+      type: 'locations',
+    },
     location: {
       jsonApi: 'hasOne',
       type: 'locations',

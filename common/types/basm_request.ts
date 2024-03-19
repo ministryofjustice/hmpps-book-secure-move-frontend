@@ -25,7 +25,7 @@ export interface BasmRequest extends Express.Request {
   journeyModel: SessionModel
   journeys: Journey[]
   move: Move
-  lodging: Lodging
+  lodging?: Lodging
   params: any
   session: {
     save: () => void

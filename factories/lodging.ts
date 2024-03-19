@@ -13,5 +13,6 @@ export const LodgingFactory = Factory.define<Lodging>(({ afterBuild }) => {
     location: LocationFactory.build(),
     start_date: '2022-01-01',
     end_date: '2022-01-02',
+    status: 'proposed',
   }
 })
