@@ -8,7 +8,7 @@ aliases:
   - &node_container
     executor:
       name: hmpps/node
-      tag: 20-browsers
+      tag: lts-browsers
   # Common steps
   - &install_dependencies
     run:
