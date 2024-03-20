@@ -247,9 +247,8 @@ describe('Development tools controllers', function () {
           })
 
           it('should call correct service', function () {
-            expect(
-              reqMock.services.move[testCase.method]
-            ).to.have.been.calledOnce
+            expect(reqMock.services.move[testCase.method]).to.have.been
+              .calledOnce
             expect(reqMock.services.move[testCase.method].args[0][0]).to.equal(
               '12345'
             )
