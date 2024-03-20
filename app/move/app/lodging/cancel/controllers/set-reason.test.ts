@@ -1,16 +1,18 @@
-import sinon from "sinon"
-import { BasmRequest } from "../../../../../../common/types/basm_request"
-import { BasmResponse } from "../../../../../../common/types/basm_response"
-import { BasmRequestFactory } from "../../../../../../factories/basm_request"
-import { expect } from "chai"
-import steps from '../steps'
-import { SetReasonController } from "./set-reason"
-import { BaseController } from "./base"
-import { itBehavesLikeALodgingCancelController } from "./base.test"
+import { expect } from 'chai'
+import sinon from 'sinon'
 
-describe('set reason controller', () => {
+import { BasmRequest } from '../../../../../../common/types/basm_request'
+import { BasmResponse } from '../../../../../../common/types/basm_response'
+import { BasmRequestFactory } from '../../../../../../factories/basm_request'
+import steps from '../steps'
+
+import { BaseController } from './base'
+import { itBehavesLikeALodgingCancelController } from './base.test'
+import { SetReasonController } from './set-reason'
+
+describe('set reason controller', function () {
   let controller: any
-  let lodgingService = {
+  const lodgingService = {
     cancelAll: sinon.stub().resolves({}),
   }
   let req: BasmRequest
@@ -43,7 +45,7 @@ describe('set reason controller', () => {
     },
   })
 
-  beforeEach(async function () {
+  beforeEach(function () {
     nextSpy = sinon.spy()
 
     req = BasmRequestFactory.build(reqDefaults())
@@ -62,7 +64,7 @@ describe('set reason controller', () => {
     sinon.stub(controller, 'use')
   })
 
-  describe('#setAdditionalLocals', function() {
+  describe('#setAdditionalLocals', function () {
     it('should call setAdditionalLocals middleware', function () {
       controller.middlewareSetup(req, res, nextSpy)
 
@@ -71,7 +73,7 @@ describe('set reason controller', () => {
       )
     })
 
-    it('sets additional locals', function() {
+    it('sets additional locals', function () {
       controller.setAdditionalLocals(req, res, nextSpy)
 
       expect(res.locals.moveId).to.equal(req.move.id)

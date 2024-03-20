@@ -1,15 +1,17 @@
-import sinon from "sinon"
-import { CancelController } from "./cancel"
-import { BasmRequest } from "../../../../../../common/types/basm_request"
-import { BasmResponse } from "../../../../../../common/types/basm_response"
-import { BasmRequestFactory } from "../../../../../../factories/basm_request"
-import { expect } from "chai"
-import steps from '../steps'
-import { itBehavesLikeALodgingCancelController } from "./base.test"
+import { expect } from 'chai'
+import sinon from 'sinon'
 
-describe('cancel lodging controller', () => {
+import { BasmRequest } from '../../../../../../common/types/basm_request'
+import { BasmResponse } from '../../../../../../common/types/basm_response'
+import { BasmRequestFactory } from '../../../../../../factories/basm_request'
+import steps from '../steps'
+
+import { itBehavesLikeALodgingCancelController } from './base.test'
+import { CancelController } from './cancel'
+
+describe('cancel lodging controller', function () {
   let controller: CancelController
-  let lodgingService = {
+  const lodgingService = {
     cancelAll: sinon.stub().resolves({}),
   }
   let req: BasmRequest
@@ -58,20 +60,18 @@ describe('cancel lodging controller', () => {
     controller = new CancelController({ route: '/' })
   })
 
-  describe('#successHandler', function() {
-    context('when the cancellation is successful', function() {
-      beforeEach(async function() {
+  describe('#successHandler', function () {
+    context('when the cancellation is successful', function () {
+      beforeEach(async function () {
         await controller.successHandler(req, res, nextSpy)
       })
 
-      it('cancels all lodgings for the move via the API', function() {
-        expect(lodgingService.cancelAll).to.have.been.calledWithExactly(
-          {
-            moveId: req.move.id,
-            reason: 'other',
-            comment: 'Comment',
-          }
-        )
+      it('cancels all lodgings for the move via the API', function () {
+        expect(lodgingService.cancelAll).to.have.been.calledWithExactly({
+          moveId: req.move.id,
+          reason: 'other',
+          comment: 'Comment',
+        })
       })
 
       it('should reset the wizard journey', function () {
@@ -87,10 +87,10 @@ describe('cancel lodging controller', () => {
       })
     })
 
-    context('when the cancellation fails', function() {
+    context('when the cancellation fails', function () {
       const errorMock = new Error('422')
 
-      beforeEach(async function() {
+      beforeEach(async function () {
         req.services.lodging.cancelAll = sinon.stub().throws(errorMock)
         await controller.successHandler(req, res, nextSpy)
       })

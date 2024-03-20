@@ -1,17 +1,21 @@
-import sinon from "sinon"
-import { BaseController } from "./base"
-import { BasmRequest } from "../../../../../../common/types/basm_request"
-import { BasmResponse } from "../../../../../../common/types/basm_response"
-import { BasmRequestFactory } from "../../../../../../factories/basm_request"
-import { expect } from "chai"
-import steps from '../steps'
-import { Move } from "../../../../../../common/types/move"
-import { MoveFactory } from "../../../../../../factories/move"
+import { expect } from 'chai'
+import sinon from 'sinon'
 
-export const itBehavesLikeALodgingCancelController = (controllerClass: typeof BaseController) => {
-  describe('cancel lodging base controller', () => {
+import { BasmRequest } from '../../../../../../common/types/basm_request'
+import { BasmResponse } from '../../../../../../common/types/basm_response'
+import { Move } from '../../../../../../common/types/move'
+import { BasmRequestFactory } from '../../../../../../factories/basm_request'
+import { MoveFactory } from '../../../../../../factories/move'
+import steps from '../steps'
+
+import { BaseController } from './base'
+
+export const itBehavesLikeALodgingCancelController = (
+  ControllerClass: typeof BaseController
+) => {
+  describe('cancel lodging base controller', function () {
     let controller: BaseController
-    let lodgingService = {
+    const lodgingService = {
       cancelAll: sinon.stub().resolves({}),
     }
     let req: BasmRequest
@@ -31,7 +35,7 @@ export const itBehavesLikeALodgingCancelController = (controllerClass: typeof Ba
         toJSON: () => ({
           'csrf-secret': '123',
           errors: {},
-          errorValues: {}
+          errorValues: {},
         }),
       },
       journeyModel: {
@@ -55,15 +59,15 @@ export const itBehavesLikeALodgingCancelController = (controllerClass: typeof Ba
 
       nextSpy = sinon.spy()
 
-      controller = new controllerClass({ route: '/' })
+      controller = new ControllerClass({ route: '/' })
     })
 
-    describe('#setButtonText', function() {
-      beforeEach(function() {
+    describe('#setButtonText', function () {
+      beforeEach(function () {
         controller.setButtonText(req, res, nextSpy)
       })
 
-      it('sets the correct button text', function() {
+      it('sets the correct button text', function () {
         expect(req?.form?.options.buttonText).to.equal('actions::continue')
       })
 
@@ -71,62 +75,73 @@ export const itBehavesLikeALodgingCancelController = (controllerClass: typeof Ba
         expect(nextSpy).to.have.been.calledOnce
       })
 
-      context('when final step', function() {
-        beforeEach(function() {
+      context('when final step', function () {
+        beforeEach(function () {
           req = BasmRequestFactory.build({
             ...reqDefaults(),
             form: {
               options: {
                 fields: {},
                 next: '/cancel',
-                steps
-              }
-            }
-          })        
+                steps,
+              },
+            },
+          })
           controller.setButtonText(req, res, nextSpy)
         })
 
-        it('sets the correct button text', function() {
-          expect(req?.form?.options.buttonText).to.equal('actions::confirm_cancel_lodge')
+        it('sets the correct button text', function () {
+          expect(req?.form?.options.buttonText).to.equal(
+            'actions::confirm_cancel_lodge'
+          )
         })
       })
     })
 
-    describe('#canEdit', function() {
+    describe('#canEdit', function () {
       const move = MoveFactory.build()
 
       const badStatuses: Move['status'][] = ['completed', 'cancelled']
-      const goodStatuses: Move['status'][] = ['requested', 'proposed', 'booked', 'in_transit']
+      const goodStatuses: Move['status'][] = [
+        'requested',
+        'proposed',
+        'booked',
+        'in_transit',
+      ]
 
-      badStatuses.forEach(status => context(`with move status of ${status}`, function() {
-        beforeEach(function() {
-          req.move = { ...move, status }
-          controller.canEdit(req, res, nextSpy)
-        })
+      badStatuses.forEach(status =>
+        context(`with move status of ${status}`, function () {
+          beforeEach(function () {
+            req.move = { ...move, status }
+            controller.canEdit(req, res, nextSpy)
+          })
 
-        it('redirects to the move details page', function() {
-          expect(res.redirect).to.have.been.calledWith(`/move/${req.move.id}`)
-        })
+          it('redirects to the move details page', function () {
+            expect(res.redirect).to.have.been.calledWith(`/move/${req.move.id}`)
+          })
 
-        it('does not call next', function () {
-          expect(nextSpy).not.to.have.been.called
+          it('does not call next', function () {
+            expect(nextSpy).not.to.have.been.called
+          })
         })
-      }))
+      )
 
-      goodStatuses.forEach(status => context(`with move status of ${status}`, function() {
-        beforeEach(function() {
-          req.move = { ...move, status }
-          controller.canEdit(req, res, nextSpy)
-        })
+      goodStatuses.forEach(status =>
+        context(`with move status of ${status}`, function () {
+          beforeEach(function () {
+            req.move = { ...move, status }
+            controller.canEdit(req, res, nextSpy)
+          })
 
-        it('does not redirect', function() {
-          expect(res.redirect).not.to.have.been.called
-        })
+          it('does not redirect', function () {
+            expect(res.redirect).not.to.have.been.called
+          })
 
-        it('should call next', function () {
-          expect(nextSpy).to.have.been.calledOnce
+          it('should call next', function () {
+            expect(nextSpy).to.have.been.calledOnce
+          })
         })
-      }))
+      )
     })
   })
 }

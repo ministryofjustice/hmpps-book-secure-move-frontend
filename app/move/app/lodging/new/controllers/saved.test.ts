@@ -1,17 +1,22 @@
-import sinon from "sinon"
-import { SavedController } from "./saved"
-import { BasmRequest } from "../../../../../../common/types/basm_request"
-import { BasmResponse } from "../../../../../../common/types/basm_response"
-import { expect } from "chai"
-import steps from '../steps'
-import { LodgingFactory } from "../../../../../../factories/lodging"
-import { MoveFactory } from "../../../../../../factories/move"
-import { BasmRequestFactory } from "../../../../../../factories/basm_request"
-import { LocationFactory } from "../../../../../../factories/location"
+import { expect } from 'chai'
+import sinon from 'sinon'
 
-describe('lodging saved controller', () => {
-  const lodging = LodgingFactory.build({ start_date: '2024-01-01', end_date: '2024-01-03' })
-  let lodgingService = {
+import { BasmRequest } from '../../../../../../common/types/basm_request'
+import { BasmResponse } from '../../../../../../common/types/basm_response'
+import { BasmRequestFactory } from '../../../../../../factories/basm_request'
+import { LocationFactory } from '../../../../../../factories/location'
+import { LodgingFactory } from '../../../../../../factories/lodging'
+import { MoveFactory } from '../../../../../../factories/move'
+import steps from '../steps'
+
+import { SavedController } from './saved'
+
+describe('lodging saved controller', function () {
+  const lodging = LodgingFactory.build({
+    start_date: '2024-01-01',
+    end_date: '2024-01-03',
+  })
+  const lodgingService = {
     create: sinon.stub().resolves(lodging),
   }
   let req: BasmRequest
@@ -28,10 +33,10 @@ describe('lodging saved controller', () => {
       },
       values: {
         lodge_length: 2,
-      }
+      },
     },
     sessionModel: {
-      attributes:{
+      attributes: {
         to_location_lodge: lodging.location,
         lodge_start_date: lodging.start_date,
       },
@@ -64,20 +69,24 @@ describe('lodging saved controller', () => {
     nextSpy = sinon.spy()
   })
 
-  context('with a matching lodging', function() {
-    beforeEach(function() {
-      req.move = MoveFactory.build({ lodgings: [lodging], profile })
+  context('with a matching lodging', function () {
+    beforeEach(function () {
+      req.move = MoveFactory.build({
+        lodgings: [lodging],
+        profile,
+      })
       req.params.lodgingId = lodging.id
     })
 
-    it('renders the page with the correct data', async function() {
+    it('renders the page with the correct data', async function () {
       await SavedController(req, res, nextSpy)
       expect(res.render).to.have.been.calledWithExactly(
         'move/app/lodging/new/views/saved',
         {
           moveReference: 'ABC1234D',
           location: location.title,
-          dateText: 'between <strong>Monday 1 Jan 2024</strong> and <strong>Wednesday 3 Jan 2024</strong>',
+          dateText:
+            'between <strong>Monday 1 Jan 2024</strong> and <strong>Wednesday 3 Jan 2024</strong>',
           move: req.move,
           name: 'Fred',
         }
@@ -85,13 +94,16 @@ describe('lodging saved controller', () => {
     })
   })
 
-  context('without a matching lodging', function() {
-    beforeEach(function() {
-      req.move = MoveFactory.build({ lodgings: [lodging], profile })
+  context('without a matching lodging', function () {
+    beforeEach(function () {
+      req.move = MoveFactory.build({
+        lodgings: [lodging],
+        profile,
+      })
       req.params.lodgingId = 'bad_id'
     })
 
-    it('calls next with a 404 error', async function() {
+    it('calls next with a 404 error', async function () {
       await SavedController(req, res, nextSpy)
       expect(nextSpy.firstCall.firstArg.message).to.equal('Lodging not found')
     })

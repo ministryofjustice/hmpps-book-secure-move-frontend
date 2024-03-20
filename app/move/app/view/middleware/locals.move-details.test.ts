@@ -25,7 +25,10 @@ describe('Move view app', function () {
             id: '12345',
             is_lockout: false,
             is_lodging: false,
-            profile: { id: 'profile', person: {} },
+            profile: {
+              id: 'profile',
+              person: {},
+            },
             status: 'in_transit',
             from_location: {
               key: 'key',
@@ -52,7 +55,13 @@ describe('Move view app', function () {
           }),
           journeys: [],
           t: I18n.t,
-          form: { options: { fields: {}, next: '' }, values: {} },
+          form: {
+            options: {
+              fields: {},
+              next: '',
+            },
+            values: {},
+          },
           params: {},
         })
         res = {
@@ -73,7 +82,6 @@ describe('Move view app', function () {
       })
 
       it('should set move details on locals', function () {
-        console.log(res.locals.moveDetails)
         expect(res.locals).to.be.deep.equal({
           isPerLocked: false,
           moveLodgingStarted: false,
@@ -84,11 +92,14 @@ describe('Move view app', function () {
               key: 'key',
               location_type: 'prison',
               title: 'Title',
-              type: 'locations'
+              type: 'locations',
             },
             id: '12345',
             move_type: 'prison_transfer',
-            profile: { id: 'profile', person: {} },
+            profile: {
+              id: 'profile',
+              person: {},
+            },
             status: 'in_transit',
             date: '2023-03-27',
             reference: 'ABC1234D',
@@ -97,7 +108,7 @@ describe('Move view app', function () {
               key: 'unknown__prison_transfer',
               title: 'Unknown',
               location_type: 'prison',
-              type: 'locations'
+              type: 'locations',
             },
             _vehicleRegistration: undefined,
             _expectedCollectionTime: undefined,
@@ -115,11 +126,11 @@ describe('Move view app', function () {
                 recorded_at: '2020-10-10T14:20:00Z',
                 notes: null,
                 created_by: null,
-                details: {}
-              }
+                details: {},
+              },
             ],
             _canEdit: true,
-            _isPerLocked: false
+            _isPerLocked: false,
           },
           moveId: '12345',
           moveIsEditable: true,

@@ -1,13 +1,14 @@
+import { expect } from 'chai'
 import sinon from 'sinon'
-import { LodgingFactory } from '../../factories/lodging'
-import { Lodging } from '../types/lodging'
-import { Move } from '../types/move'
-import { MoveFactory } from '../../factories/move'
-import { LodgingService } from './lodging'
 
+import { LodgingFactory } from '../../factories/lodging'
+import { MoveFactory } from '../../factories/move'
 // @ts-ignore // TODO: convert to TS
 import ApiClient from '../lib/api-client'
-import { expect } from 'chai'
+import { Lodging } from '../types/lodging'
+import { Move } from '../types/move'
+
+import { LodgingService } from './lodging'
 
 const apiClient = new ApiClient()
 const lodgingService = new LodgingService({ apiClient })
@@ -19,18 +20,19 @@ const endDate = '2024-01-02'
 
 describe('lodging service', function () {
   describe('#create', function () {
-    context('when it is created successfully', function() {
+    context('when it is created successfully', function () {
       beforeEach(function () {
-        sinon.stub(apiClient, 'post')
+        sinon
+          .stub(apiClient, 'post')
           .withArgs({
             start_date: '2024-01-01',
             end_date: '2024-01-02',
-            location: { id: 'a15957ec-c983-4d29-98e4-334060b16dca' }
+            location: { id: 'a15957ec-c983-4d29-98e4-334060b16dca' },
           })
           .resolves({ data: lodging })
       })
-  
-      it('creates the lodging via the API', async function() {
+
+      it('creates the lodging via the API', async function () {
         const result = await lodgingService.create({
           moveId: move.id,
           locationId: lodging.location.id,
@@ -42,14 +44,14 @@ describe('lodging service', function () {
       })
     })
 
-    context('when there is an error', function() {
+    context('when there is an error', function () {
       const error = new Error('422')
-      
-      beforeEach(async function () {
+
+      beforeEach(function () {
         sinon.stub(apiClient, 'post').throws(error)
       })
-  
-      it('throws an error', function() {
+
+      it('throws an error', function () {
         expect(() => {
           lodgingService.create({
             moveId: move.id,
@@ -61,10 +63,10 @@ describe('lodging service', function () {
       })
     })
 
-    context('with blank move ID', function() {
+    context('with blank move ID', function () {
       const error = new Error('yeah')
-  
-      it('rejects with an error', function() {
+
+      it('rejects with an error', function () {
         expect(
           lodgingService.create({
             moveId: '',
@@ -72,20 +74,20 @@ describe('lodging service', function () {
             startDate,
             endDate,
           })
-        // @ts-ignore
+          // @ts-ignore
         ).to.be.rejectedWith(error)
       })
     })
   })
 
   describe('#cancelAll', function () {
-    context('when moves are cancelled successfully', function() {
+    context('when moves are cancelled successfully', function () {
       beforeEach(function () {
         sinon.stub(apiClient, 'post').resolves({ data: lodging })
       })
-  
-      it('creates the lodging via the API', async function() {
-        const result = await lodgingService.cancelAll({
+
+      it('creates the lodging via the API', async function () {
+        await lodgingService.cancelAll({
           moveId: move.id,
           reason: 'other',
           comment: 'felt like a good idea',
@@ -93,19 +95,19 @@ describe('lodging service', function () {
 
         expect(apiClient.post).to.have.been.calledWith({
           cancellation_reason: 'other',
-          cancellation_reason_comment: 'felt like a good idea'
+          cancellation_reason_comment: 'felt like a good idea',
         })
       })
     })
 
-    context('when there is an error', function() {
+    context('when there is an error', function () {
       const error = new Error('422')
-      
-      beforeEach(async function () {
+
+      beforeEach(function () {
         sinon.stub(apiClient, 'post').throws(error)
       })
-  
-      it('throws an error', function() {
+
+      it('throws an error', function () {
         expect(() => {
           lodgingService.cancelAll({
             moveId: move.id,
@@ -116,17 +118,17 @@ describe('lodging service', function () {
       })
     })
 
-    context('with blank move ID', function() {
+    context('with blank move ID', function () {
       const error = new Error('yeah')
-  
-      it('rejects with an error', function() {
+
+      it('rejects with an error', function () {
         expect(
           lodgingService.cancelAll({
             moveId: '',
             reason: 'other',
             comment: 'felt like a good idea',
           })
-        // @ts-ignore
+          // @ts-ignore
         ).to.be.rejectedWith(error)
       })
     })
