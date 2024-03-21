@@ -89,7 +89,7 @@ function importFiles(version, ...paths) {
   try {
     return fs.readdirSync(folderPath).map(filename => {
       const filepath = path.resolve(folderPath, filename)
-      const contents = fs.readFileSync(filepath, { encoding: 'utf8' })
+      const contents = fs.readFileSync(filepath).toString('utf-8')
 
       return JSON.parse(contents)
     })
