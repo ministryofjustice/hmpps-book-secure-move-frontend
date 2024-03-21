@@ -4,7 +4,7 @@ The internal API client is based on top of the [JSON:API devour client](https://
 
 This module exports a singleton to avoid creating a new devour instance with each use.
 
-## Middelware
+## Middleware
 
 This library uses [middleware modules](./middleware) to take care of things like authentication and data
 transformation in a single layer.

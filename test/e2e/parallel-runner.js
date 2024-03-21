@@ -226,13 +226,13 @@ const testcafeRuns = testBuckets.map((test, index) => {
     : ''
   const command = `SERVER_HOST=localhost:${
     3000 + index
-  } E2E_BASE_URL=http://localhost:${
+  } E2E_BASE_URL=http://127.0.0.1:${
     3000 + index
-  } AUTH_PROVIDER_URL=http://localhost:${
+  } AUTH_PROVIDER_URL=http://127.0.0.1:${
     3999 + index
-  } MANAGE_USERS_API_URL=http://localhost:${
+  } MANAGE_USERS_API_URL=http://127.0.0.1:${
     3999 + index
-  } NOMIS_ELITE2_API_URL=http://localhost:${
+  } NOMIS_ELITE2_API_URL=http://127.0.0.1:${
     3999 + index
   } node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
@@ -269,19 +269,19 @@ function killCommands(commands) {
 const runTests = async () => {
   const serverCommandStrings = testBuckets.map(
     (_, i) =>
-      `PORT=${3000 + i} AUTH_PROVIDER_URL=http://localhost:${
+      `PORT=${3000 + i} AUTH_PROVIDER_URL=http://127.0.0.1:${
         3999 + i
-      } MANAGE_USERS_API_URL=http://localhost:${
+      } MANAGE_USERS_API_URL=http://127.0.0.1:${
         3999 + i
-      } SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
+      } SERVER_HOST=127.0.0.1:${3000 + i} E2E_BASE_URL=http://127.0.0.1:${
         3000 + i
-      } NOMIS_ELITE2_API_URL=http://localhost:${
+      } NOMIS_ELITE2_API_URL=http://127.0.0.1:${
         3999 + i
       } FEATURE_FLAG_ADD_LODGE_BUTTON=true node start.js`
   )
   const authCommandStrings = testBuckets.map(
     (_, i) =>
-      `SERVER_HOST=localhost:${3000 + i} E2E_BASE_URL=http://localhost:${
+      `SERVER_HOST=127.0.0.1:${3000 + i} E2E_BASE_URL=http://127.0.0.1:${
         3000 + i
       } MOCK_AUTH_PORT=${3999 + i} node mocks/auth-server.js`
   )
