@@ -28,7 +28,7 @@ jobs:
     steps:
       - id: create_deployment
         name: Create deployment
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
@@ -105,12 +105,12 @@ jobs:
             }
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up NodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Compile typescript
         run: |

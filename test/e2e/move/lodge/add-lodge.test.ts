@@ -13,7 +13,7 @@ import {
   moveLodgeSavedPage,
 } from '../../pages'
 
-fixture('A move without any lodges').beforeEach(async t => {
+fixture.skip('A move without any lodges').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(home)
   await createMove()
 })

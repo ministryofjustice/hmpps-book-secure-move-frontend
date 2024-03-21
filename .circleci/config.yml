@@ -1,14 +1,14 @@
 version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.6
-  hmpps: ministryofjustice/hmpps@7.4.1
+  hmpps: ministryofjustice/hmpps@7
 
 aliases:
   # Shared containers
   - &node_container
     executor:
       name: hmpps/node
-      tag: 18.19-browsers
+      tag: lts-browsers
   # Common steps
   - &install_dependencies
     run:
