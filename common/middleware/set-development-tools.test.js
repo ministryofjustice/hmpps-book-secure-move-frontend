@@ -10,7 +10,9 @@ describe('#setDevelopmentTools', function () {
 
   beforeEach(function () {
     nextSpy = sinon.spy()
-    req = {}
+    req = {
+      url: 'http://example.com/some-path',
+    }
     res = {
       locals: {},
     }
@@ -23,7 +25,7 @@ describe('#setDevelopmentTools', function () {
         items: [
           {
             dataModule: 'app-set-permissions',
-            href: `${toolsMountpath}${toolsRoutes.permissions}`,
+            href: `${toolsMountpath}${toolsRoutes.permissions}?r=http://example.com/some-path`,
             id: 'set-permissions',
             text: 'Set permissions',
           },

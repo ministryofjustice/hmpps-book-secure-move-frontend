@@ -17,5 +17,6 @@ export const MoveFactory = Factory.define<Move>(({ afterBuild }) => {
     profile: undefined,
     status: 'requested',
     date: '2022-01-01',
+    reference: 'ABC1234D',
   }
 })

@@ -40,6 +40,7 @@ const defaultInclude = [
   'supplier',
   'to_location',
   'lodgings',
+  'lodgings.location',
 ]
 const noMoveIdMessage = 'No move ID supplied'
 
@@ -225,6 +226,7 @@ class MoveService extends BaseService {
         'profile.youth_risk_assessment',
         'to_location',
         'lodgings',
+        'lodgings.location',
       ],
       params: {
         meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',

@@ -88,6 +88,7 @@ describe('Move Service', function () {
         'supplier',
         'to_location',
         'lodgings',
+        'lodgings.location',
       ])
     })
   })
@@ -727,6 +728,7 @@ describe('Move Service', function () {
             'profile.youth_risk_assessment',
             'to_location',
             'lodgings',
+            'lodgings.location',
           ],
           params: {
             meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',
@@ -783,6 +785,7 @@ describe('Move Service', function () {
             'profile.youth_risk_assessment',
             'to_location',
             'lodgings',
+            'lodgings.location',
           ],
           filter: {
             status: undefined,

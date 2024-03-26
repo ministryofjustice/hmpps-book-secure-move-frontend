@@ -221,12 +221,12 @@ describe('Helpers', function () {
           })
         })
       })
-      context('when the event is MoveOvernightLodge', function () {
+      context('when the event is LodgingCreate', function () {
         context('when the lodge is only 1 night long', function () {
           beforeEach(async function () {
             mockEvent = GenericEventFactory.build({
               id: 'eventId',
-              event_type: 'MoveOvernightLodge',
+              event_type: 'LodgingCreate',
               details: {
                 start_date: '2020-02-02',
                 end_date: '2020-02-03',
@@ -245,7 +245,7 @@ describe('Helpers', function () {
           beforeEach(async function () {
             mockEvent = GenericEventFactory.build({
               id: 'eventId',
-              event_type: 'MoveOvernightLodge',
+              event_type: 'LodgingCreate',
               details: {
                 start_date: '2020-02-02',
                 end_date: '2020-02-04',

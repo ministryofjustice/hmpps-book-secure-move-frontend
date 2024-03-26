@@ -1,5 +1,5 @@
 // @ts-ignore // TODO: convert to ts
-import commonMiddleware from '../../../../../common/middleware'
+import commonMiddleware from '../../../../../../common/middleware'
 
 import { BaseController } from './base'
 

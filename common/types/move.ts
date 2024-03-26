@@ -7,6 +7,7 @@ import { Supplier } from './supplier'
 
 export interface Move {
   date: string
+  reference: string
   profile?: Profile
   time_due?: Date | string
   status:

@@ -16,13 +16,13 @@ export default {
   },
   '/location': {
     controller: SetLocationController,
-    pageTitle: 'moves::steps.lodge.location.heading',
+    pageTitle: 'moves::steps.lodging.new.location.heading',
     fields: ['to_location_lodge'],
     next: 'length',
   },
   '/length': {
     controller: SetLengthController,
-    pageTitle: 'moves::steps.lodge.length.heading',
+    pageTitle: 'moves::steps.lodging.new.length.heading',
     fields: ['lodge_length_type'],
     template: 'length',
     next: 'save',

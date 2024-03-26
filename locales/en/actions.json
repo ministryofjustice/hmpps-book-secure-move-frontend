@@ -47,6 +47,8 @@
   "save_and_return_to_overview": "Save and return to overview",
   "view_more_information": "View more information",
   "view_journeys": "View journeys",
+  "cancel_lodge": "Cancel overnight lodge",
+  "confirm_cancel_lodge": "Confirm cancellation",
   "review": "Review single request",
   "start_assessment": "Start $t({{context}})",
   "continue_assessment": "Continue $t({{context}})",

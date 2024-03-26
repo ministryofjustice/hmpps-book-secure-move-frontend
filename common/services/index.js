@@ -5,6 +5,7 @@ const { EventService: event } = require('./event')
 const frameworks = require('./frameworks')
 const journey = require('./journey')
 const locationsFreeSpaces = require('./locations-free-spaces')
+const { LodgingService: lodging } = require('./lodging')
 const move = require('./move')
 const person = require('./person')
 const personEscortRecord = require('./person-escort-record')
@@ -21,6 +22,7 @@ module.exports = {
   frameworks,
   journey,
   locationsFreeSpaces,
+  lodging,
   move,
   person,
   personEscortRecord,

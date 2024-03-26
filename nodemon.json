@@ -9,7 +9,7 @@
     "start.js",
     ".build/frameworks/**/*.json"
   ],
-  "ignore": [],
+  "ignore": [".build"],
   "env": {
     "NODE_ENV": "development"
   },

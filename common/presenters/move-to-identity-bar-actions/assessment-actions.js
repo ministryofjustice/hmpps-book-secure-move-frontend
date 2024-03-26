@@ -1,6 +1,7 @@
 const { isEmpty, kebabCase } = require('lodash')
 
 const i18n = require('../../../config/i18n').default
+const { hasOvernightLodge } = require('../../helpers/move/has-overnight-lodge')
 const componentService = require('../../services/component')
 
 function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
@@ -19,15 +20,7 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
   const baseUrl = `/move/${move.id}/${kebabCase(assessmentType)}`
   const context = assessmentType
   // There's a typescript function elsewhere that does this - has-overnight-lodge.ts
-  const hasLodges =
-    move.important_events?.filter(
-      event =>
-        event.event_type === 'MoveLodgingStart' &&
-        event.details.reason === 'overnight_lodging'
-    ).length > 0 ||
-    move.timeline_events?.filter(
-      event => event.event_type === 'MoveOvernightLodge'
-    ).length > 0
+  const hasLodges = hasOvernightLodge(move)
 
   if (
     featureFlags.ADD_LODGE_BUTTON &&
@@ -41,7 +34,7 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
           context: hasLodges ? 'with_items' : '',
           name: 'overnight lodge',
         }),
-        href: `/move/${move.id}/lodge`,
+        href: `/move/${move.id}/lodging/new`,
         classes: 'govuk-button--primary',
         preventDoubleClick: true,
       }),

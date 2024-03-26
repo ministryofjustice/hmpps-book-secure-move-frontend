@@ -5,8 +5,10 @@ import sinon from 'sinon'
 import presenters from '../../../../../common/presenters'
 import { BasmRequest } from '../../../../../common/types/basm_request'
 import I18n from '../../../../../config/i18n'
+import { BasmRequestFactory } from '../../../../../factories/basm_request'
 import { GenericEventFactory } from '../../../../../factories/generic_event'
 import { JourneyFactory } from '../../../../../factories/journey'
+import { MoveFactory } from '../../../../../factories/move'
 
 import middleware from './locals.move-details'
 
@@ -16,14 +18,17 @@ describe('Move view app', function () {
       let req: BasmRequest, res: any, nextSpy: any
 
       beforeEach(function () {
-        req = {
+        req = BasmRequestFactory.build({
           canAccess: sinon.stub(),
-          move: {
+          move: MoveFactory.build({
             date: '2023-03-27',
             id: '12345',
             is_lockout: false,
             is_lodging: false,
-            profile: { id: 'profile', person: {} },
+            profile: {
+              id: 'profile',
+              person: {},
+            },
             status: 'in_transit',
             from_location: {
               key: 'key',
@@ -47,11 +52,18 @@ describe('Move view app', function () {
             ],
             _canEdit: true,
             _isPerLocked: false,
-          },
+          }),
           journeys: [],
           t: I18n.t,
-          form: { options: { fields: {}, next: '' }, values: {} },
-        }
+          form: {
+            options: {
+              fields: {},
+              next: '',
+            },
+            values: {},
+          },
+          params: {},
+        })
         res = {
           locals: {},
         }
@@ -75,19 +87,36 @@ describe('Move view app', function () {
           moveLodgingStarted: false,
           moveLodgingEnded: true,
           moveDetails: {
-            id: '12345',
-            is_lockout: false,
-            is_lodging: false,
-            profile: { id: 'profile', person: {} },
-            status: 'in_transit',
             from_location: {
-              key: 'key',
-              title: 'Title',
               id: 'id',
-              type: 'locations',
+              key: 'key',
               location_type: 'prison',
+              title: 'Title',
+              type: 'locations',
             },
+            id: '12345',
             move_type: 'prison_transfer',
+            profile: {
+              id: 'profile',
+              person: {},
+            },
+            status: 'in_transit',
+            date: '2023-03-27',
+            reference: 'ABC1234D',
+            to_location: {
+              id: 'unknown',
+              key: 'unknown__prison_transfer',
+              title: 'Unknown',
+              location_type: 'prison',
+              type: 'locations',
+            },
+            _vehicleRegistration: undefined,
+            _expectedCollectionTime: undefined,
+            _expectedArrivalTime: undefined,
+            _hasLeftCustody: true,
+            _hasArrived: false,
+            is_lodging: false,
+            is_lockout: false,
             important_events: [
               {
                 id: 'lodging-end',
@@ -102,7 +131,6 @@ describe('Move view app', function () {
             ],
             _canEdit: true,
             _isPerLocked: false,
-            date: '2023-03-27',
           },
           moveId: '12345',
           moveIsEditable: true,

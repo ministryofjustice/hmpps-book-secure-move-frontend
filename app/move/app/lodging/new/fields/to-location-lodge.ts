@@ -1,5 +1,5 @@
 // @ts-ignore // TODO: convert to TS
-import toLocation from '../../new/fields/common.to-location'
+import toLocation from '../../../new/fields/common.to-location'
 
 export const toLocationLodge = {
   ...toLocation,

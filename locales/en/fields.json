@@ -193,6 +193,31 @@
   "lodge_length_custom": {
     "label": "Lodge length"
   },
+  "lodge_cancel_reason": {
+    "label": "Why are you cancelling the overnight lodge?",
+    "items": {
+      "made_in_error": {
+        "label": "Made in error",
+        "hint": "For example, there's a mistake or the person no longer needs to move"
+      },
+      "supplier_declined_to_move": {
+        "label": "Supplier declined to move this person",
+        "hint": "For example, the request was made late"
+      },
+      "cancelled_by_pmu": {
+        "label": "Cancelled by Population Management Unit (PMU)"
+      },
+      "another": {
+        "label": "Another reason"
+      }
+    },
+    "error_message": "Select a reason for cancelling the overnight lodge"
+  },
+  "lodge_cancel_reason_custom": {
+    "label": "Additional information",
+    "label_optional": "Additional information (optional)",
+    "label_with_error": "additional information"
+  },
   "recall_information": {
     "label": "When did they return to police custody?",
     "hint": "This is the date that they returned to police custody, whether for recall or any additional offence. For example 28/11/2022 or 28 November 2022."
@@ -351,7 +376,7 @@
   "cancellation_reason_other_comment": {
     "label": "Additional information",
     "label_optional": "Additional information (optional)",
-    "label_with_error": "Additional information"
+    "label_with_error": "additional information"
   },
   "other_court": {
     "label": "Any other information details"
@@ -458,7 +483,7 @@
       "juvenile_male": "Juvenile male (ages under 18)",
       "young_offender_female": "Youth offender female (ages 18 to 21)",
       "young_offender_male": "Youth offender male (ages 18 to 21)",
-      "other": "Other"
+      "other_estate": "Other"
     }
   },
   "estate_other": {

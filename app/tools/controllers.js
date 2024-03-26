@@ -28,6 +28,7 @@ function renderPermissions(req, res) {
   res.render('tools/views/permissions', {
     activeRoles: req.session.activeRoles || [],
     roles: permissionsByRole,
+    redirect: req.query.r,
   })
 }
 
@@ -45,7 +46,11 @@ function updatePermissions(req, res) {
   req.session.user = req.session.user || {}
   req.session.user.permissions = permissions
 
-  res.redirect('/')
+  const redirectUrl = req.body.redirect?.startsWith('/')
+    ? req.body.redirect
+    : '/'
+
+  res.redirect(redirectUrl)
 }
 
 async function updateMoveStatus(req, res, next) {

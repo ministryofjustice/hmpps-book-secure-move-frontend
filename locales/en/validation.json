@@ -37,6 +37,10 @@
     "instructions": "If you still need to move this person try <a href=\"{{date_href}}\">changing the date</a> or <a href=\"{{location_href}}\">the destination</a>.",
     "instructions_review": "If you still need to move this person try <a href=\"{{date_href}}\">changing the date</a>."
   },
+  "lodging_conflict": {
+    "heading": "This lodging cannot be created",
+    "message": "A lodging already exists for <strong>{{name}}</strong> on <strong>{{date}}</strong>."
+  },
   "move_not_supported": {
     "heading": "{{-name}} cannot be moved using this service",
     "message": "As this person is a Category {{category}} prisoner, they cannot be moved using this service."

@@ -33,6 +33,9 @@ describe('Development tools controllers', function () {
     }
     reqMock = {
       params: {},
+      query: {
+        r: 'http://example.com/some-path',
+      },
       session: {},
     }
   })
@@ -50,6 +53,7 @@ describe('Development tools controllers', function () {
     it('should set locals', function () {
       expect(resMock.render.args[0][1]).to.deep.equal({
         activeRoles: reqMock.session.activeRoles,
+        redirect: 'http://example.com/some-path',
         roles: permissionsStub.permissionsByRole,
       })
     })
@@ -68,10 +72,11 @@ describe('Development tools controllers', function () {
           reqMock.user = {
             permissions: ['ace', 'deuce'],
           }
-          controllers.updatePermissions(reqMock, resMock)
         })
 
         it('should set active roles to session', function () {
+          controllers.updatePermissions(reqMock, resMock)
+
           expect(reqMock.session.activeRoles).to.deep.equal([
             'foo',
             'bar',
@@ -81,6 +86,8 @@ describe('Development tools controllers', function () {
         })
 
         it('should override user permissions', function () {
+          controllers.updatePermissions(reqMock, resMock)
+
           expect(reqMock.session.user.permissions).to.deep.equal([
             'one',
             'two',
@@ -89,8 +96,40 @@ describe('Development tools controllers', function () {
           ])
         })
 
-        it('should redirect', function () {
-          expect(resMock.redirect).to.have.been.calledOnceWithExactly('/')
+        context('with safe redirect param', function () {
+          beforeEach(function () {
+            reqMock.user = {
+              permissions: ['ace', 'deuce'],
+            }
+            reqMock.body = {
+              redirect: '/something/local',
+              roles: ['foo', 'bar', 'fizz', 'buzz'],
+            }
+            controllers.updatePermissions(reqMock, resMock)
+          })
+
+          it('should redirect as requested', function () {
+            expect(resMock.redirect).to.have.been.calledOnceWithExactly(
+              '/something/local'
+            )
+          })
+        })
+
+        context('with unsafe redirect param', function () {
+          beforeEach(function () {
+            reqMock.user = {
+              permissions: ['ace', 'deuce'],
+            }
+            reqMock.body = {
+              redirect: 'http://example.com/something/dodgy',
+              roles: ['foo', 'bar', 'fizz', 'buzz'],
+            }
+            controllers.updatePermissions(reqMock, resMock)
+          })
+
+          it('should redirect to home', function () {
+            expect(resMock.redirect).to.have.been.calledOnceWithExactly('/')
+          })
         })
       })
 

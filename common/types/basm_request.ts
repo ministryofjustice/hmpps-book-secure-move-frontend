@@ -1,4 +1,5 @@
 import I18n from '../../config/i18n'
+import { LodgingService } from '../services/lodging'
 
 import { Allocation } from './allocation'
 import { Journey } from './journey'
@@ -10,22 +11,27 @@ export interface BasmRequest extends Express.Request {
   allocation?: Allocation
   canAccess: (permission: string) => boolean
   flash?: (yeah: any, nah: any) => void
-  initialStep?: any
-  journeys: Journey[]
-  move: Move
-  services?: {
-    allocation: Service
-  }
-  session?: {
-    save: () => void
-  }
-  sessionModel?: SessionModel
-  t: typeof I18n.t
   form?: {
     options: {
       fields: { [key: string]: any }
       next: string
+      steps?: any
+      [x: string]: unknown
     }
     values: { [key: string]: any }
   }
+  initialStep?: any
+  journeyModel: SessionModel
+  journeys: Journey[]
+  move: Move
+  params: any
+  session: {
+    save: () => void
+  }
+  sessionModel: SessionModel
+  services: {
+    allocation: Service
+    lodging: LodgingService
+  }
+  t: typeof I18n.t
 }

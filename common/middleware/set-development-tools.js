@@ -6,7 +6,7 @@ const {
 function setDevelopmentTools(req, res, next) {
   const items = [
     {
-      href: `${toolsMountpath}${toolsRoutes.permissions}`,
+      href: `${toolsMountpath}${toolsRoutes.permissions}?r=${req.url}`,
       dataModule: 'app-set-permissions',
       id: 'set-permissions',
       text: 'Set permissions',
