@@ -45,6 +45,7 @@ const {
   CIRCLE_BUILD_URL,
   CIRCLE_WORKFLOW_ID,
 } = process.env
+
 /* eslint-disable no-process-env */
 
 function errorHandler(body) {
@@ -406,6 +407,18 @@ async function selectOption({ options, value }) {
     option = await options.withText(value)
   } else if (!isNil(value) && typeof value === 'number') {
     option = await options.nth(value)
+  } else if (
+    !isNil(value) &&
+    typeof value === 'object' &&
+    value.type === 'random' &&
+    value.except
+  ) {
+    const filteredOptions = options.filter(o => o.innerText !== value.except, {
+      value,
+    })
+    const count = await filteredOptions.count
+    const randomItem = Math.floor(Math.random() * count)
+    option = await filteredOptions.nth(randomItem)
   } else {
     const count = await options.count
     const randomItem = Math.floor(Math.random() * count)
@@ -502,8 +515,6 @@ export async function fillInForm(fields = []) {
         filledInFields[key] = await fillAutocomplete(field)
         break
       case 'radio':
-        filledInFields[key] = await fillRadioOrCheckbox(field)
-        break
       case 'checkbox':
         filledInFields[key] = await fillRadioOrCheckbox(field)
         break

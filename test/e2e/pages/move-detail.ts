@@ -2,9 +2,11 @@ import { Selector, t } from 'testcafe'
 
 import * as filters from '../../../config/nunjucks/filters'
 
-import Page from './page'
+import { Page } from './page'
 
-class MoveDetailPage extends Page {
+import { moveDetailPage } from './index'
+
+export class MoveDetailPage extends Page {
   constructor() {
     super()
 
@@ -71,25 +73,48 @@ class MoveDetailPage extends Page {
       addAnotherLodgeButton: Selector('.app-identity-bar__inner')
         .find('.govuk-button')
         .withText('Add another overnight lodge'),
+      cancelLodgingLink: Selector('.govuk-list')
+        .find('.app-link--destructive')
+        .withText('Cancel overnight lodge'),
+      detailsTab: Selector('#tab-details'),
+      lodgesSection: Selector('.govuk-grid-column-two-thirds').find(
+        'section:nth-child(3)'
+      ),
     }
+
+    this.nodes.lodgesTitle = (this.nodes.lodgesSection as Selector).find('h2')
+    this.nodes.lodgesCards = (this.nodes.lodgesSection as Selector).find(
+      '.govuk-summary-card'
+    )
   }
 
-  checkHeader({ fullname } = {}) {
+  checkHeader({ fullname }: { fullname: string }) {
     return t
-      .expect(this.nodes.title.innerText)
+      .expect((this.nodes.title as Selector).innerText)
       .contains(fullname, 'Title contains fullname')
-      .expect(this.nodes.title.innerText)
-      .match(/[A-Z]{3}[0-9]{4}[A-Z]{1}/, 'Subtitle contains reference number')
+      .expect((this.nodes.title as Selector).innerText)
+      .match(/[A-Z]{3}[0-9]{4}[A-Z]/, 'Subtitle contains reference number')
   }
 
-  async checkPersonalDetails({ policeNationalComputer, prisonNumber } = {}) {
-    await this.checkSummaryList(this.nodes.personalDetails, {
+  async checkPersonalDetails({
+    policeNationalComputer,
+    prisonNumber,
+  }: {
+    policeNationalComputer: string
+    prisonNumber: string
+  }) {
+    await this.checkSummaryList(this.nodes.personalDetails as Selector, {
       'PNC number': policeNationalComputer,
       'Prison number': prisonNumber,
     })
   }
 
-  async checkMoveDetails(move = {}) {
+  async checkMoveDetails(move: {
+    date: string
+    moveType: string
+    additionalInformation: string
+    toLocation: string
+  }) {
     const { date, moveType, additionalInformation } = move
     let { toLocation } = move
 
@@ -105,20 +130,24 @@ class MoveDetailPage extends Page {
       toLocation += ` — ${additionalInformation}`
     }
 
-    const formattedDate = filters.formatDateWithRelativeDay(date)
-    await this.checkSummaryList(this.nodes.moveDetails, {
+    const formattedDate = filters.formatDateWithRelativeDay(date) as string
+    await this.checkSummaryList(this.nodes.moveDetails as Selector, {
       To: toLocation,
       Date: formattedDate,
     })
   }
 
-  checkCourtHearings({ hasCourtCase } = {}) {
+  checkCourtHearings({ hasCourtCase }: { hasCourtCase: 'Yes' | 'No' }) {
     if (hasCourtCase === 'No') {
-      return t.expect(this.nodes.noCourtInformationMessage.exists).ok()
+      return t
+        .expect((this.nodes.noCourtInformationMessage as Selector).exists)
+        .ok()
     }
 
     // TODO: Write further assertions for when a move does have a court case
-    return t.expect(this.nodes.noCourtInformationMessage.exists).not.ok()
+    return t
+      .expect((this.nodes.noCourtInformationMessage as Selector).exists)
+      .notOk()
   }
 
   checkCourtInformation({
@@ -126,12 +155,19 @@ class MoveDetailPage extends Page {
     solicitor,
     interpreter,
     otherCourt,
-  } = {}) {
+  }: {
+    selectedItems: string[]
+    solicitor: string
+    interpreter: string
+    otherCourt: string
+  }) {
     if (selectedItems.length === 0) {
-      return t.expect(this.nodes.noCourtInformationMessage.exists).ok()
+      return t
+        .expect((this.nodes.noCourtInformationMessage as Selector).exists)
+        .ok()
     }
 
-    return this.checkSummaryList(this.nodes.courtInformation, {
+    return this.checkSummaryList(this.nodes.courtInformation as Selector, {
       'Solicitor or other legal representation': solicitor,
       'Sign or other language interpreter': interpreter,
       'Any other information': otherCourt,
@@ -146,12 +182,22 @@ class MoveDetailPage extends Page {
     concealedItems,
     otherRisks,
     escape: escapeRisk,
-  } = {}) {
+  }: {
+    selectedItems: string[]
+    violent: string
+    holdSeparately: string
+    selfHarm: string
+    concealedItems: string
+    otherRisks: string
+    escape: string
+  }) {
     if (selectedItems.length === 0) {
-      return t.expect(this.nodes.noRiskInformationMessage.exists).ok()
+      return t
+        .expect((this.nodes.noRiskInformationMessage as Selector).exists)
+        .ok()
     }
 
-    return this.checkSummaryList(this.nodes.riskInformation, {
+    return this.checkSummaryList(this.nodes.riskInformation as Selector, {
       Violent: violent,
       Escape: escapeRisk,
       'Must be held separately': holdSeparately,
@@ -171,17 +217,29 @@ class MoveDetailPage extends Page {
     otherHealth,
     specialVehicleRadio,
     specialVehicle,
-  } = {}) {
+  }: {
+    selectedItems: string[]
+    specialDietOrAllergy: string
+    healthIssue: string
+    medication: string
+    wheelchair: string
+    pregnant: string
+    otherHealth: string
+    specialVehicleRadio: string
+    specialVehicle: string
+  }) {
     // Special case to handle the yes/no explicit field
     if (specialVehicleRadio === 'Yes') {
       selectedItems.push('Requires special vehicle')
     }
 
     if (selectedItems.length === 0) {
-      return t.expect(this.nodes.noHealthInformationMessage.exists).ok()
+      return t
+        .expect((this.nodes.noHealthInformationMessage as Selector).exists)
+        .ok()
     }
 
-    return this.checkSummaryList(this.nodes.healthInformation, {
+    return this.checkSummaryList(this.nodes.healthInformation as Selector, {
       'Special diet or allergy': specialDietOrAllergy,
       'Health issue': healthIssue,
       Medication: medication,
@@ -192,47 +250,68 @@ class MoveDetailPage extends Page {
     })
   }
 
-  async checkAssessment(selector, selectedItems, labelMap) {
-    for (const key of selectedItems) {
-      const panel = selector
-        .find('.app-tag')
-        .withText(key.toUpperCase())
-        .parent('.app-panel')
-      const comment = labelMap[key]
-
-      // check answer panel exists
-      await t.expect(panel.exists).ok()
-
-      // if comment was entered, check it is displayed
-      if (comment) {
-        const commentPanel = selector.withText(comment)
-        await t.expect(commentPanel.exists).ok()
-      }
-    }
-  }
-
-  async checkUpdateLink(category, exists = true) {
-    const selector = this.nodes.getUpdateLink(category)
+  async checkUpdateLink(category: string, exists = true) {
+    const selector = (this.nodes.getUpdateLink as Function)(category)
     await t.expect(selector.exists).eql(exists)
-  }
-
-  async checkNoCancelLink() {
-    await this.checkCancelLink(false)
   }
 
   async checkCancelLink(exists = true) {
-    const selector = this.nodes.getCancelLink()
+    const selector = (this.nodes.getCancelLink as Function)()
     await t.expect(selector.exists).eql(exists)
   }
 
-  async checkNoUpdateLink(category) {
+  async checkNoUpdateLink(category: string) {
     await this.checkUpdateLink(category, false)
   }
 
-  async clickUpdateLink(category) {
-    const selector = this.nodes.getUpdateLink(category)
+  async clickUpdateLink(category: string) {
+    const selector = (this.nodes.getUpdateLink as Function)(category)
     await t.click(selector)
   }
-}
 
-export default MoveDetailPage
+  async clickCancelLodgingsLink() {
+    await t.click(this.nodes.cancelLodgingLink as Selector)
+  }
+
+  getLodgingCard(index: number) {
+    return (moveDetailPage.nodes.lodgesCards as Selector).nth(index)
+  }
+
+  getLodgingLocationValue(index: number) {
+    return this.getLodgingCard(index).find(
+      '.govuk-summary-list__row:nth-child(1) > .govuk-summary-list__value'
+    )
+  }
+
+  getLodgingDateValue(index: number) {
+    return this.getLodgingCard(index).find(
+      '.govuk-summary-list__row:nth-child(2) > .govuk-summary-list__value'
+    )
+  }
+
+  async clickUpdateLodgingLocationLink(index: number) {
+    await t.click(this.getLodgingLocationValue(index).find('a'))
+  }
+
+  async clickUpdateLodgingDateLink(index: number) {
+    await t.click(this.getLodgingDateValue(index).find('a'))
+  }
+
+  async checkLodgesInDetails(lodgeCount: number) {
+    await t.click(moveDetailPage.nodes.detailsTab as Selector)
+
+    if (lodgeCount) {
+      await t
+        .expect((moveDetailPage.nodes.lodgesTitle as Selector).innerText)
+        .eql('Overnight lodge details')
+      await t
+        .expect((moveDetailPage.nodes.lodgesCards as Selector).count)
+        .eql(lodgeCount)
+      return
+    }
+
+    await t
+      .expect((moveDetailPage.nodes.lodgesTitle as Selector).innerText)
+      .notEql('Overnight lodge details')
+  }
+}

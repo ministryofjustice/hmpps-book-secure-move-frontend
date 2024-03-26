@@ -8,6 +8,10 @@ import { setLodging } from '../../../../middleware'
 import UpdateBaseController from '../../../edit/controllers/base'
 
 export class BaseController extends UpdateBaseController {
+  constructor(options = {}) {
+    super(options)
+  }
+
   middlewareSetup() {
     super.middlewareSetup()
     // @ts-ignore // .use() does exist

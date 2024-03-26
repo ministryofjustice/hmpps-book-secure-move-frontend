@@ -6,6 +6,10 @@ import commonMiddleware from '../../../../../../common/middleware'
 import { BaseController } from './base'
 
 export class SetLocationController extends BaseController {
+  constructor(options = {}) {
+    super(options)
+  }
+
   middlewareSetup() {
     super.middlewareSetup()
     // @ts-ignore // #use does exist
@@ -32,9 +36,8 @@ export class SetLocationController extends BaseController {
       const { to_location_lodge: toLocationId } = req.sessionModel.toJSON()
 
       if (toLocationId) {
-        const locationDetail = await req.services.referenceData.getLocationById(
-          toLocationId
-        )
+        const locationDetail =
+          await req.services.referenceData.getLocationById(toLocationId)
 
         req.sessionModel.set('to_location_lodge', locationDetail)
       }

@@ -6,6 +6,10 @@ import { formatDate } from '../../../../../../config/nunjucks/filters'
 import { BaseController } from './base'
 
 export class SaveController extends BaseController {
+  constructor(options = {}) {
+    super(options)
+  }
+
   middlewareSetup() {
     super.middlewareSetup()
   }

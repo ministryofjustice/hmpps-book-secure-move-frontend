@@ -8,17 +8,16 @@ import ConfirmPersonEscortRecordPage from './confirm-person-escort-record'
 import CreateMovePage from './create-move'
 // @ts-ignore // TODO: convert to TS
 import DashboardPage from './dashboard'
-// @ts-ignore // TODO: convert to TS
-import MoveDetailPage from './move-detail'
-import { MoveLodgeLocationPage } from './move-lodge-location'
+import { LodgingCancelPage } from './lodging-cancel'
+import { MoveDetailPage } from './move-detail'
 import { MoveLodgeLengthPage } from './move-lodge-length'
+import { MoveLodgeLocationPage } from './move-lodge-location'
 import { MoveLodgeSavedPage } from './move-lodge-saved'
 // @ts-ignore // TODO: convert to TS
 import MoveTimelinePage from './move-timeline'
 // @ts-ignore // TODO: convert to TS
 import MovesDashboardPage from './moves-dashboard'
-// @ts-ignore // TODO: convert to TS
-import Page from './page'
+import { Page } from './page'
 // @ts-ignore // TODO: convert to TS
 import PopulationDashboardPage from './population-dashboard'
 // @ts-ignore // TODO: convert to TS
@@ -28,6 +27,7 @@ import PopulationWeeklyPage from './population-weekly'
 
 export const page = new Page()
 export const allocationJourney = new AllocationJourney()
+export const lodgingCancelPage = new LodgingCancelPage()
 export const moveDetailPage = new MoveDetailPage()
 export const moveLodgeLocationPage = new MoveLodgeLocationPage()
 export const moveLodgeLengthPage = new MoveLodgeLengthPage()

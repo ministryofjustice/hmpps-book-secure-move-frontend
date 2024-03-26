@@ -1,14 +1,18 @@
 import { differenceInDays, parseISO } from 'date-fns'
 
+import { BasmError } from '../../../../../../common/types/basm_error'
 import { BasmRequest } from '../../../../../../common/types/basm_request'
 import i18n from '../../../../../../config/i18n'
 import { formatDateWithDay } from '../../../../../../config/nunjucks/filters'
 
-export function SavedController(req: BasmRequest, res: any) {
-  const { lodging } = req
+export function SavedController(req: BasmRequest, res: any, next: any) {
+  const lodging = req.move.lodgings!.find(l => l.id === req.params.lodgingId)
 
   if (!lodging) {
-    return res.status(404).send('lodging not found')
+    const error = new Error('Lodging not found') as BasmError
+    error.statusCode = 404
+
+    return next(error)
   }
 
   const lodgeLocation = lodging.location

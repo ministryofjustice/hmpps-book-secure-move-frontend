@@ -4,6 +4,10 @@ import { parseISO } from 'date-fns'
 import { BaseController } from './base'
 
 export class SetLengthController extends BaseController {
+  constructor(options = {}) {
+    super(options)
+  }
+
   middlewareSetup() {
     super.middlewareSetup()
     // @ts-ignore // .use() does exist

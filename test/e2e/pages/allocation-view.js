@@ -5,7 +5,7 @@ import {
   oxfordJoin,
 } from '../../../config/nunjucks/filters'
 
-import Page from './page'
+import { Page } from './page'
 
 class AllocationViewPage extends Page {
   constructor() {

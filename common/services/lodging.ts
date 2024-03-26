@@ -74,9 +74,9 @@ interface NewResponse {
 interface UpdateParams {
   moveId: string
   id: string
-  locationId: string
-  startDate: string
-  endDate: string
+  locationId?: string
+  startDate?: string
+  endDate?: string
 }
 
 interface UpdateResponse {

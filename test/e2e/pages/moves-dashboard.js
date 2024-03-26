@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe'
 
-import Page from './page'
+import { Page } from './page'
 
 class MovesDashboardPage extends Page {
   constructor() {

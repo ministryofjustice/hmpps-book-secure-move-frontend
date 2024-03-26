@@ -1,6 +1,6 @@
 import { Selector, t } from 'testcafe'
 
-import Page from './page'
+import { Page } from './page'
 
 class PopulationDashboardPage extends Page {
   constructor() {

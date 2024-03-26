@@ -5,7 +5,7 @@ import AllocationCriteriaPage from './allocation-criteria'
 import AllocationDetailsPage from './allocation-details'
 import AllocationDetailsEditPage from './allocation-details-edit'
 import AllocationViewPage from './allocation-view'
-import Page from './page'
+import { Page } from './page'
 
 import { allocationJourney } from './index'
 
