@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { formatISO, parseISO } from 'date-fns'
+import { formatISO } from 'date-fns'
 import sinon from 'sinon'
 
 import { BasmRequest } from '../../../../../../common/types/basm_request'

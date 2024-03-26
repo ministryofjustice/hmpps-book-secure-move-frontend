@@ -1,12 +1,12 @@
 import { addDays } from 'date-fns'
 import { fixture, Selector } from 'testcafe'
 
-// @ts-ignore // TODO: convert to TS
-import { createMove } from '../../_move'
-// @ts-ignore // TODO: convert to TS
-import { pmuUser } from '../../_roles'
-// @ts-ignore // TODO: convert to TS
-import { home } from '../../_routes'
+// @ts-expect-error // TODO: convert to TS
+import { createMove } from '../../_move' // eslint-disable-line  import/no-unresolved
+// @ts-expect-error // TODO: convert to TS
+import { pmuUser } from '../../_roles' // eslint-disable-line  import/no-unresolved
+// @ts-expect-error // TODO: convert to TS
+import { home } from '../../_routes' // eslint-disable-line  import/no-unresolved
 import {
   lodgingCancelPage,
   moveDetailPage,
