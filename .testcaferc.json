@@ -9,5 +9,6 @@
     "successThreshold": 2,
     "attemptLimit": 5
   },
-  "stopOnFirstFail": true
+  "stopOnFirstFail": true,
+  "disableNativeAutomation": "true"
 }
