@@ -46,13 +46,20 @@ async function testLodges(t: any, count: number, length: number) {
   // Check all lodges were created
   await moveDetailPage.checkLodgesInDetails(count)
 
+  // eslint-disable-next-line no-console
+  console.log('locations: ', lodgingLocations)
+
   // Test that amend location works
   for (let i = 0; i < count; i++) {
     // Amend location
     await moveDetailPage.clickUpdateLodgingLocationLink(i)
+    // eslint-disable-next-line no-console
+    console.log(i, lodgingLocations[i])
     lodgingLocations[i] = await moveLodgeLocationPage.pickRandomLocation(
       lodgingLocations[i]
     )
+    // eslint-disable-next-line no-console
+    console.log(i, lodgingLocations[i])
 
     // Check location was amended
     await moveLodgeSavedPage.checkUpdateLodgeSuccessMessage(
