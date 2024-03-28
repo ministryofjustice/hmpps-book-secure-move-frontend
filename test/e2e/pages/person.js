@@ -2,7 +2,7 @@ import { Selector } from 'testcafe'
 
 import * as filters from '../../../config/nunjucks/filters'
 
-import Page from './page'
+import { Page } from './page'
 
 class PersonPage extends Page {
   constructor() {

@@ -4,7 +4,7 @@ import { Selector, t } from 'testcafe'
 
 import { fillInForm } from '../_helpers'
 
-import Page from './page'
+import { Page } from './page'
 
 class AllocationDetailsPage extends Page {
   constructor() {
@@ -46,6 +46,10 @@ class AllocationDetailsPage extends Page {
         type: 'autocomplete',
       },
       toLocation: {
+        value: {
+          type: 'random',
+          except: locationValue,
+        },
         selector: this.fields.toLocation,
         type: 'autocomplete',
       },

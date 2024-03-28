@@ -4,21 +4,31 @@ import sinon from 'sinon'
 import { BasmRequest } from '../../../../../../common/types/basm_request'
 import { BasmResponse } from '../../../../../../common/types/basm_response'
 import { BasmRequestFactory } from '../../../../../../factories/basm_request'
+import { LocationFactory } from '../../../../../../factories/location'
 import { LodgingFactory } from '../../../../../../factories/lodging'
+import { MoveFactory } from '../../../../../../factories/move'
 import steps from '../steps'
 
-import { itBehavesLikeALodgingNewController } from './base.test'
-import { SaveController } from './save'
+import { BaseController } from './base'
+import { itBehavesLikeALodgingEditController } from './base.test'
+import { SetLocationController } from './set-location'
 
-describe('save lodging controller', function () {
-  let controller: SaveController
-  const lodging = LodgingFactory.build({ start_date: '2024-01-01' })
+describe('set lodging location controller', function () {
+  let controller: any
+  const location = LocationFactory.build()
+  const lodging = LodgingFactory.build({
+    location,
+    start_date: '2024-01-01',
+  })
   const lodgingService = {
     create: sinon.stub().resolves(lodging),
   }
   let req: BasmRequest
   let res: BasmResponse
   let nextSpy: sinon.SinonSpy
+  const referenceDataStub = {
+    getLocationById: sinon.stub(),
+  }
 
   const reqDefaults = () => ({
     form: {
@@ -37,13 +47,19 @@ describe('save lodging controller', function () {
         lodge_start_date: lodging.start_date,
       },
       reset: sinon.stub(),
+      set: sinon.stub(),
+      toJSON: () => ({
+        to_location_lodge: location.id,
+      }),
     },
     journeyModel: {
       reset: sinon.stub(),
     },
     services: {
       lodging: lodgingService,
+      referenceData: referenceDataStub,
     },
+    move: MoveFactory.build({ date: '2054-01-01' }),
   })
 
   beforeEach(function () {
@@ -59,36 +75,33 @@ describe('save lodging controller', function () {
 
     nextSpy = sinon.spy()
 
-    controller = new SaveController({ route: '/' })
+    BaseController.prototype.middlewareSetup = sinon.stub()
+    controller = new SetLocationController({ route: '/' })
+
+    sinon.stub(controller, 'use')
   })
 
   describe('#successHandler', function () {
-    context('when the lodging is successfully created', function () {
-      beforeEach(async function () {
+    context('when the location is found', function () {
+      beforeEach(function () {
+        referenceDataStub.getLocationById.resolves(location)
+      })
+
+      it('sets the location in the session model', async function () {
         await controller.successHandler(req, res, nextSpy)
-      })
 
-      it('creates the lodging via the API', function () {
-        expect(lodgingService.create).to.have.been.calledWithExactly({
-          moveId: req.move.id,
-          locationId: lodging.location.id,
-          startDate: '2024-01-01',
-          endDate: '2024-01-03',
-        })
-      })
-
-      it('should redirect to the saved page', function () {
-        expect(res.redirect).to.have.been.calledWith(
-          `/move/${req.move.id}/lodging/new/${lodging.id}/saved`
+        expect(req.sessionModel.set).to.have.been.calledWithExactly(
+          'to_location_lodge',
+          location
         )
       })
     })
 
     context('when the creation fails', function () {
-      const errorMock = new Error('422')
+      const errorMock = new Error('404')
 
       beforeEach(async function () {
-        req.services.lodging.create = sinon.stub().throws(errorMock)
+        referenceDataStub.getLocationById.throws(errorMock)
         await controller.successHandler(req, res, nextSpy)
       })
 
@@ -98,5 +111,5 @@ describe('save lodging controller', function () {
     })
   })
 
-  itBehavesLikeALodgingNewController(SaveController)
+  itBehavesLikeALodgingEditController(SetLocationController)
 })

@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe'
 
-import MoveDetailPage from './move-detail'
+import { MoveDetailPage } from './move-detail'
 
 class MoveTimelinePage extends MoveDetailPage {
   constructor() {

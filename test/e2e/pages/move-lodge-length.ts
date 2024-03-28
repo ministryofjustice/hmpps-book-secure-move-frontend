@@ -1,9 +1,9 @@
-import { Selector, t } from 'testcafe'
-// @ts-ignore
-import { fillInForm, fillTextField } from '../_helpers'
+import { Selector } from 'testcafe'
 
-// @ts-ignore // TODO: convert to TS
-import Page from './page'
+// @ts-ignore
+import { fillInForm } from '../_helpers'
+
+import { Page } from './page'
 
 export class MoveLodgeLengthPage extends Page {
   nodes: { [key: string]: Selector }
@@ -20,23 +20,34 @@ export class MoveLodgeLengthPage extends Page {
     }
   }
 
-  async pickOneDay() {
+  async pickDays(days: number) {
+    if (days === 1) {
+      await this.pickOneDay()
+    } else if (days === 2) {
+      await this.pickTwoDays()
+    } else {
+      await this.pickCustomDays(days.toString())
+    }
+  }
+
+  private async pickOneDay() {
     await this.fillField('One')
     // @ts-ignore
     await this.submitForm()
   }
-  async pickTwoDays() {
+
+  private async pickTwoDays() {
     await this.fillField('Two')
     // @ts-ignore
     await this.submitForm()
   }
 
-  async pickCustomDays(customLength: string) {
+  private async pickCustomDays(customLength: string) {
     await this.fillField('Other')
     const custom = {
       fromLocation: {
         selector: this.nodes.customLengthInput,
-        value: customLength
+        value: customLength,
       },
     }
     await fillInForm(custom)
@@ -44,15 +55,14 @@ export class MoveLodgeLengthPage extends Page {
     await this.submitForm()
   }
 
-  async fillField(days: string) {
+  private async fillField(days: string) {
     await this.nodes.lengthInput.exists
     const fieldsToFill = {
       fromLocation: {
         selector: this.nodes.lengthInput,
         type: 'radio',
-        value: days
+        value: days,
       },
-
     }
     return fillInForm(fieldsToFill)
   }

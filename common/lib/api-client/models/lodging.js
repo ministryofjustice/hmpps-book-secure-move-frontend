@@ -6,6 +6,7 @@ module.exports = {
       jsonApi: 'hasOne',
       type: 'locations',
     },
+    status: '',
     cancellation_reason: '',
     cancellation_reason_comment: '',
   },

@@ -1,26 +1,29 @@
 import { expect } from 'chai'
+import { addDays, parseISO } from 'date-fns'
 import sinon from 'sinon'
 
 import { BasmRequest } from '../../../../../../common/types/basm_request'
 import { BasmResponse } from '../../../../../../common/types/basm_response'
+import { formatDate } from '../../../../../../config/nunjucks/filters'
 import { BasmRequestFactory } from '../../../../../../factories/basm_request'
 import { LodgingFactory } from '../../../../../../factories/lodging'
 import steps from '../steps'
 
-import { itBehavesLikeALodgingNewController } from './base.test'
+import { itBehavesLikeALodgingEditController } from './base.test'
 import { SaveController } from './save'
 
-describe('save lodging controller', function () {
+describe('save edit lodging controller', function () {
   let controller: SaveController
   const lodging = LodgingFactory.build({ start_date: '2024-01-01' })
   const lodgingService = {
-    create: sinon.stub().resolves(lodging),
+    update: sinon.stub().resolves(lodging),
   }
   let req: BasmRequest
   let res: BasmResponse
   let nextSpy: sinon.SinonSpy
 
   const reqDefaults = () => ({
+    lodging: LodgingFactory.build(),
     form: {
       options: {
         fields: {},
@@ -34,7 +37,6 @@ describe('save lodging controller', function () {
     sessionModel: {
       attributes: {
         to_location_lodge: lodging.location,
-        lodge_start_date: lodging.start_date,
       },
       reset: sinon.stub(),
     },
@@ -63,32 +65,35 @@ describe('save lodging controller', function () {
   })
 
   describe('#successHandler', function () {
-    context('when the lodging is successfully created', function () {
+    context('when the lodging is successfully edited', function () {
       beforeEach(async function () {
         await controller.successHandler(req, res, nextSpy)
       })
 
-      it('creates the lodging via the API', function () {
-        expect(lodgingService.create).to.have.been.calledWithExactly({
+      it('edits the lodging via the API', function () {
+        expect(lodgingService.update).to.have.been.calledWithExactly({
           moveId: req.move.id,
+          id: req.lodging!.id,
           locationId: lodging.location.id,
-          startDate: '2024-01-01',
-          endDate: '2024-01-03',
+          endDate: formatDate(
+            addDays(parseISO(req.lodging!.start_date), 2),
+            'yyyy-MM-dd'
+          ),
         })
       })
 
       it('should redirect to the saved page', function () {
         expect(res.redirect).to.have.been.calledWith(
-          `/move/${req.move.id}/lodging/new/${lodging.id}/saved`
+          `/move/${req.move.id}/lodging/${lodging.id}/edit/saved`
         )
       })
     })
 
-    context('when the creation fails', function () {
+    context('when the edit fails', function () {
       const errorMock = new Error('422')
 
       beforeEach(async function () {
-        req.services.lodging.create = sinon.stub().throws(errorMock)
+        req.services.lodging.update = sinon.stub().throws(errorMock)
         await controller.successHandler(req, res, nextSpy)
       })
 
@@ -98,5 +103,5 @@ describe('save lodging controller', function () {
     })
   })
 
-  itBehavesLikeALodgingNewController(SaveController)
+  itBehavesLikeALodgingEditController(SaveController)
 })

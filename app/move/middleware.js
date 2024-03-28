@@ -37,6 +37,21 @@ module.exports = {
     }
   },
 
+  setLodging: (req, res, next) => {
+    const lodgingId = req.params.lodgingId
+
+    if (!lodgingId) {
+      return next()
+    }
+
+    try {
+      req.lodging = req.move.lodgings?.find(l => l.id === lodgingId)
+      next()
+    } catch (error) {
+      next(error)
+    }
+  },
+
   setPersonEscortRecord: (req, res, next) => {
     const personEscortRecord = req.move?.profile?.person_escort_record
 

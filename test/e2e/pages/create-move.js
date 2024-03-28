@@ -8,7 +8,7 @@ import * as parsers from '../../../common/parsers'
 import * as filters from '../../../config/nunjucks/filters'
 import { fillInForm, generatePerson } from '../_helpers'
 
-import Page from './page'
+import { Page } from './page'
 
 class CreateMovePage extends Page {
   constructor() {

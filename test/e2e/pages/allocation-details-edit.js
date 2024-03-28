@@ -4,7 +4,7 @@ import { Selector, t } from 'testcafe'
 
 import { fillInForm } from '../_helpers'
 
-import Page from './page'
+import { Page } from './page'
 
 class AllocationDetailsEditPage extends Page {
   constructor() {

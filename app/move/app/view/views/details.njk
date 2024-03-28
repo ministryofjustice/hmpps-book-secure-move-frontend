@@ -80,7 +80,8 @@
                   text: "Location"
                  },
                  value: {
-                  text: lodging.location.title
+                  html: lodging.location.title
+                    + (" <a href=\"/move/" + moveId + "/lodging/" + lodging.id + "/edit/location\">change</a>" if lodging.canEdit else "")
                  }
                },
                {
@@ -88,7 +89,8 @@
                   text: "Date"
                  },
                  value: {
-                  text: (lodging.start_date | formatDateWithDay) + " to " + (lodging.end_date | formatDateWithDay)
+                  html: (lodging.start_date | formatDateWithDay) + " to " + (lodging.end_date | formatDateWithDay)
+                    + (" <a href=\"/move/" + moveId + "/lodging/" + lodging.id + "/edit/length\">change</a>" if lodging.canEdit else "")
                  }
                }
              ]

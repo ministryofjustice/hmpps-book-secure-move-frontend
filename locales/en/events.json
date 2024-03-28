@@ -118,8 +118,17 @@
   },
   "LodgingUpdate": {
     "heading": "Lodging updated",
-    "description": "Lodging proposed at {{location.title}} on {{start_date, formatDateWithDay}}",
-    "description_long": "Lodging proposed at {{location.title}} between {{start_date, formatDateWithDay}} and {{end_date, formatDateWithDay}}"
+    "description": "Lodging updated",
+    "description_start_date": "$t(events::LodgingUpdate.start_date)",
+    "description_start_date_and_end_date": "$t(events::LodgingUpdate.start_date)<br>$t(events::LodgingUpdate.end_date)",
+    "description_start_date_and_location": "$t(events::LodgingUpdate.start_date)<br>$t(events::LodgingUpdate.location)",
+    "description_start_date_and_end_date_location": "$t(events::LodgingUpdate.start_date)<br>$t(events::LodgingUpdate.end_date)<br>$t(events::LodgingUpdate.location)",
+    "description_end_date": "$t(events::LodgingUpdate.end_date)",
+    "description_end_date_and_location": "$t(events::LodgingUpdate.end_date)<br>$t(events::LodgingUpdate.location)",
+    "description_location": "$t(events::LodgingUpdate.location)",
+    "start_date": "Start date changed from {{old_start_date, formatDateWithDay}} to {{start_date, formatDateWithDay}}",
+    "end_date": "End date changed from {{old_end_date, formatDateWithDay}} to {{end_date, formatDateWithDay}}",
+    "location": "Location changed from {{old_location.title}} to {{location.title}}"
   },
   "MoveAccept": {
     "statusChange": true,

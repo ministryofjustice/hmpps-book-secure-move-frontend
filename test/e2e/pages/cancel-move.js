@@ -2,7 +2,7 @@ import { Selector } from 'testcafe'
 
 import { fillInForm } from '../_helpers'
 
-import Page from './page'
+import { Page } from './page'
 
 class CancelMovePage extends Page {
   constructor() {

@@ -1,4 +1,4 @@
-import { mapValues, omitBy, isUndefined } from 'lodash'
+import { isUndefined, mapValues, omitBy } from 'lodash'
 
 import { BaseService } from './base'
 
@@ -74,9 +74,9 @@ interface NewResponse {
 interface UpdateParams {
   moveId: string
   id: string
-  locationId: string
-  startDate: string
-  endDate: string
+  locationId?: string
+  startDate?: string
+  endDate?: string
 }
 
 interface UpdateResponse {
@@ -186,7 +186,6 @@ export class LodgingService extends BaseService {
     moveId,
     id,
     locationId,
-    startDate,
     endDate,
   }: UpdateParams): Promise<APILodging> {
     if (!moveId) {
@@ -199,12 +198,10 @@ export class LodgingService extends BaseService {
 
     return this.apiClient
       .one('move', moveId)
-      .update(
-        'lodging',
+      .one('lodging', id)
+      .patch(
         this.format({
-          id,
-          location_id: locationId,
-          start_date: startDate,
+          location: { id: locationId },
           end_date: endDate,
         })
       )

@@ -3,11 +3,11 @@ import { ClientFunction, Selector, t } from 'testcafe'
 
 import { E2E } from '../../../config'
 
-export default class Page {
-  constructor() {
-    this.baseUrl = E2E.BASE_URL
-    this.uuidRegex = /[\w]{8}(-[\w]{4}){3}-[\w]{12}/
-    this.nodes = {
+export class Page {
+  baseUrl = E2E.BASE_URL
+  uuidRegex = /\w{8}(?:-\w{4}){3}-\w{12}/
+  nodes: { [key: string]: Selector | string | ((...args: any[]) => Selector) } =
+    {
       locationMeta: Selector('meta').withAttribute('name', 'location'),
       appHeaderOrganisation: Selector('.app-header__logotype').withExactText(
         'HMPPS'
@@ -36,16 +36,16 @@ export default class Page {
       dateSelectInput: '[name="date_select"]',
       inactiveLocations: Selector('.govuk-details__summary-text'),
     }
-    this.getCurrentUrl = ClientFunction(() => window.location.href)
-  }
+
+  getCurrentUrl = ClientFunction(() => window.location.href)
 
   /**
    * Submit a form
    *
    * @returns {Promise}
    */
-  submitForm() {
-    return t.doubleClick(this.nodes.submitButton)
+  submitForm(): Promise<any> {
+    return t.doubleClick(this.nodes.submitButton as Selector)
   }
 
   /**
@@ -54,23 +54,23 @@ export default class Page {
    * @param {Number} position Unbounded index of location to choose
    * @returns {Promise}
    */
-  async chooseLocation({ position } = {}) {
+  async chooseLocation({ position }: { position?: number } = {}): Promise<any> {
     await t
       .expect(this.getCurrentUrl())
       .contains('/locations')
-      .expect(this.nodes.locationsList.count)
+      .expect((this.nodes.locationsList as Selector).count)
       .notEql(0, { timeout: 15000 })
 
-    if (await this.nodes.inactiveLocations.exists) {
-      await t.click(this.nodes.inactiveLocations)
+    if (await (this.nodes.inactiveLocations as Selector).exists) {
+      await t.click(this.nodes.inactiveLocations as Selector)
     }
 
     if (isUndefined(position)) {
-      const count = await this.nodes.locationsList.count
+      const count = await (this.nodes.locationsList as Selector).count
       position = Math.floor(Math.random() * count)
     }
 
-    await t.click(this.nodes.locationsList.nth(position))
+    await t.click((this.nodes.locationsList as Selector).nth(position))
 
     await t.expect(this.getCurrentUrl()).notContains('/locations')
   }
@@ -80,17 +80,17 @@ export default class Page {
    *
    * @returns {Promise}
    */
-  async chooseRegion() {
+  async chooseRegion(): Promise<any> {
     await t
       .expect(this.getCurrentUrl())
       .contains('/locations')
-      .expect(this.nodes.regionsList.count)
+      .expect((this.nodes.regionsList as Selector).count)
       .notEql(0, { timeout: 15000 })
 
-    const count = await this.nodes.regionsList.count
+    const count = await (this.nodes.regionsList as Selector).count
     const randomItem = Math.floor(Math.random() * count)
 
-    await t.click(this.nodes.regionsList.nth(randomItem))
+    await t.click((this.nodes.regionsList as Selector).nth(randomItem))
 
     await t.expect(this.getCurrentUrl()).notContains('/locations')
   }
@@ -100,7 +100,7 @@ export default class Page {
    *
    * @returns {Promise}
    */
-  signIn(role) {
+  signIn(role: { username: string; password: string }): Promise<any> {
     return t
       .expect(this.getCurrentUrl())
       .contains('/auth/')
@@ -112,36 +112,20 @@ export default class Page {
   }
 
   /**
-   * Select "all locations"
-   *
-   * @returns {Promise}
-   */
-  chooseAllLocations() {
-    const allLocationsLink = Selector('a').withAttribute(
-      'href',
-      '/locations/all'
-    )
-    return t.click(allLocationsLink)
-  }
-
-  /**
    * Get definition list item value by key text
    *
    * @param {Selector} dl - definition list selector
    * @param {string} key - definition list item key text
    * @returns {Promise<string>} - definition list item description text
    */
-  getDlDefinitionByKey(dl, key) {
+  getDlDefinitionByKey(dl: Selector, key: string): Promise<string> {
     return dl.find('dt').withText(key).sibling('dd').innerText
   }
 
-  scrollToBottom() {
-    return ClientFunction(function () {
-      window.scrollBy(0, 1000)
-    })
-  }
-
-  async checkSummaryList(selector, labelMap) {
+  async checkSummaryList(
+    selector: Selector,
+    labelMap: { [key: string]: RegExp | string }
+  ) {
     for (const [key, value] of Object.entries(labelMap)) {
       if (value) {
         if (value instanceof RegExp) {
@@ -153,15 +137,15 @@ export default class Page {
     }
   }
 
-  checkBanner({ heading, content } = {}) {
+  checkBanner({ heading, content }: { heading: string; content: string }) {
     return t
-      .expect(this.nodes.bannerHeading.innerText)
+      .expect((this.nodes.bannerHeading as Selector).innerText)
       .contains(heading, 'Banner contains text')
-      .expect(this.nodes.bannerContent.innerText)
+      .expect((this.nodes.bannerContent as Selector).innerText)
       .contains(content, 'Banner content contains text')
   }
 
-  async checkErrorSummary({ errorList }) {
+  async checkErrorSummary({ errorList }: { errorList: Selector[] }) {
     for (const error of errorList) {
       await t.expect(error.exists).ok()
     }

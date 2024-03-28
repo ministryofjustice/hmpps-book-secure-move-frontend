@@ -3,6 +3,7 @@ import { LodgingService } from '../services/lodging'
 
 import { Allocation } from './allocation'
 import { Journey } from './journey'
+import { Lodging } from './lodging'
 import { Move } from './move'
 import { Service } from './service'
 import { SessionModel } from './session_model'
@@ -24,6 +25,7 @@ export interface BasmRequest extends Express.Request {
   journeyModel: SessionModel
   journeys: Journey[]
   move: Move
+  lodging?: Lodging
   params: any
   session: {
     save: () => void

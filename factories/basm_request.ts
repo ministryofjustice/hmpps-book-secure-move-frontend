@@ -33,11 +33,9 @@ export const defaultParams = {
   t: I18n.t,
 }
 
-export const BasmRequestFactory = Factory.define<BasmRequest>(
-  () => ({
-    ...defaultParams,
-    getMove: function() {
-      return this.move
-    },
-  })
-)
+export const BasmRequestFactory = Factory.define<BasmRequest>(() => ({
+  ...defaultParams,
+  getMove: function () {
+    return this.move
+  },
+}))
