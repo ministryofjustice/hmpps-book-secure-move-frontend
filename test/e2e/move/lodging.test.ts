@@ -22,6 +22,8 @@ fixture('A move without any lodges').beforeEach(async t => {
 })
 
 async function testLodges(t: any, count: number, length: number) {
+  // eslint-disable-next-line no-console
+  console.log(`Testing that lodges work with ${count} lodges of ${length} days`)
   const lodgingLocations: string[] = []
 
   for (let i = 0; i < count; i++) {
