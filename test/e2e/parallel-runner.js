@@ -176,7 +176,7 @@ if (debugOnFail) {
 const stopOnFirstFail =
   args['fail-fast'] || E2E_FAIL_FAST ? '--stop-on-first-fail' : ''
 const killOthers = stopOnFirstFail ? ['failure'] : undefined
-const agent = `${args.headless} ? "'${args.agent} --headless=new'" : '${args.agent}'`
+const agent = args.headless ? "'${args.agent} --headless=new'" : '${args.agent}'
 const color = args.color ? '--color' : ''
 const testcafeArgs = args.testcafe || ''
 const skip = args.skip
