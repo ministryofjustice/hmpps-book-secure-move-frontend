@@ -143,7 +143,7 @@ describe('lodging service', function () {
           .stub(apiClient, 'patch')
           .withArgs({
             end_date: '2024-01-02',
-            location_id: 'a15957ec-c983-4d29-98e4-334060b16dca',
+            location: { id: 'a15957ec-c983-4d29-98e4-334060b16dca' },
           })
           .resolves({ data: lodging })
       })
