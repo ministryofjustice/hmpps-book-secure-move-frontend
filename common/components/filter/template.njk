@@ -1,9 +1,9 @@
 <nav class="app-filter {{ params.classes if params.classes }}">
-  <ul class="app-filter__list" role="tablist">
+  <ul class="app-filter__list">
     {% for item in params.items %}
       <li
         class="app-filter__list-item {{ 'app-filter__list-item--active' if item.active }}"
-        role="tab"
+        role="link"
         aria-selected="{{ 'true' if item.active else 'false' }}"
         {% if item.active %}
         tabindex="0"
