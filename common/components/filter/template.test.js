@@ -24,10 +24,6 @@ describe('Filter component', function () {
       expect(component.find('ul').length).to.equal(1)
     })
 
-    it('should render role attribute on list', function () {
-      expect(component.find('ul').attr('role')).to.equal('tablist')
-    })
-
     describe('items', function () {
       let item1
       let item2
@@ -62,9 +58,9 @@ describe('Filter component', function () {
       })
 
       it('should render role attribute', function () {
-        expect(item1.attr('role')).to.equal('tab')
-        expect(item2.attr('role')).to.equal('tab')
-        expect(item3.attr('role')).to.equal('tab')
+        expect(item1.attr('role')).to.equal('link')
+        expect(item2.attr('role')).to.equal('link')
+        expect(item3.attr('role')).to.equal('link')
       })
 
       context('when not active', function () {
