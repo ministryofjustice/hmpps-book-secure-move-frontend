@@ -255,6 +255,8 @@ module.exports = async () => {
             'www.google-analytics.com',
             'region1.google-analytics.com',
             'api.os.uk',
+            'region1.analytics.google.com',
+            'stats.g.doubleclick.net',
           ],
           imgSrc: [
             "'self'",
@@ -263,6 +265,7 @@ module.exports = async () => {
             'api.os.uk',
             'data: blob:',
             'images.ctfassets.net',
+            'www.google.co.uk/ads/ga-audiences',
           ],
           fontSrc: ["'self'", 'fonts.googleapis.com'],
           styleSrc: ["'self'", "'unsafe-inline'", 'cdn.jsdelivr.net'],
