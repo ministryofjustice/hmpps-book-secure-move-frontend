@@ -246,6 +246,7 @@ module.exports = {
       'to_location_secure_training_centre',
       'to_location_secure_childrens_home',
       'to_location_secure_approved_premises',
+      'to_location_secure_extradition',
       'prison_recall_comments',
       'video_remand_comments',
     ],

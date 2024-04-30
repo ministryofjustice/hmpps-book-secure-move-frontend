@@ -56,6 +56,11 @@ const moveType = {
       text: 'fields::move_type.items.approved_premises.label',
       conditional: 'to_location_approved_premises',
     },
+    {
+      value: 'extradition',
+      text: 'fields::move_type.items.extradtion.label',
+      conditional: 'to_location_extradition',
+    },
   ],
 }
 

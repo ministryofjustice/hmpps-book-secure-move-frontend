@@ -314,6 +314,7 @@ export const FEATURE_FLAGS = {
     .split(',')
     .filter(supplier => supplier != '')
     .map(supplier => supplier.trim()),
+  EXTRADITION_MOVES: /true/i.test(process.env.FEATURE_FLAG_EXTRADITION_MOVES || ''),
 }
 export const FRAMEWORKS = {
   CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,

@@ -66,21 +66,30 @@ class MoveDetailsController extends CreateBaseController {
       return true
     }
 
-    const move = req.getMove()
-    const locationId = move.from_location?.id || move.from_location
-    const location = await locationService.findById(req, locationId, true)
+    const location = await this.getMoveLocation(req)
 
-    if (
-      location.suppliers
-        .map(supplier => supplier.key)
-        .some(supplier =>
-          FEATURE_FLAGS.AP_DISABLED_SUPPLIERS.includes(supplier)
-        )
-    ) {
+    return !location.suppliers
+      .map(supplier => supplier.key)
+      .some(supplier => FEATURE_FLAGS.AP_DISABLED_SUPPLIERS.includes(supplier))
+  }
+
+  async extraditionMovesAllowed(req) {
+    if (!FEATURE_FLAGS.EXTRADITION_MOVES) {
       return false
     }
 
-    return true
+    if (!this.isFromGivenLocationType(req, 'prison')) {
+      return false
+    }
+
+    const location = await this.getMoveLocation(req)
+    return location.extradition_capable
+  }
+
+  async getMoveLocation(req) {
+    const move = req.getMove()
+    const locationId = move.from_location?.id || move.from_location
+    return await locationService.findById(req, locationId, true)
   }
 
   async setMoveTypes(req, res, next) {
@@ -104,6 +113,16 @@ class MoveDetailsController extends CreateBaseController {
         if (!canApMove) {
           permittedMoveTypes = permittedMoveTypes.filter(
             moveType => moveType !== 'approved_premises'
+          )
+        }
+      }
+
+      if (permittedMoveTypes.find(moveType => moveType === 'extradition')) {
+        const canExtradite = await this.extraditionMovesAllowed(req)
+
+        if (!canExtradite) {
+          permittedMoveTypes = permittedMoveTypes.filter(
+            moveType => moveType !== 'extradition'
           )
         }
       }
