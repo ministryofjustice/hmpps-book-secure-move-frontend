@@ -139,6 +139,10 @@ describe('Move controllers', function () {
                       value: 'approved_premises',
                       conditional: 'to_location_approved_premises',
                     },
+                    {
+                      value: 'extradition',
+                      conditional: 'to_location_extradition',
+                    },
                   ],
                 },
                 to_location_court_appearance: {},
@@ -400,6 +404,10 @@ describe('Move controllers', function () {
                       value: 'video_remand',
                       conditional: 'additional_information',
                     },
+                    {
+                      value: 'approved_premises',
+                      conditional: 'to_location_approved_premises',
+                    },
                   ],
                 },
                 to_location_court_appearance: {},
@@ -457,6 +465,10 @@ describe('Move controllers', function () {
                     {
                       value: 'video_remand',
                       conditional: 'additional_information',
+                    },
+                    {
+                      value: 'approved_premises',
+                      conditional: 'to_location_approved_premises',
                     },
                   ],
                 },
