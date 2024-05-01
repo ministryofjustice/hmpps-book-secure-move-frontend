@@ -25,6 +25,7 @@ generic-service:
     PERSON_ESCORT_RECORD_FEEDBACK_URL: "#"
     SENTRY_ENVIRONMENT: "staging"
     SERVER_HOST: "hmpps-book-secure-move-frontend-staging.apps.cloud-platform.service.justice.gov.uk"
+    FEATURE_FLAG_EXTRADITION_MOVES: "true"
 
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
