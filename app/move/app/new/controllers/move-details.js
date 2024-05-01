@@ -117,7 +117,7 @@ class MoveDetailsController extends CreateBaseController {
         }
       }
 
-      if (permittedMoveTypes.find(moveType => moveType === 'extradition')) {
+      if (permittedMoveTypes.includes('extradition')) {
         const canExtradite = await this.extraditionMovesAllowed(req)
 
         if (!canExtradite) {
