@@ -30,7 +30,7 @@ describe('Move controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(8)
+        expect(controller.use.callCount).to.equal(9)
       })
 
       it('should call setMoveType middleware', function () {
@@ -40,7 +40,7 @@ describe('Move controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(commonMiddleware.setLocationItems.callCount).to.equal(7)
+        expect(commonMiddleware.setLocationItems.callCount).to.equal(8)
       })
 
       it('should call setLocationItems middleware to set AP locations', function () {
@@ -95,6 +95,12 @@ describe('Move controllers', function () {
           'secure_training_centre',
           'to_location_secure_training_centre'
         )
+      })
+
+      it('should call setLocationItems middleware to set extradition locations', function () {
+        expect(
+          commonMiddleware.setLocationItems.getCall(7)
+        ).to.have.been.calledWith('police', 'to_location_extradition', true)
       })
     })
 

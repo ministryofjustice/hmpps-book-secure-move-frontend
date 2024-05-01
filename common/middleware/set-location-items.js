@@ -12,7 +12,7 @@ const getLocationItems = (location, locations) => {
   )
 }
 
-function setLocationItems(locationTypes, fieldName) {
+function setLocationItems(locationTypes, fieldName, extradition) {
   return async (req, res, next) => {
     const { fields } = req.form.options
 
@@ -25,8 +25,11 @@ function setLocationItems(locationTypes, fieldName) {
         locationTypes = [locationTypes]
       }
 
-      const locations =
-        await req.services.referenceData.getLocationsByType(locationTypes)
+      const locations = extradition
+        ? await req.services.referenceData.getLocationsByTypeAndExtraditionCapable(
+            locationTypes
+          )
+        : await req.services.referenceData.getLocationsByType(locationTypes)
 
       const items = getLocationItems(locationTypes[0], locations)
 
