@@ -311,6 +311,7 @@ describe('Move controllers', function () {
             extradition_capable: true,
           }
           beforeEach(async function () {
+            FEATURE_FLAGS.EXTRADITION_MOVES = true
             getMoveStub.returns({ from_location_type: 'prison' })
             req = {
               ...req,
