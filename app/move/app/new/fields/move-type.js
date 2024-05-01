@@ -58,7 +58,7 @@ const moveType = {
     },
     {
       value: 'extradition',
-      text: 'fields::move_type.items.extradtion.label',
+      text: 'fields::move_type.items.extradition.label',
       conditional: 'to_location_extradition',
     },
   ],
