@@ -89,6 +89,15 @@ class ReferenceDataService extends BaseService {
     })
   }
 
+  getLocationsByTypeAndExtraditionCapable(types = []) {
+    return this.getLocations({
+      filter: {
+        'filter[location_type]': types.length ? types.join(',') : undefined,
+        'filter[extradition_capable]': true,
+      },
+    })
+  }
+
   async getLocationsBySupplierId(req, supplierId) {
     const { data } = await restClient(
       req,

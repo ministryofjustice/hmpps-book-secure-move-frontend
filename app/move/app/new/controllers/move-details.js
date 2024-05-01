@@ -46,6 +46,13 @@ class MoveDetailsController extends CreateBaseController {
         'to_location_secure_training_centre'
       )
     )
+    this.use(
+      commonMiddleware.setLocationItems(
+        'police',
+        'to_location_extradition',
+        true
+      )
+    )
   }
 
   isFromGivenLocationType(req, locationType) {
