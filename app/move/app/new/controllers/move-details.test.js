@@ -190,6 +190,7 @@ describe('Move controllers', function () {
               'move:create:hospital',
               'move:create:prison_recall',
               'move:create:video_remand',
+              'move:create:extradition',
             ],
           }
         })
@@ -311,7 +312,6 @@ describe('Move controllers', function () {
             extradition_capable: true,
           }
           beforeEach(async function () {
-            FEATURE_FLAGS.EXTRADITION_MOVES = true
             getMoveStub.returns({ from_location_type: 'prison' })
             req = {
               ...req,
