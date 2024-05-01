@@ -1,0 +1,11 @@
+{% extends "form-wizard.njk" %}
+
+{% block beforeFields %}
+  <h3 class="govuk-heading-m govuk-!-margin-bottom-1">
+    {{ t("fields::extradition_flight_details.label") }}
+  </h3>
+
+  <p class="govuk-!-margin-bottom-6">
+    {{ CURRENT_LOCATION.title }}
+  </p>
+{% endblock %}

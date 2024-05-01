@@ -3,6 +3,7 @@ const {
   Base,
   CourtHearings,
   Document,
+  ExtraditionDetails,
   Hospital,
   MoveDate,
   MoveDetails,
@@ -200,6 +201,11 @@ module.exports = {
             next: 'transfer-reason',
           },
           {
+            field: 'to_location_type',
+            value: 'police',
+            next: 'extradition-details',
+          },
+          {
             fn: Base.prototype.requiresYouthAssessment,
             next: 'save',
           },
@@ -210,6 +216,16 @@ module.exports = {
     ],
     controller: MoveDate,
     fields: ['date', 'date_type', 'date_custom'],
+  },
+  '/extradition-details': {
+    controller: ExtraditionDetails,
+    pageTitle: 'moves::steps.extradition_details.heading',
+    fields: [
+      'extradition_flight_number',
+      'extradition_flight_date',
+      'extradition_flight_time',
+    ],
+    next: 'risk-information',
   },
   '/transfer-reason': {
     controller: PrisonTransferReason,

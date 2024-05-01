@@ -11,6 +11,9 @@ const dateTo = require('./date-to')
 const dateType = require('./date-type')
 const documents = require('./documents')
 const ethnicity = require('./ethnicity')
+const extraditionFlightDate = require('./extradition-flight-date')
+const extraditionFlightNumber = require('./extradition-flight-number')
+const extraditionFlightTime = require('./extradition-flight-time')
 const filterPoliceNationalComputer = require('./filter.police-national-computer')
 const filterPrisonNumber = require('./filter.prison-number')
 const firstNames = require('./first-names')
@@ -57,6 +60,9 @@ const fields = {
   documents,
   escape: assessmentAnswer(),
   ethnicity,
+  extraditionFlightDate,
+  extraditionFlightNumber,
+  extraditionFlightTime,
   'filter.police_national_computer': filterPoliceNationalComputer,
   'filter.prison_number': filterPrisonNumber,
   first_names: firstNames,
