@@ -120,6 +120,9 @@
       "approved_premises": {
         "label": "Approved Premises (AP)"
       },
+      "extradition": {
+        "label": "Custody suite (extradition)"
+      },
       "unknown": {
         "label": "Unknown"
       }
@@ -132,6 +135,9 @@
     "label": "Name of court"
   },
   "to_location_police_transfer": {
+    "label": "Name of custody suite"
+  },
+  "to_location_extradition": {
     "label": "Name of custody suite"
   },
   "to_location_prison_transfer": {

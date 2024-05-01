@@ -30,7 +30,7 @@ describe('Move controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(8)
+        expect(controller.use.callCount).to.equal(9)
       })
 
       it('should call setMoveType middleware', function () {
@@ -40,7 +40,7 @@ describe('Move controllers', function () {
       })
 
       it('should call correct number of middleware', function () {
-        expect(commonMiddleware.setLocationItems.callCount).to.equal(7)
+        expect(commonMiddleware.setLocationItems.callCount).to.equal(8)
       })
 
       it('should call setLocationItems middleware to set AP locations', function () {
@@ -96,6 +96,12 @@ describe('Move controllers', function () {
           'to_location_secure_training_centre'
         )
       })
+
+      it('should call setLocationItems middleware to set extradition locations', function () {
+        expect(
+          commonMiddleware.setLocationItems.getCall(7)
+        ).to.have.been.calledWith('police', 'to_location_extradition', true)
+      })
     })
 
     describe('#setMoveTypes()', function () {
@@ -103,6 +109,7 @@ describe('Move controllers', function () {
       const getMoveStub = sinon.stub().returns({})
 
       beforeEach(function () {
+        FEATURE_FLAGS.EXTRADITION_MOVES = true
         req = {
           session: {},
           form: {
@@ -137,6 +144,10 @@ describe('Move controllers', function () {
                     {
                       value: 'approved_premises',
                       conditional: 'to_location_approved_premises',
+                    },
+                    {
+                      value: 'extradition',
+                      conditional: 'to_location_extradition',
                     },
                   ],
                 },
@@ -185,6 +196,7 @@ describe('Move controllers', function () {
               'move:create:hospital',
               'move:create:prison_recall',
               'move:create:video_remand',
+              'move:create:extradition',
             ],
           }
         })
@@ -199,7 +211,7 @@ describe('Move controllers', function () {
             expect(req.form.options.fields.move_type.items.length).to.equal(6)
           })
 
-          it('should remove just AP', function () {
+          it('should remove AP and extradition', function () {
             expect(req.form.options.fields).to.deep.equal({
               move_type: {
                 items: [
@@ -265,7 +277,7 @@ describe('Move controllers', function () {
             expect(req.form.options.fields.move_type.items.length).to.equal(5)
           })
 
-          it('should remove the prison_recall and approved_premises fields', function () {
+          it('should remove the prison_recall, approved_premises and extradition fields', function () {
             expect(req.form.options.fields).to.deep.equal({
               move_type: {
                 items: [
@@ -300,13 +312,28 @@ describe('Move controllers', function () {
           })
         })
         context('when from prison location', function () {
+          const extraditionEnabledLocationDetail = {
+            title: 'mock from location',
+            location_type: 'prison',
+            extradition_capable: true,
+          }
           beforeEach(async function () {
             getMoveStub.returns({ from_location_type: 'prison' })
+            req = {
+              ...req,
+              services: {
+                referenceData: {
+                  getLocationById: sinon
+                    .stub()
+                    .resolves(extraditionEnabledLocationDetail),
+                },
+              },
+            }
             await controller.setMoveTypes(req, res, nextSpy)
           })
 
           it('should remove one item from move_type', function () {
-            expect(req.form.options.fields.move_type.items.length).to.equal(6)
+            expect(req.form.options.fields.move_type.items.length).to.equal(7)
           })
 
           it('should remove the prison_recall field only', function () {
@@ -337,6 +364,10 @@ describe('Move controllers', function () {
                     value: 'approved_premises',
                     conditional: 'to_location_approved_premises',
                   },
+                  {
+                    value: 'extradition',
+                    conditional: 'to_location_extradition',
+                  },
                 ],
               },
               to_location_court_appearance: {},
@@ -346,36 +377,17 @@ describe('Move controllers', function () {
               unrelated_field: {},
             })
           })
-
-          context('with AP moves disabled for a supplier', function () {
-            const mockLocationDetail = {
-              title: 'mock to location',
-              location_type: 'prison',
-              suppliers: [
-                {
-                  key: 'serco',
-                },
-              ],
-            }
-
+          context('with extradition moves feature flagged off', function () {
             beforeEach(async function () {
-              FEATURE_FLAGS.AP_DISABLED_SUPPLIERS = ['serco']
-              req = {
-                ...req,
-                services: {
-                  referenceData: {
-                    getLocationById: sinon.stub().resolves(mockLocationDetail),
-                  },
-                },
-              }
+              FEATURE_FLAGS.EXTRADITION_MOVES = false
               await controller.setMoveTypes(req, res, nextSpy)
             })
 
             it('should remove two items from move_type', function () {
-              expect(req.form.options.fields.move_type.items.length).to.equal(5)
+              expect(req.form.options.fields.move_type.items.length).to.equal(6)
             })
 
-            it('should remove AP in addition to recall', function () {
+            it('should remove recall and extradition', function () {
               expect(req.form.options.fields).to.deep.equal({
                 move_type: {
                   items: [
@@ -398,6 +410,72 @@ describe('Move controllers', function () {
                     {
                       value: 'video_remand',
                       conditional: 'additional_information',
+                    },
+                    {
+                      value: 'approved_premises',
+                      conditional: 'to_location_approved_premises',
+                    },
+                  ],
+                },
+                to_location_court_appearance: {},
+                to_location_prison_transfer: {},
+                to_location_police_transfer: {},
+                to_location_hospital: {},
+                unrelated_field: {},
+              })
+            })
+          })
+          context('with extradition moves disabled for location', function () {
+            const extraditionDisabledLocationDetail = {
+              title: 'mock from location',
+              location_type: 'prison',
+              extradition_capable: false,
+            }
+            beforeEach(async function () {
+              req = {
+                ...req,
+                services: {
+                  referenceData: {
+                    getLocationById: sinon
+                      .stub()
+                      .resolves(extraditionDisabledLocationDetail),
+                  },
+                },
+              }
+              await controller.setMoveTypes(req, res, nextSpy)
+            })
+
+            it('should remove two item from move_type', function () {
+              expect(req.form.options.fields.move_type.items.length).to.equal(6)
+            })
+
+            it('should remove recall and extradition', function () {
+              expect(req.form.options.fields).to.deep.equal({
+                move_type: {
+                  items: [
+                    {
+                      value: 'court_appearance',
+                      conditional: 'to_location_court_appearance',
+                    },
+                    {
+                      value: 'prison_transfer',
+                      conditional: 'to_location_prison_transfer',
+                    },
+                    {
+                      value: 'police_transfer',
+                      conditional: 'to_location_police_transfer',
+                    },
+                    {
+                      value: 'hospital',
+                      conditional: 'to_location_hospital',
+                    },
+                    {
+                      value: 'video_remand',
+                      conditional: 'additional_information',
+                    },
+                    {
+                      value: 'approved_premises',
+                      conditional: 'to_location_approved_premises',
                     },
                   ],
                 },

@@ -46,6 +46,13 @@ class MoveDetailsController extends CreateBaseController {
         'to_location_secure_training_centre'
       )
     )
+    this.use(
+      commonMiddleware.setLocationItems(
+        'police',
+        'to_location_extradition',
+        true
+      )
+    )
   }
 
   isFromGivenLocationType(req, locationType) {
@@ -57,30 +64,27 @@ class MoveDetailsController extends CreateBaseController {
     )
   }
 
-  async apMovesAllowed(req) {
+  apMovesAllowed(req) {
+    return this.isFromGivenLocationType(req, 'prison')
+  }
+
+  async extraditionMovesAllowed(req) {
+    if (!FEATURE_FLAGS.EXTRADITION_MOVES) {
+      return false
+    }
+
     if (!this.isFromGivenLocationType(req, 'prison')) {
       return false
     }
 
-    if (!FEATURE_FLAGS.AP_DISABLED_SUPPLIERS?.length) {
-      return true
-    }
+    const location = await this.getMoveLocation(req)
+    return location.extradition_capable
+  }
 
+  async getMoveLocation(req) {
     const move = req.getMove()
     const locationId = move.from_location?.id || move.from_location
-    const location = await locationService.findById(req, locationId, true)
-
-    if (
-      location.suppliers
-        .map(supplier => supplier.key)
-        .some(supplier =>
-          FEATURE_FLAGS.AP_DISABLED_SUPPLIERS.includes(supplier)
-        )
-    ) {
-      return false
-    }
-
-    return true
+    return await locationService.findById(req, locationId, true)
   }
 
   async setMoveTypes(req, res, next) {
@@ -96,14 +100,22 @@ class MoveDetailsController extends CreateBaseController {
             )
         )
 
-      if (
-        permittedMoveTypes.find(moveType => moveType === 'approved_premises')
-      ) {
+      if (permittedMoveTypes.includes('approved_premises')) {
         const canApMove = await this.apMovesAllowed(req)
 
         if (!canApMove) {
           permittedMoveTypes = permittedMoveTypes.filter(
             moveType => moveType !== 'approved_premises'
+          )
+        }
+      }
+
+      if (permittedMoveTypes.includes('extradition')) {
+        const canExtradite = await this.extraditionMovesAllowed(req)
+
+        if (!canExtradite) {
+          permittedMoveTypes = permittedMoveTypes.filter(
+            moveType => moveType !== 'extradition'
           )
         }
       }
