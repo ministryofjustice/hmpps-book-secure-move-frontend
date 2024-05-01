@@ -310,10 +310,6 @@ export const FEATURE_FLAGS = {
     process.env.FEATURE_FLAG_ADD_LODGE_BUTTON || ''
   ),
   DATE_OF_ARREST: /true/i.test(process.env.FEATURE_FLAG_DATE_OF_ARREST || ''),
-  AP_DISABLED_SUPPLIERS: (process.env.FEATURE_FLAG_AP_DISABLED_SUPPLIERS || '')
-    .split(',')
-    .filter(supplier => supplier != '')
-    .map(supplier => supplier.trim()),
   EXTRADITION_MOVES: /true/i.test(process.env.FEATURE_FLAG_EXTRADITION_MOVES || ''),
 }
 export const FRAMEWORKS = {

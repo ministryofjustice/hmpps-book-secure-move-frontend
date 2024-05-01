@@ -481,68 +481,6 @@ describe('Move controllers', function () {
               })
             })
           })
-          context('with AP moves disabled for a supplier', function () {
-            const mockLocationDetail = {
-              title: 'mock from location',
-              location_type: 'prison',
-              suppliers: [
-                {
-                  key: 'serco',
-                },
-              ],
-            }
-
-            beforeEach(async function () {
-              FEATURE_FLAGS.AP_DISABLED_SUPPLIERS = ['serco']
-              req = {
-                ...req,
-                services: {
-                  referenceData: {
-                    getLocationById: sinon.stub().resolves(mockLocationDetail),
-                  },
-                },
-              }
-              await controller.setMoveTypes(req, res, nextSpy)
-            })
-
-            it('should remove two items from move_type', function () {
-              expect(req.form.options.fields.move_type.items.length).to.equal(5)
-            })
-
-            it('should remove AP in addition to recall', function () {
-              expect(req.form.options.fields).to.deep.equal({
-                move_type: {
-                  items: [
-                    {
-                      value: 'court_appearance',
-                      conditional: 'to_location_court_appearance',
-                    },
-                    {
-                      value: 'prison_transfer',
-                      conditional: 'to_location_prison_transfer',
-                    },
-                    {
-                      value: 'police_transfer',
-                      conditional: 'to_location_police_transfer',
-                    },
-                    {
-                      value: 'hospital',
-                      conditional: 'to_location_hospital',
-                    },
-                    {
-                      value: 'video_remand',
-                      conditional: 'additional_information',
-                    },
-                  ],
-                },
-                to_location_court_appearance: {},
-                to_location_prison_transfer: {},
-                to_location_police_transfer: {},
-                to_location_hospital: {},
-                unrelated_field: {},
-              })
-            })
-          })
         })
       })
 

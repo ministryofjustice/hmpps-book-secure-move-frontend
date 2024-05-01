@@ -57,20 +57,8 @@ class MoveDetailsController extends CreateBaseController {
     )
   }
 
-  async apMovesAllowed(req) {
-    if (!this.isFromGivenLocationType(req, 'prison')) {
-      return false
-    }
-
-    if (!FEATURE_FLAGS.AP_DISABLED_SUPPLIERS?.length) {
-      return true
-    }
-
-    const location = await this.getMoveLocation(req)
-
-    return !location.suppliers
-      .map(supplier => supplier.key)
-      .some(supplier => FEATURE_FLAGS.AP_DISABLED_SUPPLIERS.includes(supplier))
+  apMovesAllowed(req) {
+    return this.isFromGivenLocationType(req, 'prison')
   }
 
   async extraditionMovesAllowed(req) {
@@ -105,9 +93,7 @@ class MoveDetailsController extends CreateBaseController {
             )
         )
 
-      if (
-        permittedMoveTypes.find(moveType => moveType === 'approved_premises')
-      ) {
+      if (permittedMoveTypes.includes('approved_premises')) {
         const canApMove = await this.apMovesAllowed(req)
 
         if (!canApMove) {
