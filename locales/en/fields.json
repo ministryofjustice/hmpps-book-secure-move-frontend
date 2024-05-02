@@ -638,9 +638,6 @@
 
     "unused_error_message": "You must provide a valid handover time"
   },
-  "extradition_flight_details": {
-    "label": "Provide extradition flight details"
-  },
   "extradition_flight_number": {
     "label" : "Flight number",
     "hint": "For example, BA1234"

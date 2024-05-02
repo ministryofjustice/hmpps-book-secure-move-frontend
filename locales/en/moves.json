@@ -103,6 +103,9 @@
           "date_long": "between <strong>{{startDate}}</strong> and <strong>{{endDate}}</strong>"
         }
       }
+    },
+    "extradition_details":{
+      "heading" : "Provide extradition flight details"
     }
   },
   "download": {
