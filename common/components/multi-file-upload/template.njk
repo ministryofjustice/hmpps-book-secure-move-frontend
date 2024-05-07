@@ -41,7 +41,7 @@
 
 <div data-module="app-multi-file-upload" data-url="{{ params.xhrUrl }}">
   {% if params.heading.html or params.heading.text %}
-    <h2 class="govuk-body-l app-multi-file-upload__heading">
+    <h2 class="govuk-template__body-l app-multi-file-upload__heading">
       {{ params.heading.html | safe if params.heading.html else params.heading.text }}
     </h2>
   {% endif %}

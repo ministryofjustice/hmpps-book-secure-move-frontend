@@ -26,7 +26,6 @@ function transformManifestFile(transformMethod) {
 const commonConfig = {
   entry: {
     styles: './common/assets/scss/application.scss',
-    'styles-ie8': './common/assets/scss/application-ie8.scss',
     app: './common/assets/javascripts/application.js',
     'components.maps': './common/assets/javascripts/components.maps.js',
   },

@@ -4,7 +4,7 @@ $govuk-new-link-styles: true;
 // Override font styles to replace NTA with Inter UI
 $govuk-fonts-path: "../fonts/inter/";
 $govuk-font-family: "Inter", system-ui, sans-serif;
-$govuk-assets-path: "govuk-frontend/govuk/assets/";
+$govuk-assets-path: "govuk-frontend/dist/govuk/assets/";
 $moj-assets-path: "@ministryofjustice/frontend/moj/assets/";
 
 $govuk-page-width: 1170px;
@@ -24,35 +24,36 @@ $govuk-grid-widths: (
 );
 
 // Import GOV.UK Frontend
-@import "govuk-frontend/govuk/base";
+@import "govuk-frontend/dist/govuk/base";
 
-@import "govuk-frontend/govuk/core/all";
-@import "govuk-frontend/govuk/objects/all";
+@import "govuk-frontend/dist/govuk/core/all";
+@import "govuk-frontend/dist/govuk/objects/all";
 
-@import "govuk-frontend/govuk/components/back-link/index";
-@import "govuk-frontend/govuk/components/breadcrumbs/index";
-@import "govuk-frontend/govuk/components/button/index";
-@import "govuk-frontend/govuk/components/checkboxes/index";
-@import "govuk-frontend/govuk/components/cookie-banner/index";
-@import "govuk-frontend/govuk/components/details/index";
-@import "govuk-frontend/govuk/components/error-summary/index";
-@import "govuk-frontend/govuk/components/footer/index";
-@import "govuk-frontend/govuk/components/input/index";
-@import "govuk-frontend/govuk/components/inset-text/index";
-@import "govuk-frontend/govuk/components/notification-banner/index";
-@import "govuk-frontend/govuk/components/panel/index";
-@import "govuk-frontend/govuk/components/radios/index";
-@import "govuk-frontend/govuk/components/select/index";
-@import "govuk-frontend/govuk/components/skip-link/index";
-@import "govuk-frontend/govuk/components/summary-list/index";
-@import "govuk-frontend/govuk/components/table/index";
-@import "govuk-frontend/govuk/components/tabs/index";
-@import "govuk-frontend/govuk/components/tag/index";
-@import "govuk-frontend/govuk/components/textarea/index";
-@import "govuk-frontend/govuk/components/warning-text/index";
+@import "govuk-frontend/dist/govuk/components/back-link/index";
+@import "govuk-frontend/dist/govuk/components/breadcrumbs/index";
+@import "govuk-frontend/dist/govuk/components/button/index";
+@import "govuk-frontend/dist/govuk/components/checkboxes/index";
+@import "govuk-frontend/dist/govuk/components/cookie-banner/index";
+@import "govuk-frontend/dist/govuk/components/date-input/index";
+@import "govuk-frontend/dist/govuk/components/details/index";
+@import "govuk-frontend/dist/govuk/components/error-summary/index";
+@import "govuk-frontend/dist/govuk/components/footer/index";
+@import "govuk-frontend/dist/govuk/components/input/index";
+@import "govuk-frontend/dist/govuk/components/inset-text/index";
+@import "govuk-frontend/dist/govuk/components/notification-banner/index";
+@import "govuk-frontend/dist/govuk/components/panel/index";
+@import "govuk-frontend/dist/govuk/components/radios/index";
+@import "govuk-frontend/dist/govuk/components/select/index";
+@import "govuk-frontend/dist/govuk/components/skip-link/index";
+@import "govuk-frontend/dist/govuk/components/summary-list/index";
+@import "govuk-frontend/dist/govuk/components/table/index";
+@import "govuk-frontend/dist/govuk/components/tabs/index";
+@import "govuk-frontend/dist/govuk/components/tag/index";
+@import "govuk-frontend/dist/govuk/components/textarea/index";
+@import "govuk-frontend/dist/govuk/components/warning-text/index";
 
-@import "govuk-frontend/govuk/utilities/all";
-@import "govuk-frontend/govuk/overrides/all";
+@import "govuk-frontend/dist/govuk/utilities/all";
+@import "govuk-frontend/dist/govuk/overrides/all";
 
 // Import MoJ Frontend Components
 @import "@ministryofjustice/frontend/moj/settings/all";

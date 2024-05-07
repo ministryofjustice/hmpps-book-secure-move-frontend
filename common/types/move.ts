@@ -28,6 +28,8 @@ export interface Move {
     | 'prison_remand'
     | 'prison_transfer'
     | 'video_remand'
+    | 'extradition'
+    | 'approved_premises'
   id: string
   _vehicleRegistration?: string
   _expectedCollectionTime?: string

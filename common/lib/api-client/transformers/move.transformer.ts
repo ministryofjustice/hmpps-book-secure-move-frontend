@@ -18,6 +18,7 @@ const setMissingToLocation = (move: Move) => {
       title: i18n.t(`fields::move_type.items.${typeKey}.label`),
       location_type: 'prison',
       type: 'locations',
+      extradition_capable: false,
     }
   }
 }

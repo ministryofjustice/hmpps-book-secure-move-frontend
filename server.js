@@ -135,7 +135,7 @@ module.exports = async () => {
   app.use(
     '/assets',
     express.static(
-      path.join(__dirname, '/node_modules/govuk-frontend/govuk/assets'),
+      path.join(__dirname, '/node_modules/govuk-frontend/dist/govuk/assets'),
       { maxAge: config.STATIC_ASSETS.CACHE_MAX_AGE }
     ),
     express.static(
@@ -247,6 +247,7 @@ module.exports = async () => {
             'www.google-analytics.com',
             'region1.google-analytics.com',
             'cdn.jsdelivr.net',
+            "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
           ],
           connectSrc: [
             "'self'",

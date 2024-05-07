@@ -229,6 +229,7 @@ class CreateBaseController extends FormWizardController {
   // adding PNC number validation
   validateFields(req, res, callback) {
     super.validateFields(req, res, errors => {
+      console.log('hello')
       const PNCPredicate = error =>
         error.type === 'policeNationalComputerNumber'
 

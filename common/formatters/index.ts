@@ -7,11 +7,26 @@ export function date (value: Date | string, format = 'yyyy-MM-dd'): Date | strin
   const parsedDate = parsers.date(value)
   return parsedDate ? formatDate(parsedDate, format) : value
 }
+export function gds_date (value: any, format = 'yyyy-MM-dd'): string {
+  console.log("gds_date:")
+  console.log(value)
+  return value
+}
+
+export function gds_time (value: string) {
+  console.log("gds_time:")
+  console.log(value)
+  const parsedTime = parsers.time(value)
+  console.log("gds_time parsed:")
+  console.log(parsedTime)
+  return parsedTime
+}
 
 export function time (value: Date | string, format = 'HH:mm') {
   const parsedDate = parsers.date(value)
   return parsedDate ? formatDate(parsedDate, format) : value
 }
+
 
 export function sentenceFormatDate(date: Date) {
   const dateOptions: Intl.DateTimeFormatOptions = {

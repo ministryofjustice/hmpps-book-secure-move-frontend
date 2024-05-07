@@ -5,7 +5,7 @@
     {{ t("person::personal_details.heading") }}
 
     {% if updateLink %}
-      <a href="{{ updateLink }}" class="govuk-link govuk-body app-!-float-right" data-update-link="edit_personal_details">
+      <a href="{{ updateLink }}" class="govuk-link govuk-template__body app-!-float-right" data-update-link="edit_personal_details">
         <strong>{{ t("actions::change", {
           context: "with_visually_hidden_text",
           text: step.pageTitle

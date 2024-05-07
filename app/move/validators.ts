@@ -21,6 +21,12 @@ function isPNCNumberValid(value: string) {
   return mod23chars[i] === checkDigit
 }
 
+export function gds_date(value: string) {
+  console.log('validate gds_date')
+  console.log(value)
+  return true
+}
+
 export function time(value: string) {
   return (
     value === '' ||

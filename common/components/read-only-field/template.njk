@@ -7,7 +7,7 @@
   <h2 class="app-read-only-field__heading govuk-label {%- if params.label.classes %} {{ params.label.classes }}{% endif %}">
     {% if params.label.html %}{{ params.label.html | safe }}{% else %}{{ params.label.text }}{% endif %}
   </h2>
-  <p class="app-read-only-field__value govuk-body">{{ params.value }}</p>
+  <p class="app-read-only-field__value govuk-template__body">{{ params.value }}</p>
   {% if params.items %}
     <div class="app-read-only-field__items">
       {% for item in params.items %}

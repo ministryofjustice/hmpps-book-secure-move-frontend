@@ -1,9 +1,11 @@
-const extraditionFlightStartTime = {
-  id: 'extradition_flight__start_time',
-  name: 'extradition_flight__start_time',
+const { gds_time: timeFormatter } = require('../../../../../common/formatters')
+const extraditionFlightTime = {
+  id: 'extradition_flight_time',
+  name: 'extradition_flight_time',
+  formatter: [timeFormatter],
   validate: ['required'],
   component: 'govukInput',
-  classes: 'govuk-input--width-10',
+  classes: 'govuk-input--width-4',
   autocomplete: 'off',
   label: {
     html: 'fields::extradition_flight_time.label',
@@ -14,4 +16,4 @@ const extraditionFlightStartTime = {
   },
 }
 
-module.exports = extraditionFlightStartTime
+module.exports = extraditionFlightTime

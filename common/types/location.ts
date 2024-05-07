@@ -17,4 +17,5 @@ export interface Location {
     | 'high_security_hospital'
     | 'hospital'
     | 'immigration_detention_centre'
+  extradition_capable: boolean
 }

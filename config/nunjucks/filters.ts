@@ -353,6 +353,9 @@ export function formatDateRangeWithRelativeWeek(value: string[]) {
  * @param value
  */
 export function calculateAge(value: string | Date) {
+  if (!value) {
+    return null
+  }
   const parsedDate = _parseDate(value)
 
   if (!isValidDate(parsedDate)) {

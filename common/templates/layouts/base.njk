@@ -19,6 +19,7 @@
 {% from "govuk/components/textarea/macro.njk"          import govukTextarea %}
 {% from "govuk/components/warning-text/macro.njk"      import govukWarningText %}
 {% from "govuk/components/table/macro.njk"             import govukTable %}
+{% from "govuk/components/date-input/macro.njk"        import govukDateInput %}
 
 {% from "moj/components/badge/macro.njk"                  import mojBadge %}
 {% from "moj/components/organisation-switcher/macro.njk"  import mojOrganisationSwitcher %}
@@ -54,8 +55,7 @@
 
   <meta name="location" content="{{ CURRENT_LOCATION.id }}">
 
-  <!--[if lte IE 8]><link href="{{ getAssetPath('styles-ie8.css') }}" rel="stylesheet" type="text/css" /><![endif]-->
-  <!--[if gt IE 8]><!--><link href="{{ getAssetPath('styles.css') }}" media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
+  <link href="{{ getAssetPath('styles.css') }}" media="all" rel="stylesheet" type="text/css" />
 
   <link rel="preload" href="{{ getAssetPath('fonts/Inter-Bold.woff2') }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ getAssetPath('fonts/Inter-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
@@ -201,6 +201,5 @@
       </div>
     {% endif %}
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="{{ getAssetPath('app.js') }}"></script>
 {% endblock %}
