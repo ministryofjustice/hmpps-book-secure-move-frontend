@@ -4,6 +4,7 @@ import { Location } from './location'
 import { Lodging } from './lodging'
 import { Profile } from './profile'
 import { Supplier } from './supplier'
+import { ExtraditionFlight } from "./extradition_flight";
 
 export interface Move {
   date: string
@@ -51,4 +52,5 @@ export interface Move {
   is_lodging?: boolean
   allocation?: Allocation
   lodgings?: Lodging[]
+  extradition_flight?: ExtraditionFlight
 }

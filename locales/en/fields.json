@@ -649,5 +649,10 @@
   "extradition_flight_time": {
     "label" : "Time",
     "hint": "For example, 9am or 0900"
+  },
+  "extradition_flight_summary": {
+    "number" : "Flight number",
+    "date": "Flight date",
+    "time": "Flight time"
   }
 }

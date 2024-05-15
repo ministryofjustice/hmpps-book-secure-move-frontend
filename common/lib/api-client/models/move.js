@@ -68,6 +68,10 @@ module.exports = {
       jsonApi: 'hasMany',
       type: 'lodging',
     },
+    extradition_flight: {
+      jsonApi: 'hasOne',
+      type: 'extradition_flight',
+    },
   },
   options: {
     deserializer: transformResource(moveTransformer),

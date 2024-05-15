@@ -1,9 +1,8 @@
-const { gds_date: gdsDateFormatter } = require('../../../../../common/formatters')
-const validators = require('../../../validators')
+const { date: dateFormatter } = require('../../../../../common/formatters')
 
 const date = {
-  validate: [validators.gds_date],
-  formatter: [gdsDateFormatter],
+  validate: ['date'],
+  formatter: [dateFormatter],
   component: 'govukDateInput',
   autocomplete: 'off',
   hint: {
@@ -11,22 +10,21 @@ const date = {
   },
   items: [
     {
-      name: "day",
-      classes: "govuk-input--width-2",
-      autocomplete: "off",
+      name: 'day',
+      classes: 'govuk-input--width-2',
+      autocomplete: 'off',
     },
     {
-      name: "month",
-      classes: "govuk-input--width-2",
-      autocomplete: "off",
+      name: 'month',
+      classes: 'govuk-input--width-2',
+      autocomplete: 'off',
     },
     {
-      name: "year",
-      classes: "govuk-input--width-4",
-      autocomplete: "off",
-    }
-  ]
+      name: 'year',
+      classes: 'govuk-input--width-4',
+      autocomplete: 'off',
+    },
+  ],
 }
 
 module.exports = date
-

@@ -1,61 +1,65 @@
-const { format: formatDate } = require('date-fns')
+const { format: formatDate, parseISO } = require('date-fns')
 
 const CreateBaseController = require('./base')
-const { set } = require('lodash')
 
 class ExtraditionDetailsController extends CreateBaseController {
   middlewareSetup() {
     super.middlewareSetup()
+    this.use(this.setDateFields)
+  }
+
+  setDateFields(req, res, next) {
+    const { extradition_flight_date: extraditionFlightDate } =
+      req.form.options.fields
+    const { items } = extraditionFlightDate
+    items[0].value = this.getErrorOrMoveField(
+      req,
+      'extradition_flight_date-day'
+    )
+    items[1].value = this.getErrorOrMoveField(
+      req,
+      'extradition_flight_date-month'
+    )
+    items[2].value = this.getErrorOrMoveField(
+      req,
+      'extradition_flight_date-year'
+    )
+
+    next()
+  }
+
+  getErrorOrMoveField(req, fieldName) {
+    const { errorValues } = req.session[req.sessionModel.options.key]
+    return errorValues && fieldName in errorValues
+      ? errorValues[fieldName]
+      : req.getMove()[fieldName]
   }
 
   process(req, res, next) {
+    const flightNumber = req.form.values.extradition_flight_number
+    const day = req.body['extradition_flight_date-day']
+    const month = req.body['extradition_flight_date-month']
+    const year = req.body['extradition_flight_date-year']
+    req.form.values['extradition_flight_date-day'] = day
+    req.form.values['extradition_flight_date-month'] = month
+    req.form.values['extradition_flight_date-year'] = year
+    const flightTime = req.form.values.extradition_flight_time
+    let flightDate, flightTimestamp
 
-    const flight_number = req.body['extradition_flight_number']
-    const flight_day = req.body['extradition_flight_date-day']
-    const day = req.body['day']
+    try {
+      flightDate = formatDate(`${year}-${month}-${day}`, 'yyyy-MM-dd')
+      flightTimestamp = parseISO(
+        formatDate(`${year}-${month}-${day} ${flightTime}`, 'yyyy-MM-dd HH:mm')
+      )
+    } catch (e) {}
 
-    const flight_month = req.body['extradition_flight_date-month']
-    const month = req.body['month']
-    const flight_year = req.body['extradition_flight_date-year']
-    const year = req.body['year']
-    const flight_time = req.form.values['extradition_flight_time']
+    req.form.values.extradition_flight_date = flightDate
+    req.form.values.extradition_flight_timestamp = flightTimestamp
+    req.form.values.extradition_flight = {
+      flight_number: flightNumber,
+      flight_time: flightTimestamp,
+    }
 
-    //req.form.values.extradition_flight_date =  formatDate(`${flight_year}-${flight_month}-${flight_day}`, 'yyyy-MM-dd')
-    console.log(req.form.values)
-    //req.form.values.set('extradition_flight_date-year', flight_year)
-
-    console.log(flight_number)
-    console.log(flight_day)
-    console.log(day)
-    console.log(flight_month)
-    console.log(month)
-    console.log(flight_year)
-    console.log(year)
-    console.log(flight_time)
-
-      console.log(`${year}-${month}-${day} ${flight_time}`)
-      const flight_timestamp = formatDate(`${year}-${month}-${day} ${flight_time}`, 'yyyy-MM-dd HH:mm')
-      console.log(flight_timestamp)
-      //req.form.values['extradition_flight_date'] = formatDate(`${year}-${month}-${day}`, 'dd MM yyyy')
-      req.form.values.extradition_flight_date = {}
-      req.form.values.extradition_flight_date.items = []
-      req.form.values['extradition_flight_date'].items[0] = formatDate(`${day}`, 'dd')
-      req.form.values['extradition_flight_date-day'] = formatDate(`${day}`, 'dd')
-      req.form.values['extradition_flight_date'].items[1] = formatDate(`${month}`, 'MM')
-      req.form.values['extradition_flight_date-month'] = formatDate(`${month}`, 'MM')
-      req.form.values['extradition_flight_date'].items[2] = formatDate(`${year}`, 'yyyy')
-      req.form.values['extradition_flight_date-year'] = formatDate(`${year}`, 'yyyy')
-      req.form.values.extradition_flight_timestamp = flight_timestamp
-      console.log(flight_timestamp)
-
-      console.log(req.form.values)
-    next()
-  }
-  saveValues(req, res, next){
-    console.log('form:')
-    console.log(req.form.fields)
-    console.log('body:')
-    console.log(req.body)
     next()
   }
 }

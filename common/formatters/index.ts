@@ -5,7 +5,9 @@ const { oxfordJoin, nonOxfordJoin } = require('../../config/nunjucks/filters')
 
 export function date (value: Date | string, format = 'yyyy-MM-dd'): Date | string {
   const parsedDate = parsers.date(value)
-  return parsedDate ? formatDate(parsedDate, format) : value
+  const d = parsedDate ? formatDate(parsedDate, format) : value
+  console.log(d)
+  return d
 }
 export function gds_date (value: any, format = 'yyyy-MM-dd'): string {
   console.log("gds_date:")
@@ -14,11 +16,7 @@ export function gds_date (value: any, format = 'yyyy-MM-dd'): string {
 }
 
 export function gds_time (value: string) {
-  console.log("gds_time:")
-  console.log(value)
   const parsedTime = parsers.time(value)
-  console.log("gds_time parsed:")
-  console.log(parsedTime)
   return parsedTime
 }
 

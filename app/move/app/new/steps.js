@@ -218,6 +218,7 @@ module.exports = {
     fields: ['date', 'date_type', 'date_custom'],
   },
   '/extradition-details': {
+    editable: true,
     controller: ExtraditionDetails,
     pageTitle: 'moves::steps.extradition_details.heading',
     fields: [

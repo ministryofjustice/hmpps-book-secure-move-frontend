@@ -65,6 +65,12 @@
     {{ govukSummaryList(moveSummary) }}
   {% endcall %}
 
+  {% if extradition %}
+    {% call _section("Extradition details") %}
+      {{ govukSummaryList(extradition) }}
+    {% endcall %}
+  {% endif %}
+
   {% if lodgings | length %}
     {% call _section("Overnight lodge details") %}
       {% for lodging in lodgings %}

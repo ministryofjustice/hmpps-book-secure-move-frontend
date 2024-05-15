@@ -28,6 +28,7 @@ class SaveController extends CreateBaseController {
     const courtHearingService = req.services.courtHearing
     const profileService = req.services.profile
     const perService = req.services.personEscortRecord
+    const extraditionFlightService = req.services.extraditionFlight
 
     try {
       const sessionData = req.sessionModel.toJSON()
@@ -57,6 +58,16 @@ class SaveController extends CreateBaseController {
           )
         ),
       ]
+
+      if (data.extradition_flight) {
+        promises.push(
+          extraditionFlightService.create({
+            moveId: move.id,
+            flight_number: data.extradition_flight.flight_number,
+            flight_time: data.extradition_flight.flight_time,
+          })
+        )
+      }
 
       if (data.profile?.person?.id) {
         promises.push(

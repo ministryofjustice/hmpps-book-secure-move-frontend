@@ -229,9 +229,14 @@ class CreateBaseController extends FormWizardController {
   // adding PNC number validation
   validateFields(req, res, callback) {
     super.validateFields(req, res, errors => {
-      console.log('hello')
       const PNCPredicate = error =>
         error.type === 'policeNationalComputerNumber'
+
+      const extraditionPredicate = error =>
+        error.key === 'extradition_flight_date' && error.type === 'equal'
+
+      const ignorePredicate = error =>
+        extraditionPredicate(error) || PNCPredicate(error)
 
       forEach(pickBy(errors, PNCPredicate), (error, key) => {
         Sentry.captureException(new Error('PNC validation failed'), {
@@ -251,8 +256,7 @@ class CreateBaseController extends FormWizardController {
           },
         })
       })
-
-      callback(omitBy(errors, PNCPredicate))
+      callback(omitBy(errors, ignorePredicate))
     })
   }
 }

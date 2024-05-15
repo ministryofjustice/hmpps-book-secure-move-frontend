@@ -23,6 +23,10 @@ const assessmentKeys = [
   'pregnant',
   'other_health',
   'special_vehicle',
+  // extradition
+  'extradition_flight_number',
+  'extradition_flight_date',
+  'extradition_flight_time',
 ]
 const explicitAssessmentKeys = ['special_vehicle', 'not_to_be_released']
 
