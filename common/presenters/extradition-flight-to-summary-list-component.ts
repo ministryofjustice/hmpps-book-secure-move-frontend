@@ -1,4 +1,4 @@
-import { upperCase } from 'lodash'
+import {toUpper} from 'lodash'
 
 import i18n from '../../config/i18n'
 import { formatDateWithRelativeDay, formatTime } from "../../config/nunjucks/filters";
@@ -30,7 +30,7 @@ function extraditionFlightToSummaryListComponent(flight: ExtraditionFlight) {
           text: i18n.t('fields::extradition_flight_summary.number'),
         },
         value: {
-          text: upperCase(flight_number || '') as string,
+          text: toUpper(flight_number || '') as string,
         },
       },
       {
