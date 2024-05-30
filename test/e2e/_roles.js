@@ -50,3 +50,8 @@ export const personEscortRecordUser = Role(home, async t => {
   await page.signIn(E2E.USERS.PERSON_ESCORT_RECORD)
   await page.chooseLocation()
 })
+
+export const extraditionUser = Role(home, async t => {
+  await page.signIn(E2E.USERS.EXTRADITION)
+  await page.chooseLocation()
+})

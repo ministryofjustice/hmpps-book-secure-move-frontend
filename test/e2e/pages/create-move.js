@@ -32,6 +32,7 @@ class CreateMovePage extends Page {
       gender: Selector('[name="gender"]'),
       moveType: Selector('[name="move_type"]'),
       courtLocation: Selector('#to_location_court_appearance'),
+      extraditionLocation: Selector('#to_location_extradition'),
       hospitalLocation: Selector('#to_location_hospital'),
       secureChildrensHomeLocation: Selector(
         '#to_location_secure_childrens_home'
@@ -245,7 +246,7 @@ class CreateMovePage extends Page {
   /**
    * Fill in move details
    *
-   * @param {'Court'|'Prison recall'|'Prison'} moveType - type of move
+   * @param {'Court'|'Prison recall'|'Prison'|'Prison remand (Video Remand Hearing)'|'Hospital'|'SCH'|'AP'|'Extradition'} moveType - type of move
    * @returns {Promise<FormDetails>} - filled in move details
    */
   async fillInMoveDetails(moveType) {
@@ -304,6 +305,13 @@ class CreateMovePage extends Page {
     if (moveType === 'AP') {
       fields.approvedPremisesLocation = {
         selector: this.fields.approvedPremisesLocation,
+        type: 'autocomplete',
+      }
+    }
+
+    if (moveType === 'Custody suite (extradition)') {
+      fields.extraditionLocation = {
+        selector: this.fields.extraditionLocation,
         type: 'autocomplete',
       }
     }
@@ -457,6 +465,22 @@ class CreateMovePage extends Page {
         selector: this.fields.hasCourtCase,
         value: 'No',
         type: 'radio',
+      },
+    })
+  }
+
+  /**
+   * Fill in extradition details
+   *
+   * @returns {Promise}
+   */
+  async fillInExtraditionDetails() {
+    await t.expect(this.getCurrentUrl()).contains('/extradition-details')
+
+    return fillInForm({
+      flightNumber: {
+        selector: this.fields.flight_number,
+        value: 'BA1234',
       },
     })
   }
