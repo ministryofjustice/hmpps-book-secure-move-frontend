@@ -43,7 +43,11 @@ module.exports = {
     )
   },
   getDateRange: (date, timePeriod) => {
-    const parsedDate = isDate(date) ? date : parseISO(date)
+    const parsedDate = isDate(date)
+      ? date
+      : typeof date === 'string'
+        ? parseISO(date)
+        : null
 
     if (!isValidDate(parsedDate)) {
       return [undefined, undefined]
