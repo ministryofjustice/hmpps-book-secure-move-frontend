@@ -70,7 +70,11 @@ function locationsToPopulationAndTransfersTables({
 }
 
 function locationsToPopulationTable({ query, startDate, dayCount = 5 } = {}) {
-  let startDateAsDate = isDate(startDate) ? startDate : parseISO(startDate)
+  let startDateAsDate = startDate
+    ? isDate(startDate)
+      ? startDate
+      : parseISO(startDate)
+    : new Date()
 
   if (!isValid(startDateAsDate)) {
     startDateAsDate = new Date()

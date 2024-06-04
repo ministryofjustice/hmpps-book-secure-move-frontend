@@ -268,14 +268,14 @@ class CreateMovePage extends Page {
     if (moveType === 'Court') {
       fields.courtLocation = {
         selector: this.fields.courtLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
     if (moveType === 'Prison') {
       fields.prisonLocation = {
         selector: this.fields.prisonLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
@@ -296,21 +296,21 @@ class CreateMovePage extends Page {
     if (moveType === 'Hospital') {
       fields.hospitalLocation = {
         selector: this.fields.hospitalLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
     if (moveType === 'SCH') {
       fields.secureChildrensHomeLocation = {
         selector: this.fields.secureChildrensHomeLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
     if (moveType === 'AP') {
       fields.approvedPremisesLocation = {
         selector: this.fields.approvedPremisesLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
