@@ -241,6 +241,7 @@ describe('API Client', function () {
               title: 'fields::move_type.items.prison_recall.label',
               location_type: 'prison',
               type: 'locations',
+              extradition_capable: false,
             })
           })
         })
@@ -261,6 +262,7 @@ describe('API Client', function () {
               location_type: 'prison',
               title: 'fields::move_type.items.video_remand.label',
               type: 'locations',
+              extradition_capable: false,
             })
           })
         })
@@ -282,6 +284,7 @@ describe('API Client', function () {
               location_type: 'prison',
               title: 'fields::move_type.items.unknown.label',
               type: 'locations',
+              extradition_capable: false,
             })
           })
         })
@@ -302,6 +305,7 @@ describe('API Client', function () {
               location_type: 'prison',
               title: 'fields::move_type.items.unknown.label',
               type: 'locations',
+              extradition_capable: false,
             })
           })
         })
@@ -317,6 +321,7 @@ describe('API Client', function () {
                 key: 'barrow_in_furness_county_court',
                 title: 'Barrow in Furness County Court',
                 location_type: 'court',
+                extradition_capable: false,
               },
             })
             moveTransformer(move)
@@ -329,6 +334,7 @@ describe('API Client', function () {
               key: 'barrow_in_furness_county_court',
               title: 'Barrow in Furness County Court',
               location_type: 'court',
+              extradition_capable: false,
             })
           })
         })

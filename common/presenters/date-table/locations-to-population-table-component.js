@@ -15,7 +15,7 @@ function locationsToPopulationAndTransfersTables({
   dayCount = 5,
   includeTransfers = true,
 } = {}) {
-  const startDateAsDate = getStartDateAsDate(startDate)
+  const startDateAsDate = getStartDateAsDate(startDate, true)
 
   const tableConfig = cellType =>
     times(dayCount, index => {
@@ -66,7 +66,7 @@ function locationsToPopulationAndTransfersTables({
 }
 
 function locationsToPopulationTable({ query, startDate, dayCount = 5 } = {}) {
-  const startDateAsDate = getStartDateAsDate(startDate)
+  const startDateAsDate = getStartDateAsDate(startDate, true)
 
   const tableConfig = times(dayCount, index => {
     return dayConfig({
@@ -98,14 +98,15 @@ function locationsToPopulationTable({ query, startDate, dayCount = 5 } = {}) {
   }
 }
 
-function getStartDateAsDate(startDate) {
-  let startDateAsDate = startDate
-    ? isDate(startDate)
-      ? startDate
-      : parseISO(startDate)
-    : new Date()
+function getStartDateAsDate(startDate, defaultToToday) {
+  let startDateAsDate =
+    defaultToToday && !startDate
+      ? new Date()
+      : isDate(startDate)
+        ? startDate
+        : parseISO(startDate)
 
-  if (!isValid(startDateAsDate)) {
+  if (!isValid(startDateAsDate) && defaultToToday) {
     startDateAsDate = new Date()
   }
 

@@ -112,6 +112,10 @@ describe('Profile Service', function () {
       'pregnant',
       'other_health',
       'special_vehicle',
+      // extradition
+      'extradition_flight_number',
+      'extradition_flight_date',
+      'extradition_flight_time',
     ]
     const explicitKeys = ['special_vehicle', 'not_to_be_released']
     const defaultKeys = {
