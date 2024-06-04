@@ -385,7 +385,7 @@ export async function fillInPersonEscortRecord(moveId) {
  *
  * @returns {string|array} - value of the selected item or array of items selected
  */
-async function selectOption({ options, value }) {
+async function selectOption({ options, value, skipFirst = false }) {
   if (isArray(value)) {
     const filledInValues = []
 
@@ -420,8 +420,11 @@ async function selectOption({ options, value }) {
     const randomItem = Math.floor(Math.random() * count)
     option = await filteredOptions.nth(randomItem)
   } else {
-    const count = await options.count
-    const randomItem = Math.floor(Math.random() * count)
+    const count = skipFirst ? (await options.count) - 1 : await options.count
+
+    const randomItem = skipFirst
+      ? Math.floor(Math.random() * count) + 1
+      : Math.floor(Math.random() * count)
     option = await options.nth(randomItem)
   }
 
@@ -483,6 +486,27 @@ export function fillRadioOrCheckbox({ selector, value }) {
 }
 
 /**
+ * Select an option from a drop down list
+ *
+ * @param {object} [field]
+ * @param {Selector} [field.selector] - A TestCafe selector of radios or checkboxes
+ * @param {string|number} [field.value] - Text value or index to select. If undefined, will select a random item
+ *
+ * @returns {string|array} - value of the selected item or array of items selected
+ */
+export async function fillDdl({ selector, value }) {
+  await t.click(selector)
+  const options = await selector.child('option')
+  const skipFirst = true
+
+  return selectOption({
+    options,
+    value,
+    skipFirst,
+  })
+}
+
+/**
  * Fill in a text or textarea field
  *
  * @param {object} [field]
@@ -511,6 +535,9 @@ export async function fillInForm(fields = []) {
 
   for (const [key, field] of Object.entries(fields)) {
     switch (field.type) {
+      case 'ddl':
+        filledInFields[key] = await fillDdl(field)
+        break
       case 'autocomplete':
         filledInFields[key] = await fillAutocomplete(field)
         break

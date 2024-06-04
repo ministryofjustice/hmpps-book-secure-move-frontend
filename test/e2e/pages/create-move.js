@@ -78,6 +78,11 @@ class CreateMovePage extends Page {
       notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
       hasCourtCase: Selector('[name="has_court_case"]'),
       recallDate: Selector('#recall_date'),
+      extradition_flight_number: Selector('#extradition_flight_number'),
+      extradition_flight_day: Selector('#extradition_flight_date-day'),
+      extradition_flight_month: Selector('#extradition_flight_date-month'),
+      extradition_flight_year: Selector('#extradition_flight_date-year'),
+      extradition_flight_time: Selector('#extradition_flight_time'),
     }
 
     this.nodes = {
@@ -312,7 +317,7 @@ class CreateMovePage extends Page {
     if (moveType === 'Custody suite (extradition)') {
       fields.extraditionLocation = {
         selector: this.fields.extraditionLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
@@ -479,8 +484,29 @@ class CreateMovePage extends Page {
 
     return fillInForm({
       flightNumber: {
-        selector: this.fields.flight_number,
-        value: 'BA1234',
+        selector: this.fields.extradition_flight_number,
+        value: 'E2E93',
+        type: 'text',
+      },
+      flightDay: {
+        selector: this.fields.extradition_flight_day,
+        value: '15',
+        type: 'text',
+      },
+      flightMonth: {
+        selector: this.fields.extradition_flight_month,
+        value: '10',
+        type: 'text',
+      },
+      flightYear: {
+        selector: this.fields.extradition_flight_year,
+        value: '2030',
+        type: 'text',
+      },
+      flightTime: {
+        selector: this.fields.extradition_flight_time,
+        value: '09:45',
+        type: 'text',
       },
     })
   }

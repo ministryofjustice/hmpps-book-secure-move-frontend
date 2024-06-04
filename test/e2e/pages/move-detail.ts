@@ -25,6 +25,9 @@ export class MoveDetailPage extends Page {
       moveDetails: Selector('#main-content h3')
         .withText('Move details')
         .sibling('dl'),
+      extraditionDetails: Selector('#main-content h2')
+        .withText('Extradition details')
+        .sibling('dl'),
       courtInformationHeading: Selector('#main-content h2').withText(
         'Information for the court'
       ),
@@ -148,6 +151,27 @@ export class MoveDetailPage extends Page {
     return t
       .expect((this.nodes.noCourtInformationMessage as Selector).exists)
       .notOk()
+  }
+
+  async checkExtraditionDetails( extraditionDetails : {
+    flightTime: string,
+    flightNumber: string,
+    flightDay: string,
+    flightMonth: string,
+    flightYear: string,
+    }) {
+
+    await t
+      .expect((this.nodes.extraditionDetails as Selector).exists)
+      .ok()
+    const expectedDate = filters.formatDateWithRelativeDay(new Date(Number(extraditionDetails.flightYear), Number(extraditionDetails.flightMonth) - 1, Number(extraditionDetails.flightDay))) as string
+    const expectedTime = filters.formatTime(extraditionDetails.flightTime) as string
+    return this.checkSummaryList(this.nodes.extraditionDetails as Selector, {
+      'Flight number': extraditionDetails.flightNumber,
+      'Flight date': expectedDate,
+      'Flight time': expectedTime,
+    })
+
   }
 
   checkCourtInformation({

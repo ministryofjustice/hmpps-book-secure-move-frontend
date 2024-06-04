@@ -234,7 +234,7 @@ const testcafeRuns = testBuckets.map((test, index) => {
   const reporter = args.reporter
     ? `--reporter spec,xunit:reports/testcafe/results-${agent}__${name}.xml`
     : ''
-  const command = `FEATURE_FLAG_EXTRADITION_MOVES=true SERVER_HOST=localhost:${
+  const command = `SERVER_HOST=localhost:${
     3000 + index
   } E2E_BASE_URL=http://localhost:${
     3000 + index
