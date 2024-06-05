@@ -43,7 +43,7 @@ class AllocationDetailsPage extends Page {
       fromLocation: {
         value: locationValue,
         selector: this.fields.fromLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       },
       toLocation: {
         value: {
@@ -51,7 +51,7 @@ class AllocationDetailsPage extends Page {
           except: locationValue,
         },
         selector: this.fields.toLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       },
       date: {
         selector: this.fields.date,

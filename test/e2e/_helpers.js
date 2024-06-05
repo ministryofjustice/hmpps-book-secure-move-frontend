@@ -440,6 +440,7 @@ async function selectOption({ options, value, skipFirst = false }) {
   return option.innerText
 }
 
+// TODO this can be deleted?
 /**
  * Fill in an autocomplete field
  *
