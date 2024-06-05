@@ -16,6 +16,7 @@
       "country": "",
       "postcode": "",
       "can_upload_documents": false,
+      "extradition_capable": false,
       "nomis_agency_id": null,
       "suppliers": [
         {

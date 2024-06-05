@@ -71,6 +71,9 @@
         },
         "lodgings": {
           "data": []
+        },
+        "extradition_flight": {
+          "data": null
         }
       }
     },
@@ -145,6 +148,9 @@
         },
         "lodgings": {
           "data": []
+        },
+        "extradition_flight": {
+          "data": null
         }
       }
     },
@@ -219,6 +225,9 @@
         },
         "lodgings": {
           "data": []
+        },
+        "extradition_flight": {
+          "data": null
         }
       }
     },
@@ -293,6 +302,9 @@
         },
         "lodgings": {
           "data": []
+        },
+        "extradition_flight": {
+          "data": null
         }
       }
     },
@@ -367,6 +379,9 @@
         },
         "lodgings": {
           "data": []
+        },
+        "extradition_flight": {
+          "data": null
         }
       }
     }
