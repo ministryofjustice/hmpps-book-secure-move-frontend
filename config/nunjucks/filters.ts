@@ -25,7 +25,7 @@ const mojFilters = require('@ministryofjustice/frontend/moj/filters/all')()
 const { DATE_FORMATS } = require('../index')
 
 function _parseDate(date: Date | string) {
-  return isDate(date) ? (date as Date) : parseISO(date as string)
+  return isDate(date) ? (date as Date) : typeof date === 'string' ? parseISO(date as string) : date
 }
 
 function _isRelativeDate(date: string | Date) {
