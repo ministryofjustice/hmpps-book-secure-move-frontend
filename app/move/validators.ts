@@ -40,7 +40,9 @@ export function after(value: string, date?: string) {
   let comparator = new Date()
 
   if (arguments.length === 2 && Controller.validators.date(date)) {
-    comparator = parseISO(date)
+    if (date != null) {
+      comparator = parseISO(date)
+    }
   }
 
   return (

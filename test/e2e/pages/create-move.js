@@ -211,7 +211,7 @@ class CreateMovePage extends Page {
       },
       ethnicity: {
         selector: this.fields.ethnicity,
-        type: 'autocomplete',
+        type: 'ddl',
       },
       gender: {
         selector: this.fields.gender,
