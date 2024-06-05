@@ -32,7 +32,7 @@ export function time(value: string) {
 }
 
 export function datetime(value: string) {
-  return value === '' || isValid(parseISO(value))
+  return typeof value === 'string' && (value === '' || isValid(parseISO(value)))
 }
 
 export function after(value: string, date?: string) {
