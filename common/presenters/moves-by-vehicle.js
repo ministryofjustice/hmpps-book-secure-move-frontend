@@ -25,7 +25,10 @@ module.exports = function movesByVehicle({
     const isComplete = groupedItems.every(
       move => move[context === 'outgoing' ? '_hasLeftCustody' : '_hasArrived']
     )
-    const showRelativeTime = !isComplete && isToday(parseISO(expectedTime))
+    const showRelativeTime =
+      !isComplete &&
+      typeof expectedTime === 'string' &&
+      isToday(parseISO(expectedTime))
     const items = sortBy(groupedItems, 'profile.person._fullname').map(
       moveToCardComponent({
         showToLocation: showLocations || context === 'outgoing',
