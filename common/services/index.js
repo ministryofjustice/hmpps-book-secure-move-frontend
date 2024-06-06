@@ -2,6 +2,9 @@ const allocation = require('./allocation')
 const courtHearing = require('./court-hearing')
 const document = require('./document')
 const { EventService: event } = require('./event')
+const {
+  ExtraditionFlightService: extraditionFlight,
+} = require('./extradition-flight')
 const frameworks = require('./frameworks')
 const journey = require('./journey')
 const locationsFreeSpaces = require('./locations-free-spaces')
@@ -24,6 +27,7 @@ module.exports = {
   locationsFreeSpaces,
   lodging,
   move,
+  extraditionFlight,
   person,
   personEscortRecord,
   population,

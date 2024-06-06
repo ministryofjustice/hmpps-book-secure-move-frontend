@@ -32,6 +32,7 @@ class CreateMovePage extends Page {
       gender: Selector('[name="gender"]'),
       moveType: Selector('[name="move_type"]'),
       courtLocation: Selector('#to_location_court_appearance'),
+      extraditionLocation: Selector('#to_location_extradition'),
       hospitalLocation: Selector('#to_location_hospital'),
       secureChildrensHomeLocation: Selector(
         '#to_location_secure_childrens_home'
@@ -77,6 +78,11 @@ class CreateMovePage extends Page {
       notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
       hasCourtCase: Selector('[name="has_court_case"]'),
       recallDate: Selector('#recall_date'),
+      extradition_flight_number: Selector('#extradition_flight_number'),
+      extradition_flight_day: Selector('#extradition_flight_date-day'),
+      extradition_flight_month: Selector('#extradition_flight_date-month'),
+      extradition_flight_year: Selector('#extradition_flight_date-year'),
+      extradition_flight_time: Selector('#extradition_flight_time'),
     }
 
     this.nodes = {
@@ -205,7 +211,7 @@ class CreateMovePage extends Page {
       },
       ethnicity: {
         selector: this.fields.ethnicity,
-        type: 'autocomplete',
+        type: 'ddl',
       },
       gender: {
         selector: this.fields.gender,
@@ -245,7 +251,7 @@ class CreateMovePage extends Page {
   /**
    * Fill in move details
    *
-   * @param {'Court'|'Prison recall'|'Prison'} moveType - type of move
+   * @param {'Court'|'Prison recall'|'Prison'|'Prison remand (Video Remand Hearing)'|'Hospital'|'SCH'|'AP'|'Extradition'} moveType - type of move
    * @returns {Promise<FormDetails>} - filled in move details
    */
   async fillInMoveDetails(moveType) {
@@ -262,14 +268,14 @@ class CreateMovePage extends Page {
     if (moveType === 'Court') {
       fields.courtLocation = {
         selector: this.fields.courtLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
     if (moveType === 'Prison') {
       fields.prisonLocation = {
         selector: this.fields.prisonLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
@@ -290,21 +296,28 @@ class CreateMovePage extends Page {
     if (moveType === 'Hospital') {
       fields.hospitalLocation = {
         selector: this.fields.hospitalLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
     if (moveType === 'SCH') {
       fields.secureChildrensHomeLocation = {
         selector: this.fields.secureChildrensHomeLocation,
-        type: 'autocomplete',
+        type: 'ddl',
       }
     }
 
     if (moveType === 'AP') {
       fields.approvedPremisesLocation = {
         selector: this.fields.approvedPremisesLocation,
-        type: 'autocomplete',
+        type: 'ddl',
+      }
+    }
+
+    if (moveType === 'Custody suite (extradition)') {
+      fields.extraditionLocation = {
+        selector: this.fields.extraditionLocation,
+        type: 'ddl',
       }
     }
 
@@ -457,6 +470,43 @@ class CreateMovePage extends Page {
         selector: this.fields.hasCourtCase,
         value: 'No',
         type: 'radio',
+      },
+    })
+  }
+
+  /**
+   * Fill in extradition details
+   *
+   * @returns {Promise}
+   */
+  async fillInExtraditionDetails() {
+    await t.expect(this.getCurrentUrl()).contains('/extradition-details')
+
+    return fillInForm({
+      flightNumber: {
+        selector: this.fields.extradition_flight_number,
+        value: 'E2E93',
+        type: 'text',
+      },
+      flightDay: {
+        selector: this.fields.extradition_flight_day,
+        value: '15',
+        type: 'text',
+      },
+      flightMonth: {
+        selector: this.fields.extradition_flight_month,
+        value: '10',
+        type: 'text',
+      },
+      flightYear: {
+        selector: this.fields.extradition_flight_year,
+        value: '2030',
+        type: 'text',
+      },
+      flightTime: {
+        selector: this.fields.extradition_flight_time,
+        value: '09:45',
+        type: 'text',
       },
     })
   }

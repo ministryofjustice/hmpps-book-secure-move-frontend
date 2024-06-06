@@ -232,6 +232,12 @@ class CreateBaseController extends FormWizardController {
       const PNCPredicate = error =>
         error.type === 'policeNationalComputerNumber'
 
+      const extraditionPredicate = error =>
+        error.key === 'extradition_flight_date' && error.type === 'equal'
+
+      const ignorePredicate = error =>
+        extraditionPredicate(error) || PNCPredicate(error)
+
       forEach(pickBy(errors, PNCPredicate), (error, key) => {
         Sentry.captureException(new Error('PNC validation failed'), {
           level: 'warning',
@@ -250,8 +256,7 @@ class CreateBaseController extends FormWizardController {
           },
         })
       })
-
-      callback(omitBy(errors, PNCPredicate))
+      callback(omitBy(errors, ignorePredicate))
     })
   }
 }

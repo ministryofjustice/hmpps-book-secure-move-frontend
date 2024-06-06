@@ -11,6 +11,7 @@ const courtHearingToSummaryListComponent = require('./court-hearing-to-summary-l
 const eventToTagComponent = require('./event-to-tag-component')
 const eventToTimelineItemComponent = require('./event-to-timeline-item-component')
 const eventToTimelinePanel = require('./event-to-timeline-panel')
+const extraditionFlightToSummaryListComponent = require('./extradition-flight-to-summary-list-component')
 const frameworkFieldToSummaryListRow = require('./framework-field-summary-list-row')
 const frameworkFlagsToTagList = require('./framework-flags-to-tag-list')
 const frameworkNomisMappingsToPanel = require('./framework-nomis-mappings-to-panel')
@@ -55,6 +56,7 @@ module.exports = {
   eventToTagComponent,
   eventToTimelineItemComponent,
   eventToTimelinePanel,
+  extraditionFlightToSummaryListComponent,
   frameworkFieldToSummaryListRow,
   frameworkFlagsToTagList,
   frameworkNomisMappingsToPanel,

@@ -32,7 +32,7 @@ export function time(value: string) {
 }
 
 export function datetime(value: string) {
-  return value === '' || isValid(parseISO(value))
+  return typeof value === 'string' && (value === '' || isValid(parseISO(value)))
 }
 
 export function after(value: string, date?: string) {
@@ -40,7 +40,9 @@ export function after(value: string, date?: string) {
   let comparator = new Date()
 
   if (arguments.length === 2 && Controller.validators.date(date)) {
-    comparator = parseISO(date)
+    if (date != null) {
+      comparator = parseISO(date)
+    }
   }
 
   return (

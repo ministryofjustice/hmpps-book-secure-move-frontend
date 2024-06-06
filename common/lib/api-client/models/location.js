@@ -5,6 +5,7 @@ module.exports = {
     location_type: '',
     nomis_agency_id: '',
     can_upload_documents: '',
+    extradition_capable: '',
     young_offender_institution: '',
     latitude: '',
     longitude: '',

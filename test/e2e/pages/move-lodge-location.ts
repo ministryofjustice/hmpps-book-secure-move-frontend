@@ -32,7 +32,7 @@ export class MoveLodgeLocationPage extends Page {
     const fieldsToFill = {
       fromLocation: {
         selector: this.nodes.locationInput,
-        type: 'autocomplete',
+        type: 'ddl',
         value: {
           type: 'random',
           except,

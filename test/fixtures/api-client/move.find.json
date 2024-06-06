@@ -70,6 +70,9 @@
       },
       "lodgings": {
         "data": []
+      },
+      "extradition_flight": {
+        "data": null
       }
     }
   },

@@ -46,6 +46,8 @@ export function renderDetails(req: BasmRequest, res: BasmResponse) {
 
   const updateLinks = mapValues(updateUrls, mapUpdateLink)
 
+  const extraditionSummary = move.extradition_flight ? presenters.extraditionFlightToSummaryListComponent(move.extradition_flight) : false
+
   const moveSummary = presenters.moveToSummaryListComponent(move, journeys, {
     updateUrls,
     canAccess,
@@ -94,6 +96,7 @@ export function renderDetails(req: BasmRequest, res: BasmResponse) {
   const locals = {
     moveId: move.id,
     allocation: move.allocation,
+    extradition: extraditionSummary,
     isPerLocked: move._isPerLocked,
     canEditPer: move._canEditPer,
     isAllocationMove: !isNil(move.allocation),

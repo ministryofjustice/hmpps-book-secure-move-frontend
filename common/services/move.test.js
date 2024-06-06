@@ -89,6 +89,7 @@ describe('Move Service', function () {
         'to_location',
         'lodgings',
         'lodgings.location',
+        'extradition_flight',
       ])
     })
   })

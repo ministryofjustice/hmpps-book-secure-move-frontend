@@ -19,6 +19,7 @@ const locations: Location[] = [
     location_type: 'prison',
     title: 'HMP Adelaide',
     type: 'locations',
+    extradition_capable: false,
   },
   {
     id: '2c3016af-e043-4600-a6da-de91520fc700',
@@ -26,6 +27,7 @@ const locations: Location[] = [
     location_type: 'prison',
     title: 'HMP Brisbane',
     type: 'locations',
+    extradition_capable: false,
   },
 ]
 

@@ -8,4 +8,5 @@ export const LocationFactory = Factory.define<Location>(() => ({
   location_type: 'prison',
   title: 'HMP Adelaide',
   type: 'locations',
+  extradition_capable: false,
 }))

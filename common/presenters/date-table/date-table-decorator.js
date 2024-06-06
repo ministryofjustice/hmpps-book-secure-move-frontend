@@ -6,7 +6,7 @@ const dateTableDecorator = {
       return {}
     }
 
-    const cellDateAsDate = isDate(cell.date) ? cell.date : parseISO(cell.date)
+    const cellDateAsDate = optimisticDateFormat(cell.date)
 
     if (!isValid(cellDateAsDate)) {
       return {}
@@ -15,7 +15,7 @@ const dateTableDecorator = {
     let classes = cell.classes || ''
     classes = classes.concat(' ', dateClass)
 
-    const focusDateAsDate = isDate(focusDate) ? focusDate : parseISO(focusDate)
+    const focusDateAsDate = optimisticDateFormat(focusDate)
 
     const isFocusedDate = isSameDay(cellDateAsDate, focusDateAsDate)
 
@@ -33,7 +33,7 @@ const dateTableDecorator = {
       return {}
     }
 
-    const cellDateAsDate = isDate(cell.date) ? cell.date : parseISO(cell.date)
+    const cellDateAsDate = optimisticDateFormat(cell.date)
 
     if (!isValid(cellDateAsDate)) {
       return {}
@@ -76,6 +76,14 @@ const dateTableDecorator = {
       }),
     }
   },
+}
+
+function optimisticDateFormat(value) {
+  return isDate(value)
+    ? value
+    : typeof value === 'string'
+      ? parseISO(value)
+      : value
 }
 
 module.exports = dateTableDecorator

@@ -44,7 +44,7 @@ const options = {
     [BLOCKS.OL_LIST]: (node: { content: any }, next: (arg0: any) => any) =>
       `<ol class="govuk-list govuk-list--number">${next(node.content)}</ol>`,
     [BLOCKS.PARAGRAPH]: (node: { content: any }, next: (arg0: any) => any) =>
-      `<p class="govuk-body">${next(node.content)}</p>`,
+      `<p class="govuk-template__body">${next(node.content)}</p>`,
     [BLOCKS.EMBEDDED_ASSET]: ({
       data: {
         target: { fields },

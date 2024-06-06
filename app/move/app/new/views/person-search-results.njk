@@ -28,11 +28,11 @@
 
     {% set html %}
       {% if values.from_location_type == "prison" %}
-        <p class="govuk-body">
+        <p class="govuk-template__body">
           {{ t("moves::steps.person_search_results.ensure_person_exists") }}
         </p>
 
-        <p class="govuk-body">
+        <p class="govuk-template__body">
           {{ prisonActions | safe }}
         </p>
       {% else %}
@@ -51,7 +51,7 @@
       }) }}
     {% endif %}
 
-    <p class="govuk-body govuk-!-margin-top-4  govuk-!-margin-bottom-6">
+    <p class="govuk-template__body govuk-!-margin-top-4  govuk-!-margin-bottom-6">
       {{ (prisonActions if values.from_location_type == "prison" else defaultActions) | safe }}
     </p>
   {% endif %}

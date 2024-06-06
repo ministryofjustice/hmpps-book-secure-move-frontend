@@ -41,6 +41,7 @@ const defaultInclude = [
   'to_location',
   'lodgings',
   'lodgings.location',
+  'extradition_flight',
 ]
 const noMoveIdMessage = 'No move ID supplied'
 

@@ -54,7 +54,7 @@ describe('Read only field component', function () {
         expect($value.get(0).tagName).to.equal('p')
       })
       it('should add the default class', function () {
-        expect($value.hasClass('govuk-body')).to.be.true
+        expect($value.hasClass('govuk-template__body')).to.be.true
       })
       it('should output heading', function () {
         expect($value.text().trim()).to.equal('Display value')

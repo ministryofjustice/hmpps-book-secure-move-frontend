@@ -4,6 +4,7 @@ import { Location } from './location'
 import { Lodging } from './lodging'
 import { Profile } from './profile'
 import { Supplier } from './supplier'
+import { ExtraditionFlight } from "./extradition_flight";
 
 export interface Move {
   date: string
@@ -28,6 +29,8 @@ export interface Move {
     | 'prison_remand'
     | 'prison_transfer'
     | 'video_remand'
+    | 'extradition'
+    | 'approved_premises'
   id: string
   _vehicleRegistration?: string
   _expectedCollectionTime?: string
@@ -49,4 +52,5 @@ export interface Move {
   is_lodging?: boolean
   allocation?: Allocation
   lodgings?: Lodging[]
+  extradition_flight?: ExtraditionFlight
 }

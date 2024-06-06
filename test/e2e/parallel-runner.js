@@ -58,6 +58,9 @@ const E2E_SKIP = getEnvVar('E2E_SKIP')
 const E2E_FAIL_FAST = getEnvVar('E2E_FAIL_FAST')
 const E2E_BASE_URL = getEnvVar('E2E_BASE_URL')
 const E2E_VIDEO = getEnvVar('E2E_VIDEO')
+const FEATURE_FLAG_EXTRADITION_MOVES = getEnvVar(
+  'FEATURE_FLAG_EXTRADITION_MOVES'
+)
 
 const args = yargs
   .usage(
@@ -75,8 +78,12 @@ e2e test runner
   .version('version', '1.0.0')
   .alias('version', 'V')
   .example('npm run test-e2e', 'Run all the tests')
-  .example('npm run test-e2e -- --test test/e2e/move.new.police.test.js')
-  .example('npm run test-e2e -- --skip test/e2e/move.new.police.test.js')
+  .example(
+    'npm run test-e2e -- --test test/e2e/move/new/police/to-court.test.js'
+  )
+  .example(
+    'npm run test-e2e -- --skip test/e2e/move/new/police/to-court.test.js'
+  )
   .example('npm run test-e2e -- --max_processes 3')
   .example('npm run test-e2e -- --debug', 'Debug on fail')
   .example('npm run test-e2e -- --video', 'Capture video when tests fail')
@@ -156,6 +163,7 @@ E2E_SKIP:          ${E2E_SKIP}
 E2E_VIDEO:         ${E2E_VIDEO}
 E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
 E2E_BASE_URL:      ${E2E_BASE_URL}
+FEATURE_FLAG_EXTRADITION_MOVES:      ${FEATURE_FLAG_EXTRADITION_MOVES}
 `)
 
 if (args.video && args.max_processes > 8) {
@@ -176,7 +184,9 @@ if (debugOnFail) {
 const stopOnFirstFail =
   args['fail-fast'] || E2E_FAIL_FAST ? '--stop-on-first-fail' : ''
 const killOthers = stopOnFirstFail ? ['failure'] : undefined
-const agent = args.headless ? `'${args.agent} --headless=new'` : '${args.agent}'
+const agent = args.headless
+  ? `'${args.agent} --headless=new'`
+  : `'${args.agent}'`
 const color = args.color ? '--color' : ''
 const testcafeArgs = args.testcafe || ''
 const skip = args.skip
@@ -236,7 +246,7 @@ const testcafeRuns = testBuckets.map((test, index) => {
     3999 + index
   } node_modules/.bin/testcafe ${agent} ${test.join(
     ' '
-  )} ${color} --retry-test-pages -q attemptLimit=10,successThreshold=2 ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
+  )} ${color} --retry-test-pages -q attemptLimit=10,successThreshold=2 -e ${reporter} ${screenshots} ${video} ${stopOnFirstFail} ${debugOnFail} ${testcafeArgs}`
   return {
     name,
     command,
@@ -277,7 +287,7 @@ const runTests = async () => {
         3000 + i
       } NOMIS_ELITE2_API_URL=http://localhost:${
         3999 + i
-      } FEATURE_FLAG_ADD_LODGE_BUTTON=true node start.js`
+      } FEATURE_FLAG_ADD_LODGE_BUTTON=true FEATURE_FLAG_EXTRADITION_MOVES=true node start.js`
   )
   const authCommandStrings = testBuckets.map(
     (_, i) =>

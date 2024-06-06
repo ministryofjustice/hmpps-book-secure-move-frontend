@@ -302,6 +302,13 @@ export const E2E = {
       username: 'E2E_READ_ONLY',
       password: '102PF_READ_ONLY',
     },
+    EXTRADITION: {
+      locations: ['CDI', 'WSI', 'BZI', 'BAI', 'WWI'],
+      name: 'Extradition Prison',
+      authorities: ['ROLE_PECS_PRISON'],
+      username: 'E2E_EXTRADITION',
+      password: '102PF_EXTRADITION',
+    },
   },
 }
 export const FEATURE_FLAGS = {
