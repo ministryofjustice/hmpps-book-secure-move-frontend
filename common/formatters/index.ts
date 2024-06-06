@@ -8,20 +8,15 @@ export function date (value: Date | string, format = 'yyyy-MM-dd'): Date | strin
   const d = parsedDate ? formatDate(parsedDate, format) : value
   return d
 }
-export function gds_date (value: any, format = 'yyyy-MM-dd'): string {
-  return value
-}
 
 export function gds_time (value: string) {
-  const parsedTime = parsers.time(value)
-  return parsedTime
+  return  parsers.time(value)
 }
 
 export function time (value: Date | string, format = 'HH:mm') {
   const parsedDate = parsers.date(value)
   return parsedDate ? formatDate(parsedDate, format) : value
 }
-
 
 export function sentenceFormatDate(date: Date) {
   const dateOptions: Intl.DateTimeFormatOptions = {
