@@ -46,7 +46,7 @@ test('Start new Record', async t => {
     .eql(numberOfSections, 'Should include link for each PER section')
     .expect(
       moveDetailPage.nodes.personEscortRecordSectionStatuses.withText(
-        'NOT STARTED'
+        'Not started'
       ).count
     )
     .eql(numberOfSections, 'Should show each section as not started')
@@ -75,7 +75,7 @@ test('Start new Record', async t => {
     .eql(numberOfSections, 'Should include link for each PER section')
     .expect(
       moveDetailPage.nodes.personEscortRecordSectionStatuses.withText(
-        'COMPLETED'
+        'Completed'
       ).count
     )
     .eql(numberOfSections, 'Should show each section as completed')
