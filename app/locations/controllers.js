@@ -17,13 +17,9 @@ async function locations(req, res, next) {
   const activeLocations = userLocations.filter(
     location => location.disabled_at === null
   )
-  const inactiveLocations = userLocations.filter(
-    location => location.disabled_at !== null
-  )
 
   res.render('locations/views/locations.njk', {
     activeLocations,
-    inactiveLocations,
     regions,
   })
 }
