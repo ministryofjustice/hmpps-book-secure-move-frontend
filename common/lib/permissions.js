@@ -147,6 +147,7 @@ const prisonPermissions = [
   'move:update:approved_premises',
   'move:update:court_appearance',
   'move:update:hospital',
+  'move:update:extradition',
   'person_escort_record:view',
   'person_escort_record:create',
   'person_escort_record:update',
