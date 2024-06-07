@@ -34,7 +34,6 @@ export class Page {
       ).withAttribute('href', /\/locations\/.+/),
       locationValue: Selector('.moj-organisation-nav__title'),
       dateSelectInput: '[name="date_select"]',
-      inactiveLocations: Selector('.govuk-details__summary-text'),
     }
 
   getCurrentUrl = ClientFunction(() => window.location.href)
@@ -60,10 +59,6 @@ export class Page {
       .contains('/locations')
       .expect((this.nodes.locationsList as Selector).count)
       .notEql(0, { timeout: 15000 })
-
-    if (await (this.nodes.inactiveLocations as Selector).exists) {
-      await t.click(this.nodes.inactiveLocations as Selector)
-    }
 
     if (isUndefined(position)) {
       const count = await (this.nodes.locationsList as Selector).count

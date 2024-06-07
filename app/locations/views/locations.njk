@@ -51,27 +51,6 @@
               </a>
             </li>
           {% endfor %}
-
-          {% if inactiveLocations | length %}
-            <br>
-
-            <details class="govuk-details" data-module="govuk-details">
-              <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                  {{ inactiveLocations | length }} inactive locations
-                </span>
-              </summary>
-              <div class="govuk-details__text">
-                {% for location in inactiveLocations %}
-                  <li>
-                    <a href="/locations/{{ location.id }}">
-                      {{ location.title }}
-                    </a>
-                  </li>
-                {% endfor %}
-              </div>
-            </details>
-          {% endif %}
         </ul>
       </div>
     </div>

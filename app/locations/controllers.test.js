@@ -81,10 +81,6 @@ describe('Locations controllers', function () {
           expect(params.activeLocations).to.deep.equal(
             mockLocations.filter(l => l.disabled_at === null)
           )
-          expect(params).to.have.property('inactiveLocations')
-          expect(params.inactiveLocations).to.deep.equal(
-            mockLocations.filter(l => l.disabled_at !== null)
-          )
         })
       }
     )
