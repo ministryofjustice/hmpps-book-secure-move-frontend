@@ -7,6 +7,7 @@ import { Lodging } from './lodging'
 import { Move } from './move'
 import { Service } from './service'
 import { SessionModel } from './session_model'
+import { SupplierService } from "../services/supplier";
 
 export interface BasmRequest extends Express.Request {
   allocation?: Allocation
@@ -34,6 +35,7 @@ export interface BasmRequest extends Express.Request {
   services: {
     allocation: Service
     lodging: LodgingService
+    supplier: SupplierService
   }
   t: typeof I18n.t
 }

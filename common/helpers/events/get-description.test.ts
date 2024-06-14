@@ -41,7 +41,7 @@ describe('Helpers', function () {
                 vehicle: { registration: 'fallback reg' },
               },
             },
-            supplier: '12341-12312132',
+            supplier: { id: '12341-12312132', type: 'suppliers' },
             occurred_at: '2020-10-10T14:00:00Z',
           })
           i18nStub.t
@@ -74,7 +74,7 @@ describe('Helpers', function () {
             id: 'eventId',
             event_type: 'PerCompletion',
             details: {},
-            supplier: '12341-12312132',
+            supplier: { id: '12341-12312132', type: 'suppliers' },
             occurred_at: '2020-10-10T14:00:00Z',
           })
           i18nStub.t
@@ -142,7 +142,7 @@ describe('Helpers', function () {
             id: 'eventId',
             event_type: 'PerUpdated',
             details: {},
-            supplier: '12341-12312132',
+            supplier: { id: '12341-12312132', type: 'suppliers' },
             occurred_at: '2020-10-10T14:00:00Z',
           })
           i18nStub.t
@@ -231,7 +231,7 @@ describe('Helpers', function () {
                 start_date: '2020-02-02',
                 end_date: '2020-02-03',
               },
-              supplier: '12341-12312132',
+              supplier: { id: '12341-12312132', type: 'suppliers' },
               occurred_at: '2020-10-10T14:00:00Z',
             })
             description = await getDescription('token', mockEvent)
@@ -250,7 +250,7 @@ describe('Helpers', function () {
                 start_date: '2020-02-02',
                 end_date: '2020-02-04',
               },
-              supplier: '12341-12312132',
+              supplier: { id: '12341-12312132', type: 'suppliers' },
               occurred_at: '2020-10-10T14:00:00Z',
             })
             description = await getDescription('token', mockEvent)
