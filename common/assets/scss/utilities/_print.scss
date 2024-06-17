@@ -16,3 +16,5 @@
 @page {
   margin: 12mm 8mm;
 }
+
+@media print { a[href]::after { content: '' !important } }
