@@ -202,4 +202,22 @@
     {% endif %}
 
   <script src="{{ getAssetPath('app.js') }}"></script>
+  <script type="text/javascript" nonce="{{ cspNonce }}">
+    document.addEventListener("DOMContentLoaded", function() {
+      const printBtn = document.getElementById('print-link');
+
+      function printHandler () {
+        window.print();
+      }
+
+      if (printBtn) {
+        printBtn.addEventListener('click', printHandler)
+
+        window.addEventListener('beforeunload', function () {
+          printBtn.removeEventListener('click', printHandler)
+        })
+      }
+    })
+  </script>
+
 {% endblock %}

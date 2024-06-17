@@ -53,4 +53,6 @@ export interface Move {
   allocation?: Allocation
   lodgings?: Lodging[]
   extradition_flight?: ExtraditionFlight
+  rebook?: boolean
+  cancellation_reason?: string
 }

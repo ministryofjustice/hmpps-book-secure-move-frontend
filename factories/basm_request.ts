@@ -5,6 +5,7 @@ import { BasmRequest } from '../common/types/basm_request'
 import I18n from '../config/i18n'
 
 import { MoveFactory } from './move'
+import {SupplierService} from "../common/services/supplier";
 
 export const defaultParams = {
   canAccess: (permission: string) => true,
@@ -29,6 +30,7 @@ export const defaultParams = {
       update: () => {},
     },
     lodging: new LodgingService(),
+    supplier: new SupplierService(),
   },
   t: I18n.t,
 }

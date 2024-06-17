@@ -136,7 +136,7 @@ export class LodgingService extends BaseService {
       )
       .then((response: IndexResponse) => {
         const { data, links, meta } = response
-        const moves = [...combinedData, ...data]
+        const lodgings = [...combinedData, ...data]
 
         if (isAggregation) {
           return meta.pagination.total_objects
@@ -145,14 +145,14 @@ export class LodgingService extends BaseService {
         const hasNext = links.next && data.length !== 0
 
         if (!hasNext) {
-          return moves
+          return lodgings
         }
 
         return this.getAll({
           moveId,
           filter,
           sort,
-          combinedData: moves,
+          combinedData: lodgings,
           page: page + 1,
           params,
         })

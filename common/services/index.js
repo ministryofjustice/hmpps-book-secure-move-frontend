@@ -16,6 +16,7 @@ const population = require('./population')
 const profile = require('./profile')
 const referenceData = require('./reference-data')
 const singleRequest = require('./single-request')
+const { SupplierService: supplier } = require('./supplier')
 const youthRiskAssessment = require('./youth-risk-assessment')
 
 module.exports = {
@@ -34,6 +35,7 @@ module.exports = {
   profile,
   referenceData,
   singleRequest,
+  supplier,
   event,
   youthRiskAssessment,
 }

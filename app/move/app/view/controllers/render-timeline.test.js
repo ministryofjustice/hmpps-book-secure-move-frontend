@@ -1,7 +1,12 @@
+const proxyquire = require('proxyquire')
+
+const moveHelpers = require('../../../../../common/helpers/move')
 const presenters = require('../../../../../common/presenters')
+const { SupplierService } = require('../../../../../common/services/supplier')
 
-const controller = require('./render-timeline')
-
+const { renderTimeline } = proxyquire('./render-timeline', {
+  '../../../../../common/helpers/move': moveHelpers,
+})
 describe('Move view app', function () {
   describe('Controllers', function () {
     describe('#renderTimeline()', function () {
@@ -22,6 +27,9 @@ describe('Move view app', function () {
               },
             },
           },
+          services: {
+            supplier: new SupplierService(),
+          },
         }
         res = {
           breadcrumb: sinon.stub().returnsThis(),
@@ -31,7 +39,7 @@ describe('Move view app', function () {
 
       context('by default', function () {
         beforeEach(async function () {
-          await controller(req, res)
+          await renderTimeline(req, res)
         })
 
         it('should transform the data for presentation', function () {
@@ -65,7 +73,7 @@ describe('Move view app', function () {
               },
             ],
           }
-          await controller(req, res)
+          await renderTimeline(req, res)
         })
 
         it('should transform the data for presentation', function () {

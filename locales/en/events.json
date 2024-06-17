@@ -396,7 +396,7 @@
     "description": "{{notes}}, completed by {{supplier_personnel_number}}"
   },
   "PerGeneric": {
-    "heading": "{{move.supplier.name}} has logged a generic event note",
+    "heading": "{{supplier.name}} has logged a generic event note",
     "heading_without_supplier": "Generic lockout event added",
     "description": "{{notes}}"
   },

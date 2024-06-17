@@ -1,4 +1,5 @@
 // Core dependencies
+const crypto = require('crypto')
 const path = require('path')
 
 // NPM dependencies
@@ -227,7 +228,10 @@ module.exports = async () => {
   )
   app.use(setLocations)
   app.use('.*(?<!image)$', setLocation)
-
+  app.use((req, res, next) => {
+    res.locals.cspNonce = crypto.randomBytes(16).toString('hex')
+    next()
+  })
   // unsafe-inline is required as govuk-template injects `js-enabled` class via inline script
   app.use(
     helmet({
@@ -248,6 +252,7 @@ module.exports = async () => {
             'region1.google-analytics.com',
             'cdn.jsdelivr.net',
             "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
+            (req, res) => `'nonce-${res.locals.cspNonce}'`,
           ],
           connectSrc: [
             "'self'",
