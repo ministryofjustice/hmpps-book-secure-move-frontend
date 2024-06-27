@@ -6,7 +6,7 @@ import { personEscortRecordUser } from '../_roles'
 import { home, getMove } from '../_routes'
 import { moveDetailPage, confirmPersonEscortRecordPage } from '../pages'
 
-const numberOfSections = 2
+const numberOfSections = 4
 
 fixture('Person Escort Record').beforeEach(async t => {
   await t.useRole(personEscortRecordUser).navigateTo(home)
