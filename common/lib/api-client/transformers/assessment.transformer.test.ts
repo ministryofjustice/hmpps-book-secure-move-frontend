@@ -90,7 +90,7 @@ describe('API Client', function () {
         })
 
         it('should add custom properties', function () {
-          expect(Object.keys(assessment)).to.have.length(4)
+          expect(Object.keys(assessment)).to.have.length(5)
         })
 
         it('should add framework', function () {
@@ -99,17 +99,30 @@ describe('API Client', function () {
             version: '1.1.0',
             sections: {
               'section-one': {
-                _fizz: 'buzz-one',
                 name: 'one',
                 steps: [],
               },
               'section-two': {
-                _fizz: 'buzz-two',
                 name: 'two',
                 steps: [],
               },
             },
             questions: {},
+          })
+        })
+
+        it('should add sections', function () {
+          expect(assessment.sections).to.deep.equal({
+            'section-one': {
+              _fizz: 'buzz-one',
+              name: 'one',
+              steps: [],
+            },
+            'section-two': {
+              _fizz: 'buzz-two',
+              name: 'two',
+              steps: [],
+            },
           })
         })
 

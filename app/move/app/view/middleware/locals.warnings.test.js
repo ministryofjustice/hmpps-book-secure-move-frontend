@@ -44,12 +44,10 @@ describe('Move view app', function () {
         context('with Person Escort Record', function () {
           beforeEach(function () {
             req.move.profile.person_escort_record = {
-              _framework: {
-                sections: [
-                  { name: 'foo', order: 2 },
-                  { name: 'bar', order: 1 },
-                ],
-              },
+              sections: [
+                { name: 'foo', order: 2 },
+                { name: 'bar', order: 1 },
+              ],
               id: 'per_12345',
             }
             middleware(req, res, nextSpy)

@@ -37,9 +37,7 @@ describe('Presenters', function () {
             assessment: {
               status: 'in_progress',
               editable: true,
-              _framework: {
-                sections: [],
-              },
+              sections: [],
               meta: {
                 section_progress: [],
               },

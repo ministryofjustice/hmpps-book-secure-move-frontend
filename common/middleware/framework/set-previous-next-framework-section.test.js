@@ -32,9 +32,7 @@ describe('Framework middleware', function () {
 
       req = {
         assessment: {
-          _framework: {
-            sections: mockSections,
-          },
+          sections: mockSections,
         },
         frameworkSection: {},
       }

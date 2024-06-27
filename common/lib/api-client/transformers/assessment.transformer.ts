@@ -22,10 +22,10 @@ export function assessmentTransformer(assessment: Assessment) {
       mapQuestionToResponse(framework)
     )
 
-    framework.sections = mapValues(
+    assessment.sections = mapValues(
       framework.sections,
       mapItemToSection(assessment)
-    )
+    ) as Assessment['sections']
 
     assessment._framework = framework
   }

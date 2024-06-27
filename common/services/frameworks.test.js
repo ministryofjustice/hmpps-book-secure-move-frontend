@@ -1281,57 +1281,5 @@ describe('Services', function () {
         })
       })
     })
-
-    describe('#getPersonEscortRecord', function () {
-      let framework
-      const mockFramework = {
-        sections: ['a', 'b'],
-        questions: ['1', '2'],
-      }
-
-      beforeEach(function () {
-        sinon.stub(frameworksService, 'getFramework').returns(mockFramework)
-      })
-
-      context('with version', function () {
-        const mockVersion = '0.1.2'
-
-        beforeEach(function () {
-          framework = frameworksService.getPersonEscortRecord(mockVersion)
-        })
-
-        it('should call getFramework method with version argument', function () {
-          expect(
-            frameworksService.getFramework
-          ).to.have.been.calledOnceWithExactly({
-            framework: 'person-escort-record',
-            version: mockVersion,
-          })
-        })
-
-        it('should return a framework', function () {
-          expect(framework).to.deep.equal(mockFramework)
-        })
-      })
-
-      context('without version', function () {
-        beforeEach(function () {
-          frameworksService.getPersonEscortRecord()
-        })
-
-        it('should call getFramework method with config version', function () {
-          expect(
-            frameworksService.getFramework
-          ).to.have.been.calledOnceWithExactly({
-            framework: 'person-escort-record',
-            version: mockFrameworksVersion,
-          })
-        })
-
-        it('should return a framework', function () {
-          expect(framework).to.deep.equal(mockFramework)
-        })
-      })
-    })
   })
 })
