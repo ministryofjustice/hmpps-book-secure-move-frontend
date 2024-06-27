@@ -4,7 +4,6 @@ const path = require('path')
 const debug = require('debug')('app:frameworks')
 const { flatten, get, kebabCase, keyBy, set } = require('lodash')
 
-const { FRAMEWORKS: frameworksConfig } = require('../../config')
 const markdown = require('../../config/markdown')
 const { frameworks } = require('../../config/paths')
 
@@ -304,13 +303,6 @@ const frameworksService = {
     debug('Loading framework (UNCACHED):', frameworkKey)
 
     return frameworkFromFiles
-  },
-
-  getPersonEscortRecord(version = frameworksConfig.CURRENT_VERSION) {
-    return frameworksService.getFramework({
-      framework: 'person-escort-record',
-      version,
-    })
   },
 }
 

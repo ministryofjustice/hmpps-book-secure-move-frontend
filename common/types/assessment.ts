@@ -11,4 +11,5 @@ export interface Assessment {
   }
   status?: string
   flags?: string[]
+  sections?: { name: string; order: number }
 }

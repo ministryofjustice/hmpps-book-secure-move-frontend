@@ -1,14 +1,12 @@
 import { ClientFunction } from 'testcafe'
 
-import frameworksService from '../../../common/services/frameworks'
 import { fillInPersonEscortRecord } from '../_helpers'
 import { createCourtMove } from '../_move'
 import { personEscortRecordUser } from '../_roles'
 import { home, getMove } from '../_routes'
 import { moveDetailPage, confirmPersonEscortRecordPage } from '../pages'
 
-const latestFramework = frameworksService.getPersonEscortRecord()
-const numberOfSections = Object.keys(latestFramework.sections).length
+const numberOfSections = 2
 
 fixture('Person Escort Record').beforeEach(async t => {
   await t.useRole(personEscortRecordUser).navigateTo(home)
