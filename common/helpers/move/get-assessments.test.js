@@ -161,16 +161,14 @@ describe('Move helpers', function () {
 
     context('with Youth Risk Assessment', function () {
       const mockYouthRiskAssessment = {
-        _framework: {
-          sections: [
-            { key: 'two', order: 2, youth: true },
-            { key: 'one', order: 1, youth: true },
-            { key: 'four', order: 4, youth: true },
-            { key: 'five', order: 5, youth: true },
-            { key: 'three', order: 3, youth: true },
-            { key: 'six', order: 6, youth: true },
-          ],
-        },
+        sections: [
+          { key: 'two', order: 2, youth: true },
+          { key: 'one', order: 1, youth: true },
+          { key: 'four', order: 4, youth: true },
+          { key: 'five', order: 5, youth: true },
+          { key: 'three', order: 3, youth: true },
+          { key: 'six', order: 6, youth: true },
+        ],
         id: '67890',
         status: 'in_progress',
         meta: {
@@ -272,13 +270,11 @@ describe('Move helpers', function () {
           }
           move.profile.person_escort_record = {
             ...mockYouthRiskAssessment,
-            _framework: {
-              sections: [
-                { key: 'one', order: 1 },
-                { key: 'three', order: 3 },
-                { key: 'two', order: 2 },
-              ],
-            },
+            sections: [
+              { key: 'one', order: 1 },
+              { key: 'three', order: 3 },
+              { key: 'two', order: 2 },
+            ],
           }
           assessments = getAssessments(move)
         })

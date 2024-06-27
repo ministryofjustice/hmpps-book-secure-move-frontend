@@ -22,13 +22,13 @@ function getAssessments(move) {
     .filter(category => category.key === 'court')
     .map(presenters.assessmentCategoryToSummaryListComponent)[0]
   const youthAssessmentSections = map(
-    youthRiskAssessment?._framework?.sections,
+    youthRiskAssessment?.sections,
     presenters.frameworkSectionToPanelList({
       baseUrl: getMoveUrl(moveId, 'youth-risk-assessment'),
     })
   )
   const perAssessmentSections = map(
-    personEscortRecord?._framework?.sections,
+    personEscortRecord?.sections,
     presenters.frameworkSectionToPanelList({
       baseUrl: getMoveUrl(moveId, 'person-escort-record'),
     })

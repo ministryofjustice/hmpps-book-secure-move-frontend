@@ -10,7 +10,7 @@ function frameworkOverview(req, res) {
   const fullname = profile?.person?._fullname
   const taskList = presenters.frameworkToTaskListComponent({
     baseUrl: `${originalUrl}/`,
-    frameworkSections: assessment._framework?.sections,
+    frameworkSections: assessment.sections,
     sectionProgress: assessment.meta?.section_progress,
   })
   const i18nContext = snakeCase(assessment.framework?.name || '')

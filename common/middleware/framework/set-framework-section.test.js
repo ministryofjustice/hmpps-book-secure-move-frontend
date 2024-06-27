@@ -35,11 +35,9 @@ describe('Framework middleware', function () {
     context('with framework', function () {
       beforeEach(function () {
         mockReq.assessment = {
-          _framework: {
-            sections: {
-              foo: {
-                name: 'bar',
-              },
+          sections: {
+            foo: {
+              name: 'bar',
             },
           },
         }

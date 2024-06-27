@@ -49,22 +49,23 @@ function printRecord(req, res) {
       }
     }
   )
-  const personEscortRecordSections = orderBy(framework?.sections, 'order').map(
-    section => {
-      const { steps } = section
-      const stepSummaries = Object.entries(steps).map(
-        presenters.frameworkStepToSummary(
-          framework.questions,
-          personEscortRecord.responses
-        )
+  const personEscortRecordSections = orderBy(
+    personEscortRecord.sections,
+    'order'
+  ).map(section => {
+    const { steps } = section
+    const stepSummaries = Object.entries(steps).map(
+      presenters.frameworkStepToSummary(
+        framework.questions,
+        personEscortRecord.responses
       )
+    )
 
-      return {
-        ...section,
-        summarySteps: filter(stepSummaries),
-      }
+    return {
+      ...section,
+      summarySteps: filter(stepSummaries),
     }
-  )
+  })
   const personEscortRecordTagList = presenters.frameworkFlagsToTagList({
     flags: personEscortRecord?.flags,
   })
