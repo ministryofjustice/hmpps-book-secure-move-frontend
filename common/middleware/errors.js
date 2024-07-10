@@ -9,6 +9,7 @@ const { DowntimeService } = require('../services/contentful/downtime')
 async function _getMessage(error) {
   let errorLookup = 'default'
   let outage
+  let reference
 
   if (error.code === 'EBADCSRFTOKEN') {
     errorLookup = 'tampered_with'
@@ -23,7 +24,7 @@ async function _getMessage(error) {
       'unable-to-process-shown',
       'Page saying we could not process request has been presented'
     )
-    Sentry.captureException(error.errors)
+    reference = Sentry.captureException(error.errors)
   } else {
     outage = await findOutage()
   }
@@ -33,6 +34,7 @@ async function _getMessage(error) {
     : {
         heading: `errors::${errorLookup}.heading`,
         content: `errors::${errorLookup}.content`,
+        reference,
       }
 }
 
@@ -113,7 +115,6 @@ function catchAll(showStackTrace = false) {
       showStackTrace,
       showNomisMessage,
       message: await _getMessage(error),
-      reference: req['Idempotency-Key'],
     })
   }
 }
