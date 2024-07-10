@@ -9,7 +9,6 @@ const { DowntimeService } = require('../services/contentful/downtime')
 async function _getMessage(error) {
   let errorLookup = 'default'
   let outage
-  let reference
 
   if (error.code === 'EBADCSRFTOKEN') {
     errorLookup = 'tampered_with'
@@ -19,12 +18,6 @@ async function _getMessage(error) {
     errorLookup = 'unauthorized'
   } else if (error.statusCode === 422) {
     errorLookup = 'unprocessable_entity'
-    analytics.sendEvent(
-      'error-page',
-      'unable-to-process-shown',
-      'Page saying we could not process request has been presented'
-    )
-    reference = Sentry.captureException(error.errors)
   } else {
     outage = await findOutage()
   }
@@ -34,7 +27,6 @@ async function _getMessage(error) {
     : {
         heading: `errors::${errorLookup}.heading`,
         content: `errors::${errorLookup}.content`,
-        reference,
       }
 }
 
@@ -104,6 +96,15 @@ function catchAll(showStackTrace = false) {
       return res.status(statusCode).send(error.message)
     }
 
+    if (statusCode === 422) {
+      analytics.sendEvent(
+        'error-page',
+        'unable-to-process-shown',
+        'Page saying we could not process request has been presented'
+      )
+      Sentry.captureException(error.errors)
+    }
+
     const locationType =
       req?.location?.location_type ||
       res.locals?.CURRENT_LOCATION?.location_type
@@ -115,6 +116,7 @@ function catchAll(showStackTrace = false) {
       showStackTrace,
       showNomisMessage,
       message: await _getMessage(error),
+      reference: req.transactionId,
     })
   }
 }

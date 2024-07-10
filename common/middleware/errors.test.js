@@ -149,8 +149,8 @@ describe('Error middleware', function () {
           message: {
             heading: 'errors::not_found.heading',
             content: 'errors::not_found.content',
-            reference: undefined,
           },
+          reference: undefined,
         })
       })
 
@@ -193,8 +193,8 @@ describe('Error middleware', function () {
           message: {
             heading: 'errors::unauthorized.heading',
             content: 'errors::unauthorized.content',
-            reference: undefined,
           },
+          reference: undefined,
         })
       })
 
@@ -238,8 +238,8 @@ describe('Error middleware', function () {
           message: {
             heading: 'errors::tampered_with.heading',
             content: 'errors::tampered_with.content',
-            reference: undefined,
           },
+          reference: undefined,
         })
       })
 
@@ -286,8 +286,8 @@ describe('Error middleware', function () {
             message: {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
-              reference: undefined,
             },
+            reference: undefined,
           })
         })
 
@@ -325,8 +325,8 @@ describe('Error middleware', function () {
             message: {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
-              reference: undefined,
             },
+            reference: undefined,
           })
         })
       })
@@ -348,8 +348,8 @@ describe('Error middleware', function () {
             message: {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
-              reference: undefined,
             },
+            reference: undefined,
           })
         })
       })
@@ -358,7 +358,7 @@ describe('Error middleware', function () {
     context('with a 422 error status code', function () {
       beforeEach(function () {
         mockError.statusCode = errorCode422
-        sinon.stub(Sentry, 'captureException').returns('referenceuuid')
+        sinon.stub(Sentry, 'captureException')
       })
 
       context('without location', function () {
@@ -385,8 +385,8 @@ describe('Error middleware', function () {
             message: {
               heading: 'errors::unprocessable_entity.heading',
               content: 'errors::unprocessable_entity.content',
-              reference: 'referenceuuid',
             },
+            reference: undefined,
           })
         })
 
@@ -397,6 +397,9 @@ describe('Error middleware', function () {
 
         it('should log info level message to logger', function () {
           expect(logger.error).not.to.have.been.called
+        })
+        it('should send errors to sentry', function () {
+          expect(Sentry.captureException).to.have.been.calledOnce
         })
 
         it('should not call next', function () {
@@ -424,8 +427,8 @@ describe('Error middleware', function () {
             message: {
               heading: 'errors::unprocessable_entity.heading',
               content: 'errors::unprocessable_entity.content',
-              reference: 'referenceuuid',
             },
+            reference: undefined,
           })
         })
       })
@@ -447,8 +450,8 @@ describe('Error middleware', function () {
             message: {
               heading: 'errors::unprocessable_entity.heading',
               content: 'errors::unprocessable_entity.content',
-              reference: 'referenceuuid',
             },
+            reference: undefined,
           })
         })
       })
@@ -516,8 +519,8 @@ describe('Error middleware', function () {
             message: {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
-              reference: undefined,
             },
+            reference: undefined,
           })
         })
 
@@ -555,8 +558,8 @@ describe('Error middleware', function () {
             message: {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
-              reference: undefined,
             },
+            reference: undefined,
           })
         })
       })
@@ -578,8 +581,8 @@ describe('Error middleware', function () {
             message: {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
-              reference: undefined,
             },
+            reference: undefined,
           })
         })
       })
