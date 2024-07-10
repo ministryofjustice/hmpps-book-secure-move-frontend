@@ -1,6 +1,9 @@
+const Sentry = require('@sentry/node')
+
 const logger = require('../../config/logger')
 const { AUTH_BASE_URL } = require('../../config/nunjucks/globals')
 const { sentenceFormatTime, sentenceFormatDate } = require('../formatters')
+const analytics = require('../lib/analytics')
 const { DowntimeService } = require('../services/contentful/downtime')
 
 async function _getMessage(error) {
@@ -15,6 +18,12 @@ async function _getMessage(error) {
     errorLookup = 'unauthorized'
   } else if (error.statusCode === 422) {
     errorLookup = 'unprocessable_entity'
+    analytics.sendEvent(
+      'error-page',
+      'unable-to-process-shown',
+      'Page saying we could not process request has been presented'
+    )
+    Sentry.captureException(error.errors)
   } else {
     outage = await findOutage()
   }
@@ -104,6 +113,7 @@ function catchAll(showStackTrace = false) {
       showStackTrace,
       showNomisMessage,
       message: await _getMessage(error),
+      reference: req['Idempotency-Key'],
     })
   }
 }

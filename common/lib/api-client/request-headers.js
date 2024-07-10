@@ -12,6 +12,7 @@ module.exports = (req, format = 'application/vnd.api+json') => {
     'Accept-Encoding': 'gzip',
     'Idempotency-Key': uuid.v4(),
   }
+  req['Idempotency-Key'] = headers['Idempotency-Key']
 
   if (req && req.user && req.user.username) {
     headers['X-Current-User'] = req.user.username
