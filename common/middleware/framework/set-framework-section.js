@@ -1,5 +1,5 @@
 function setFrameworkSection(req, res, next, key) {
-  const section = req.assessment?._framework?.sections[key]
+  const section = req.assessment?.sections[key]
 
   if (section) {
     req.frameworkSection = section

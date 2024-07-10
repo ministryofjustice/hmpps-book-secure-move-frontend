@@ -5,10 +5,6 @@ const controller = require('./framework-overview')
 
 const mockFramework = {
   status: 'complete',
-  sections: {
-    'section-one': {},
-    'section-two': {},
-  },
 }
 
 describe('Framework controllers', function () {
@@ -118,6 +114,10 @@ describe('Framework controllers', function () {
             ...mockReq,
             assessment: {
               _framework: mockFramework,
+              sections: {
+                'section-one': {},
+                'section-two': {},
+              },
               framework: {
                 name: 'person-escort-record',
               },
@@ -157,7 +157,10 @@ describe('Framework controllers', function () {
             presenters.frameworkToTaskListComponent
           ).to.have.been.calledOnceWithExactly({
             baseUrl: '/person-escort-record/1/',
-            frameworkSections: mockFramework.sections,
+            frameworkSections: {
+              'section-one': {},
+              'section-two': {},
+            },
             sectionProgress: [
               {
                 key: 'risk-information',

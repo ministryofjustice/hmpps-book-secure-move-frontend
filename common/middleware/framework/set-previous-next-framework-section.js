@@ -6,7 +6,7 @@ module.exports = function (req, res, next) {
     frameworkSection: { key: currentSection },
   } = req
 
-  const frameworkSections = sortBy(assessment._framework.sections, ['order'])
+  const frameworkSections = sortBy(assessment.sections, ['order'])
   const currentIndex = findIndex(frameworkSections, { key: currentSection })
 
   if (currentIndex > 0) {

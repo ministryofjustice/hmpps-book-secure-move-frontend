@@ -16,7 +16,7 @@ async function setWarnings(req, res, next) {
   let tagList, importantEventsTagList
   const personEscortRecord = profile.person_escort_record
   const perAssessmentSections = map(
-    personEscortRecord?._framework?.sections || [
+    personEscortRecord?.sections || [
       { name: 'Risk information', order: 1 },
       { name: 'Offence information', order: 2 },
       { name: 'Health information', order: 3 },
