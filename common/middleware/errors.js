@@ -1,6 +1,9 @@
+const Sentry = require('@sentry/node')
+
 const logger = require('../../config/logger')
 const { AUTH_BASE_URL } = require('../../config/nunjucks/globals')
 const { sentenceFormatTime, sentenceFormatDate } = require('../formatters')
+const analytics = require('../lib/analytics')
 const { DowntimeService } = require('../services/contentful/downtime')
 
 async function _getMessage(error) {
@@ -93,6 +96,15 @@ function catchAll(showStackTrace = false) {
       return res.status(statusCode).send(error.message)
     }
 
+    if (statusCode === 422) {
+      analytics.sendEvent(
+        'error-page',
+        'unable-to-process-shown',
+        'Page saying we could not process request has been presented'
+      )
+      Sentry.captureException(error.errors)
+    }
+
     const locationType =
       req?.location?.location_type ||
       res.locals?.CURRENT_LOCATION?.location_type
@@ -104,6 +116,7 @@ function catchAll(showStackTrace = false) {
       showStackTrace,
       showNomisMessage,
       message: await _getMessage(error),
+      reference: req.transactionId,
     })
   }
 }

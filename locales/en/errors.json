@@ -42,8 +42,8 @@
     "content": "If you think you should have access please contact the support team."
   },
   "unprocessable_entity": {
-    "heading": "We could not process the request",
-    "content": "Try again in a few moments."
+    "heading": "Sorry, there is a problem with the service",
+    "content": "Contact the helpdesk on 0800 917 5148 or #6598 from inside an establishment and quote the reference number below."
   },
   "outage": {
     "heading": "Sorry, Book a secure move is unavailable",

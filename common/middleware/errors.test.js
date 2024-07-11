@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node')
 const proxyquire = require('proxyquire')
 const sinon = require('sinon')
 
@@ -18,6 +19,7 @@ const errors = proxyquire('./errors', {
 const errorCode404 = 404
 const errorCode403 = 403
 const errorCode500 = 500
+const errorCode422 = 422
 
 describe('Error middleware', function () {
   beforeEach(function () {
@@ -148,6 +150,7 @@ describe('Error middleware', function () {
             heading: 'errors::not_found.heading',
             content: 'errors::not_found.content',
           },
+          reference: undefined,
         })
       })
 
@@ -191,6 +194,7 @@ describe('Error middleware', function () {
             heading: 'errors::unauthorized.heading',
             content: 'errors::unauthorized.content',
           },
+          reference: undefined,
         })
       })
 
@@ -235,6 +239,7 @@ describe('Error middleware', function () {
             heading: 'errors::tampered_with.heading',
             content: 'errors::tampered_with.content',
           },
+          reference: undefined,
         })
       })
 
@@ -282,6 +287,7 @@ describe('Error middleware', function () {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
             },
+            reference: undefined,
           })
         })
 
@@ -320,6 +326,7 @@ describe('Error middleware', function () {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
             },
+            reference: undefined,
           })
         })
       })
@@ -342,6 +349,109 @@ describe('Error middleware', function () {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
             },
+            reference: undefined,
+          })
+        })
+      })
+    })
+
+    context('with a 422 error status code', function () {
+      beforeEach(function () {
+        mockError.statusCode = errorCode422
+        sinon.stub(Sentry, 'captureException')
+      })
+
+      context('without location', function () {
+        beforeEach(async function () {
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        })
+
+        it('should set correct status code on response', function () {
+          expect(mockRes.status).to.have.been.calledOnce
+          expect(mockRes.status).to.have.been.calledWith(errorCode422)
+        })
+
+        it('should render the error template', function () {
+          expect(mockRes.render).to.have.been.calledOnce
+          expect(mockRes.render.args[0][0]).to.equal('error')
+        })
+
+        it('should pass correct values to template', function () {
+          expect(mockRes.render.args[0][1]).to.deep.equal({
+            error: mockError,
+            statusCode: errorCode422,
+            showStackTrace: false,
+            showNomisMessage: false,
+            message: {
+              heading: 'errors::unprocessable_entity.heading',
+              content: 'errors::unprocessable_entity.content',
+            },
+            reference: undefined,
+          })
+        })
+
+        it('should not log error level message to logger', function () {
+          expect(logger.info).to.have.been.calledOnce
+          expect(logger.info).to.have.been.calledWith(mockError)
+        })
+
+        it('should log info level message to logger', function () {
+          expect(logger.error).not.to.have.been.called
+        })
+        it('should send errors to sentry', function () {
+          expect(Sentry.captureException).to.have.been.calledOnce
+        })
+
+        it('should not call next', function () {
+          expect(nextSpy).not.to.have.been.called
+        })
+      })
+
+      context('with req location', function () {
+        beforeEach(async function () {
+          mockReq.location = {
+            location_type: 'prison',
+          }
+          mockRes.locals.CURRENT_LOCATION = {
+            location_type: 'hospital',
+          }
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        })
+
+        it('should pass correct values to template', function () {
+          expect(mockRes.render.args[0][1]).to.deep.equal({
+            error: mockError,
+            statusCode: errorCode422,
+            showStackTrace: false,
+            showNomisMessage: false,
+            message: {
+              heading: 'errors::unprocessable_entity.heading',
+              content: 'errors::unprocessable_entity.content',
+            },
+            reference: undefined,
+          })
+        })
+      })
+
+      context('with locals location', function () {
+        beforeEach(async function () {
+          mockRes.locals.CURRENT_LOCATION = {
+            location_type: 'prison',
+          }
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        })
+
+        it('should pass correct values to template', function () {
+          expect(mockRes.render.args[0][1]).to.deep.equal({
+            error: mockError,
+            statusCode: errorCode422,
+            showStackTrace: false,
+            showNomisMessage: false,
+            message: {
+              heading: 'errors::unprocessable_entity.heading',
+              content: 'errors::unprocessable_entity.content',
+            },
+            reference: undefined,
           })
         })
       })
@@ -410,6 +520,7 @@ describe('Error middleware', function () {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
             },
+            reference: undefined,
           })
         })
 
@@ -448,6 +559,7 @@ describe('Error middleware', function () {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
             },
+            reference: undefined,
           })
         })
       })
@@ -470,6 +582,7 @@ describe('Error middleware', function () {
               heading: 'errors::default.heading',
               content: 'errors::default.content',
             },
+            reference: undefined,
           })
         })
       })
