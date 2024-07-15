@@ -1,6 +1,6 @@
 const { cloneDeep } = require('lodash')
 
-const { after1900 } = require('../../../validators')
+const { after } = require('../../../validators')
 
 const commonDateField = require('./common.date')
 
@@ -11,8 +11,9 @@ const dateOfBirth = {
     { type: 'required' },
     { type: 'before' },
     {
-      fn: after1900,
+      fn: after,
       message: 'Date of birth should be after 01/01/1900',
+      arguments: ['1900-01-01'],
     },
   ],
   label: {
