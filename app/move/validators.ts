@@ -35,6 +35,9 @@ export function datetime(value: string) {
   return typeof value === 'string' && (value === '' || isValid(parseISO(value)))
 }
 
+export function after1900(value: string) {
+  return after(value, '1900-01-01')
+}
 export function after(value: string, date?: string) {
   const test = parseISO(value)
   let comparator = new Date()
