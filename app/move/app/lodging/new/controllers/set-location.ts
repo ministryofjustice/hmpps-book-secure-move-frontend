@@ -10,7 +10,8 @@ export class SetLocationController extends BaseController {
     this.use(
       commonMiddleware.setLocationItems(
         ['prison', 'police'],
-        'to_location_lodge'
+        'to_location_lodge',
+        this.req.models.move.from_location,
       )
     )
   }

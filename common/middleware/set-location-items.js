@@ -3,17 +3,17 @@ const { set } = require('lodash')
 const fieldHelpers = require('../helpers/field')
 const referenceDataHelpers = require('../helpers/reference-data')
 
-const getLocationItems = (currentLocation, location, locations) => {
+const getLocationItems = (location, locations, exclude) => {
   return fieldHelpers.insertInitialOption(
     locations
-      .filter(referenceDataHelpers.removeOption(currentLocation))
+      .filter(referenceDataHelpers.removeOption(exclude))
       .filter(referenceDataHelpers.filterDisabled())
       .map(fieldHelpers.mapReferenceDataToOption),
     location
   )
 }
 
-function setLocationItems(locationTypes, fieldName, extradition) {
+function setLocationItems(locationTypes, fieldName, extradition, exclude) {
   return async (req, res, next) => {
     const { fields } = req.form.options
 
@@ -32,11 +32,7 @@ function setLocationItems(locationTypes, fieldName, extradition) {
           )
         : await req.services.referenceData.getLocationsByType(locationTypes)
 
-      const items = getLocationItems(
-        req.models.move.from_location,
-        locationTypes[0],
-        locations
-      )
+      const items = getLocationItems(locationTypes[0], locations, exclude)
 
       set(req, `form.options.fields.${fieldName}.items`, items)
       next()
