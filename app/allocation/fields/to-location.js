@@ -1,4 +1,4 @@
-const destinationDiffers = require('../validators.ts')
+const { destinationDiffers } = require('../validators')
 
 const _location = require('./_location')
 
