@@ -48,26 +48,39 @@ describe('Move controllers', function () {
           commonMiddleware.setLocationItems.getCall(0)
         ).to.have.been.calledWith(
           'approved_premises',
-          'to_location_approved_premises'
+          'to_location_approved_premises',
+          'from_location'
         )
       })
 
       it('should call setLocationItems middleware to set court locations', function () {
         expect(
           commonMiddleware.setLocationItems.getCall(1)
-        ).to.have.been.calledWith('court', 'to_location_court_appearance')
+        ).to.have.been.calledWith(
+          'court',
+          'to_location_court_appearance',
+          'from_location'
+        )
       })
 
       it('should call setLocationItems middleware to set prison locations', function () {
         expect(
           commonMiddleware.setLocationItems.getCall(2)
-        ).to.have.been.calledWith('prison', 'to_location_prison_transfer')
+        ).to.have.been.calledWith(
+          'prison',
+          'to_location_prison_transfer',
+          'from_location'
+        )
       })
 
       it('should call setLocationItems middleware to set police locations', function () {
         expect(
           commonMiddleware.setLocationItems.getCall(3)
-        ).to.have.been.calledWith('police', 'to_location_police_transfer')
+        ).to.have.been.calledWith(
+          'police',
+          'to_location_police_transfer',
+          'from_location'
+        )
       })
 
       it('should call setLocationItems middleware to set hospital locations', function () {
@@ -75,7 +88,8 @@ describe('Move controllers', function () {
           commonMiddleware.setLocationItems.getCall(4)
         ).to.have.been.calledWith(
           ['hospital', 'high_security_hospital'],
-          'to_location_hospital'
+          'to_location_hospital',
+          'from_location'
         )
       })
 
@@ -84,7 +98,8 @@ describe('Move controllers', function () {
           commonMiddleware.setLocationItems.getCall(5)
         ).to.have.been.calledWith(
           'secure_childrens_home',
-          'to_location_secure_childrens_home'
+          'to_location_secure_childrens_home',
+          'from_location'
         )
       })
 
@@ -93,14 +108,20 @@ describe('Move controllers', function () {
           commonMiddleware.setLocationItems.getCall(6)
         ).to.have.been.calledWith(
           'secure_training_centre',
-          'to_location_secure_training_centre'
+          'to_location_secure_training_centre',
+          'from_location'
         )
       })
 
       it('should call setLocationItems middleware to set extradition locations', function () {
         expect(
           commonMiddleware.setLocationItems.getCall(7)
-        ).to.have.been.calledWith('police', 'to_location_extradition', true)
+        ).to.have.been.calledWith(
+          'police',
+          'to_location_extradition',
+          'from_location',
+          true
+        )
       })
     })
 
