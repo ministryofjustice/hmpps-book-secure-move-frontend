@@ -42,10 +42,13 @@ function setLocationItems(locationTypes, fieldName, exclude, extradition) {
           )
         : await req.services.referenceData.getLocationsByType(locationTypes)
 
+      const locationsToExclude = exclude
+        ? getLocationsToExclude(exclude, req.getMove())
+        : null
       const items = getLocationItems(
         locationTypes[0],
         locations,
-        getLocationsToExclude(exclude, req.getMove())
+        locationsToExclude
       )
 
       set(req, `form.options.fields.${fieldName}.items`, items)
