@@ -49,7 +49,7 @@ describe('#setLocationItems()', function () {
   const move = {
     from_location: '6666',
   }
-  const getMoveFunction = sinon.stub().resolves(move)
+  const getMoveFunction = sinon.stub().returns(move)
 
   beforeEach(function () {
     referenceDataService = {
