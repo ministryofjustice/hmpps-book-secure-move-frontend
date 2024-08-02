@@ -16,7 +16,8 @@ export class SetLocationController extends BaseController {
     this.use(
       commonMiddleware.setLocationItems(
         ['prison', 'police'],
-        'to_location_lodge'
+        'to_location_lodge',
+        ['from_location', 'to_location'],
       )
     )
     // @ts-ignore // #use does exist
