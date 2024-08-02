@@ -41,9 +41,9 @@ function setLocationItems(locationTypes, fieldName, exclude, extradition) {
             locationTypes
           )
         : await req.services.referenceData.getLocationsByType(locationTypes)
-
-      const locationsToExclude =
-        exclude === null ? null : getLocationsToExclude(exclude, req.getMove())
+      const locationsToExclude = exclude
+        ? getLocationsToExclude(exclude, req.getMove())
+        : null
 
       const items = getLocationItems(
         locationTypes[0],

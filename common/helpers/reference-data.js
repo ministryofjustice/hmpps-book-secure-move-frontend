@@ -22,11 +22,9 @@ function filterExpired({ expires_at: expiresAt }) {
 }
 
 function removeOptions(optionsToRemove) {
-  if (optionsToRemove === null) {
-    return true
-  }
-
-  return item => !optionsToRemove.includes(item.id)
+  return optionsToRemove
+    ? item => !optionsToRemove.includes(item.id)
+    : item => true
 }
 
 module.exports = {
