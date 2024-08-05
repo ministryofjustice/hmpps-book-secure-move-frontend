@@ -21,16 +21,14 @@ function filterExpired({ expires_at: expiresAt }) {
   return Date.parse(expiresAt) > Date.now()
 }
 
-function removeOption(optionToRemove) {
-  if (optionToRemove === null) {
-    return true
-  }
-
-  return item => item.id !== optionToRemove
+function removeOptions(optionsToRemove) {
+  return optionsToRemove
+    ? item => !optionsToRemove.includes(item.id)
+    : item => true
 }
 
 module.exports = {
   filterDisabled,
   filterExpired,
-  removeOption,
+  removeOptions,
 }

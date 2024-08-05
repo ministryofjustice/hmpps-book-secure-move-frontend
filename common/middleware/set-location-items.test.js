@@ -46,12 +46,18 @@ const courtsMock3 = [
 
 describe('#setLocationItems()', function () {
   let req, res, nextSpy, referenceDataService
+  const move = {
+    from_location: '6666',
+  }
+  const getMoveFunction = sinon.stub().returns(move)
 
   beforeEach(function () {
     referenceDataService = {
       getLocationsByType: sinon.stub().resolves(courtsMock),
     }
+
     req = {
+      getMove: getMoveFunction,
       form: {
         options: {
           fields: {
@@ -63,9 +69,7 @@ describe('#setLocationItems()', function () {
         referenceData: referenceDataService,
       },
       models: {
-        move: {
-          from_location: '6666',
-        },
+        move,
       },
     }
     res = {}
@@ -152,6 +156,7 @@ describe('#setLocationItems()', function () {
               from_location: '6666',
             },
           },
+          getMove: getMoveFunction,
         })
       })
     })
@@ -247,10 +252,9 @@ describe('#setLocationItems()', function () {
               referenceData: referenceDataService,
             },
             models: {
-              move: {
-                from_location: '6666',
-              },
+              move,
             },
+            getMove: getMoveFunction,
           })
         })
       })
@@ -283,11 +287,11 @@ describe('#setLocationItems()', function () {
             .stub()
             .resolves(courtsMock3)
 
-          await setLocationItems(mockLocationType, mockFieldName)(
-            req,
-            {},
-            nextSpy
-          )
+          await setLocationItems(
+            mockLocationType,
+            mockFieldName,
+            'from_location'
+          )(req, {}, nextSpy)
         })
 
         it('should call reference data service for the location types', function () {
@@ -296,7 +300,7 @@ describe('#setLocationItems()', function () {
           ).to.be.calledOnceWithExactly(mockLocationType)
         })
 
-        it('populates the move type items removing current location', function () {
+        it('populates the move type items removing move from location', function () {
           expect(req.form.options.fields[mockFieldName].items).to.deep.equal([
             {
               text: `--- Choose ${mockLocationType[0]} ---`,
@@ -353,10 +357,9 @@ describe('#setLocationItems()', function () {
               referenceData: referenceDataService,
             },
             models: {
-              move: {
-                from_location: '6666',
-              },
+              move,
             },
+            getMove: getMoveFunction,
           })
         })
       })

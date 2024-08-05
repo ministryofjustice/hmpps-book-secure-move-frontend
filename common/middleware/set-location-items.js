@@ -6,14 +6,24 @@ const referenceDataHelpers = require('../helpers/reference-data')
 const getLocationItems = (location, locations, exclude) => {
   return fieldHelpers.insertInitialOption(
     locations
-      .filter(referenceDataHelpers.removeOption(exclude))
+      .filter(referenceDataHelpers.removeOptions(exclude))
       .filter(referenceDataHelpers.filterDisabled())
       .map(fieldHelpers.mapReferenceDataToOption),
     location
   )
 }
 
-function setLocationItems(locationTypes, fieldName, extradition, exclude) {
+function getLocationsToExclude(exclude, move) {
+  if (!Array.isArray(exclude)) {
+    exclude = [exclude]
+  }
+
+  return exclude.map(loc =>
+    typeof move[loc] === 'object' ? move[loc].id : move[loc]
+  )
+}
+
+function setLocationItems(locationTypes, fieldName, exclude, extradition) {
   return async (req, res, next) => {
     const { fields } = req.form.options
 
@@ -31,8 +41,15 @@ function setLocationItems(locationTypes, fieldName, extradition, exclude) {
             locationTypes
           )
         : await req.services.referenceData.getLocationsByType(locationTypes)
+      const locationsToExclude = exclude
+        ? getLocationsToExclude(exclude, req.getMove())
+        : null
 
-      const items = getLocationItems(locationTypes[0], locations, exclude)
+      const items = getLocationItems(
+        locationTypes[0],
+        locations,
+        locationsToExclude
+      )
 
       set(req, `form.options.fields.${fieldName}.items`, items)
       next()
