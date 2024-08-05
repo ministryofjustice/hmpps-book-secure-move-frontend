@@ -25,15 +25,39 @@ const courtsMock2 = [
     title: 'Court AAAA',
   },
 ]
+const courtsMock3 = [
+  {
+    id: '8888-dupe',
+    title: 'Court 8888',
+  },
+  {
+    id: '6666',
+    title: 'Current location court',
+  },
+  {
+    id: '7777',
+    title: 'Court 7777',
+  },
+  {
+    id: 'aaaa',
+    title: 'Court AAAA',
+  },
+]
 
 describe('#setLocationItems()', function () {
   let req, res, nextSpy, referenceDataService
+  const move = {
+    from_location: '6666',
+  }
+  const getMoveFunction = sinon.stub().returns(move)
 
   beforeEach(function () {
     referenceDataService = {
       getLocationsByType: sinon.stub().resolves(courtsMock),
     }
+
     req = {
+      getMove: getMoveFunction,
       form: {
         options: {
           fields: {
@@ -43,6 +67,9 @@ describe('#setLocationItems()', function () {
       },
       services: {
         referenceData: referenceDataService,
+      },
+      models: {
+        move,
       },
     }
     res = {}
@@ -124,6 +151,12 @@ describe('#setLocationItems()', function () {
           services: {
             referenceData: referenceDataService,
           },
+          models: {
+            move: {
+              from_location: '6666',
+            },
+          },
+          getMove: getMoveFunction,
         })
       })
     })
@@ -218,6 +251,10 @@ describe('#setLocationItems()', function () {
             services: {
               referenceData: referenceDataService,
             },
+            models: {
+              move,
+            },
+            getMove: getMoveFunction,
           })
         })
       })
@@ -237,4 +274,95 @@ describe('#setLocationItems()', function () {
       expect(nextSpy).to.be.calledOnceWithExactly()
     })
   })
+
+  context(
+    'when field exists and multiple location types are to be used',
+    function () {
+      const mockFieldName = 'to_location_court'
+      const mockLocationType = ['court', 'hospital']
+
+      context('when service resolves', function () {
+        beforeEach(async function () {
+          req.services.referenceData.getLocationsByType = sinon
+            .stub()
+            .resolves(courtsMock3)
+
+          await setLocationItems(
+            mockLocationType,
+            mockFieldName,
+            'from_location'
+          )(req, {}, nextSpy)
+        })
+
+        it('should call reference data service for the location types', function () {
+          expect(
+            referenceDataService.getLocationsByType
+          ).to.be.calledOnceWithExactly(mockLocationType)
+        })
+
+        it('populates the move type items removing move from location', function () {
+          expect(req.form.options.fields[mockFieldName].items).to.deep.equal([
+            {
+              text: `--- Choose ${mockLocationType[0]} ---`,
+            },
+            {
+              value: '8888-dupe',
+              text: 'Court 8888',
+            },
+            {
+              value: '7777',
+              text: 'Court 7777',
+            },
+            {
+              value: 'aaaa',
+              text: 'Court AAAA',
+            },
+          ])
+        })
+
+        it('should call next', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly()
+        })
+      })
+
+      context('when service rejects', function () {
+        const errorMock = new Error('Problem')
+
+        beforeEach(async function () {
+          req.services.referenceData.getLocationsByType = sinon
+            .stub()
+            .throws(errorMock)
+
+          await setLocationItems(mockLocationType, mockFieldName)(
+            req,
+            {},
+            nextSpy
+          )
+        })
+
+        it('should call next with the error', function () {
+          expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
+        })
+
+        it('should not mutate request object', function () {
+          expect(req).to.deep.equal({
+            form: {
+              options: {
+                fields: {
+                  to_location_court: {},
+                },
+              },
+            },
+            services: {
+              referenceData: referenceDataService,
+            },
+            models: {
+              move,
+            },
+            getMove: getMoveFunction,
+          })
+        })
+      })
+    }
+  )
 })

@@ -13,17 +13,30 @@ class MoveDetailsController extends CreateBaseController {
     this.use(
       commonMiddleware.setLocationItems(
         'approved_premises',
-        'to_location_approved_premises'
+        'to_location_approved_premises',
+        'from_location'
       )
     )
     this.use(
-      commonMiddleware.setLocationItems('court', 'to_location_court_appearance')
+      commonMiddleware.setLocationItems(
+        'court',
+        'to_location_court_appearance',
+        'from_location'
+      )
     )
     this.use(
-      commonMiddleware.setLocationItems('prison', 'to_location_prison_transfer')
+      commonMiddleware.setLocationItems(
+        'prison',
+        'to_location_prison_transfer',
+        'from_location'
+      )
     )
     this.use(
-      commonMiddleware.setLocationItems('police', 'to_location_police_transfer')
+      commonMiddleware.setLocationItems(
+        'police',
+        'to_location_police_transfer',
+        'from_location'
+      )
     )
     // hospitals come in 2 different flavours for obscure “legacy” reasons
     // book-a-secure-move makes no distinction between them
@@ -31,25 +44,29 @@ class MoveDetailsController extends CreateBaseController {
     this.use(
       commonMiddleware.setLocationItems(
         ['hospital', 'high_security_hospital'],
-        'to_location_hospital'
+        'to_location_hospital',
+        'from_location'
       )
     )
     this.use(
       commonMiddleware.setLocationItems(
         'secure_childrens_home',
-        'to_location_secure_childrens_home'
+        'to_location_secure_childrens_home',
+        'from_location'
       )
     )
     this.use(
       commonMiddleware.setLocationItems(
         'secure_training_centre',
-        'to_location_secure_training_centre'
+        'to_location_secure_training_centre',
+        'from_location'
       )
     )
     this.use(
       commonMiddleware.setLocationItems(
         'police',
         'to_location_extradition',
+        'from_location',
         true
       )
     )
