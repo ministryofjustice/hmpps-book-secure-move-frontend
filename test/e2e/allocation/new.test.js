@@ -57,3 +57,12 @@ test('Check validation errors on allocation details page', async t => {
     errorList: allocationJourney.allocationCriteriaPage.errorList,
   })
 })
+
+test('Check validation errors for same destination as current location', async t => {
+  await allocationJourney.allocationDetailsPage.fillSameLocationAndDestination()
+  await allocationJourney.submitForm()
+
+  await allocationJourney.checkErrorSummary({
+    errorList: allocationJourney.allocationDetailsPage.errorForDestination,
+  })
+})

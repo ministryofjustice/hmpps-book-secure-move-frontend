@@ -1,4 +1,4 @@
-const destinationDiffers = require('../validators.ts')
+const { destinationDiffers } = require('../validators')
 
 const _location = require('./_location')
 
@@ -11,7 +11,7 @@ const toLocation = {
     {
       fn: destinationDiffers,
       arguments: ['from_location'],
-      message: 'To and from location must differ',
+      message: 'Location cannot be the same as the move from location',
     },
   ],
   label: {
