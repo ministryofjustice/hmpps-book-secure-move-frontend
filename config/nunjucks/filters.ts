@@ -13,7 +13,6 @@ import {
   parseISO,
   subDays,
 } from 'date-fns'
-import { filesize as filesizejs } from 'filesize'
 import { filter } from 'lodash'
 import pluralizejs from 'pluralize'
 
@@ -426,8 +425,8 @@ export function nonOxfordJoin(arr: string[] = [], lastDelimiter = 'and') {
   return arr.join(', ').replace(/, ([^,]*)$/, ` ${lastDelimiter} $1`)
 }
 
-export function filesize(str: string) {
-  return filesizejs(str, {
+export async function filesize(str: string) {
+  return (await import('filesize')).filesize(str, {
     round: 0,
   })
 }

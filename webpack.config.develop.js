@@ -1,4 +1,4 @@
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
+const BrowserSyncPlugin = require('browser-sync-v3-webpack-plugin')
 
 const { PORT } = require('./config')
 

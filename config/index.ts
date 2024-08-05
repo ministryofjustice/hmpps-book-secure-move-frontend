@@ -2,8 +2,6 @@
 import fs from 'fs'
 import path from 'path'
 
-import semverSort from 'semver-sort'
-
 // TODO: convert this file to TS and remove this ignore
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -69,12 +67,14 @@ if (process.env.REDIS_URL) {
 
 let LATEST_FRAMEWORKS_BUILD
 
-try {
-  const folderPath = path.resolve(frameworksPaths.output)
-  const versions = fs.readdirSync(folderPath)
+(async () => {
+  try {
+    const folderPath = path.resolve(frameworksPaths.output)
+    const versions = fs.readdirSync(folderPath)
 
-  LATEST_FRAMEWORKS_BUILD = semverSort.desc(versions)[0]
-} catch (e) {}
+    LATEST_FRAMEWORKS_BUILD = (await import('semver-sort')).desc(versions)[0]
+  } catch (e) {}
+})()
 
 function _authUrl(path: string) {
   return AUTH_BASE_URL ? new URL(path, AUTH_BASE_URL).href : ''
