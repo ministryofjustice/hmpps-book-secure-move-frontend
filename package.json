@@ -297,7 +297,6 @@
     "testcafe-reporter-xunit": "2.2.3",
     "timezone-mock": "1.3.6",
     "ts-node": "10.9.2",
-    "tsc-alias": "1.8.10",
     "typescript": "5.5.4",
     "webpack": "^5.93",
     "webpack-assets-manifest": "5.2.1",
