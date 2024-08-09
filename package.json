@@ -364,7 +364,7 @@
     "engine-strict": true
   },
   "lint-staged": {
-    "*.js": "eslint --cache",
+    "*.js": "eslint --cache --fix",
     "package.json": "finepack"
   }
 }
