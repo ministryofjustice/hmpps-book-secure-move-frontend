@@ -369,7 +369,6 @@
   },
   "overrides": {
     "braces": "3.0.3",
-    "got": "14.4.2",
     "semver": "7.6.3",
     "semver-regex": "4.0.5",
     "socket.io": "4.7.5",
