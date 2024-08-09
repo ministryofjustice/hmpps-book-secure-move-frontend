@@ -1,8 +1,9 @@
+import got from 'got'
+
 const Sentry = require('@sentry/node')
 const HttpAgent = require('agentkeepalive')
 const debug = require('debug')('app:api-client:request')
 const cacheDebug = require('debug')('app:api-client:cache')
-const got = require('got')
 
 const cache = require('../cache')
 const clientMetrics = require('../client-metrics')
