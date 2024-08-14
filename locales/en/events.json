@@ -157,7 +157,7 @@
   },
   "MoveDateChanged": {
     "heading": "Move date changed",
-    "description": "The move date has been updated"
+    "description": "The move date has been updated to {{date, formatDateWithDay}}"
   },
   "MoveLockout": {
     "contextKey": "reason",
