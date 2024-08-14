@@ -79,6 +79,9 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
       })}`
     : journeysSummary.map(({ toLocation }) => toLocation).join(' and ')
 
+  const journeyDates = journeysSummary.map(({ date }) => date).join(' to ')
+  const moveDate = filters.formatDateWithRelativeDay(date)
+
   const items = [
     {
       key: {
@@ -118,7 +121,10 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
         text: i18n.t('fields::date_type.label'),
       },
       value: {
-        text: journeysSummary.map(({ date }) => date).join(' to '),
+        html:
+          moveDate === journeyDates
+            ? moveDate
+            : `${journeyDates} <br/> (Based on journeys booked)`,
       },
       action: 'date',
     },
