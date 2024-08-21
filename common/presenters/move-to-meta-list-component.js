@@ -68,6 +68,8 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
     }
   }
 
+  const hasJourneys = journeys !== null && journeys.length > 0
+
   const journeysSummary = moveToJourneysSummary(move, journeys, {
     formatDate: filters.formatDateWithRelativeDay,
   })
@@ -122,9 +124,9 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
       },
       value: {
         html:
-          moveDate === journeyDates
-            ? moveDate
-            : `${journeyDates} <br/> (Based on journeys booked)`,
+          moveDate !== journeyDates && hasJourneys
+            ? `${journeyDates} <br/> (Based on journeys booked)`
+            : moveDate,
       },
       action: 'date',
     },

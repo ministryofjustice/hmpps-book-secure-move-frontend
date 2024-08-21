@@ -121,7 +121,7 @@ describe('Presenters', function () {
         })
 
         it('should call date filter correct number of times', function () {
-          expect(filters.formatDateWithRelativeDay).to.have.callCount(1)
+          expect(filters.formatDateWithRelativeDay).to.have.callCount(2)
         })
 
         it('should translate correct number of times', function () {
@@ -138,6 +138,101 @@ describe('Presenters', function () {
         )
       })
     })
+
+    context(
+      'when provided with a mock move object with different journey date',
+      function () {
+        let transformedResponse
+
+        const mockJourneyOnDifferentDate = [
+          {
+            date: '2019-06-10',
+            from_location: {
+              title: 'HMP Leeds',
+            },
+            to_location: {
+              title: 'Barrow in Furness County Court',
+            },
+          },
+        ]
+
+        beforeEach(function () {
+          transformedResponse = moveToMetaListComponent(
+            mockMove,
+            mockJourneyOnDifferentDate
+          )
+        })
+
+        describe('response', function () {
+          it('should contain classes', function () {
+            expect(transformedResponse).to.have.property('classes')
+            expect(transformedResponse.classes).to.equal('govuk-!-font-size-16')
+          })
+
+          it('should contain correct number of items', function () {
+            expect(transformedResponse).to.have.property('items')
+            expect(transformedResponse.items.length).to.equal(6)
+          })
+
+          it('should contain correct key ordering', function () {
+            const keys = transformedResponse.items.map(
+              item => item.key.text || item.key.html
+            )
+            expect(keys).deep.equal([
+              'status',
+              'reference',
+              'fields::from_location.short_label',
+              'fields::move_type.short_label',
+              'fields::date_type.label',
+              'collections::vehicle_registration',
+            ])
+          })
+
+          it('should contain correct values', function () {
+            const values = transformedResponse.items.map(
+              item => item.value.text || item.value.html
+            )
+            expect(values).deep.equal([
+              'mojBadge',
+              'ABC12345',
+              'HMP Leeds',
+              'Barrow in Furness County Court',
+              '2019-06-10 <br/> (Based on journeys booked)',
+              'GG01 AJY',
+            ])
+          })
+
+          it('should contain correct actions', function () {
+            const actions = transformedResponse.items.map(item => item.action)
+            expect(actions).deep.equal([
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+            ])
+          })
+
+          it('should call date filter correct number of times', function () {
+            expect(filters.formatDateWithRelativeDay).to.have.callCount(2)
+          })
+
+          it('should translate correct number of times', function () {
+            expect(i18n.t).to.be.callCount(13)
+          })
+        })
+
+        it('should use status for badge component', function () {
+          expect(componentService.getComponent).to.be.calledOnceWithExactly(
+            'mojBadge',
+            {
+              text: 'statuses::booked',
+            }
+          )
+        })
+      }
+    )
 
     context('when provided without a move object', function () {
       let transformedResponse
