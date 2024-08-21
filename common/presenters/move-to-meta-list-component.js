@@ -68,6 +68,8 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
     }
   }
 
+  const hasJourneys = journeys !== null && journeys.length > 0
+
   const journeysSummary = moveToJourneysSummary(move, journeys, {
     formatDate: filters.formatDateWithRelativeDay,
   })
@@ -78,6 +80,9 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
         location: destinationTitle,
       })}`
     : journeysSummary.map(({ toLocation }) => toLocation).join(' and ')
+
+  const journeyDates = journeysSummary.map(({ date }) => date).join(' to ')
+  const moveDate = filters.formatDateWithRelativeDay(date)
 
   const items = [
     {
@@ -118,7 +123,10 @@ function moveToMetaListComponent(move, journeys, { updateUrls = {} } = {}) {
         text: i18n.t('fields::date_type.label'),
       },
       value: {
-        text: journeysSummary.map(({ date }) => date).join(' to '),
+        html:
+          moveDate !== journeyDates && hasJourneys
+            ? `${journeyDates} <br/> (Based on journeys booked)`
+            : moveDate,
       },
       action: 'date',
     },
