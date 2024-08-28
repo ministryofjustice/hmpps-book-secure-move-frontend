@@ -5,7 +5,7 @@ const moveType = {
   name: 'move_type',
   fieldset: {
     legend: {
-      text: 'fields::move_type.label',
+      html: `<h2 class="govuk-heading-m govuk-!-margin-bottom-1">Move to</h2>`,
       classes: 'govuk-fieldset__legend--m',
     },
   },
