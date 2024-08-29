@@ -1,3 +1,5 @@
+const i18n = require('../../../../../config/i18n').default
+
 const moveType = {
   id: 'move_type',
   validate: 'required',
@@ -5,7 +7,9 @@ const moveType = {
   name: 'move_type',
   fieldset: {
     legend: {
-      html: `<h2 class="govuk-heading-m govuk-!-margin-bottom-1">Move to</h2>`,
+      html: `<h2 class="govuk-heading-m govuk-!-margin-bottom-1">${i18n.t(
+        'fields::move_type.label'
+      )}</h2>`,
       classes: 'govuk-fieldset__legend--m',
     },
   },
