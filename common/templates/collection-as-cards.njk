@@ -39,6 +39,7 @@
       " data-location-group>
       <div class="govuk-grid-row govuk-!-padding-top-2 govuk-!-padding-bottom-2">
         {% for item in group.header %}
+          <h2 class="govuk-!-margin-top-0">
           {{ appData({
             inverted: true,
             classes:
@@ -47,6 +48,7 @@
             label: item.label,
             value: item.value
           }) }}
+          </h2>
         {% endfor %}
       </div>
 
