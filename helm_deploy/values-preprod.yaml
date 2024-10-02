@@ -16,6 +16,7 @@ generic-service:
     AUTH_PROVIDER_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk"
     FEATURE_FLAG_ADD_LODGE_BUTTON: "true"
     FEEDBACK_URL: "https://eu.surveymonkey.com/r/3CKYXSC"
+    FRAMEWORKS_VERSION: "2.5.0"
     GOOGLE_ANALYTICS_ID: "G-3LCJP1TWQC"
     MANAGE_USERS_API_URL: "https://manage-users-api-preprod.hmpps.service.justice.gov.uk"
     MOVE_DESIGN_FEEDBACK_URL: "https://eu.surveymonkey.com/r/BKZC8BV"
