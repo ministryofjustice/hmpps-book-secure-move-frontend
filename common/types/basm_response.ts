@@ -4,5 +4,6 @@ export interface BasmResponse extends Express.Response {
     cancelUrl?: string
   }
   render: (path: string, locals?: any) => void
-  redirect?: (path: string, locals?: any) => void
+  redirect: (path: string, locals?: any) => void
+  breadcrumb?: string
 }
