@@ -41,5 +41,8 @@ export interface BasmRequest extends Express.Request {
     event: EventService
   }
   t: typeof I18n.t
-  user: any
+  user: { 
+    id: string,
+    permissions: never[],
+  },
 }

@@ -7,8 +7,8 @@ export class BaseService {
   req: any
   apiClient: any // TODO: convert ApiClient to TS
 
-  constructor(req: any) {
-    this.req = req || {}
+  constructor(req: any = {}) {
+    this.req = req
     this.apiClient = (req && req.apiClient) || new ApiClient()
   }
 
