@@ -45,7 +45,20 @@ describe('Police Custody Form controllers', function () {
           },
         },
         body: {
-          events: ['PerViolentDangerous'],
+          events: ['PerViolentDangerous', 'PerGeneric'],
+          PerViolentDangerous: '',
+          PerWeapons: '',
+          PerConcealed: '',
+          PerSelfHarm: '',
+          PerEscape: '',
+          PersonMoveUsedForce: '',
+          PerMedicalAid: '',
+          PerMedicalDrugsAlcohol: '',
+          PerMedicalMedication: '',
+          PerMedicalMentalHealth: '',
+          PerPropertyChange: '',
+          PersonMoveDeathInCustody: '',
+          PerGeneric: '',
         },
         allocation: undefined,
         canAccess: sinon.stub().returns(true),
@@ -130,6 +143,7 @@ describe('Police Custody Form controllers', function () {
     })
 
     context('when there are form errors', function () {
+
       beforeEach(async function () {
         await addEvents(mockReq, mockRes)
       })
