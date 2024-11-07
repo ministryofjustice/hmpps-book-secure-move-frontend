@@ -1,21 +1,22 @@
-import sinon from "sinon"
-import { addEvents } from './controllers'
-import { SessionModel } from '../../common/types/session_model'
+import { expect } from 'chai'
+import sinon from 'sinon'
+
+import { EventService } from '../../common/services/event'
 import { LodgingService } from '../../common/services/lodging'
 import { SupplierService } from '../../common/services/supplier'
-import { EventService } from '../../common/services/event'
-import { BasmRequest } from "../../common/types/basm_request"
-import { expect } from "chai"
-import { BasmResponse } from "../../common/types/basm_response"
+import { BasmRequest } from '../../common/types/basm_request'
+import { BasmResponse } from '../../common/types/basm_response'
+import { SessionModel } from '../../common/types/session_model'
+
+import { addEvents } from './controllers'
 
 describe('Police Custody Form controllers', function () {
   describe('#addEvents', function () {
-    let mockReq: BasmRequest 
+    let mockReq: BasmRequest
     let mockRes: BasmResponse
     let eventService: EventService
 
-    beforeEach(() => {
-
+    beforeEach(function () {
       const mockSessionModel = {
         attributes: {},
         allocation: undefined,
@@ -98,7 +99,6 @@ describe('Police Custody Form controllers', function () {
         redirect: sinon.stub(),
         breadcrumb: undefined,
       } as BasmResponse
-
     })
 
     context('when save is successful', function () {
@@ -142,7 +142,6 @@ describe('Police Custody Form controllers', function () {
     })
 
     context('when there are form errors', function () {
-
       beforeEach(async function () {
         await addEvents(mockReq, mockRes)
       })
@@ -177,4 +176,3 @@ describe('Police Custody Form controllers', function () {
     })
   })
 })
-
