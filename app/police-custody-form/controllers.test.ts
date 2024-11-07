@@ -1,5 +1,5 @@
 import sinon from "sinon"
-import { addEvents } from "./controllers"
+import { addEvents } from './controllers'
 import { SessionModel } from '../../common/types/session_model'
 import { LodgingService } from '../../common/services/lodging'
 import { SupplierService } from '../../common/services/supplier'
@@ -69,7 +69,7 @@ describe('Police Custody Form controllers', function () {
           allocation: sinon.stub(),
           lodging: sinon.createStubInstance(LodgingService),
           supplier: sinon.createStubInstance(SupplierService),
-          event:sinon.createStubInstance(EventService),// eventService,
+          event: eventService,
         },
         user: {
           id: 'user-123',
@@ -95,8 +95,6 @@ describe('Police Custody Form controllers', function () {
     }
 
     context('when save is successful', function () {
-      // mockReq.services = { event: eventService }
-
       beforeEach(async function () {
         await addEvents(mockReq, mockRes)
       })
@@ -116,8 +114,6 @@ describe('Police Custody Form controllers', function () {
     })
 
     context('when no events are chosen', function () {
-      // mockReq.services = { event: eventService }
-
       beforeEach(async function () {
         await addEvents(mockReq, mockRes)
       })
@@ -134,8 +130,6 @@ describe('Police Custody Form controllers', function () {
     })
 
     context('when there are form errors', function () {
-      // mockReq.services = { event: eventService }
-
       beforeEach(async function () {
         await addEvents(mockReq, mockRes)
       })
