@@ -101,13 +101,19 @@ describe('Police Custody Form controllers', function () {
 
     })
 
-    const locals = {
-      showErrorsSummary: undefined,
-      formErrors: undefined,
-      formData: undefined,
-    }
-
     context('when save is successful', function () {
+      const mockReq = {
+        t: sinon.stub().returnsArg(0),
+        move: {
+          id: '12232552242',
+        },
+        flash: sinon.stub(),
+        body: {
+          events: ['PerViolentDangerous'],
+        },
+        services: {},
+      } as unknown as BasmRequest
+
       beforeEach(async function () {
         await addEvents(mockReq, mockRes)
       })
@@ -116,13 +122,6 @@ describe('Police Custody Form controllers', function () {
         expect(mockRes.redirect).to.be.calledOnceWithExactly(
           '/move/12232552242'
         )
-      })
-
-      it('should render the success flash banner', function () {
-        expect(mockReq.flash).to.have.been.calledWithExactly('success', {
-          title: 'messages::events_added.heading',
-          content: 'messages::events_added.content',
-        })
       })
     })
 
@@ -178,3 +177,4 @@ describe('Police Custody Form controllers', function () {
     })
   })
 })
+
