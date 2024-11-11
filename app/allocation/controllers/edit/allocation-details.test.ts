@@ -69,6 +69,7 @@ const req = AllocationRequestFactory.build({ allocation })
 const res: BasmResponse = {
   locals: {},
   render: () => {},
+  redirect: () => {},
 }
 
 describe('#getValues', function () {
