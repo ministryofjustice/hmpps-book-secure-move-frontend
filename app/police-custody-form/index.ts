@@ -16,7 +16,7 @@ router.post('/', (req: Request, res: Response) => {
   addEvents(basmReq, res as BasmResponse)
 })
 
-export = {
+module.exports = {
   router,
   mountpath: '/police-custody-form',
 }
