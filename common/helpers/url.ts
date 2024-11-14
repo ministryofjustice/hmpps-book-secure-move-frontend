@@ -10,30 +10,28 @@ const dateRegex = '[0-9]{4}-[0-9]{2}-[0-9]{2}'
 
 function compileFromRoute(
   route: string,
-  req: URLRequest,
+  req: URLRequest = { baseUrl: '', path: '', query: {}, params: {} },
   overrides: Record<string, string | undefined> = {},
   queryOverrides: Record<string, string | undefined> = {}
 ) {
-  const { baseUrl, path, query } = req
+  const { baseUrl = '', path = '', query = {}, params = {} } = req;
+
   const combinedQuery = {
     ...query,
     ...queryOverrides,
-  }
-  
-  const matchFunction: MatchFunction = match(route)
+  };
 
-  // This is where TypeScript may have trouble if the function signature is mismatched
-  const matched = matchFunction(baseUrl + path)
+  const matchFunction: MatchFunction = match(route);
+  const matched = matchFunction(baseUrl + path);
 
   if (!matched) {
-    return ''
+    return '';
   }
 
-  const compileUrl = compile(route)
-  
-  const queryInUrl = !isEmpty(combinedQuery) ? getQueryString(combinedQuery, {}) : ''
+  const compileUrl = compile(route);
+  const queryInUrl = !isEmpty(combinedQuery) ? getQueryString(combinedQuery, {}) : '';
 
-  return compileUrl({ ...matched.params, ...overrides }) + queryInUrl
+  return compileUrl({ ...matched.params, ...overrides }) + queryInUrl;
 }
 
 export {

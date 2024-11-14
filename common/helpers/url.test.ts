@@ -1,93 +1,159 @@
-import * as pathToRegexp from 'path-to-regexp'
 import { expect } from 'chai'
-import sinon from 'sinon'
+import sinon, { SinonStub } from 'sinon'
+import * as pathToRegexp from 'path-to-regexp'
+import * as helpers from './url'
 
-import { compileFromRoute } from './url'
-import { URLRequest } from '../types/url_request'
+interface Request {
+  baseUrl: string
+  path: string
+  query: Record<string, any>
+  params: Record<string, any>
+}
 
-describe.only('URL Helpers', function () {
+describe('URL Helpers', function () {
   describe('#compileFromRoute()', function () {
-    const mockParams = {
-      date: '2020-10-10',
-      locationId: '12345',
-      view: 'requested',
+    const mockRoute = '/moves/:date/:locationId?'
+    const mockMatch = {
+      params: {
+        date: '2020-10-10',
+        locationId: '12345',
+        view: 'requested',
+      },
     }
-    const mockRoute = `/moves/${mockParams.date}/${mockParams.locationId}`
+    let compileStub: SinonStub, matchStub: SinonStub, req: Request, output: string
 
-    let output: string;
-    let req: URLRequest
-    let matchStub: sinon.SinonStub
-    let compileStub: sinon.SinonStub
-
-    before(() => {
-      compileStub = sinon.stub(pathToRegexp, 'compile').callsFake(() => {
-        return (params: object | undefined) => {
-          if (params && 'date' in params) {
-            const { date, locationId } = params as { date: string; locationId?: string }
-            return `/moves/${date}/${locationId}` ? `/${locationId}` : ''
-          }
-          return ''
-        }
-      })
-    })
-
-    after(() => {
-      sinon.restore();
-    });
-
-    beforeEach(() => {
-      matchStub = sinon.stub(pathToRegexp, 'match').returns(() => ({
-        path: '/base-url/path',
-        index: 0,
-        params: { ...mockParams },
-      }))
+    beforeEach(function () {
+      matchStub = sinon.stub().returns(false)
+      compileStub = sinon.stub().returns('/compiled/url')
 
       req = {
         baseUrl: '/base-url',
         path: '/path',
         query: {},
-        params: {} as Record<string, string | undefined>,
-      } as URLRequest
+        params: {},
+      }
     })
 
-    afterEach(() => {
-      matchStub.restore()
+
+    afterEach(function () {
+      sinon.restore()
     })
 
     context('with args', function () {
+      context('when no matching route is found', function () {
+        beforeEach(function () {
+          output = helpers.compileFromRoute(mockRoute, req)
+        })
 
-      // context('when no matching route is found', function () {
-      //   beforeEach(function () {
-      //     // matchStub.returns(null)
-      //     output = compileFromRoute(mockRoute, req)
-      //     console.log(mockRoute)
-      //     console.log('OPUT OPUT:', output)
-      //   })
-
-      //   it('should return empty string', function () {
-      //     expect(output).to.equal('')
-      //   })
-      // })
+        it('should return empty string', function () {
+          expect(output).to.equal('')
+        })
+      })
 
       context('when matching route is found', function () {
         beforeEach(function () {
-          output = compileFromRoute(mockRoute, req)
+          matchStub = sinon.stub().returns(mockMatch)
+          pathToRegexp.match.callsFake(() => matchStub)
         })
 
-        it('should combine base url and path to find a match', function () {
-          expect(matchStub).to.have.been.calledOnceWithExactly(mockRoute)
+        context('by default', function () {
+          beforeEach(function () {
+            output = helpers.compileFromRoute(mockRoute, req)
+          })
+
+          it('should combine base url and path to find a match', function () {
+            expect(matchStub).to.have.been.calledOnceWithExactly('/base-url/path')
+          })
+
+          it('should call match with route', function () {
+            expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
+          })
+
+          it('should call compile with correct args', function () {
+            expect(compileStub).to.have.been.calledWithExactly(mockMatch.params)
+          })
+
+          it('should return a url', function () {
+            expect(output).to.equal('/compiled/url')
+          })
         })
 
-        it('should call match with the correct route', function () {
-          expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
+        context('with overrides', function () {
+          beforeEach(function () {
+            output = helpers.compileFromRoute(mockRoute, req, {
+              date: '2018-01-01',
+              foo: 'bar',
+            })
+          })
+
+          it('should combine base url and path to find a match', function () {
+            expect(matchStub).to.have.been.calledOnceWithExactly('/base-url/path')
+          })
+
+          it('should call match with route', function () {
+            expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
+          })
+
+          it('should call compile with overrides', function () {
+            expect(compileStub).to.have.been.calledWithExactly({
+              ...mockMatch.params,
+              date: '2018-01-01',
+              foo: 'bar',
+            })
+          })
+
+          it('should return a url', function () {
+            expect(output).to.equal('/compiled/url')
+          })
         })
 
-        it('should call compile with the correct arguments', function () {
-          expect(compileStub).to.have.been.calledOnceWithExactly(mockParams)
+        context('with query', function () {
+          beforeEach(function () {
+            req.query = {
+              status: 'approved',
+              foo: 'bar',
+            }
+
+            output = helpers.compileFromRoute(mockRoute, req)
+          })
+
+          it('should combine base url and path to find a match', function () {
+            expect(matchStub).to.have.been.calledOnceWithExactly('/base-url/path')
+          })
+
+          it('should call match with route', function () {
+            expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
+          })
+
+          it('should call compile with overrides', function () {
+            expect(compileStub).to.have.been.calledWithExactly(mockMatch.params)
+          })
+
+          it('should return a url with query', function () {
+            expect(output).to.equal('/compiled/url?status=approved&foo=bar')
+          })
         })
 
-        it('should return the correct compiled URL', function () {
-          expect(output).to.equal(`/moves/${mockParams.date}/${mockParams.locationId}`)
+        context('with query overrides', function () {
+          beforeEach(function () {
+            req.query = {
+              status: 'approved',
+              foo: 'bar',
+            }
+
+            output = helpers.compileFromRoute(
+              mockRoute,
+              req,
+              {},
+              {
+                foo: 'buzz',
+              }
+            )
+          })
+
+          it('should override the querystring', function () {
+            expect(output).to.equal('/compiled/url?status=approved&foo=buzz')
+          })
         })
       })
     })
