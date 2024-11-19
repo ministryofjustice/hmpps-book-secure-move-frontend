@@ -680,7 +680,7 @@ class CreateMovePage extends Page {
       },
       moveAgreedBy: {
         selector: this.fields.moveAgreedBy,
-        value: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        value: `${faker.person.firstName()} ${faker.person.lastName()}`,
       },
     })
   }

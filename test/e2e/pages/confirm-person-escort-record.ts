@@ -55,7 +55,7 @@ class ConfirmPersonEscortRecordPage extends Page {
     return fillInForm({
       handoverDispatchingOfficer: {
         selector: this.fields.handoverDispatchingOfficer,
-        value: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        value: `${faker.person.firstName()} ${faker.person.lastName()}`,
       },
       handoverDispatchingOfficerId: {
         selector: this.fields.handoverDispatchingOfficerId,
@@ -67,7 +67,7 @@ class ConfirmPersonEscortRecordPage extends Page {
       },
       handoverReceivingOfficer: {
         selector: this.fields.handoverReceivingOfficer,
-        value: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        value: `${faker.person.firstName()} ${faker.person.lastName()}`,
       },
       handoverReceivingOfficerId: {
         selector: this.fields.handoverReceivingOfficerId,

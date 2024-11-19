@@ -120,8 +120,8 @@ const generatePNCNumber = () => {
 }
 
 export async function generatePerson(overrides = {}) {
-  const firstNames = faker.name.firstName()
-  const lastName = faker.name.lastName()
+  const firstNames = faker.person.firstName()
+  const lastName = faker.person.lastName()
 
   let genders = await getGenders()
   // TODO: implement proper test to render male/female filter unnecessary
