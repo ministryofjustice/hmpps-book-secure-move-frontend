@@ -67,7 +67,9 @@ describe('URL Helpers', function () {
           })
 
           it('should return a url', function () {
-            expect(output).to.equal(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`)
+            expect(output).to.equal(
+              `/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`
+            )
           })
         })
 
@@ -80,7 +82,9 @@ describe('URL Helpers', function () {
           })
 
           it('should combine base url and path to find a match', function () {
-            expect(matchStub).to.have.been.calledOnceWithExactly("/base-url/path")
+            expect(matchStub).to.have.been.calledOnceWithExactly(
+              '/base-url/path'
+            )
           })
 
           it('should call match with route', function () {
@@ -88,7 +92,9 @@ describe('URL Helpers', function () {
           })
 
           it('should return a url', function () {
-            expect(output).to.equal(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`)
+            expect(output).to.equal(
+              `/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`
+            )
           })
         })
 
@@ -111,7 +117,9 @@ describe('URL Helpers', function () {
           })
 
           it('should return a url with query', function () {
-            expect(output).to.equal(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}?status=approved&foo=bar`)
+            expect(output).to.equal(
+              `/moves/${mockMatch.params.date}/${mockMatch.params.locationId}?status=approved&foo=bar`
+            )
           })
         })
 
