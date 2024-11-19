@@ -1,16 +1,13 @@
 import { expect } from 'chai'
-import sinon, { SinonStub } from 'sinon'
 
 import * as pathToRegexp from 'path-to-regexp'
+
+import sinon, { SinonStub } from 'sinon'
+
 import * as helpers from './url'
 
+import { URLRequest } from '../types/url_request'
 
-interface Request {
-  baseUrl: string
-  path: string
-  query: Record<string, any>
-  params: Record<string, any>
-}
 
 describe('URL Helpers', function () {
   describe('#compileFromRoute()', function () {
@@ -22,7 +19,7 @@ describe('URL Helpers', function () {
         view: 'requested',
       },
     }
-    let matchStub: SinonStub, req: Request, output: string
+    let matchStub: SinonStub, req: URLRequest, output: string
 
     beforeEach(function () {
       matchStub = sinon.stub().returns(false)
@@ -84,7 +81,7 @@ describe('URL Helpers', function () {
           })
 
           it('should combine base url and path to find a match', function () {
-            expect(matchStub).to.have.been.calledOnceWithExactly('/base-url/path')
+            expect(matchStub).to.have.been.calledOnceWithExactly("/base-url/path")
           })
 
           it('should call match with route', function () {
