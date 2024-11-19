@@ -63,7 +63,9 @@ describe('URL Helpers', function () {
           })
 
           it('should call match with route', function () {
-            expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
+            expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(
+              mockRoute
+            )
           })
 
           it('should return a url', function () {
@@ -88,7 +90,9 @@ describe('URL Helpers', function () {
           })
 
           it('should call match with route', function () {
-            expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
+            expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(
+              mockRoute
+            )
           })
 
           it('should return a url', function () {
@@ -109,11 +113,15 @@ describe('URL Helpers', function () {
           })
 
           it('should combine base url and path to find a match', function () {
-            expect(matchStub).to.have.been.calledOnceWithExactly('/base-url/path')
+            expect(matchStub).to.have.been.calledOnceWithExactly(
+              '/base-url/path'
+            )
           })
 
           it('should call match with route', function () {
-            expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
+            expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(
+              mockRoute
+            )
           })
 
           it('should return a url with query', function () {
@@ -141,7 +149,9 @@ describe('URL Helpers', function () {
           })
 
           it('should override the querystring', function () {
-            expect(output).to.equal(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}?status=approved&foo=buzz`)
+            expect(output).to.equal(
+              `/moves/${mockMatch.params.date}/${mockMatch.params.locationId}?status=approved&foo=buzz`
+            )
           })
         })
       })
