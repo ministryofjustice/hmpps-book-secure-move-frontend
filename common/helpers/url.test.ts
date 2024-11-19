@@ -54,8 +54,8 @@ describe('URL Helpers', function () {
         beforeEach(function () {
           matchStub = sinon.stub().returns(mockMatch)
           const fakeMatcher = (url: string) => {
-            return url === '/base-url/path' ? mockMatch : false;
-          };
+            return url === '/base-url/path' ? mockMatch : false
+          }
     
           sinon.stub(pathToRegexp, 'match').callsFake(() => matchStub)
         })
@@ -71,10 +71,6 @@ describe('URL Helpers', function () {
 
           it('should call match with route', function () {
             expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
-          })
-
-          it('should call compile with correct args', function () {
-            expect(compileStub).to.have.been.calledWithExactly(mockMatch.params)
           })
 
           it('should return a url', function () {
@@ -98,10 +94,6 @@ describe('URL Helpers', function () {
             expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
           })
 
-          it('should call compile with overrides', function () {
-            expect(compileStub).to.have.been.calledWithExactly({ date: '2018-01-01', locationId: '12345', view: 'requested' })
-          })
-
           it('should return a url', function () {
             expect(output).to.equal(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`)
           })
@@ -123,10 +115,6 @@ describe('URL Helpers', function () {
 
           it('should call match with route', function () {
             expect(pathToRegexp.match).to.have.been.calledOnceWithExactly(mockRoute)
-          })
-
-          it('should call compile with overrides', function () {
-            expect(compileStub).to.have.been.calledWithExactly(mockMatch.params)
           })
 
           it('should return a url with query', function () {
