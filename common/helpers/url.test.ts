@@ -1,6 +1,8 @@
 import { expect } from 'chai'
 import * as pathToRegexp from 'path-to-regexp'
+
 import sinon, { SinonStub } from 'sinon'
+
 import { URLRequest } from '../types/url_request'
 import * as helpers from './url'
 
