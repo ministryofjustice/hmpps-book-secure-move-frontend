@@ -15,7 +15,7 @@ describe('URL Helpers', function () {
     const mockRoute = '/moves/:date/:locationId?'
     const mockMatch = {
       params: {
-        date: '2020-10-10',
+        date: '2018-01-01',
         locationId: '12345',
         view: 'requested',
       },
@@ -24,7 +24,7 @@ describe('URL Helpers', function () {
 
     beforeEach(function () {
       matchStub = sinon.stub().returns(false)
-      compileStub = sinon.stub().returns('/compiled/url')
+      compileStub = sinon.stub().returns(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`)
 
       req = {
         baseUrl: '/base-url',
@@ -53,7 +53,11 @@ describe('URL Helpers', function () {
       context('when matching route is found', function () {
         beforeEach(function () {
           matchStub = sinon.stub().returns(mockMatch)
-          pathToRegexp.match.callsFake(() => matchStub)
+          const fakeMatcher = (url: string) => {
+            return url === '/base-url/path' ? mockMatch : false;
+          };
+    
+          sinon.stub(pathToRegexp, 'match').callsFake(() => matchStub)
         })
 
         context('by default', function () {
@@ -74,7 +78,7 @@ describe('URL Helpers', function () {
           })
 
           it('should return a url', function () {
-            expect(output).to.equal('/compiled/url')
+            expect(output).to.equal(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`)
           })
         })
 
@@ -95,15 +99,11 @@ describe('URL Helpers', function () {
           })
 
           it('should call compile with overrides', function () {
-            expect(compileStub).to.have.been.calledWithExactly({
-              ...mockMatch.params,
-              date: '2018-01-01',
-              foo: 'bar',
-            })
+            expect(compileStub).to.have.been.calledWithExactly({ date: '2018-01-01', locationId: '12345', view: 'requested' })
           })
 
           it('should return a url', function () {
-            expect(output).to.equal('/compiled/url')
+            expect(output).to.equal(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`)
           })
         })
 
@@ -130,7 +130,7 @@ describe('URL Helpers', function () {
           })
 
           it('should return a url with query', function () {
-            expect(output).to.equal('/compiled/url?status=approved&foo=bar')
+            expect(output).to.equal(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}?status=approved&foo=bar`)
           })
         })
 
@@ -152,7 +152,7 @@ describe('URL Helpers', function () {
           })
 
           it('should override the querystring', function () {
-            expect(output).to.equal('/compiled/url?status=approved&foo=buzz')
+            expect(output).to.equal(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}?status=approved&foo=buzz`)
           })
         })
       })
