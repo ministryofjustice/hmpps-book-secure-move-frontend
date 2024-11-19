@@ -57,7 +57,9 @@ describe('URL Helpers', function () {
           })
 
           it('should combine base url and path to find a match', function () {
-            expect(matchStub).to.have.been.calledOnceWithExactly('/base-url/path')
+            expect(matchStub).to.have.been.calledOnceWithExactly(
+              '/base-url/path'
+            )
           })
 
           it('should call match with route', function () {
