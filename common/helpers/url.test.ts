@@ -1,7 +1,8 @@
-import { expect } from 'chai'
-import sinon, { SinonStub } from 'sinon'
 import * as pathToRegexp from 'path-to-regexp'
 import * as helpers from './url'
+
+import { expect } from 'chai'
+import sinon, { SinonStub } from 'sinon'
 
 interface Request {
   baseUrl: string
@@ -20,11 +21,10 @@ describe('URL Helpers', function () {
         view: 'requested',
       },
     }
-    let compileStub: SinonStub, matchStub: SinonStub, req: Request, output: string
+    let matchStub: SinonStub, req: Request, output: string
 
     beforeEach(function () {
       matchStub = sinon.stub().returns(false)
-      compileStub = sinon.stub().returns(`/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`)
 
       req = {
         baseUrl: '/base-url',
@@ -33,7 +33,6 @@ describe('URL Helpers', function () {
         params: {},
       }
     })
-
 
     afterEach(function () {
       sinon.restore()
@@ -56,7 +55,7 @@ describe('URL Helpers', function () {
           const fakeMatcher = (url: string) => {
             return url === '/base-url/path' ? mockMatch : false
           }
-    
+
           sinon.stub(pathToRegexp, 'match').callsFake(() => matchStub)
         })
 
