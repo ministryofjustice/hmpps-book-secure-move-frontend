@@ -6,7 +6,7 @@ const getQueryString = (target: Record<string, string>, source: Record<string, s
 }
 
 const getUrl = (page: string, args: Record<string, string> = {}): string => {
-  return `${page}${getQueryString(args, {})}`;
+  return `${page}${getQueryString(args, {})}`
 }
 
 export { 

@@ -14,24 +14,24 @@ function compileFromRoute(
   overrides: Record<string, string | undefined> = {},
   queryOverrides: Record<string, string | undefined> = {}
 ) {
-  const { baseUrl = '', path = '', query = {}, params = {} } = req;
+  const { baseUrl = '', path = '', query = {}, params = {} } = req
 
   const combinedQuery = {
     ...query,
     ...queryOverrides,
-  };
-
-  const matchFunction: MatchFunction = match(route);
-  const matched = matchFunction(baseUrl + path);
-
-  if (!matched) {
-    return '';
   }
 
-  const compileUrl = compile(route);
-  const queryInUrl = !isEmpty(combinedQuery) ? getQueryString(combinedQuery, {}) : '';
+  const matchFunction: MatchFunction = match(route)
+  const matched = matchFunction(baseUrl + path)
 
-  return compileUrl({ ...matched.params, ...overrides }) + queryInUrl;
+  if (!matched) {
+    return ''
+  }
+
+  const compileUrl = compile(route)
+  const queryInUrl = !isEmpty(combinedQuery) ? getQueryString(combinedQuery, {}) : ''
+
+  return compileUrl({ ...matched.params, ...overrides }) + queryInUrl
 }
 
 export {

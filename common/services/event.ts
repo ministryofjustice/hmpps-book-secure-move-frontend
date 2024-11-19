@@ -30,7 +30,7 @@ interface PostEventData {
   eventableId: string
   type: string
   details?: EventDetails
-  relationships?: { [key: string]: { data: { id: string; type: string } } }
+  relationships?: { [key: string]: { data: { id: string type: string } } }
 }
 
 type LockoutEventType =
