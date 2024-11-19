@@ -1,5 +1,5 @@
-import { format, startOfTomorrow } from 'date-fns'
 import { faker } from '@faker-js/faker'
+import { format, startOfTomorrow } from 'date-fns'
 import { Selector, t } from 'testcafe'
 
 import { fillInForm } from '../_helpers'
@@ -16,7 +16,9 @@ class AllocationDetailsEditPage extends Page {
       date: Selector('#date'),
     }
     this.errorList = [
-      (this.nodes.errorSummary as Selector).find('a').withAttribute('href', '#date'),
+      (this.nodes.errorSummary as Selector)
+        .find('a')
+        .withAttribute('href', '#date'),
     ]
   }
 
@@ -30,7 +32,10 @@ class AllocationDetailsEditPage extends Page {
     const fieldsToFill = {
       date: {
         selector: this.fields.date,
-        value: format(faker.date.future({ years: 1, refDate: startOfTomorrow() }), 'yyyy-MM-dd'),
+        value: format(
+          faker.date.future({ years: 1, refDate: startOfTomorrow() }),
+          'yyyy-MM-dd'
+        ),
       },
     }
 

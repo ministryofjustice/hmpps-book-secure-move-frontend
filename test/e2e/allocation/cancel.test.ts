@@ -8,17 +8,18 @@ fixture('Cancel allocation').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(newAllocation)
 
   t.ctx.allocation = await allocationJourney.createAllocation()
-  const confirmationLink =
-    (allocationJourney.allocationViewPage.nodes.confirmationLink as Selector)(
-      t.ctx.allocation.movesCount
-    )
+  const confirmationLink = (
+    allocationJourney.allocationViewPage.nodes.confirmationLink as Selector
+  )(t.ctx.allocation.movesCount)
 
   await t
     .expect(confirmationLink.exists)
     .ok('Confirmation should contain allocation link')
     .click(confirmationLink)
 
-  await t.click(allocationJourney.allocationCancelPage.nodes.cancelLink as Selector)
+  await t.click(
+    allocationJourney.allocationCancelPage.nodes.cancelLink as Selector
+  )
 })
 
 test('Reason — `Made in error`', async t => {

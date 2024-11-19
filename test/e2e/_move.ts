@@ -33,8 +33,9 @@ export async function createMove(options: any = {}) {
       .expect((page.nodes.locationMeta as Selector).getAttribute('content'))
       .ok('should contain a current location')
 
-    const currentLocationId =
-      await (page.nodes.locationMeta as Selector).getAttribute('content')
+    const currentLocationId = await (
+      page.nodes.locationMeta as Selector
+    ).getAttribute('content')
 
     options.moveOverrides = {
       from_location: currentLocationId,
@@ -142,7 +143,11 @@ const updatePages = ['personal_details', 'risk', 'health', 'court', 'date']
  *
  * @returns {undefined}
  */
-const filterUpdatePages = (pages = updatePages, exclude = false, drop: string[] = []) => {
+const filterUpdatePages = (
+  pages = updatePages,
+  exclude = false,
+  drop: string[] = []
+) => {
   let show = updatePages
     .filter(cat => !drop.includes(cat))
     .filter(cat => pages.includes(cat))
@@ -172,7 +177,11 @@ const filterUpdatePages = (pages = updatePages, exclude = false, drop: string[] 
  *
  * @returns {undefined}
  */
-export async function checkUpdateLinks(pages: string[], exclude?: boolean, drop: string[] = []) {
+export async function checkUpdateLinks(
+  pages: string[],
+  exclude?: boolean,
+  drop: string[] = []
+) {
   const filteredPages = filterUpdatePages(pages, exclude, drop)
 
   for await (const cat of filteredPages.show) {
@@ -230,7 +239,11 @@ export async function checkUpdatePageStatus(page: string, statusCode: number) {
  *
  * @returns {undefined}
  */
-export async function checkUpdatePagesAccessible(pages: string[], negated?: boolean, drop: string[] = []) {
+export async function checkUpdatePagesAccessible(
+  pages: string[],
+  negated?: boolean,
+  drop: string[] = []
+) {
   const filteredPages = filterUpdatePages(pages, negated, drop)
 
   for await (const page of filteredPages.show) {
@@ -258,7 +271,10 @@ export async function checkUpdatePagesForbidden() {
  *
  * @returns {undefined}
  */
-export async function checkUpdatePagesRedirected(_moveId: string, pages = updatePages) {
+export async function checkUpdatePagesRedirected(
+  _moveId: string,
+  pages = updatePages
+) {
   for await (const updatePage of pages) {
     const url = getUpdateMove(t.ctx.move.id, updatePage)
 
@@ -414,7 +430,8 @@ export async function checkUpdateMoveDetails() {
         createMovePage.fields.secureTrainingCentreLocation,
     }
     const selector =
-      locationSelectors[moveType as keyof typeof locationSelectors] || Selector(`#to_location_${moveType}`)
+      locationSelectors[moveType as keyof typeof locationSelectors] ||
+      Selector(`#to_location_${moveType}`)
     data.toLocation = {
       selector,
       type: 'autocomplete',

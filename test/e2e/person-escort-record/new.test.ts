@@ -18,7 +18,11 @@ test('Start new Record', async t => {
 
   // Check "not started" state
   await t
-    .expect((moveDetailPage.nodes.tagList as Selector).getAttribute('data-tag-list-source'))
+    .expect(
+      (moveDetailPage.nodes.tagList as Selector).getAttribute(
+        'data-tag-list-source'
+      )
+    )
     .eql(
       'person-escort-record',
       'Should render tag list from Person Escort Record'
@@ -40,12 +44,14 @@ test('Start new Record', async t => {
     .notOk('Should not contain link to edit move request risk info')
     .expect((moveDetailPage.nodes.getUpdateLink as Selector)('health').exists)
     .notOk('Should not contain link to edit move request health info')
-    .expect((moveDetailPage.nodes.personEscortRecordSectionLinks as Selector).count)
+    .expect(
+      (moveDetailPage.nodes.personEscortRecordSectionLinks as Selector).count
+    )
     .eql(numberOfSections, 'Should include link for each PER section')
     .expect(
-      (moveDetailPage.nodes.personEscortRecordSectionStatuses as Selector).withText(
-        'Not started'
-      ).count
+      (
+        moveDetailPage.nodes.personEscortRecordSectionStatuses as Selector
+      ).withText('Not started').count
     )
     .eql(numberOfSections, 'Should show each section as not started')
 
@@ -69,19 +75,23 @@ test('Start new Record', async t => {
   // Check "completed" state on PER
   await t
     .click(moveDetailPage.nodes.personEscortRecordViewButton as Selector)
-    .expect((moveDetailPage.nodes.personEscortRecordSectionLinks as Selector).count)
+    .expect(
+      (moveDetailPage.nodes.personEscortRecordSectionLinks as Selector).count
+    )
     .eql(numberOfSections, 'Should include link for each PER section')
     .expect(
-      (moveDetailPage.nodes.personEscortRecordSectionStatuses as Selector).withText(
-        'Completed'
-      ).count
+      (
+        moveDetailPage.nodes.personEscortRecordSectionStatuses as Selector
+      ).withText('Completed').count
     )
     .eql(numberOfSections, 'Should show each section as completed')
 
   // Confirm a Person Escort Record
   await t
     .navigateTo(getMove(t.ctx.move.id))
-    .click(moveDetailPage.nodes.personEscortRecordConfirmationButton as Selector)
+    .click(
+      moveDetailPage.nodes.personEscortRecordConfirmationButton as Selector
+    )
     .expect(moveDetailPage.getCurrentUrl())
     .contains('/person-escort-record/confirm/handover')
 

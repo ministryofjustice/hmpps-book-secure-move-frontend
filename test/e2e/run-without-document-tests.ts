@@ -5,9 +5,17 @@ const runTests = async () => {
   const runner = testcafe.createRunner()
   const failedCount = await runner
     .src('./test/e2e/*.test.js')
-    .filter((_testName: string, _fixtureName: string, _fixturePath: string, testMeta: any, _fixtureMeta: any) => {
-      return !testMeta.hasDocument
-    })
+    .filter(
+      (
+        _testName: string,
+        _fixtureName: string,
+        _fixturePath: string,
+        testMeta: any,
+        _fixtureMeta: any
+      ) => {
+        return !testMeta.hasDocument
+      }
+    )
     .browsers(['chrome:headless'])
     .run()
 

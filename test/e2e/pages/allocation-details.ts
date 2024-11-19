@@ -1,5 +1,5 @@
-import { format, startOfTomorrow } from 'date-fns'
 import { faker } from '@faker-js/faker'
+import { format, startOfTomorrow } from 'date-fns'
 import { Selector, t } from 'testcafe'
 
 import { fillInForm } from '../_helpers'
@@ -8,7 +8,13 @@ import { Page } from './page'
 
 class AllocationDetailsPage extends Page {
   url: string
-  fields: { movesCount: Selector; fromLocation: Selector; toLocation: Selector; date: Selector }
+  fields: {
+    movesCount: Selector
+    fromLocation: Selector
+    toLocation: Selector
+    date: Selector
+  }
+
   errorList: any[]
   errorForDestination: any[]
 
@@ -28,10 +34,14 @@ class AllocationDetailsPage extends Page {
       '#date',
       '#to_location',
     ].map(error =>
-      (this.nodes.errorSummary as Selector).find('a').withAttribute('href', error)
+      (this.nodes.errorSummary as Selector)
+        .find('a')
+        .withAttribute('href', error)
     )
     this.errorForDestination = ['#to_location'].map(error =>
-      (this.nodes.errorSummary as Selector).find('a').withAttribute('href', error)
+      (this.nodes.errorSummary as Selector)
+        .find('a')
+        .withAttribute('href', error)
     )
   }
 
@@ -64,7 +74,10 @@ class AllocationDetailsPage extends Page {
       },
       date: {
         selector: this.fields.date,
-        value: format(faker.date.future({  years: 1, refDate: startOfTomorrow() }), 'yyyy-MM-dd'),
+        value: format(
+          faker.date.future({ years: 1, refDate: startOfTomorrow() }),
+          'yyyy-MM-dd'
+        ),
       },
     }
 
@@ -97,7 +110,10 @@ class AllocationDetailsPage extends Page {
       },
       date: {
         selector: this.fields.date,
-        value: format(faker.date.future({ years: 1, refDate: startOfTomorrow() }), 'yyyy-MM-dd'),
+        value: format(
+          faker.date.future({ years: 1, refDate: startOfTomorrow() }),
+          'yyyy-MM-dd'
+        ),
       },
     }
 

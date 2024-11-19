@@ -29,8 +29,9 @@ test.before(async t => {
 test.before(async t => {
   await t.useRole(courtUser).navigateTo(home)
 })('Incoming moves', async t => {
-  const currentLocationId =
-    await (page.nodes.locationMeta as Selector).getAttribute('content')
+  const currentLocationId = await (
+    page.nodes.locationMeta as Selector
+  ).getAttribute('content')
   const moveFixture = await createMove({
     moveOverrides: {
       to_location: currentLocationId,

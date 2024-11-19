@@ -8,10 +8,9 @@ fixture('New PMU allocation').beforeEach(async t => {
 
 test('Create allocation and verify the result', async t => {
   const allocation = await allocationJourney.createAllocation()
-  const confirmationLink =
-    (allocationJourney.allocationViewPage.nodes.confirmationLink as Selector)(
-      allocation.movesCount
-    )
+  const confirmationLink = (
+    allocationJourney.allocationViewPage.nodes.confirmationLink as Selector
+  )(allocation.movesCount)
 
   await t
     .expect(confirmationLink.exists)

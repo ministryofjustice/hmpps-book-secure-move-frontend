@@ -9,10 +9,9 @@ fixture('Remove a move from an allocation').beforeEach(async t => {
 
   t.ctx.allocation = await allocationJourney.createAllocation()
 
-  const confirmationLink =
-    (allocationJourney.allocationViewPage.nodes.confirmationLink as Selector)(
-      t.ctx.allocation.movesCount
-    )
+  const confirmationLink = (
+    allocationJourney.allocationViewPage.nodes.confirmationLink as Selector
+  )(t.ctx.allocation.movesCount)
 
   await t
     .expect(confirmationLink.exists)
@@ -25,26 +24,30 @@ test('Remove move', async t => {
   // choose an item to remove
   const itemToRemove = Math.floor(Math.random() * movesCount)
   // store reference for future assertion
-  const itemReference =
-    await (allocationJourney.allocationViewPage.nodes.allocatedMovesReferences as Selector).nth(
-      itemToRemove
-    ).innerText
+  const itemReference = await (
+    allocationJourney.allocationViewPage.nodes
+      .allocatedMovesReferences as Selector
+  ).nth(itemToRemove).innerText
 
   await t.click(
-    (allocationJourney.allocationViewPage.nodes.allocatedMovesRemoveLinks as Selector).nth(
-      itemToRemove
-    )
+    (
+      allocationJourney.allocationViewPage.nodes
+        .allocatedMovesRemoveLinks as Selector
+    ).nth(itemToRemove)
   )
 
   await page.submitForm()
 
   await t
-    .expect((allocationJourney.allocationViewPage.nodes.allocatedMoves as Selector).count)
+    .expect(
+      (allocationJourney.allocationViewPage.nodes.allocatedMoves as Selector)
+        .count
+    )
     .eql(movesCount - 1, 'Should contain one less move')
     .expect(
-      (allocationJourney.allocationViewPage.nodes.allocatedMoves as Selector).withText(
-        itemReference
-      ).count
+      (
+        allocationJourney.allocationViewPage.nodes.allocatedMoves as Selector
+      ).withText(itemReference).count
     )
     .eql(0, 'Should not contain removed move')
 

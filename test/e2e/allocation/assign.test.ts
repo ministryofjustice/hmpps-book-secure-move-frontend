@@ -17,7 +17,9 @@ fixture('Assign a person to an allocation').beforeEach(async t => {
 test('Assign person', async t => {
   const { allocation, personalDetails } = t.ctx
   // Add person
-  await t.click(allocationJourney.allocationViewPage.nodes.addPersonButton as Selector)
+  await t.click(
+    allocationJourney.allocationViewPage.nodes.addPersonButton as Selector
+  )
 
   // PNC lookup
   await createMovePage.fillInPrisonNumberSearch(personalDetails.prisonNumber)
@@ -47,7 +49,10 @@ test('Assign person', async t => {
   await t.click(Selector('a').withText(allocation.toLocation))
 
   await t
-    .expect((allocationJourney.allocationViewPage.nodes.allocatedMoves as Selector).count)
+    .expect(
+      (allocationJourney.allocationViewPage.nodes.allocatedMoves as Selector)
+        .count
+    )
     .eql(1, 'Should contain one allocated move')
 
   // Click remove button
@@ -61,6 +66,9 @@ test('Assign person', async t => {
   await page.submitForm()
 
   await t
-    .expect((allocationJourney.allocationViewPage.nodes.allocatedMoves as Selector).count)
+    .expect(
+      (allocationJourney.allocationViewPage.nodes.allocatedMoves as Selector)
+        .count
+    )
     .eql(0, 'Should not contain any allocated moves')
 })

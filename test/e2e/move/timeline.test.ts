@@ -12,5 +12,7 @@ fixture('Move timeline').beforeEach(async t => {
 test('Check timeline exists', async t => {
   const timelineUrl = getTimeline(t.ctx.move.id)
   await expectStatusCode(timelineUrl, 200)
-  await t.expect((moveTimelinePage.nodes.timelineItems as Selector).count).eql(1)
+  await t
+    .expect((moveTimelinePage.nodes.timelineItems as Selector).count)
+    .eql(1)
 })

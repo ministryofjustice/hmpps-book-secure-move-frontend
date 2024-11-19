@@ -2,9 +2,9 @@ import { unlinkSync } from 'fs'
 import { homedir } from 'os'
 import { join } from 'path'
 
+import { faker } from '@faker-js/faker'
 import * as Sentry from '@sentry/node'
 import { format } from 'date-fns'
-import { faker } from '@faker-js/faker'
 import glob from 'glob'
 import { isArray, isNil } from 'lodash'
 import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
@@ -113,7 +113,7 @@ const generatePNCNumber = () => {
   const mod23chars = 'ZABCDEFGHJKLMNPQRTUVWXY'.split('')
   const date = new Date()
   const year = date.getFullYear().toString().substring(2)
-  const number = faker.helpers.replaceSymbols("#######")
+  const number = faker.helpers.replaceSymbols('#######')
   const i = Number.parseInt(`${year}${number}`) % 23
 
   return `${year}/${number}${mod23chars[i]}`
@@ -125,11 +125,15 @@ export async function generatePerson(overrides = {}) {
 
   let genders = await getGenders()
   // TODO: implement proper test to render male/female filter unnecessary
-  genders = genders.filter((gender: any) => gender.title.match(/^(Male|Female)$/i))
+  genders = genders.filter((gender: any) =>
+    gender.title.match(/^(Male|Female)$/i)
+  )
   let ethnicities = await getEthnicities()
   ethnicities = ethnicities.filter(filterDisabled)
 
-  const gender = faker.helpers.arrayElement(genders.map(({ title }: any) => title))
+  const gender = faker.helpers.arrayElement(
+    genders.map(({ title }: any) => title)
+  )
   const ethnicity = faker.helpers.arrayElement(
     ethnicities.map(({ title }: any) => title)
   )
@@ -141,12 +145,12 @@ export async function generatePerson(overrides = {}) {
     ethnicity,
     fullname: `${lastName}, ${firstNames}`.toUpperCase(),
     policeNationalComputer: generatePNCNumber(),
-    prisonNumber: faker.helpers.replaceSymbols("?####??"),
+    prisonNumber: faker.helpers.replaceSymbols('?####??'),
     criminalRecordsOffice: faker.helpers.fake('CRO/{{number.int}}'),
     nicheReference: faker.helpers.fake('NI/{{number.int}}'),
     athenaReference: faker.helpers.fake('AT/{{number.int}}'),
     dateOfBirth: format(
-      faker.date.between({ from: '01-01-1940', to: '01-01-1990'}),
+      faker.date.between({ from: '01-01-1940', to: '01-01-1990' }),
       'yyyy-MM-dd'
     ),
     ...overrides,
@@ -158,7 +162,8 @@ export async function createPersonFixture(overrides = {}) {
   const genders = await getGenders()
   const ethnicities = await getEthnicities()
 
-  const gender = genders.filter((gen: any) => gen.title === fixture.gender)[0].id
+  const gender = genders.filter((gen: any) => gen.title === fixture.gender)[0]
+    .id
   const ethnicity = ethnicities.filter(
     (eth: any) => eth.title === fixture.ethnicity
   )[0].id
@@ -242,7 +247,7 @@ export async function createProfileFixture(personId: string, overrides = {}) {
  */
 export async function getRandomLocation(
   locationType: string,
-  { shouldHaveSupplier = false, filter }: any,
+  { shouldHaveSupplier = false, filter }: any
 ) {
   let locations
 
@@ -276,7 +281,11 @@ export async function getRandomLocation(
  *
  * @returns {object} - move data
  */
-export async function generateMove(profile: any, options: any = {}, overrides: any = {}) {
+export async function generateMove(
+  profile: any,
+  options: any = {},
+  overrides: any = {}
+) {
   const fromLocationType = options.from_location_type || 'police'
   const toLocationType = options.to_location_type || 'court'
   const moveType = options.move_type || 'court_appearance'
@@ -392,7 +401,11 @@ export async function fillInPersonEscortRecord(moveId: string) {
  *
  * @returns {string|array} - value of the selected item or array of items selected
  */
-async function selectOption({ options, value, skipFirst = false }: any): Promise<any> {
+async function selectOption({
+  options,
+  value,
+  skipFirst = false,
+}: any): Promise<any> {
   if (isArray(value)) {
     const filledInValues = []
 
@@ -420,9 +433,12 @@ async function selectOption({ options, value, skipFirst = false }: any): Promise
     value.type === 'random' &&
     value.except
   ) {
-    const filteredOptions = options.filter((o: any) => o.innerText !== value.except, {
-      value,
-    })
+    const filteredOptions = options.filter(
+      (o: any) => o.innerText !== value.except,
+      {
+        value,
+      }
+    )
     const count = await filteredOptions.count
     const randomItem = Math.floor(Math.random() * count)
     option = await filteredOptions.nth(randomItem)
@@ -457,7 +473,13 @@ async function selectOption({ options, value, skipFirst = false }: any): Promise
  *
  * @returns {string} - value of the selected item
  */
-export async function fillAutocomplete({ selector, value }: { selector: Selector, value: string | number }) {
+export async function fillAutocomplete({
+  selector,
+  value,
+}: {
+  selector: Selector
+  value: string | number
+}) {
   await t.click(selector).selectText(selector).pressKey('delete')
 
   const optionsSelector = '.autocomplete__menu .autocomplete__option'
@@ -480,7 +502,13 @@ export async function fillAutocomplete({ selector, value }: { selector: Selector
  *
  * @returns {string|array} - value of the selected item or array of items selected
  */
-export function fillRadioOrCheckbox({ selector, value }: { selector: Selector, value: string | number }) {
+export function fillRadioOrCheckbox({
+  selector,
+  value,
+}: {
+  selector: Selector
+  value: string | number
+}) {
   const options = selector
     .parent('fieldset')
     .nth(0)
@@ -502,7 +530,13 @@ export function fillRadioOrCheckbox({ selector, value }: { selector: Selector, v
  *
  * @returns {string|array} - value of the selected item or array of items selected
  */
-export async function fillDdl({ selector, value }: { selector: Selector, value: string | number }) {
+export async function fillDdl({
+  selector,
+  value,
+}: {
+  selector: Selector
+  value: string | number
+}) {
   await t.click(selector)
   const options = await selector.child('option')
   const skipFirst = true
@@ -523,7 +557,13 @@ export async function fillDdl({ selector, value }: { selector: Selector, value: 
  *
  * @returns {string} - value of the selected item
  */
-export async function fillTextField({ selector, value }: { selector: Selector, value: string }) {
+export async function fillTextField({
+  selector,
+  value,
+}: {
+  selector: Selector
+  value: string
+}) {
   await t.typeText(selector, value, { replace: true })
   return selector.value
 }
@@ -554,7 +594,10 @@ export async function fillInForm(fields: any = {}) {
         filledInFields[key] = await fillRadioOrCheckbox(field)
         break
       default:
-        filledInFields[key] = await fillTextField({ ...field, value: String(field.value) })
+        filledInFields[key] = await fillTextField({
+          ...field,
+          value: String(field.value),
+        })
         break
     }
   }
@@ -602,7 +645,9 @@ export function deleteCsvDownloads() {
     try {
       unlinkSync(file)
     } catch (err) {
-      throw new Error(`Failed to delete CSV download file: ${(err as Error).message}`)
+      throw new Error(
+        `Failed to delete CSV download file: ${(err as Error).message}`
+      )
     }
   }
 }
@@ -669,7 +714,11 @@ export function getResponseStatus(logger: RequestLogger, url: any) {
  *
  * @returns {Promise<boolean>}
  */
-export async function expectStatusCode(url: string, statusCode: number, negated = true) {
+export async function expectStatusCode(
+  url: string,
+  statusCode: number,
+  negated = true
+) {
   const logger = createLogger(url)
   await t.addRequestHooks(logger)
   await t.navigateTo(url)

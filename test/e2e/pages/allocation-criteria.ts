@@ -21,6 +21,7 @@ class AllocationCriteriaPage extends Page {
     otherEstate: Selector
     sentenceComment: Selector
   }
+
   errorList: any[]
 
   constructor() {
@@ -50,7 +51,9 @@ class AllocationCriteriaPage extends Page {
       '#complete_in_full',
       '#has_other_criteria',
     ].map(error =>
-      (this.nodes.errorSummary as Selector).find('a').withAttribute('href', error)
+      (this.nodes.errorSummary as Selector)
+        .find('a')
+        .withAttribute('href', error)
     )
   }
 

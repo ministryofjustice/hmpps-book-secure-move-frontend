@@ -50,7 +50,9 @@ class AllocationViewPage extends Page {
     if (completeInFull === 'Yes') {
       await t.expect((this.nodes.completeInFullWarning as Selector).exists).ok()
     } else {
-      await t.expect((this.nodes.completeInFullWarning as Selector).exists).notOk()
+      await t
+        .expect((this.nodes.completeInFullWarning as Selector).exists)
+        .notOk()
     }
 
     return this.checkSummaryList(this.nodes.criteriaDetails as Selector, {

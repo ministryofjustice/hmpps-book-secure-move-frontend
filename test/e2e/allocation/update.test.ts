@@ -11,7 +11,9 @@ fixture('Update an allocation').beforeEach(async t => {
 })
 
 test('Change allocation date', async t => {
-  await t.click(allocationJourney.allocationViewPage.nodes.editDetailsLink as Selector)
+  await t.click(
+    allocationJourney.allocationViewPage.nodes.editDetailsLink as Selector
+  )
 
   const details = await allocationJourney.allocationDetailsEditPage.fill()
   await page.submitForm()

@@ -1,5 +1,5 @@
-import { addDays, format } from 'date-fns'
 import { faker } from '@faker-js/faker'
+import { addDays, format } from 'date-fns'
 import { omit, pick } from 'lodash'
 import pluralize from 'pluralize'
 import { Selector, t } from 'testcafe'
@@ -12,7 +12,7 @@ import { Page } from './page'
 
 class CreateMovePage extends Page {
   url: string
-  
+
   fields: {
     pncNumberSearch: Selector
     prisonNumberSearch: Selector
@@ -74,8 +74,24 @@ class CreateMovePage extends Page {
     extradition_flight_year: Selector
     extradition_flight_time: Selector
   }
-  steps: { personLookup: { nodes: { noIdentifierLink: Selector; moveSomeoneNew: Selector } }; personLookupResults: { nodes: { searchSummary: Selector; moveSomeoneNew: Selector; searchAgainLink: Selector } }; documents: { nodes: { uploadList: Selector } }; confirmation: { nodes: { referenceNumber: Selector; confirmationMessage: Selector } } }
-  
+
+  steps: {
+    personLookup: {
+      nodes: { noIdentifierLink: Selector; moveSomeoneNew: Selector }
+    }
+    personLookupResults: {
+      nodes: {
+        searchSummary: Selector
+        moveSomeoneNew: Selector
+        searchAgainLink: Selector
+      }
+    }
+    documents: { nodes: { uploadList: Selector } }
+    confirmation: {
+      nodes: { referenceNumber: Selector; confirmationMessage: Selector }
+    }
+  }
+
   constructor() {
     super()
     this.url = '/move/new'
@@ -253,7 +269,10 @@ class CreateMovePage extends Page {
    * @param {String[]} [options.include] - fields to include
    * @returns {Promise<FormDetails>} - filled in personal details
    */
-  async fillInPersonalDetails(personalDetails?: any, { include, exclude }: { include?: string[], exclude?: string[] } = {}) {
+  async fillInPersonalDetails(
+    personalDetails?: any,
+    { include, exclude }: { include?: string[]; exclude?: string[] } = {}
+  ) {
     await t.expect(this.getCurrentUrl()).contains('/personal-details')
 
     const person = await generatePerson(personalDetails)
@@ -820,7 +839,10 @@ class CreateMovePage extends Page {
    * @param {Object} details - details to check on this step
    * @returns {Promise}
    */
-  checkConfirmationStep({ fullname = '', location = '' }: { fullname?: string, location?: string } = {}) {
+  checkConfirmationStep({
+    fullname = '',
+    location = '',
+  }: { fullname?: string; location?: string } = {}) {
     return t
       .expect(this.getCurrentUrl())
       .match(/\/move\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/confirmation$/)

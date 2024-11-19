@@ -1,10 +1,11 @@
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-process-env */
 import fs from 'fs'
+
 import concurrently, { Command } from 'concurrently'
+import { ProcessCloseCondition } from 'concurrently/dist/src/flow-control/kill-others'
 import glob from 'glob'
 import yargs from 'yargs'
-import { ProcessCloseCondition } from 'concurrently/dist/src/flow-control/kill-others'
 
 /**
  * Allow environment variables set at the project level tp be overridden for current PR
@@ -32,7 +33,7 @@ if (prNumber) {
  * `false` and `true` will be coerced to boolean values
  */
 Object.keys(process.env).forEach(key => {
-  process.env[key] = (process.env[key])?.trim()
+  process.env[key] = process.env[key]?.trim()
 })
 
 const getEnvVar = (key: string) => {
@@ -79,12 +80,17 @@ e2e test runner
   .alias('version', 'V')
   .example('npm run test-e2e', 'Run all the tests')
   .example(
-    'npm run test-e2e -- --test test/e2e/move/new/police/to-court.test.js', 'Run a single test'
+    'npm run test-e2e -- --test test/e2e/move/new/police/to-court.test.js',
+    'Run a single test'
   )
   .example(
-    'npm run test-e2e -- --skip test/e2e/move/new/police/to-court.test.js', 'Run all tests except one'
+    'npm run test-e2e -- --skip test/e2e/move/new/police/to-court.test.js',
+    'Run all tests except one'
   )
-  .example('npm run test-e2e -- --max_processes 3', 'Run with a specific number of runners')
+  .example(
+    'npm run test-e2e -- --max_processes 3',
+    'Run with a specific number of runners'
+  )
   .example('npm run test-e2e -- --debug', 'Debug on fail')
   .example('npm run test-e2e -- --video', 'Capture video when tests fail')
   .example('npm run test-e2e -- -n', 'Dry run')
@@ -183,7 +189,9 @@ if (debugOnFail) {
 
 const stopOnFirstFail =
   args['fail-fast'] || E2E_FAIL_FAST ? '--stop-on-first-fail' : ''
-const killOthers: ProcessCloseCondition[] | undefined = stopOnFirstFail ? ['failure'] : undefined
+const killOthers: ProcessCloseCondition[] | undefined = stopOnFirstFail
+  ? ['failure']
+  : undefined
 const agent = args.headless
   ? `'${args.agent} --headless=new'`
   : `'${args.agent}'`
@@ -199,7 +207,7 @@ const video = args.video
 const allTests = glob.sync('test/e2e/**/*.test.js')
 let tests: string[] = args.test || allTests
 
-const envSkip = (E2E_SKIP as string || '').split(',')
+const envSkip = ((E2E_SKIP as string) || '').split(',')
 tests = tests.filter(test => !envSkip.includes(test))
 
 if (skip) {
