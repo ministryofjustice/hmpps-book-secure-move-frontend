@@ -1,11 +1,8 @@
 import { addDays } from 'date-fns'
-import { fixture, Selector } from 'testcafe'
+import { fixture } from 'testcafe'
 
-// @ts-expect-error // TODO: convert to TS
 import { createMove } from '../_move'
-// @ts-expect-error // TODO: convert to TS
 import { pmuUser } from '../_roles'
-// @ts-expect-error // TODO: convert to TS
 import { home } from '../_routes'
 import {
   lodgingCancelPage,

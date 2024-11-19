@@ -3,7 +3,7 @@ module.exports = {
   recursive: true,
   require: 'test/unit/common.js',
   file: [
-    'test/unit/component-helpers.js',
-    'test/unit/global-helpers.js',
+    'test/unit/component-helpers.ts',
+    'test/unit/global-helpers.ts',
   ],
 }
