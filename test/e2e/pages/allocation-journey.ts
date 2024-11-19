@@ -20,13 +20,13 @@ class AllocationJourney extends Page {
   allocationCriteriaPage: AllocationCriteriaPage
   allocationDetailsEditPage: AllocationDetailsEditPage
   allocationViewPage: AllocationViewPage
-  allocationDetailsPage: any
+  allocationDetailsPage: AllocationDetailsPage
   constructor() {
     super()
     this.allocationCancelPage = allocationCancelPage
     this.allocationCriteriaPage = allocationCriteriaPage
     this.allocationDetailsEditPage = allocationDetailsEditPage
-    this.allocationDetailsEditPage = allocationDetailsPage
+    this.allocationDetailsPage = allocationDetailsPage
     this.allocationViewPage = allocationViewPage
   }
 
