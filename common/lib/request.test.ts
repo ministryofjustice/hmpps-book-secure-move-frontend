@@ -1,4 +1,6 @@
-const { getQueryString, getUrl } = require('./request')
+import { expect } from 'chai'
+
+import { getQueryString, getUrl } from './request'
 
 describe('Request library', function () {
   describe('#getQueryString()', function () {

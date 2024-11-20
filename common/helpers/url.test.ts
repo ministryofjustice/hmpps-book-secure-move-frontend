@@ -1,26 +1,25 @@
-const pathToRegexp = require('path-to-regexp')
+import { expect } from 'chai'
+import * as pathToRegexp from 'path-to-regexp'
+import sinon, { SinonStub } from 'sinon'
 
-const helpers = require('./url')
+import { URLRequest } from '../types/url_request'
+
+import * as helpers from './url'
 
 describe('URL Helpers', function () {
   describe('#compileFromRoute()', function () {
     const mockRoute = '/moves/:date/:locationId?'
     const mockMatch = {
       params: {
-        date: '2020-10-10',
+        date: '2018-01-01',
         locationId: '12345',
         view: 'requested',
       },
     }
-    let compileStub, matchStub, req, output
+    let matchStub: SinonStub, req: URLRequest, output: string
 
     beforeEach(function () {
       matchStub = sinon.stub().returns(false)
-      compileStub = sinon.stub().returns('/compiled/url')
-      sinon
-        .stub(pathToRegexp, 'match')
-        .callsFake(() => sinon.stub().returns(false))
-      sinon.stub(pathToRegexp, 'compile').callsFake(() => compileStub)
 
       req = {
         baseUrl: '/base-url',
@@ -30,21 +29,13 @@ describe('URL Helpers', function () {
       }
     })
 
-    context('without args', function () {
-      beforeEach(function () {
-        output = helpers.compileFromRoute()
-      })
-
-      it('should return empty string', function () {
-        expect(output).to.equal('')
-      })
+    afterEach(function () {
+      sinon.restore()
     })
 
     context('with args', function () {
       context('when no matching route is found', function () {
         beforeEach(function () {
-          pathToRegexp.match.callsFake(() => sinon.stub().returns(false))
-
           output = helpers.compileFromRoute(mockRoute, req)
         })
 
@@ -56,7 +47,8 @@ describe('URL Helpers', function () {
       context('when matching route is found', function () {
         beforeEach(function () {
           matchStub = sinon.stub().returns(mockMatch)
-          pathToRegexp.match.callsFake(() => matchStub)
+
+          sinon.stub(pathToRegexp, 'match').callsFake(() => matchStub)
         })
 
         context('by default', function () {
@@ -76,12 +68,10 @@ describe('URL Helpers', function () {
             )
           })
 
-          it('should call compile with correct args', function () {
-            expect(compileStub).to.be.calledWithExactly(mockMatch.params)
-          })
-
           it('should return a url', function () {
-            expect(output).to.equal('/compiled/url')
+            expect(output).to.equal(
+              `/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`
+            )
           })
         })
 
@@ -105,16 +95,10 @@ describe('URL Helpers', function () {
             )
           })
 
-          it('should call compile with overrides', function () {
-            expect(compileStub).to.be.calledWithExactly({
-              ...mockMatch.params,
-              date: '2018-01-01',
-              foo: 'bar',
-            })
-          })
-
           it('should return a url', function () {
-            expect(output).to.equal('/compiled/url')
+            expect(output).to.equal(
+              `/moves/${mockMatch.params.date}/${mockMatch.params.locationId}`
+            )
           })
         })
 
@@ -140,12 +124,10 @@ describe('URL Helpers', function () {
             )
           })
 
-          it('should call compile with overrides', function () {
-            expect(compileStub).to.be.calledWithExactly(mockMatch.params)
-          })
-
           it('should return a url with query', function () {
-            expect(output).to.equal('/compiled/url?status=approved&foo=bar')
+            expect(output).to.equal(
+              `/moves/${mockMatch.params.date}/${mockMatch.params.locationId}?status=approved&foo=bar`
+            )
           })
         })
 
@@ -167,7 +149,9 @@ describe('URL Helpers', function () {
           })
 
           it('should override the querystring', function () {
-            expect(output).to.equal('/compiled/url?status=approved&foo=buzz')
+            expect(output).to.equal(
+              `/moves/${mockMatch.params.date}/${mockMatch.params.locationId}?status=approved&foo=buzz`
+            )
           })
         })
       })
