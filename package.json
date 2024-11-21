@@ -247,7 +247,7 @@
     "browser-sync": "^2.29",
     "browser-sync-webpack-plugin": "2.3.0",
     "chai": "4.3.8",
-    "chai-as-promised": "7.1.1",
+    "chai-as-promised": "8.0.0",
     "cheerio": "1.0.0-rc.12",
     "copy-webpack-plugin": "9.1.0",
     "coveralls": "3.1.1",
