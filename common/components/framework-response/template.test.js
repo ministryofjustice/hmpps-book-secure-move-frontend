@@ -209,7 +209,10 @@ describe('Framework Response component', function () {
   })
 
   context('unanswered', function () {
-    const example = examples['unanswered question']
+    const example = {
+      ...examples['unanswered question'],
+      headerText: 'What is your quest?',
+    }
 
     beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
@@ -234,7 +237,7 @@ describe('Framework Response component', function () {
 
     it('should contain correct text', function () {
       expect($component.children().first().text().trim()).to.equal(
-        'actions::answer_question'
+        'actions::answer_question - What is your quest?'
       )
     })
   })
@@ -338,7 +341,10 @@ describe('Framework Response component', function () {
   })
 
   context('with prefilled answer', function () {
-    const example = examples['prefilled question']
+    const example = {
+      ...examples['prefilled question'],
+      headerText: 'What is your favourite colour?',
+    }
 
     beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
@@ -363,13 +369,16 @@ describe('Framework Response component', function () {
 
     it('should contain correct text', function () {
       expect($component.children().first().text().trim()).to.equal(
-        'actions::review_answer'
+        'actions::review_answer - What is your favourite colour?'
       )
     })
   })
 
   context('without value', function () {
-    const example = examples['unanswered question']
+    const example = {
+      ...examples['unanswered question'],
+      headerText: 'What is the capital of Assyria?',
+    }
 
     beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
@@ -397,13 +406,16 @@ describe('Framework Response component', function () {
 
     it('should contain correct href for anchor', function () {
       expect($component.children().first().text().trim()).to.equal(
-        'actions::answer_question'
+        'actions::answer_question - What is the capital of Assyria?'
       )
     })
   })
 
   context('without valueType', function () {
-    const example = examples['unanswered question']
+    const example = {
+      ...examples['unanswered question'],
+      headerText: 'What is the air-speed velocity of an unladen swallow?',
+    }
 
     beforeEach(function () {
       sinon.stub(i18n, 't').returnsArg(0)
@@ -431,7 +443,7 @@ describe('Framework Response component', function () {
 
     it('should contain correct href for anchor', function () {
       expect($component.children().first().text().trim()).to.equal(
-        'actions::answer_question'
+        'actions::answer_question - What is the air-speed velocity of an unladen swallow?'
       )
     })
   })

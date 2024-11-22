@@ -48,6 +48,7 @@ describe('Presenters', function () {
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
               editable: undefined,
+              headerText: 'What is the answer?',
             }
           )
         })
@@ -86,6 +87,7 @@ describe('Presenters', function () {
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
               editable: undefined,
+              headerText: 'What is the answer?',
             }
           )
         })
@@ -139,6 +141,7 @@ describe('Presenters', function () {
                 html: 'NOMIS_HTML',
               },
               editable: undefined,
+              headerText: 'What is the answer?',
             }
           )
         })
@@ -177,6 +180,7 @@ describe('Presenters', function () {
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: 'completed',
               editable: undefined,
+              headerText: 'What is the answer?',
             }
           )
         })
@@ -216,6 +220,7 @@ describe('Presenters', function () {
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
               editable: undefined,
+              headerText: 'What is the answer?',
             }
           )
         })
@@ -282,6 +287,7 @@ describe('Presenters', function () {
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
                 assessmentStatus: undefined,
                 editable: undefined,
+                headerText: 'What is the answer?',
               }
             )
             expect(componentService.getComponent).to.be.calledWithExactly(
@@ -294,6 +300,7 @@ describe('Presenters', function () {
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.items[0].followup[0].id}`,
                 assessmentStatus: undefined,
                 editable: undefined,
+                headerText: 'What is the answer to life?',
               }
             )
           })
@@ -344,6 +351,7 @@ describe('Presenters', function () {
                 questionUrl: `${mockStepUrl}#${mockFieldWithFollowup.id}`,
                 assessmentStatus: undefined,
                 editable: undefined,
+                headerText: 'What is the answer?',
               }
             )
           })
@@ -424,6 +432,7 @@ describe('Presenters', function () {
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
                   assessmentStatus: undefined,
                   editable: undefined,
+                  headerText: 'What is the answer?',
                 }
               )
             })
@@ -455,6 +464,7 @@ describe('Presenters', function () {
                   questionUrl: `${mockStepUrl}#${mockField.id}`,
                   assessmentStatus: undefined,
                   editable: undefined,
+                  headerText: 'What is the answer?',
                 }
               )
             })
@@ -489,6 +499,7 @@ describe('Presenters', function () {
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
               editable: undefined,
+              headerText: 'What is the answer?',
             }
           )
         })
@@ -522,6 +533,7 @@ describe('Presenters', function () {
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
               editable: undefined,
+              headerText: 'What is the answer?',
             }
           )
         })
@@ -663,6 +675,7 @@ describe('Presenters', function () {
                 questionUrl: `${mockStepUrl}#${test.id}`,
                 assessmentStatus: undefined,
                 editable: undefined,
+                headerText: undefined,
               }
             )
           })
@@ -685,6 +698,7 @@ describe('Presenters', function () {
               questionUrl: `${mockStepUrl}#${mockField.id}`,
               assessmentStatus: undefined,
               editable: undefined,
+              headerText: 'What is the answer?',
             }
           )
         })
