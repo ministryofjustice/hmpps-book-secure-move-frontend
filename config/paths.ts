@@ -1,10 +1,31 @@
-const path = require('path')
+import path from 'path'
 
-// eslint-disable-next-line n/no-path-concat
+// Define root and build paths
 const root = path.normalize(`${__dirname}/..`)
 const build = path.resolve(root, '.build')
 
-module.exports = {
+// Define interfaces for config paths
+interface FrameworkPaths {
+  source: string
+  output: string
+}
+
+interface ConfigPaths {
+  root: string
+  build: string
+  app: string
+  assets: string
+  templates: string
+  components: string
+  manifest: string
+  govukFrontend: string
+  mojFrontend: string
+  fixtures: string
+  frameworks: FrameworkPaths
+}
+
+// Define config paths
+const configPaths: ConfigPaths = {
   root,
   build,
   app: path.resolve(root, 'app'),
@@ -29,3 +50,5 @@ module.exports = {
     output: path.resolve(build, 'frameworks'),
   },
 }
+
+export default configPaths
