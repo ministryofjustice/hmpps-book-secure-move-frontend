@@ -36,6 +36,7 @@
   "add_person_to_move": "Add person to this move",
   "remove_person": "Remove <span class=\"govuk-visually-hidden\">{{name}}</span>",
   "person_unassign_confirmation": "Remove from allocation",
+  "person_unassign_link": "Remove <span class=\"govuk-visually-hidden\">Person {{index}} </span>from allocation",
   "download": "Download",
   "print": "Print",
   "print_move": "Print move",
