@@ -30,9 +30,7 @@ class AllocationViewPage extends Page {
           .withText('Remove'),
       allocatedMoves: Selector('.app-card'),
       allocatedMovesReferences: Selector('.app-card__caption'),
-      allocatedMovesRemoveLinks: Selector('a').withText(
-        'Remove from allocation'
-      ),
+      allocatedMovesRemoveLinks: Selector('a').withText('Remove'),
       confirmationLink: count => Selector('a').withExactText(`${count} people`),
       editDetailsLink: Selector('a').withText('Change date of allocation'),
     }
