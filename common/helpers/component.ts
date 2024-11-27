@@ -3,7 +3,7 @@ import path from 'path'
 import { load } from 'js-yaml'
 
 // Import config paths with TypeScript support
-import configPaths from '../../config/paths'
+import { configPaths } from '../../config/paths'
 
 /**
  * Return a macro name for a component

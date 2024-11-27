@@ -51,4 +51,5 @@ const configPaths: ConfigPaths = {
   },
 }
 
-export default configPaths
+// export default configPaths
+export { configPaths }
