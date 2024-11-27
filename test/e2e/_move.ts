@@ -58,6 +58,19 @@ export async function createMove(options: any = {}) {
   return move
 }
 
+type Options = {
+  personOverrides?: {
+    prisonNumber?: string
+    criminalRecordsOffice?: string
+    nicheReference?: string
+    athenaReference?: string
+    policeNationalComputer?: string
+  }
+  moveOverrides?: object
+  moveOptions?: object
+  defaultMoveOptions?: object
+}
+
 /**
  * Create a move to court
  *
@@ -72,7 +85,7 @@ export async function createMove(options: any = {}) {
  *
  * @returns {undefined} Creates person and move, checking that move has all expected values
  */
-export function createCourtMove(options: any = {}) {
+export function createCourtMove(options: Options = {}) {
   options.personOverrides = {
     prisonNumber: undefined,
     criminalRecordsOffice: undefined,

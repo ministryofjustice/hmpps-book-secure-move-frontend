@@ -25,6 +25,9 @@ import { SENTRY } from '../../config'
 import { formatDate } from '../../config/nunjucks/filters'
 // @ts-expect-error TODO: convert to TS
 import assessmentFixtures from '../../mocks/assessment'
+import { Context } from '@sentry/types'
+import { BasmResponse } from '../../common/types/basm_response'
+import { Gender } from '../../common/types/gender'
 
 const req = {
   canAccess: function () {
@@ -55,8 +58,8 @@ const {
 
 /* eslint-disable no-process-env */
 
-function errorHandler(body: any) {
-  return (err: any) => {
+function errorHandler(body: Context) {
+  return (err: Record<string, any>) => {
     Sentry.withScope(scope => {
       if (err.errors && err.errors.length > 0) {
         err.errors.forEach(({ title, ...rest }: any, idx: number) => {
@@ -125,17 +128,17 @@ export async function generatePerson(overrides = {}) {
 
   let genders = await getGenders()
   // TODO: implement proper test to render male/female filter unnecessary
-  genders = genders.filter((gender: any) =>
+  genders = genders.filter((gender: Gender) =>
     gender.title.match(/^(Male|Female)$/i)
   )
   let ethnicities = await getEthnicities()
   ethnicities = ethnicities.filter(filterDisabled)
 
   const gender = faker.helpers.arrayElement(
-    genders.map(({ title }: any) => title)
+    genders.map(({ title }: Gender) => title)
   )
   const ethnicity = faker.helpers.arrayElement(
-    ethnicities.map(({ title }: any) => title)
+    ethnicities.map(({ title }: { title: string }) => title)
   )
 
   return {
@@ -162,7 +165,7 @@ export async function createPersonFixture(overrides = {}) {
   const genders = await getGenders()
   const ethnicities = await getEthnicities()
 
-  const gender = genders.filter((gen: any) => gen.title === fixture.gender)[0]
+  const gender = genders.filter((gen: Gender) => gen.title === fixture.gender)[0]
     .id
   const ethnicity = ethnicities.filter(
     (eth: any) => eth.title === fixture.ethnicity
@@ -182,7 +185,7 @@ export async function createPersonFixture(overrides = {}) {
 
   return personService
     .create(data)
-    .then((response: any) => {
+    .then((response: Record<string, any>) => {
       const getIdentifierValue = (type: string) => response[type]
 
       return {
@@ -213,7 +216,7 @@ export async function createPersonFixture(overrides = {}) {
  *
  * @returns {object} - profile data
  */
-export function generateProfile(personId: any, overrides = {}) {
+export function generateProfile(personId: string | object, overrides = {}) {
   return {
     assessment_answers: [],
     person: {
@@ -659,7 +662,7 @@ export function deleteCsvDownloads() {
  *
  * @returns {object} - logger
  */
-export function createLogger(baseUrl: any) {
+export function createLogger(baseUrl: string) {
   return RequestLogger(request => {
     if (request.url.match(/\.(js|css|woff|woff2|gif|svg|jpg|png)$/)) {
       return false
@@ -684,7 +687,7 @@ export function createLogger(baseUrl: any) {
  *
  * @returns {object} - logger response object
  */
-export function getLoggerResponse(logger: RequestLogger, url: any) {
+export function getLoggerResponse(logger: RequestLogger, url: string) {
   const response =
     logger.requests
       .filter(req => req.request.url === url)
@@ -699,7 +702,7 @@ export function getLoggerResponse(logger: RequestLogger, url: any) {
  *
  * @returns {number} - status code
  */
-export function getResponseStatus(logger: RequestLogger, url: any) {
+export function getResponseStatus(logger: RequestLogger, url: string) {
   return getLoggerResponse(logger, url).statusCode
 }
 
