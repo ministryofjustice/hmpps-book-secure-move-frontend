@@ -4,6 +4,7 @@ import { join } from 'path'
 
 import { faker } from '@faker-js/faker'
 import * as Sentry from '@sentry/node'
+import { Context } from '@sentry/types'
 import { format } from 'date-fns'
 import glob from 'glob'
 import { isArray, isNil } from 'lodash'
@@ -21,13 +22,11 @@ import PersonEscortRecordService from '../../common/services/person-escort-recor
 import ProfileService from '../../common/services/profile'
 // @ts-expect-error TODO: convert to TS
 import ReferenceDataService from '../../common/services/reference-data'
+import { Gender } from '../../common/types/gender'
 import { SENTRY } from '../../config'
 import { formatDate } from '../../config/nunjucks/filters'
 // @ts-expect-error TODO: convert to TS
 import assessmentFixtures from '../../mocks/assessment'
-import { Context } from '@sentry/types'
-import { BasmResponse } from '../../common/types/basm_response'
-import { Gender } from '../../common/types/gender'
 
 const req = {
   canAccess: function () {
@@ -165,8 +164,9 @@ export async function createPersonFixture(overrides = {}) {
   const genders = await getGenders()
   const ethnicities = await getEthnicities()
 
-  const gender = genders.filter((gen: Gender) => gen.title === fixture.gender)[0]
-    .id
+  const gender = genders.filter(
+    (gen: Gender) => gen.title === fixture.gender
+  )[0].id
   const ethnicity = ethnicities.filter(
     (eth: any) => eth.title === fixture.ethnicity
   )[0].id
