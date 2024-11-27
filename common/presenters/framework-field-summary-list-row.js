@@ -57,6 +57,7 @@ function frameworkFieldToSummaryListRow(stepUrl, editPermission = false) {
       questionUrl: `${stepUrl}#${id}`,
       assessmentStatus: response.assessment?.status,
       editable: response.assessment?.editable && editPermission,
+      headerText,
     }
 
     if ((response.nomis_mappings || []).length > 0) {
