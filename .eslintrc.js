@@ -68,6 +68,7 @@ module.exports = {
         'no-unused-expressions': 'off',
         'mocha/no-exclusive-tests': 'error',
         'mocha/no-mocha-arrows': 'error',
+        'no-undef': 'off',
       },
       plugins: ['mocha'],
     },

@@ -135,7 +135,7 @@
         {% if move.removeMoveHref %}
           <div>
             <a class="app-!-position-top-right govuk-!-margin-top-7 govuk-!-margin-right-3 app-font-weight-normal" href="{{move.removeMoveHref}}">
-              {{ t("actions::person_unassign_confirmation") }}
+              {{ t("actions::person_unassign_link", { index: loop.index }) | safe }}
             </a>
           </div>
         {% endif %}

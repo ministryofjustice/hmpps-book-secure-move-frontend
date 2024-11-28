@@ -9,7 +9,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['e2e/**/*.js'],
+      files: ['e2e/**/*.ts'],
       extends: ['plugin:testcafe/recommended'],
       rules: {
         'mocha/no-mocha-arrows': 'off',

@@ -40,11 +40,11 @@
   {% if params.editable %}
     {% if params.prefilled %}
       <a href="{{ params.questionUrl }}">
-        {{ t("actions::review_answer") }}
+        {{ t("actions::review_answer") }}<span class="govuk-visually-hidden"> - {{ params.headerText }}</span>
       </a>
     {% else %}
       <a href="{{ params.questionUrl }}">
-        {{ t("actions::answer_question") }}
+        {{ t("actions::answer_question") }}<span class="govuk-visually-hidden"> - {{ params.headerText }}</span>
       </a>
     {% endif %}
   {% else %}
