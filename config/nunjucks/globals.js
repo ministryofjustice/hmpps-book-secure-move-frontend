@@ -13,7 +13,8 @@ const {
 const { mountpath: componentsUrl } = require('../../app/components')
 const i18n = require('../i18n').default
 const logger = require('../logger')
-const { manifest: manifestPath } = require('../paths')
+const { configPaths } = require('../paths')
+const { manifest: manifestPath } = configPaths
 
 let webpackManifest = {}
 
