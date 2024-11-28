@@ -1,7 +1,6 @@
 import cheerio from 'cheerio'
 import nunjucks from 'nunjucks'
 
-// @ts-expect-error // TODO: convert to TS
 import { componentNameToMacroName, getExamples } from '../../common/helpers/component'
 import * as filters from '../../config/nunjucks/filters'
 // @ts-expect-error // TODO: convert to TS
