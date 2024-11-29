@@ -7,8 +7,8 @@
 {% block pageTitle %}
   {{ t("moves::confirmation.page_title", {
     context: "assign" if move.allocation else move.status,
-    name: move.profile.person._fullname
-  }) }}
+    name: "this person"
+  }) }} – {{ SERVICE_NAME }}
 {% endblock %}
 
 {% block content %}
