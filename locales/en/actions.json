@@ -1,5 +1,6 @@
 {
   "create_move": "Create a move",
+  "update_move": "Update move",
   "previous_day": "Previous day",
   "next_day": "Next day",
   "tomorrow": "Tomorrow",
@@ -24,6 +25,7 @@
   "create_allocation": "Create allocation",
   "create_an_allocation": "Create an allocation",
   "cancel_allocation": "Cancel this allocation",
+  "change_allocation": "Change this allocation",
   "update_allocation": "Update this allocation",
   "cancel_move": "Cancel this move",
   "confirm_cancellation": "Confirm cancellation",
@@ -66,5 +68,6 @@
   "add_item_with_items": "Add another {{name}}",
   "remove_item": "Remove <span class=\"govuk-visually-hidden\">{{name}} {{index}}</span>",
   "save_and_calculate": "Save and calculate",
-  "view_or_edit_move_details": "View or change move details"
+  "view_or_edit_move_details": "View or change move details",
+  "create_population": "Create population"
 }

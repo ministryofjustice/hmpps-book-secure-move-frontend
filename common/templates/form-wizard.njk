@@ -7,8 +7,12 @@
   {{ t("validation::page_title_prefix") }}:
   {%- endif %}
   {% block innerPageTitle %}
-    {{ t(options.pageTitle) }} - {{ t(options.journeyPageTitle) }}
+    {{ t(options.pageTitle) }}
+    {%- if options.journeyPageTitle %}
+      - {{ t(options.journeyPageTitle) }}
+    {% endif %}
   {% endblock %}
+  – {{ SERVICE_NAME }}
 {% endblock %}
 
 {% block beforeContent %}
