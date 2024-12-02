@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block innerPageTitle %}
-  {{ t("moves::review.page_title", { name: move.profile.person._fullname }) }}
+  {{ t("moves::review.page_title") }} this person
 {% endblock %}
 
 {% block pageHeading %}
   <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
-    {{ t("moves::review.page_title", { name: move.profile.person._fullname }) }}
+    {{ t("moves::review.page_title") }} '{{ move.profile.person._fullname }}'
   </h1>
   <span class="govuk-caption-xl govuk-!-margin-bottom-8">
     {{ t("moves::move_reference", {

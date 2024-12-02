@@ -202,11 +202,11 @@
         "heading": "Cancel this move request"
       }
     },
-    "page_title": "Cancel move for ‘{{-name}}’",
+    "page_title": "Cancel move for this person",
     "warning": "You must also contact the supplier to cancel the move request for {{-name}}"
   },
   "review": {
-    "page_title": "Review request for ‘{{-name}}’",
+    "page_title": "Review request for",
     "steps": {
       "decision": {
         "heading": "Review this request"

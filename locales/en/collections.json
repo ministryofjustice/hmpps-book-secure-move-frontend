@@ -8,6 +8,7 @@
   "page_title_with_date": "Results for {{date}}",
   "page_title_with_date_allocations": "Allocations for {{date}}",
   "page_title_with_date_outgoing_moves": "Outgoing moves for {{date}}",
+  "page_title_with_date_incoming_moves": "Incoming moves for {{date}}",
   "page_title_with_date_single_requests": "Single requests sent {{date}}",
   "page_title_with_date_population": "Population for {{date}}",
   "subheading": "Moves",
