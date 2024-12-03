@@ -11,10 +11,10 @@ const {
   SUPPORT_URL,
 } = require('../')
 const { config } = require('../../app/components')
+const { mountpath: componentsUrl } = config
 const i18n = require('../i18n').default
 const logger = require('../logger')
 const { configPaths } = require('../paths')
-const { manifest: manifestPath } = configPaths
 
 let webpackManifest = {}
 
@@ -32,13 +32,13 @@ const footerItems = [
     text: 'Accessibility statement',
   },
   {
-    href: ENABLE_COMPONENTS_LIBRARY ? config.mountpath : undefined,
+    href: ENABLE_COMPONENTS_LIBRARY ? componentsUrl : undefined,
     text: i18n.t('components::title'),
   },
 ]
 
 try {
-  webpackManifest = require(manifestPath)
+  webpackManifest = require(configPaths.manifest)
 } catch (error) {
   logger.error(
     new Error('Manifest file is not found. Ensure assets are built.')
