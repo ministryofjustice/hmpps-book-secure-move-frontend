@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import { addMonths, subMonths } from 'date-fns'
+
 import { filterDisabled, filterExpired } from './reference-data'
 
 const nextMonth = addMonths(new Date(), 1).toISOString()
@@ -173,16 +174,11 @@ describe('Reference data helpers', function () {
 
     context('with expired property', function () {
       context('with falsy values', function () {
-        const falsyValues = [
-          undefined, 
-          null, 
-          '', 
-          NaN, 
-          0] as (string | null | undefined)[]
+        const falsyValues = [undefined, null, '', NaN, 0] as (string | null | undefined)[]
 
         falsyValues.forEach(function (value) {
           it('should return true', function () {
-            expect(filterExpired({ expires_at: value, })).to.be.true
+            expect(filterExpired({ expires_at: value })).to.be.true
           })
         })
       })
