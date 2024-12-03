@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire').noCallThru()
 
-const { mountpath: componentsUrl } = require('../../app/components')
+const { config } = require('../../app/components')
 const i18n = require('../i18n').default
 const logger = require('../logger')
 
@@ -40,7 +40,7 @@ describe('Nunjucks globals', function () {
             text: 'Accessibility statement',
           },
           {
-            href: componentsUrl,
+            href: config.mountpath,
             text: 'components::title',
           },
         ])
