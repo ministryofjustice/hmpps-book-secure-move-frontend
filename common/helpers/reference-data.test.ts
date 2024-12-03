@@ -175,8 +175,8 @@ describe('Reference data helpers', function () {
     context('with expired property', function () {
       context('with falsy values', function () {
         const falsyValues = [undefined, null, '', NaN, 0] as (
-          string 
-          | null 
+          string
+          | null
           | undefined
         )[]
 
