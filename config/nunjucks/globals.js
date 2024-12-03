@@ -10,7 +10,7 @@ const {
   FEATURE_FLAGS,
   SUPPORT_URL,
 } = require('../')
-const { mountpath: componentsUrl } = require('../../app/components')
+const { config } = require('../../app/components')
 const i18n = require('../i18n').default
 const logger = require('../logger')
 const { configPaths } = require('../paths')
@@ -32,7 +32,7 @@ const footerItems = [
     text: 'Accessibility statement',
   },
   {
-    href: ENABLE_COMPONENTS_LIBRARY ? componentsUrl : undefined,
+    href: ENABLE_COMPONENTS_LIBRARY ? config.mountpath : undefined,
     text: i18n.t('components::title'),
   },
 ]
