@@ -1,7 +1,8 @@
+import { expect } from 'chai'
 
 import { addMonths, subMonths } from 'date-fns'
+
 import { filterDisabled, filterExpired } from './reference-data'
-import { expect } from 'chai'
 
 const nextMonth = addMonths(new Date(), 1).toISOString()
 const lastMonth = subMonths(new Date(), 1).toISOString()
@@ -178,11 +179,7 @@ describe('Reference data helpers', function () {
 
         falsyValues.forEach(function (value) {
           it('should return true', function () {
-            expect(
-              filterExpired({
-                expires_at: value,
-              })
-            ).to.be.true
+            expect(filterExpired({expires_at: value,})).to.be.true
           })
         })
       })
