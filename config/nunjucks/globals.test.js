@@ -221,7 +221,13 @@ describe('Nunjucks globals', function () {
         sinon.stub(logger, 'error')
         globals = proxyquire('./globals', {
           '../paths': {
-            manifest: 'path/to/missing/manifest.json',
+            configPaths: {
+              manifest: 'path/to/missing/manifest.json',
+            },
+          },
+          '../': {
+            ASSETS_HOST: 'host.com',
+            ANALYTICS: {},
           },
         })
       })
