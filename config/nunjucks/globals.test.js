@@ -185,7 +185,9 @@ describe('Nunjucks globals', function () {
             ANALYTICS: {},
           },
           '../paths': {
-            manifest: 'path/to/manifest.json',
+            configPaths: {
+              manifest: 'path/to/manifest.json',
+            },
           },
           'path/to/manifest.json': {
             'foo.js': 'foo.123456.min.js',
