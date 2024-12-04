@@ -8,10 +8,9 @@ import { Context } from '@sentry/types'
 import { format } from 'date-fns'
 import glob from 'glob'
 import { isArray, isNil } from 'lodash'
-
 import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
-import { filterDisabled } from '../../common/helpers/reference-data'
 
+import { filterDisabled } from '../../common/helpers/reference-data'
 // @ts-expect-error TODO: convert to TS
 import MoveService from '../../common/services/move'
 // @ts-expect-error TODO: convert to TS
@@ -96,6 +95,7 @@ function errorHandler(body: Context) {
 export const scrollToTop = ClientFunction(() => {
   window.scrollTo(0, 0)
 })
+
 const getGenders = async () => {
   let genders = await referenceDataService.getGenders()
   genders = genders.filter(filterDisabled)
