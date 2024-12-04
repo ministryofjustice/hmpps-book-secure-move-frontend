@@ -48,7 +48,7 @@ const config = require('./config')
 const i18n = require('./config/i18n').default
 const nunjucks = require('./config/nunjucks')
 const { getAssetPath } = require('./config/nunjucks/globals')
-const configPaths = require('./config/paths')
+const { configPaths } = require('./config/paths')
 
 module.exports = async () => {
   let redisStore
