@@ -8,6 +8,7 @@ import { Context } from '@sentry/types'
 import { format } from 'date-fns'
 import glob from 'glob'
 import { isArray, isNil } from 'lodash'
+
 import { ClientFunction, RequestLogger, Selector, t } from 'testcafe'
 import { filterDisabled } from '../../common/helpers/reference-data'
 
