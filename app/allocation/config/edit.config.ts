@@ -6,7 +6,7 @@ const config = (id: string) => {
     templatePath: path.join(__dirname, '..', 'views'),
     template: 'allocation-details',
     journeyName: `cancel-allocation-${id}`,
-    journeyPageTitle: 'actions::cancel_allocation',
+    journeyPageTitle: 'actions::change_allocation',
   }
 }
 

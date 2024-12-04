@@ -4,6 +4,10 @@
   gtag('set', {'page_title': 'Cancel allocation'});
 {% endblock %}
 
+{% block pageTitle %}
+  {{ t("actions::cancel_allocation") }} – {{ SERVICE_NAME }}
+{% endblock %}
+
 {% block beforeContent %}
   {{ govukBackLink({
     text: t("actions::back_to_allocation"),
