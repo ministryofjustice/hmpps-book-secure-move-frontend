@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
+
 import HealthInformationController from './health-information'
 
 describe('HealthInformationController', function () {
@@ -7,7 +8,7 @@ describe('HealthInformationController', function () {
 
   beforeEach(function () {
     // @ts-expect-error The constructor params are not properly inherited
-    controller = new HealthInformationController({ route: '/'})
+    controller = new HealthInformationController({ route: '/' })
   })
 
   afterEach(function () {
@@ -22,8 +23,8 @@ describe('HealthInformationController', function () {
             {
               value: 'wheelchair',
               text: 'Wheelchair',
-            }
-          ]
+            },
+          ],
         },
       }
       const expectedFields = {
@@ -46,8 +47,8 @@ describe('HealthInformationController', function () {
             {
               message: 'Select if this person’s health affects transport',
               type: 'required',
-            }
-          ]
+            },
+          ],
         },
       }
 

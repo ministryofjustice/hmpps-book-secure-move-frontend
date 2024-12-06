@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
+
 import CourtInformationController from './court-information'
 
 describe('CourtInformationController', function () {
@@ -7,7 +8,7 @@ describe('CourtInformationController', function () {
 
   beforeEach(function () {
     // @ts-expect-error The constructor params are not properly inherited
-    controller = new CourtInformationController({ route: '/'})
+    controller = new CourtInformationController({ route: '/' })
   })
 
   afterEach(function () {
@@ -22,8 +23,8 @@ describe('CourtInformationController', function () {
             {
               value: 'solicitor',
               text: 'Solicitor',
-            }
-          ]
+            },
+          ],
         },
       }
       const expectedFields = {
@@ -46,8 +47,8 @@ describe('CourtInformationController', function () {
             {
               message: 'Select if there is any information for the court',
               type: 'required',
-            }
-          ]
+            },
+          ],
         },
       }
 
