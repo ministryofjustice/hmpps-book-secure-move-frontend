@@ -1,3 +1,6 @@
+const addNegativeOption =
+  require('../../../../../common/helpers/field/add-negative-option').default
+
 const AssessmentController = require('./assessment')
 
 class UpdateCourtController extends AssessmentController {
@@ -15,6 +18,15 @@ class UpdateCourtController extends AssessmentController {
     }
 
     super.configure(req, res, next)
+  }
+
+  processFields(fields) {
+    return addNegativeOption(
+      fields,
+      'court',
+      'No, there is no information for the court',
+      'Select if there is any information for the court'
+    )
   }
 }
 

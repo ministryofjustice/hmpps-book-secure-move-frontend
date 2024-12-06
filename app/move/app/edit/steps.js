@@ -1,7 +1,6 @@
 const createSteps = require('../new/steps')
 
 const {
-  Assessment,
   Court,
   Hospital,
   MoveDate,
@@ -9,6 +8,8 @@ const {
   PersonalDetails,
   RecallInfo,
 } = require('./controllers')
+const HealthInformation = require('./controllers/health-information').default
+const RiskInformation = require('./controllers/risk-information').default
 
 const updateStepPropOverrides = {
   entryPoint: true,
@@ -102,7 +103,7 @@ const updateSteps = [
       '/risk-information': {
         ...createSteps['/risk-information'],
         ...updateStepPropOverrides,
-        controller: Assessment,
+        controller: RiskInformation,
       },
     },
   },
@@ -113,7 +114,7 @@ const updateSteps = [
       '/health-information': {
         ...createSteps['/health-information'],
         ...updateStepPropOverrides,
-        controller: Assessment,
+        controller: HealthInformation,
       },
     },
   },

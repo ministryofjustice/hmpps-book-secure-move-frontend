@@ -8,11 +8,13 @@ describe('Move controllers', function () {
   const res = {}
   let req
   let nextSpy
+
   beforeEach(function () {
     req = {}
     nextSpy = sinon.spy()
     sinon.stub(AssessmentController.prototype, 'configure')
   })
+
   describe('Update court info controller', function () {
     it('should extend AssessmentController', function () {
       expect(Object.getPrototypeOf(ownProto)).to.equal(
@@ -24,6 +26,7 @@ describe('Move controllers', function () {
       context('when the move is not to a court', function () {
         let args
         let error
+
         beforeEach(function () {
           args = []
           error = {}
@@ -72,6 +75,49 @@ describe('Move controllers', function () {
             AssessmentController.prototype.configure
           ).to.be.calledOnceWithExactly(req, res, nextSpy)
         })
+      })
+    })
+
+    describe('#processFields', function () {
+      it('should process the fields correctly', function () {
+        const fields = {
+          court: {
+            items: [
+              {
+                value: 'solicitor',
+                text: 'Solicitor',
+              },
+            ],
+          },
+        }
+        const expectedFields = {
+          court: {
+            items: [
+              {
+                value: 'solicitor',
+                text: 'Solicitor',
+              },
+              {
+                divider: 'or',
+              },
+              {
+                behaviour: 'exclusive',
+                text: 'No, there is no information for the court',
+                value: 'none',
+              },
+            ],
+            validate: [
+              {
+                message: 'Select if there is any information for the court',
+                type: 'required',
+              },
+            ],
+          },
+        }
+
+        const result = controller.processFields(fields)
+
+        expect(result).to.deep.equal(expectedFields)
       })
     })
   })
