@@ -12,14 +12,22 @@
   <a href="{{ backLink }}">{{ t("actions::search_again") }}</a>
 {% endset %}
 
-{% block beforeFields %}
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-    {{ t("moves::steps::person_search_results::secondary_heading", {
-      type: "person" | pluralize(resultCount),
-      count: resultCount,
-      searchTerm: searchTerm
-    }) }}
-  </h2>
+{% block pageTitle %}
+  {{ t("moves::steps::person_search_results::page_title", {
+    type: "person" | pluralize(resultCount),
+    count: resultCount,
+    filterBy: filterBy
+  }) }} - {{ t("actions::create_move") }} - {{ SERVICE_NAME }}
+{% endblock %}
+
+{% block pageHeading %}
+  <h1 class="govuk-heading-xl">
+    {{ t("moves::steps::person_search_results::heading", {
+    type: "person" | pluralize(resultCount),
+    count: resultCount,
+    searchTerm: searchTerm
+  }) }}
+  </h1>
 {% endblock %}
 
 {% block fields %}
