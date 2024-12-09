@@ -14,8 +14,8 @@
       "unknown_number_prison": "<p>Book a secure move uses the prison number to ensures moves are linked to the correct person.</p><p>Ensure the person you are looking for is in NOMIS.</p>"
     },
     "person_search_results": {
-      "heading": "Who is being moved?",
-      "secondary_heading": "{{count}} {{type}} found for “{{-searchTerm}}”",
+      "page_title": "{{count}} {{type}} found for this {{filterBy}}",
+      "heading": "{{count}} {{type}} found for “{{-searchTerm}}”",
       "cant_find_person": "I cannot find the person I’m looking for",
       "or": "or",
       "move_someone_else": "move someone else",
