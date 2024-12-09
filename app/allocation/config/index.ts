@@ -1,12 +1,6 @@
+import cancelConfig from './cancel.config'
+import createConfig from './create.config'
 import editConfig from './edit.config'
+import removeMoveConfig from './remove-move.config'
 
-const cancelConfig = require('./cancel.config')
-const createConfig = require('./create.config')
-const removeMoveConfig = require('./remove-move.config')
-
-export {
-  cancelConfig,
-  createConfig,
-  removeMoveConfig,
-  editConfig,
-}
+export { cancelConfig, createConfig, removeMoveConfig, editConfig }

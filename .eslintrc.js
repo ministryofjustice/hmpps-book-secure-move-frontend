@@ -50,6 +50,7 @@ module.exports = {
       { blankLine: 'always', prev: 'block-like', next: '*' },
     ],
     'require-await': 'error',
+    'no-dupe-class-members': 0,
   },
   overrides: [
     {

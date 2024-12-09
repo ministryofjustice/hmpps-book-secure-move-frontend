@@ -1,13 +1,13 @@
 import { isEmpty, isNil, isObject, isString, omitBy } from 'lodash'
 
-// @ts-ignore // TODO: convert to TS
-import ApiClient from '../lib/api-client'
+import { ApiClient } from '../lib/api-client'
+import { BasmRequest } from '../types/basm_request'
 
 export class BaseService {
-  req: any
-  apiClient: any // TODO: convert ApiClient to TS
+  req: Partial<BasmRequest>
+  apiClient: ApiClient
 
-  constructor(req: any = {}) {
+  constructor(req: BaseService['req'] = {}) {
     this.req = req
     this.apiClient = (req && req.apiClient) || new ApiClient()
   }

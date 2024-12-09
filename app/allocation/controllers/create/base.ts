@@ -1,13 +1,18 @@
+import { NextFunction } from 'express'
+
+import { BasmResponse } from '../../../../common/types/basm_response'
+import { AllocationRequest } from '../edit/allocation-details'
+
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 
-class CreateAllocationBaseController extends FormWizardController {
+export default class CreateAllocationBaseController extends FormWizardController {
   middlewareLocals() {
     super.middlewareLocals()
     this.use(this.setButtonText)
     this.use(this.setCancelUrl)
   }
 
-  setButtonText(req, res, next) {
+  setButtonText(req: AllocationRequest, res: BasmResponse, next: NextFunction) {
     const nextStep = this.getNextStep(req, res)
     const steps = Object.keys(req.form.options.steps)
     const lastStep = steps[steps.length - 1]
@@ -20,10 +25,8 @@ class CreateAllocationBaseController extends FormWizardController {
     next()
   }
 
-  setCancelUrl(req, res, next) {
+  setCancelUrl(_req: AllocationRequest, res: BasmResponse, next: NextFunction) {
     res.locals.cancelUrl = '/allocations'
     next()
   }
 }
-
-module.exports = CreateAllocationBaseController

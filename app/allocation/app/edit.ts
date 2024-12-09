@@ -1,6 +1,7 @@
 import { Router } from 'express'
-import steps from '../steps/edit'
+
 import config from '../config/edit.config'
+import steps from '../steps/edit'
 
 const { protectRoute } = require('../../../common/middleware/permissions')
 const wizard = require('../../../common/middleware/unique-form-wizard')

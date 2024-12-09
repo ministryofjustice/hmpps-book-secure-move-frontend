@@ -1,12 +1,20 @@
-const { set } = require('lodash')
+import { NextFunction } from 'express'
+import { set } from 'lodash'
+
+import { BasmResponse } from '../../../../common/types/basm_response'
+import { AllocationRequest } from '../edit/allocation-details'
+
+import CreateAllocationBaseController from './base'
 
 const fieldHelpers = require('../../../../common/helpers/field')
 const referenceDataHelpers = require('../../../../common/helpers/reference-data')
 
-const CreateAllocationBaseController = require('./base')
-
-class AllocationCriteriaController extends CreateAllocationBaseController {
-  async configure(req, res, next) {
+export default class AllocationCriteriaController extends CreateAllocationBaseController {
+  async configure(
+    req: AllocationRequest,
+    _res: BasmResponse,
+    next: NextFunction
+  ) {
     try {
       const allocationComplexCases =
         await req.services.referenceData.getAllocationComplexCases()
@@ -25,7 +33,7 @@ class AllocationCriteriaController extends CreateAllocationBaseController {
     }
   }
 
-  saveValues(req, res, next) {
+  saveValues(req: AllocationRequest, res: BasmResponse, next: NextFunction) {
     const {
       complex_cases: complexCases,
       prisoner_adult_male: prisonerMaleCategory,
@@ -33,7 +41,8 @@ class AllocationCriteriaController extends CreateAllocationBaseController {
       prisoner_young_offender_female: prisonerYoungOffenderFemaleCategory,
       prisoner_young_offender_male: prisonerYoungOffenderMaleCategory,
     } = req.form.values
-    const originalFields = req.form.options.fields.complex_cases.items
+    const originalFields = req.form.options.fields.complex_cases.items || []
+
     req.form.values.complex_cases = originalFields.map(originalField => {
       const { key, text, value } = originalField
       return {
@@ -43,14 +52,14 @@ class AllocationCriteriaController extends CreateAllocationBaseController {
         answer: complexCases.includes(value),
       }
     })
+
     req.form.values.prisoner_category =
       prisonerMaleCategory ||
       prisonerFemaleCategory ||
       prisonerYoungOffenderFemaleCategory ||
       prisonerYoungOffenderMaleCategory ||
       undefined
+
     super.saveValues(req, res, next)
   }
 }
-
-module.exports = AllocationCriteriaController

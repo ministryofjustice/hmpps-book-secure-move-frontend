@@ -1,35 +1,39 @@
-const dateFunctions = require('date-fns')
-const { mapValues, set } = require('lodash')
+import dateFunctions from 'date-fns'
+import { mapValues, set } from 'lodash'
 
-const { BaseService } = require('./base')
+import { Allocation } from '../types/allocation'
 
-class AllocationService extends BaseService {
-  cancel(id, { reason, comment } = {}) {
+import { BaseService } from './base'
+import { ApiClient } from '../lib/api-client'
+
+export default class AllocationService extends BaseService {
+  async cancel(
+    id: string,
+    { reason, comment }: { reason?: string; comment?: string } = {}
+  ) {
     if (!id) {
       return Promise.reject(new Error('No allocation id supplied'))
     }
 
     const timestamp = dateFunctions.formatISO(new Date())
 
-    return this.apiClient
-      .one('allocation', id)
-      .all('cancel')
-      .post({
+    return (
+      await this.apiClient.one('allocation', id).all('cancel').post({
         timestamp,
         cancellation_reason: reason,
         cancellation_reason_comment: comment,
       })
-      .then(response => response.data)
+    ).data
   }
 
-  format(data) {
+  format(data: Parameters<ApiClient['create']>[1]) {
     const booleansAndNulls = ['complete_in_full', 'sentence_length']
     const relationships = ['to_location', 'from_location']
 
     return mapValues(data, (value, key) => {
       if (booleansAndNulls.includes(key)) {
         try {
-          value = JSON.parse(value)
+          value = JSON.parse(value as string)
         } catch (e) {}
       }
 

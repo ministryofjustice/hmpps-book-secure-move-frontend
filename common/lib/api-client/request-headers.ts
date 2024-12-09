@@ -1,14 +1,15 @@
-const uuid = require('uuid')
+import uuid from 'uuid'
 
-const {
-  API: { VERSION },
-  APP_VERSION,
-} = require('../../../config')
+import { API, APP_VERSION } from '../../../config'
+import { BasmRequest } from '../../types/basm_request'
 
-module.exports = (req, format = 'application/vnd.api+json') => {
-  const headers = {
+export default function getRequestHeaders(
+  req: BasmRequest,
+  format = 'application/vnd.api+json'
+) {
+  const headers: { [header: string]: any } = {
     'User-Agent': `hmpps-book-secure-move-frontend/${APP_VERSION}`,
-    Accept: `${format}; version=${VERSION}`,
+    Accept: `${format}; version=${API.VERSION}`,
     'Accept-Encoding': 'gzip',
     'Idempotency-Key': uuid.v4(),
   }

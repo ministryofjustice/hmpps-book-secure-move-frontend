@@ -1,9 +1,8 @@
 import { ApiObjectWithTimestamps } from './api_object_with_timestamps'
 
-export interface Gender extends ApiObjectWithTimestamps {
-  description?: string
+export interface AssessmentQuestion extends ApiObjectWithTimestamps {
   disabled_at?: string
+  category: string
   key: string
-  nomis_code: string
   title: string
 }
