@@ -14,9 +14,8 @@ class AssessmentController extends CreateBaseController {
           assessmentCategory
         )
 
-      req.form.options.fields = fieldHelpers.populateAssessmentFields(
-        fields,
-        questions
+      req.form.options.fields = this.processFields(
+        fieldHelpers.populateAssessmentFields(fields, questions)
       )
 
       req.questions = questions
@@ -24,6 +23,10 @@ class AssessmentController extends CreateBaseController {
     } catch (error) {
       next(error)
     }
+  }
+
+  processFields(fields) {
+    return fields
   }
 
   middlewareLocals() {
