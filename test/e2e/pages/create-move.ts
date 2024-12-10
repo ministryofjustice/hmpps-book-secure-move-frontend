@@ -185,7 +185,7 @@ class CreateMovePage extends Page {
       },
       personLookupResults: {
         nodes: {
-          searchSummary: Selector('h2.govuk-heading-m'),
+          searchSummary: Selector('h1.govuk-heading-xl'),
           moveSomeoneNew: Selector('a').withText('move someone else'),
           searchAgainLink: Selector('a').withText('Search again'),
         },
