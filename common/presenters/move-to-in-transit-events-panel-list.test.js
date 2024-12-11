@@ -24,6 +24,9 @@ describe('Presenters', function () {
         {
           classification: 'default',
         },
+        {
+          classification: 'suicide_and_self_harm',
+        },
       ],
     }
 
@@ -38,7 +41,7 @@ describe('Presenters', function () {
       it('should return panels for incident and lockout events', function () {
         expect(panelList).to.deep.equal({
           context: 'framework',
-          count: 2,
+          count: 3,
           isCompleted: true,
           key: 'in-transit-events',
           name: 'In transit information',
@@ -48,7 +51,7 @@ describe('Presenters', function () {
             },
             {
               heading: 'Lockout events',
-              panels: ['panel'],
+              panels: ['panel', 'panel'],
             },
           ],
         })
@@ -64,7 +67,7 @@ describe('Presenters', function () {
       it('should return panels for incident and overnight lodge events', function () {
         expect(panelList).to.deep.equal({
           context: 'framework',
-          count: 2,
+          count: 3,
           isCompleted: true,
           key: 'in-transit-events',
           name: 'In transit information',
@@ -74,7 +77,7 @@ describe('Presenters', function () {
             },
             {
               heading: 'Overnight lodge events',
-              panels: ['panel'],
+              panels: ['panel', 'panel'],
             },
           ],
         })
