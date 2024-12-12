@@ -10,10 +10,11 @@ const {
   FEATURE_FLAGS,
   SUPPORT_URL,
 } = require('../')
-const { mountpath: componentsUrl } = require('../../app/components')
+const { config } = require('../../app/components')
+const { mountpath: componentsUrl } = config
 const i18n = require('../i18n').default
 const logger = require('../logger')
-const { manifest: manifestPath } = require('../paths')
+const configPaths = require('../paths')
 
 let webpackManifest = {}
 
@@ -37,7 +38,7 @@ const footerItems = [
 ]
 
 try {
-  webpackManifest = require(manifestPath)
+  webpackManifest = require(configPaths.manifest)
 } catch (error) {
   logger.error(
     new Error('Manifest file is not found. Ensure assets are built.')
