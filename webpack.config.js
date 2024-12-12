@@ -11,7 +11,7 @@ const { merge } = require('webpack-merge')
 
 const frameworksService = require('./common/services/frameworks')
 const { IS_DEV, IS_PRODUCTION } = require('./config')
-const { configPaths } = require('./config/paths')
+const configPaths = require('./config/paths')
 
 function transformManifestFile(transformMethod) {
   return (content, absolutePath) => {

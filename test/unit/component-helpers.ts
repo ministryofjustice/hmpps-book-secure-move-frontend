@@ -5,7 +5,7 @@ import { componentNameToMacroName, getExamples } from '../../common/helpers/comp
 import * as filters from '../../config/nunjucks/filters'
 // @ts-expect-error // TODO: convert to TS
 import templateGlobals from '../../config/nunjucks/globals'
-import { configPaths } from '../../config/paths'
+const configPaths = require('../../config/paths')
 
 // eslint-disable-next-line no-process-env
 process.env.TZ = 'Europe/London'

@@ -14,7 +14,7 @@ const { config } = require('../../app/components')
 const { mountpath: componentsUrl } = config
 const i18n = require('../i18n').default
 const logger = require('../logger')
-const { configPaths } = require('../paths')
+const configPaths = require('../paths')
 
 let webpackManifest = {}
 

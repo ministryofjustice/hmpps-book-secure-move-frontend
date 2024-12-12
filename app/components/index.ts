@@ -8,7 +8,7 @@ import { Router } from 'express'
 // Local dependencies
 import { mapComponentFolder } from '../../common/helpers/component'
 import { ENABLE_COMPONENTS_LIBRARY } from '../../config'
-import { configPaths } from '../../config/paths'
+const configPaths = require('../../config/paths')
 
 const router = Router()
 

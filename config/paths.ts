@@ -51,4 +51,4 @@ const configPaths: ConfigPaths = {
   },
 }
 
-export { configPaths }
+module.exports = configPaths
