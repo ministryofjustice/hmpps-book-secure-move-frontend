@@ -15,6 +15,9 @@ const {
   Save,
   Timetable,
 } = require('./controllers')
+const CourtInformation = require('./controllers/court-information').default
+const HealthInformation = require('./controllers/health-information').default
+const RiskInformation = require('./controllers/risk-information').default
 
 const personSearchStep = {
   controller: PersonSearch,
@@ -287,7 +290,7 @@ module.exports = {
     ],
   },
   '/court-information': {
-    controller: Assessment,
+    controller: CourtInformation,
     assessmentCategory: 'court',
     template: 'assessment',
     pageTitle: 'moves::steps.court_information.heading',
@@ -372,6 +375,7 @@ module.exports = {
   },
   '/risk-information': {
     ...riskStep,
+    controller: RiskInformation,
     fields: [
       'violent',
       'escape',
@@ -395,6 +399,7 @@ module.exports = {
   },
   '/health-information': {
     ...healthStep,
+    controller: HealthInformation,
     fields: [
       'special_diet_or_allergy',
       'health_issue',

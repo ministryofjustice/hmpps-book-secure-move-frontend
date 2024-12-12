@@ -26,7 +26,7 @@
     "hint": "Select the person you are moving"
   },
   "police_national_computer": {
-    "label": "<abbr title=\"Police National Computer\">PNC</abbr> number",
+    "label": "<abbr title=\"Police National Computer\">PNC</abbr> number (optional)",
     "hint": "For example, ‘08/012345P’",
     "details": {
       "summaryHtml": "I need to change the PNC number",
@@ -159,7 +159,7 @@
   "additional_information": {
     "label": "Additional information (optional)",
     "hint": "",
-    "label_hospital": "Details of contact in hospital",
+    "label_hospital": "Details of contact in hospital (optional)",
     "hint_hospital": "Provide name and contact information",
     "display": {
       "label": "Additional information",
