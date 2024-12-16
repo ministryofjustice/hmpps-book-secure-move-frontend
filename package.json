@@ -371,5 +371,8 @@
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "package.json": "finepack"
+  },
+  "overrides": {
+    "underscore": "^1.13.6"
   }
 }
