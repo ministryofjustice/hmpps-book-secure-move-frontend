@@ -13,6 +13,20 @@ module.exports = async (token, moveEvent, move) => {
     history_of_self_harm_details: historyOfSelfHarmDetails,
     actions_of_self_harm_undertaken: actionsOfSelfHarmUndertaken,
     observation_level: observationLevel,
+    /*
+      TO DO
+
+      Add:
+        Source [Source type]
+        Source summary [Source summary text]
+        Source observations  [Source summary text]
+        Comments
+        Reporting officer
+        Signed and dated
+        Reception officer
+        Reception officer (signed date)
+        timestamp
+    */
   } = details
 
   const rows = []
@@ -178,8 +192,6 @@ module.exports = async (token, moveEvent, move) => {
         html: `<p class="govuk-!-font-size-16">...</p>`,
       },
     ])
-
-    // TO DO - date
   }
 
   let html = `
