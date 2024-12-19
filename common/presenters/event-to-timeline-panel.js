@@ -202,7 +202,9 @@ module.exports = async (token, moveEvent, move) => {
   // Close the table tag
   html += `
       <tr class="govuk-table__row">
-        <td class="govuk-!-padding-top-4 govuk-!-font-size-14" style="color: govuk-colour("mid-grey")">Timestamp....</td>
+        <td class="govuk-!-padding-top-4">
+         <time datetime="{{ item.datetime.timestamp }}" class="app-timeline__date">Timestamp....</time>
+        </td>
       </tr>
       </tbody>
     </table>
