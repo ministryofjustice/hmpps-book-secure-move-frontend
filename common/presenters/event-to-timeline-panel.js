@@ -1,3 +1,4 @@
+const filters = require('../../config/nunjucks/filters')
 const eventHelpers = require('../helpers/events')
 
 const eventToTagComponent = require('./event-to-tag-component')
@@ -5,7 +6,7 @@ const eventToTagComponent = require('./event-to-tag-component')
 /* eslint-disable-next-line require-await */
 module.exports = async (token, moveEvent, move) => {
   const event = eventHelpers.setEventDetails(moveEvent, move)
-  const { id, event_type: eventType, details } = event
+  const { id, event_type: eventType, details, occurred_at: timestamp } = event
   const {
     nature_of_self_harm: natureOfSelfHarm,
     history_of_self_harm_recency: historyOfSelfHarmRecency,
@@ -15,23 +16,13 @@ module.exports = async (token, moveEvent, move) => {
     observation_level: observationLevel,
     comments,
     reporting_officer: reportingOfficer,
+    reporting_officer_signed_at: reportingOfficerSignedAt,
     reception_officer: receptionOfficer,
     reception_officer_signed_at: receptionOfficerSignedAt,
-    /*
-      TO DO
-
-      Add:
-        Source [Source type]
-        Source summary [Source summary text]
-        Source observations  [Source summary text]
-        Signed and dated
-        timestamp
-    */
   } = details
 
-  // console.log(details)
-
   const rows = []
+  const formattedDate = filters.formatDateWithTimeAndDay(timestamp)
 
   if (eventType === 'PerSuicideAndSelfHarm') {
     natureOfSelfHarm &&
@@ -72,41 +63,6 @@ module.exports = async (token, moveEvent, move) => {
           html: `<p class="govuk-!-font-size-16">${historyOfSelfHarmMethod} - ${historyOfSelfHarmDetails}</p>`,
         },
       ])
-
-    // TO DO - Source [Source type]
-    // source &&
-    rows.push([
-      {
-        heading: '<h4 class="govuk-heading-s govuk-!-font-size-16">Source</h4>',
-      },
-      {
-        html: `<p class="govuk-!-font-size-16">...</p>`,
-      },
-    ])
-
-    // TO DO - Source summary [Source summary text]
-    // sourceSummary &&
-    rows.push([
-      {
-        heading:
-          '<h4 class="govuk-heading-s govuk-!-font-size-16">Source summary</h4>',
-      },
-      {
-        html: `<p class="govuk-!-font-size-16">...</p>`,
-      },
-    ])
-
-    // TO DO - Source observations  [Source summary text]
-    // sourceSummary &&
-    rows.push([
-      {
-        heading:
-          '<h4 class="govuk-heading-s govuk-!-font-size-16">Source observations</h4>',
-      },
-      {
-        html: `<p class="govuk-!-font-size-16">...</p>`,
-      },
-    ])
 
     actionsOfSelfHarmUndertaken &&
       rows.push([
@@ -160,16 +116,16 @@ module.exports = async (token, moveEvent, move) => {
       ])
 
     // TO DO - Signed and dated
-    // signedAndDated &&
-    rows.push([
-      {
-        heading:
-          '<h4 class="govuk-heading-s govuk-!-font-size-16">Signed and dated</h4>',
-      },
-      {
-        html: `<p class="govuk-!-font-size-16">...</p>`,
-      },
-    ])
+    reportingOfficerSignedAt &&
+      rows.push([
+        {
+          heading:
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Signed and dated</h4>',
+        },
+        {
+          html: `<p class="govuk-!-font-size-16">${reportingOfficerSignedAt}</p>`,
+        },
+      ])
 
     // TO DO - Reception officer
     receptionOfficer &&
@@ -188,10 +144,10 @@ module.exports = async (token, moveEvent, move) => {
       rows.push([
         {
           heading:
-            '<h4 class="govuk-heading-s govuk-!-font-size-16">Reception officer</h4>',
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Signed and dated</h4>',
         },
         {
-          html: `<p class="govuk-!-font-size-16">Signed on ... at ${receptionOfficerSignedAt}</p>`,
+          html: `<p class="govuk-!-font-size-16">${receptionOfficerSignedAt}</p>`,
         },
       ])
   }
@@ -215,13 +171,11 @@ module.exports = async (token, moveEvent, move) => {
 
   // Close the table tag
   html += `
-      <tr class="govuk-table__row">
-        <td class="govuk-!-padding-top-4">
-         <time datetime="{{ item.datetime.timestamp }}" class="app-timeline__date">Timestamp....</time>
-        </td>
-      </tr>
       </tbody>
     </table>
+    <p>
+      <time datetime="{{ formattedDate }}" class="app-timeline__date govuk-!-width-full">${formattedDate}</time>
+    <p>
   `
 
   const tag = eventToTagComponent(event)
