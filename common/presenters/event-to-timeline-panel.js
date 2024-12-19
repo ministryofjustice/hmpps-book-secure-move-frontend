@@ -13,6 +13,10 @@ module.exports = async (token, moveEvent, move) => {
     history_of_self_harm_details: historyOfSelfHarmDetails,
     actions_of_self_harm_undertaken: actionsOfSelfHarmUndertaken,
     observation_level: observationLevel,
+    comments,
+    reporting_officer: reportingOfficer,
+    reception_officer: receptionOfficer,
+    reception_officer_signed_at: receptionOfficerSignedAt,
     /*
       TO DO
 
@@ -20,14 +24,12 @@ module.exports = async (token, moveEvent, move) => {
         Source [Source type]
         Source summary [Source summary text]
         Source observations  [Source summary text]
-        Comments
-        Reporting officer
         Signed and dated
-        Reception officer
-        Reception officer (signed date)
         timestamp
     */
   } = details
+
+  // console.log(details)
 
   const rows = []
 
@@ -134,28 +136,28 @@ module.exports = async (token, moveEvent, move) => {
       ])
 
     // TO DO - Comments
-    // comments &&
-    rows.push([
-      {
-        heading:
-          '<h4 class="govuk-heading-s govuk-!-font-size-16">Comments</h4>',
-      },
-      {
-        html: `<p class="govuk-!-font-size-16">...</p>`,
-      },
-    ])
+    comments &&
+      rows.push([
+        {
+          heading:
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Comments</h4>',
+        },
+        {
+          html: `<p class="govuk-!-font-size-16">${comments}</p>`,
+        },
+      ])
 
     // TO DO - Reporting officer
-    // reportingOfficer &&
-    rows.push([
-      {
-        heading:
-          '<h4 class="govuk-heading-s govuk-!-font-size-16">Reporting officer</h4>',
-      },
-      {
-        html: `<p class="govuk-!-font-size-16">...</p>`,
-      },
-    ])
+    reportingOfficer &&
+      rows.push([
+        {
+          heading:
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Reporting officer</h4>',
+        },
+        {
+          html: `<p class="govuk-!-font-size-16">${reportingOfficer}</p>`,
+        },
+      ])
 
     // TO DO - Signed and dated
     // signedAndDated &&
@@ -170,28 +172,28 @@ module.exports = async (token, moveEvent, move) => {
     ])
 
     // TO DO - Reception officer
-    // ReceptionOfficer &&
-    rows.push([
-      {
-        heading:
-          '<h4 class="govuk-heading-s govuk-!-font-size-16">Reception officer</h4>',
-      },
-      {
-        html: `<p class="govuk-!-font-size-16">...</p>`,
-      },
-    ])
+    receptionOfficer &&
+      rows.push([
+        {
+          heading:
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Reception officer</h4>',
+        },
+        {
+          html: `<p class="govuk-!-font-size-16">${receptionOfficer}</p>`,
+        },
+      ])
 
     // TO DO - Reception officer (signed date)
-    // ReceptionOfficer &&
-    rows.push([
-      {
-        heading:
-          '<h4 class="govuk-heading-s govuk-!-font-size-16">Reception officer</h4>',
-      },
-      {
-        html: `<p class="govuk-!-font-size-16">...</p>`,
-      },
-    ])
+    receptionOfficerSignedAt &&
+      rows.push([
+        {
+          heading:
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Reception officer</h4>',
+        },
+        {
+          html: `<p class="govuk-!-font-size-16">Signed on ... at ${receptionOfficerSignedAt}</p>`,
+        },
+      ])
   }
 
   let html = `
