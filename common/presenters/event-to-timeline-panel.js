@@ -9,8 +9,11 @@ module.exports = async (token, moveEvent, move) => {
   const {
     nature_of_self_harm: natureOfSelfHarm,
     history_of_self_harm_recency: historyOfSelfHarmRecency,
+    history_of_self_harm_method: historyOfSelfHarmMethod,
+    history_of_self_harm_details: historyOfSelfHarmDetails,
+    actions_of_self_harm_undertaken: actionsOfSelfHarmUndertaken,
+    observation_level: observationLevel,
   } = details
-  // const description = await eventHelpers.getDescription(token, event)
 
   const rows = []
 
@@ -41,6 +44,92 @@ module.exports = async (token, moveEvent, move) => {
           html: `<time class="govuk-!-font-size-16" datetime="${historyOfSelfHarmRecency}">${historyOfSelfHarmRecency}</time>`,
         },
       ])
+
+    historyOfSelfHarmMethod &&
+      historyOfSelfHarmDetails &&
+      rows.push([
+        {
+          heading:
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Method</h4>',
+        },
+        {
+          html: `<p class="govuk-!-font-size-16">${historyOfSelfHarmMethod} - ${historyOfSelfHarmDetails}</p>`,
+        },
+      ])
+
+    // TO DO - Source [Source type]
+    // source &&
+    rows.push([
+      {
+        heading: '<h4 class="govuk-heading-s govuk-!-font-size-16">Source</h4>',
+      },
+      {
+        html: `<p class="govuk-!-font-size-16">...</p>`,
+      },
+    ])
+
+    // TO DO - Source summary [Source summary text]
+    // sourceSummary &&
+    rows.push([
+      {
+        heading:
+          '<h4 class="govuk-heading-s govuk-!-font-size-16">Source summary</h4>',
+      },
+      {
+        html: `<p class="govuk-!-font-size-16">...</p>`,
+      },
+    ])
+
+    // TO DO - Source observations  [Source summary text]
+    // sourceSummary &&
+    rows.push([
+      {
+        heading:
+          '<h4 class="govuk-heading-s govuk-!-font-size-16">Source observations</h4>',
+      },
+      {
+        html: `<p class="govuk-!-font-size-16">...</p>`,
+      },
+    ])
+
+    actionsOfSelfHarmUndertaken &&
+      rows.push([
+        {
+          heading:
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Safety actions</h4>',
+        },
+        {
+          html: actionsOfSelfHarmUndertaken
+            .map(
+              obj =>
+                `<p class="govuk-!-font-size-16">${obj.option} - ${obj.details}</p>`
+            )
+            .join(''),
+        },
+      ])
+
+    observationLevel &&
+      rows.push([
+        {
+          heading:
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Observation level</h4>',
+        },
+        {
+          html: `<p class="govuk-!-font-size-16">${observationLevel.option} - ${observationLevel.details}</p>`,
+        },
+      ])
+
+    // TO DO - Comments
+
+    // TO DO - Reporting officer
+
+    // TO DO - Signed and dated
+
+    // TO DO - Reception officer
+
+    // TO DO - Reception officer (signed date)
+
+    // TO DO - date
   }
 
   let html = `
@@ -66,12 +155,8 @@ module.exports = async (token, moveEvent, move) => {
     </table>
   `
 
-  // console.log(html)
-
   const tag = eventToTagComponent(event)
   delete tag.href
-
-  // const formattedDate = filters.formatDateWithTimeAndDay(timestamp)
 
   return {
     tag,
