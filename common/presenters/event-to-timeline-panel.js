@@ -120,14 +120,64 @@ module.exports = async (token, moveEvent, move) => {
       ])
 
     // TO DO - Comments
+    // comments &&
+    rows.push([
+      {
+        heading:
+          '<h4 class="govuk-heading-s govuk-!-font-size-16">Comments</h4>',
+      },
+      {
+        html: `<p class="govuk-!-font-size-16">...</p>`,
+      },
+    ])
 
     // TO DO - Reporting officer
+    // reportingOfficer &&
+    rows.push([
+      {
+        heading:
+          '<h4 class="govuk-heading-s govuk-!-font-size-16">Reporting officer</h4>',
+      },
+      {
+        html: `<p class="govuk-!-font-size-16">...</p>`,
+      },
+    ])
 
     // TO DO - Signed and dated
+    // signedAndDated &&
+    rows.push([
+      {
+        heading:
+          '<h4 class="govuk-heading-s govuk-!-font-size-16">Signed and dated</h4>',
+      },
+      {
+        html: `<p class="govuk-!-font-size-16">...</p>`,
+      },
+    ])
 
     // TO DO - Reception officer
+    // ReceptionOfficer &&
+    rows.push([
+      {
+        heading:
+          '<h4 class="govuk-heading-s govuk-!-font-size-16">Reception officer</h4>',
+      },
+      {
+        html: `<p class="govuk-!-font-size-16">...</p>`,
+      },
+    ])
 
     // TO DO - Reception officer (signed date)
+    // ReceptionOfficer &&
+    rows.push([
+      {
+        heading:
+          '<h4 class="govuk-heading-s govuk-!-font-size-16">Reception officer</h4>',
+      },
+      {
+        html: `<p class="govuk-!-font-size-16">...</p>`,
+      },
+    ])
 
     // TO DO - date
   }
@@ -151,6 +201,9 @@ module.exports = async (token, moveEvent, move) => {
 
   // Close the table tag
   html += `
+      <tr class="govuk-table__row">
+        <td class="govuk-!-padding-top-4 govuk-!-font-size-14" style="color: govuk-colour("mid-grey")">Timestamp....</td>
+      </tr>
       </tbody>
     </table>
   `
