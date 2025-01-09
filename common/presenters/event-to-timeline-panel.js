@@ -4,7 +4,7 @@ const eventHelpers = require('../helpers/events')
 const eventToTagComponent = require('./event-to-tag-component')
 
 /* eslint-disable-next-line require-await */
-module.exports = async (token, moveEvent, move) => {
+module.exports = (token, moveEvent, move, displayFormattedDate = true) => {
   const event = eventHelpers.setEventDetails(moveEvent, move)
   const { id, event_type: eventType, details, occurred_at: timestamp } = event
   const {
@@ -91,7 +91,6 @@ module.exports = async (token, moveEvent, move) => {
         },
       ])
 
-    // TO DO - Comments
     comments &&
       rows.push([
         {
@@ -103,7 +102,6 @@ module.exports = async (token, moveEvent, move) => {
         },
       ])
 
-    // TO DO - Reporting officer
     reportingOfficer &&
       rows.push([
         {
@@ -115,7 +113,6 @@ module.exports = async (token, moveEvent, move) => {
         },
       ])
 
-    // TO DO - Signed and dated
     reportingOfficerSignedAt &&
       rows.push([
         {
@@ -127,7 +124,6 @@ module.exports = async (token, moveEvent, move) => {
         },
       ])
 
-    // TO DO - Reception officer
     receptionOfficer &&
       rows.push([
         {
@@ -139,7 +135,6 @@ module.exports = async (token, moveEvent, move) => {
         },
       ])
 
-    // TO DO - Reception officer (signed date)
     receptionOfficerSignedAt &&
       rows.push([
         {
@@ -173,10 +168,15 @@ module.exports = async (token, moveEvent, move) => {
   html += `
       </tbody>
     </table>
-    <p>
-      <time datetime="{{ formattedDate }}" class="app-timeline__date govuk-!-width-full">${formattedDate}</time>
-    <p>
   `
+
+  if (displayFormattedDate) {
+    html += `
+      <p>
+        <time datetime="{{ formattedDate }}" class="app-timeline__date govuk-!-width-full">${formattedDate}</time>
+      <p>
+    `
+  }
 
   const tag = eventToTagComponent(event)
   delete tag.href

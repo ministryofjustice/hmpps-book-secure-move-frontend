@@ -10,6 +10,7 @@ const moveToTimelineComponent = async (token, move = {}) => {
       )
     )
   ).reverse()
+
   return { items }
 }
 
