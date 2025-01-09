@@ -4,7 +4,12 @@ const eventHelpers = require('../helpers/events')
 const eventToTagComponent = require('./event-to-tag-component')
 
 /* eslint-disable-next-line require-await */
-module.exports = (token, moveEvent, move, displayFormattedDate = true) => {
+module.exports = async (
+  token,
+  moveEvent,
+  move,
+  displayFormattedDate = true
+) => {
   const event = eventHelpers.setEventDetails(moveEvent, move)
   const { id, event_type: eventType, details, occurred_at: timestamp } = event
   const {
@@ -20,9 +25,10 @@ module.exports = (token, moveEvent, move, displayFormattedDate = true) => {
     reception_officer: receptionOfficer,
     reception_officer_signed_at: receptionOfficerSignedAt,
   } = details
-
+  const description = await eventHelpers.getDescription(token, event)
   const rows = []
   const formattedDate = filters.formatDateWithTimeAndDay(timestamp)
+  let html
 
   if (eventType === 'PerSuicideAndSelfHarm') {
     natureOfSelfHarm &&
@@ -147,7 +153,7 @@ module.exports = (token, moveEvent, move, displayFormattedDate = true) => {
       ])
   }
 
-  let html = `
+  html = `
     <table class="govuk-table">
       <tbody class="govuk-table__body">
   `
@@ -168,6 +174,10 @@ module.exports = (token, moveEvent, move, displayFormattedDate = true) => {
   html += `
       </tbody>
     </table>
+  `
+
+  html += `
+    <div class="app-timeline__description">${description}</div>
   `
 
   if (displayFormattedDate) {

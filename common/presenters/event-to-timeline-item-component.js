@@ -40,7 +40,7 @@ const eventToTimelineItemComponent = async (token, moveEvent, move) => {
   let description
 
   if (moveEvent.event_type === 'PerSuicideAndSelfHarm') {
-    description = eventToTimelinePanel(token, moveEvent, move, false)
+    description = await eventToTimelinePanel(token, moveEvent, move, false)
     description = description.html
   } else {
     description = await eventHelpers.getDescription(token, event)
