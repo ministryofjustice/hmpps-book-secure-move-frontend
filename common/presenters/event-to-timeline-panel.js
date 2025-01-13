@@ -157,18 +157,25 @@ module.exports = async (
     <table class="govuk-table">
       <tbody class="govuk-table__body">
   `
-  // Loop through the rows array and add dynamic rows
-  rows.forEach(row => {
-    const heading = row[0].heading
-    const htmlContent = row[1].html
 
+  if (eventType === 'PerSuicideAndSelfHarm') {
+    // Loop through the rows array and add dynamic rows
+    rows.forEach(row => {
+      const heading = row[0].heading
+      const htmlContent = row[1].html
+
+      html += `
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">${heading}</th>
+          <td class="govuk-table__cell">${htmlContent}</td>
+        </tr>
+      `
+    })
+  } else {
     html += `
-      <tr class="govuk-table__row">
-        <th scope="row" class="govuk-table__header">${heading}</th>
-        <td class="govuk-table__cell">${htmlContent}</td>
-      </tr>
-    `
-  })
+    <div class="app-timeline__description">${description}</div>
+  `
+  }
 
   // Close the table tag
   html += `
@@ -176,9 +183,9 @@ module.exports = async (
     </table>
   `
 
-  html += `
-    <div class="app-timeline__description">${description}</div>
-  `
+  // html += `
+  //   <div class="app-timeline__description">${description}</div>
+  // `
 
   if (displayFormattedDate) {
     html += `
