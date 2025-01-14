@@ -153,10 +153,7 @@ module.exports = async (
       ])
   }
 
-  html = `
-    <table class="govuk-table">
-      <tbody class="govuk-table__body">
-  `
+  html = `<table class="govuk-table"><tbody class="govuk-table__body">`
 
   if (eventType === 'PerSuicideAndSelfHarm') {
     // Loop through the rows array and add dynamic rows
@@ -172,23 +169,14 @@ module.exports = async (
       `
     })
   } else {
-    html += `
-    <div class="app-timeline__description">${description}</div>
-  `
+    html += `<div class="app-timeline__description">${description}</div>`
   }
 
   // Close the table tag
-  html += `
-      </tbody>
-    </table>
-  `
+  html += `</tbody></table>`
 
   if (displayFormattedDate) {
-    html += `
-      <p>
-        <time datetime="{{ formattedDate }}" class="app-timeline__date govuk-!-width-full">${formattedDate}</time>
-      <p>
-    `
+    html += `<p><time datetime="{{ formattedDate }}" class="app-timeline__date govuk-!-width-full">${formattedDate}</time></p>`
   }
 
   const tag = eventToTagComponent(event)
