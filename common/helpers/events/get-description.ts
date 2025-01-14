@@ -53,9 +53,6 @@ export async function getDescription(token: string, event: GenericEvent) {
     }
 
     details.context = changedFieds.join('_and_')
-  // } else  if(eventType === 'PerSuicideAndSelfHarm') {
-  //   // console.log('type::', eventType)
-  //   // console.log('details::', details)
   } 
   else if (supplier === null) {
     details.context = 'without_supplier'

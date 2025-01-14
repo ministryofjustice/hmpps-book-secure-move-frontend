@@ -55,9 +55,6 @@ async function setWarnings(req, res, next) {
     )
   }
 
-  // console.log('importantEvents>>>>>>>>>', importantEvents)
-  // console.log('sections>>>>>>>>>', sections[0].groupedPanels[1].panels)
-
   res.locals.warnings = {
     sections,
     tagList,

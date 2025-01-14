@@ -216,6 +216,7 @@ function profileToCardComponent({
 
     if (showTags) {
       const { flags, status } = personEscortRecord || {}
+      console.log('FLAGS:::::::', flags)
       const isComplete =
         personEscortRecord &&
         !['not_started', 'in_progress'].includes(status || '')

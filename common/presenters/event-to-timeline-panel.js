@@ -183,10 +183,6 @@ module.exports = async (
     </table>
   `
 
-  // html += `
-  //   <div class="app-timeline__description">${description}</div>
-  // `
-
   if (displayFormattedDate) {
     html += `
       <p>
