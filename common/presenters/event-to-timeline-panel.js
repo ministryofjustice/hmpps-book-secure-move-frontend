@@ -3,7 +3,6 @@ const eventHelpers = require('../helpers/events')
 
 const eventToTagComponent = require('./event-to-tag-component')
 
-/* eslint-disable-next-line require-await */
 module.exports = async (
   token,
   moveEvent,
