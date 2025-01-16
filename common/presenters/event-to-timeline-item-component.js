@@ -1,6 +1,8 @@
 const eventHelpers = require('../helpers/events')
 const componentService = require('../services/component')
 
+const eventToTimelinePanel = require('./event-to-timeline-panel')
+
 const getItem = ({
   containerClasses,
   labelClasses,
@@ -35,7 +37,14 @@ const eventToTimelineItemComponent = async (token, moveEvent, move) => {
   const containerClasses = eventHelpers.getContainerClasses(event)
   let heading = eventHelpers.getHeading(event)
   const labelClasses = eventHelpers.getLabelClasses(event)
-  const description = await eventHelpers.getDescription(token, event)
+  let description
+
+  if (moveEvent.event_type === 'PerSuicideAndSelfHarm') {
+    description = await eventToTimelinePanel(token, moveEvent, move, false)
+    description = description.html
+  } else {
+    description = await eventHelpers.getDescription(token, event)
+  }
 
   if (flag) {
     const headerClasses = eventHelpers.getHeaderClasses(event)

@@ -17,6 +17,7 @@ const FORMATTED_SECTIONS: { [key: string]: string } = {
 
 export async function getDescription(token: string, event: GenericEvent) {
   const { event_type: eventType, details, supplier } = event
+
   details.vehicle_reg =
     details.vehicle_reg || details.journey?.vehicle?.registration
 
@@ -52,7 +53,8 @@ export async function getDescription(token: string, event: GenericEvent) {
     }
 
     details.context = changedFieds.join('_and_')
-  } else if (supplier === null) {
+  } 
+  else if (supplier === null) {
     details.context = 'without_supplier'
   }
 
