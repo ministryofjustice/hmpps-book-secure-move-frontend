@@ -32,7 +32,8 @@
   "classification": {
     "default": "Incident",
     "incident": "Serious incident",
-    "medical": "Medical incident"
+    "medical": "Medical incident",
+    "suicide_and_self_harm": "Suicide and Self-harm concern"
   },
   "JourneyAdmitToReception": {
     "heading": "Admitted to reception",
@@ -307,6 +308,10 @@
   "PerSelfHarm": {
     "heading": "Self-harm",
     "description": "{{notes}}"
+  },
+  "PerSuicideAndSelfHarm": {
+    "heading": "",
+    "description": "{{history_of_self_harm_details}}"
   },
   "PerMedicalDrugsAlcohol": {
     "flag": "medical",

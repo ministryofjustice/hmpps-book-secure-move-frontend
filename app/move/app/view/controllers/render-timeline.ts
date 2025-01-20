@@ -26,7 +26,7 @@ async function ensureSupplierInfo(events: GenericEvent[], supplierService: Suppl
   }
 }
 export async function renderTimeline(req: BasmRequest, res: BasmResponse) {
-  const { move}   = req
+  const { move }  = req
   const { status, cancellation_reason } = move
 
   // TODO: remove this second call when backend returns rebook info as part of move
@@ -44,7 +44,6 @@ export async function renderTimeline(req: BasmRequest, res: BasmResponse) {
     await ensureSupplierInfo(move.important_events, req.services.supplier)
   }
 
-
   const timeline = await presenters.moveToTimelineComponent(
     get(req.session, 'grant.response.access_token'),
     move
@@ -53,6 +52,6 @@ export async function renderTimeline(req: BasmRequest, res: BasmResponse) {
   const locals = {
     timeline,
   }
-
+       
   res.render('move/app/view/views/timeline', locals)
 }
