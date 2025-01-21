@@ -65,7 +65,9 @@ module.exports = async (
             '<h4 class="govuk-heading-s govuk-!-font-size-16">Method</h4>',
         },
         {
-          html: `<p class="govuk-!-font-size-16">${historyOfSelfHarmMethod} - ${historyOfSelfHarmDetails}</p>`,
+          html: `<p class="govuk-!-font-size-16">${historyOfSelfHarmMethod.join(
+            ', '
+          )} - ${historyOfSelfHarmDetails}</p>`,
         },
       ])
 
