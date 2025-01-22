@@ -4,7 +4,7 @@
     "heading": "There is a problem with this page"
   },
   "required": "cannot be blank",
-  "required_with_label": "Select a {{label}}",
+  "required_with_label": "Enter the {{label}}",
   "numeric": "can only contain numbers",
   "numeric_with_label": "{{label}} can only contain numbers",
   "equal": "must be a valid option",
