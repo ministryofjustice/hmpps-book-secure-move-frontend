@@ -22,7 +22,7 @@
     }
   },
   "people": {
-    "label": "Person to move",
+    "label": "person to move",
     "hint": "Select the person you are moving"
   },
   "police_national_computer": {
