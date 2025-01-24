@@ -22,6 +22,7 @@
     }
   },
   "people": {
+    "error_message": "Select a person to move",
     "label": "Person to move",
     "hint": "Select the person you are moving"
   },
