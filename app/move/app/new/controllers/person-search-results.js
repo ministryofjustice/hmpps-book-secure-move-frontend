@@ -60,6 +60,7 @@ class PersonSearchResultsController extends PersonController {
 
   checkFilter(req, res, next) {
     const sessionData = req.sessionModel.toJSON()
+
     const filters = Object.keys(sessionData)
       .filter(key => key.includes('filter.'))
       .map(
