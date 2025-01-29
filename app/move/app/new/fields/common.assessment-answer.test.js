@@ -36,6 +36,7 @@ describe('Move fields', function () {
           rows: 3,
           component: 'govukTextarea',
           classes: 'govuk-input--width-20',
+          id: 'date',
           label: {
             text: 'fields::assessment_comment.required',
             classes: 'govuk-label--s',
@@ -83,6 +84,7 @@ describe('Move fields', function () {
             rows: 3,
             component: 'govukTextarea',
             classes: 'govuk-input--width-20',
+            id: 'date',
             label: {
               text: 'fields::assessment_comment.required',
               classes: 'govuk-label--s',
