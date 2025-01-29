@@ -1,6 +1,7 @@
 const hasCourtCase = {
   validate: 'required',
   component: 'govukRadios',
+  id: 'has_court_case',
   name: 'has_court_case',
   fieldset: {
     legend: {

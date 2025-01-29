@@ -4,6 +4,7 @@ function assessmentCheckboxes(name) {
   }
 
   return {
+    id: name,
     name,
     component: 'govukCheckboxes',
     multiple: true,

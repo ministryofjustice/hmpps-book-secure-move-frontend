@@ -18,6 +18,7 @@ function assessmentAnswer({ isRequired = false, isExplicit = false } = {}) {
         classes: 'govuk-label--s',
       },
       validate: 'required',
+      id: 'date',
     }
   }
 

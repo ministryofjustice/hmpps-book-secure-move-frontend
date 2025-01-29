@@ -4,6 +4,7 @@ function explicitAssessmentAnswer({ name, value, conditional } = {}) {
   }
 
   return {
+    id: name,
     name,
     validate: 'required',
     component: 'govukRadios',

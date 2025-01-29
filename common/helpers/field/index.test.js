@@ -904,6 +904,7 @@ describe('Form helpers', function () {
       it('should create implicit field', function () {
         expect(fields).to.contain.property('health')
         expect(fields.health).to.deep.equal({
+          id: 'health',
           name: 'health',
           component: 'govukCheckboxes',
           multiple: true,
@@ -978,6 +979,7 @@ describe('Form helpers', function () {
       it('should create medication explicit field', function () {
         expect(fields).to.contain.property('medication__explicit')
         expect(fields.medication__explicit).to.deep.equal({
+          id: 'medication__explicit',
           name: 'medication__explicit',
           validate: 'required',
           component: 'govukRadios',
@@ -1002,6 +1004,7 @@ describe('Form helpers', function () {
       it('should create special diet explicit field', function () {
         expect(fields).to.contain.property('special_diet_or_allergy__explicit')
         expect(fields.special_diet_or_allergy__explicit).to.deep.equal({
+          id: 'special_diet_or_allergy__explicit',
           name: 'special_diet_or_allergy__explicit',
           validate: 'required',
           component: 'govukRadios',
@@ -1065,6 +1068,7 @@ describe('Form helpers', function () {
       it('should create impicit field', function () {
         expect(fields).to.contain.property('health')
         expect(fields.health).to.deep.equal({
+          id: 'health',
           name: 'health',
           component: 'govukCheckboxes',
           multiple: true,
@@ -1101,6 +1105,7 @@ describe('Form helpers', function () {
       it('should create medication explicit field', function () {
         expect(fields).to.contain.property('medication__explicit')
         expect(fields.medication__explicit).to.deep.equal({
+          id: 'medication__explicit',
           name: 'medication__explicit',
           validate: 'required',
           component: 'govukRadios',
