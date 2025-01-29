@@ -1,6 +1,7 @@
 const moveAgreed = {
   validate: 'required',
   component: 'govukRadios',
+  id: 'move_agreed',
   name: 'move_agreed',
   fieldset: {
     legend: {
