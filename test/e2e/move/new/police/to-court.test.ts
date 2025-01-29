@@ -18,8 +18,13 @@ const registerMoveUrl = async () => {
 }
 
 fixture('New move from Police Custody to Court').beforeEach(async t => {
-  await t.useRole(policeUser)
-  await t.navigateTo(newMove)
+  await t.useRole(policeUser).catch(error => {
+    throw error;
+  })
+
+  await t.navigateTo(newMove).catch(error => {
+    throw error;
+  })
 })
 
 test('With unfound person', async t => {
