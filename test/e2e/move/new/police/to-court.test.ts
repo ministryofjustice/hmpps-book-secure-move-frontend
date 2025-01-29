@@ -19,17 +19,17 @@ const registerMoveUrl = async () => {
 
 fixture('New move from Police Custody to Court').beforeEach(async t => {
   try {
-      await t.useRole(policeUser);
+    await t.useRole(policeUser);
   } catch (error) {
-      console.error('Error while using police role:', error);
-      throw error;
+    console.error('Error while using police role:', error);
+    throw error;
   }
 
   try {
-      await t.navigateTo(newMove);
+    await t.navigateTo(newMove);
   } catch (error) {
-      console.error('Error while navigating to the new move:', error);
-      throw error;
+    console.error('Error while navigating to the new move:', error);
+    throw error;
   }
 });
 
