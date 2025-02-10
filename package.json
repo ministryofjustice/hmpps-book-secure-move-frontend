@@ -223,7 +223,7 @@
     "yargs": "17.7.1"
   },
   "devDependencies": {
-    "@babel/core": "7.23.7",
+    "@babel/core": "7.26.8",
     "@babel/preset-env": "7.20.2",
     "@commitlint/cli": "17.4.4",
     "@commitlint/config-conventional": "17.4.4",
