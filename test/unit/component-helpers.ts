@@ -1,13 +1,11 @@
 import cheerio from 'cheerio'
 import nunjucks from 'nunjucks'
 
-// @ts-expect-error // TODO: convert to TS
 import { componentNameToMacroName, getExamples } from '../../common/helpers/component'
 import * as filters from '../../config/nunjucks/filters'
 // @ts-expect-error // TODO: convert to TS
 import templateGlobals from '../../config/nunjucks/globals'
-// @ts-expect-error // TODO: convert to TS
-import configPaths from '../../config/paths'
+const configPaths = require('../../config/paths')
 
 // eslint-disable-next-line no-process-env
 process.env.TZ = 'Europe/London'
