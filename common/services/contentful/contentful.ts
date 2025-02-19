@@ -6,6 +6,7 @@ import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
 import * as contentful from 'contentful'
 import { format } from 'date-fns'
 
+const { get, set } = require('../../../common/lib/api-client/cache')
 const {
   CONTENTFUL_SPACE_ID,
   CONTENTFUL_ACCESS_TOKEN,
@@ -142,20 +143,34 @@ export class ContentfulService {
     })
   }
 
+  // TO DO this needs caching in redis 
   async fetchEntries() {
-    const entries = (await this.client.getEntries({
-      content_type: this.contentType,
-    })) as contentful.EntryCollection<ContentfulFields>
+    let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
 
-    if (!entries.items?.length) {
-      return []
+    if(cachedEntries) {
+      console.log('RETURNING CACHED DATA')
+      return cachedEntries
+    } else {
+      console.log('RETURNING NEW DATA')
+      const entries = (await this.client.getEntries({
+        content_type: this.contentType,
+      })) as contentful.EntryCollection<ContentfulFields>
+
+      if (!entries.items?.length) {
+        return []
+      }
+      
+      await set(`cache:entries:${this.contentType}`, 
+        entries,
+        30, // 300 seconds = 5 minutes
+        true)
+      
+      return entries.items
+        .map(e => this.createContent(e.fields))
+        .sort((a, b) => {
+          return b.date.getTime() - a.date.getTime()
+        })
     }
-
-    return entries.items
-      .map(e => this.createContent(e.fields))
-      .sort((a, b) => {
-        return b.date.getTime() - a.date.getTime()
-      })
   }
 
   async fetch() {
@@ -172,11 +187,12 @@ export class ContentfulService {
   }
 
   async fetchBanner(entries?: ContentfulContent[]) {
+    
     if (!entries) {
       entries = await this.fetchEntries()
     }
 
-    return entries.filter(entry => entry.isCurrent())[0]?.getBannerData()
+    return entries?.filter(entry => entry.isCurrent())[0]?.getBannerData()
   }
 
   async fetchPosts(entries?: ContentfulContent[]) {
@@ -184,6 +200,6 @@ export class ContentfulService {
       entries = await this.fetchEntries()
     }
 
-    return entries.map(entry => entry.getPostData())
+    return entries?.map(entry => entry.getPostData())
   }
 }
