@@ -143,26 +143,30 @@ export class ContentfulService {
     })
   }
 
-  // TO DO this needs caching in redis 
   async fetchEntries() {
     let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
 
     if(cachedEntries) {
+
+      console.log('DISPLAYING CACHE DATA')
       return cachedEntries
     } else {
-      const entries = (await this.client.getEntries({
+      console.log('DISPLAYING NEW DATA')
+      let entries = (await this.client.getEntries({
         content_type: this.contentType,
       })) as contentful.EntryCollection<ContentfulFields>
 
-      if (!entries.items?.length) {
-        return []
-      }
-      
+      const entriesToCache = entries.items?.length ? entries : []
+
       await set(`cache:entries:${this.contentType}`, 
-        entries,
-        300, // 300 seconds
+        entriesToCache,
+        30,
         true)
-      
+
+        if (!entries.items?.length) {
+          return []
+        } 
+
       return entries.items
         .map(e => this.createContent(e.fields))
         .sort((a, b) => {
