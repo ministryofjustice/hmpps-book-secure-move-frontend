@@ -148,10 +148,8 @@ export class ContentfulService {
     let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
 
     if(cachedEntries) {
-      console.log('RETURNING CACHED DATA')
       return cachedEntries
     } else {
-      console.log('RETURNING NEW DATA')
       const entries = (await this.client.getEntries({
         content_type: this.contentType,
       })) as contentful.EntryCollection<ContentfulFields>
@@ -162,7 +160,7 @@ export class ContentfulService {
       
       await set(`cache:entries:${this.contentType}`, 
         entries,
-        30, // 300 seconds = 5 minutes
+        300, // 300 seconds
         true)
       
       return entries.items
