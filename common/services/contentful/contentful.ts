@@ -160,7 +160,7 @@ export class ContentfulService {
 
       await set(`cache:entries:${this.contentType}`, 
         entriesToCache,
-        30,
+        300,
         true)
 
         if (!entries.items?.length) {
