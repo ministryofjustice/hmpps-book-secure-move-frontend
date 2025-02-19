@@ -147,11 +147,8 @@ export class ContentfulService {
     let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
 
     if(cachedEntries) {
-
-      console.log('DISPLAYING CACHE DATA')
       return cachedEntries
     } else {
-      console.log('DISPLAYING NEW DATA')
       let entries = (await this.client.getEntries({
         content_type: this.contentType,
       })) as contentful.EntryCollection<ContentfulFields>
