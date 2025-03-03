@@ -531,7 +531,7 @@ describe('ContentfulService', function () {
     it('returns the title', async function () {
       const formattedEntries = await contentfulService.fetch()
       // @ts-ignore
-      expect(formattedEntries.posts[0].title).to.equal('Dedicated content')
+      expect(formattedEntries.posts[0].title).to.equal('Whats new today!')
     })
     it('returns the body', async function () {
       const formattedEntries = await contentfulService.fetch()
