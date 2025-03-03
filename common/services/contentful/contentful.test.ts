@@ -522,6 +522,10 @@ describe('ContentfulService', function () {
       sinon
         .stub((contentfulService as any).client, 'getEntries')
         .resolves(dedicatedContentMockedResponse)
+
+      sinon
+        .stub(contentfulService, 'fetch')
+        .resolves(formattedEntriesMockResponse)
     })
 
     it('returns the title', async function () {
@@ -552,6 +556,11 @@ describe('ContentfulService', function () {
       sinon
         .stub((contentfulService as any).client, 'getEntries')
         .resolves(emptyMockedResponse)
+      
+      sinon
+        .stub(contentfulService, 'fetch')
+        .resolves(formattedEntriesMockResponse)
+
       const formattedEntries = await contentfulService.fetch()
       expect(formattedEntries).to.equal(null)
     })
@@ -562,6 +571,11 @@ describe('ContentfulService', function () {
       sinon
         .stub((contentfulService as any).client, 'getEntries')
         .resolves(emptyMockedResponse)
+      
+      sinon
+        .stub(contentfulService, 'fetch')
+        .resolves(formattedEntriesMockResponse)
+
       const response = await contentfulService.fetch()
       expect(response).to.equal(null)
     })
