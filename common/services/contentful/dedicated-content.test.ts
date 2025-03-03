@@ -35,7 +35,7 @@ describe('DedicatedContentService', function () {
     service = new DedicatedContentService()
     sinon.stub((service as any).client, 'getEntries').resolves([])
     sinon
-      .stub(contentfulService, 'fetch')
+      .stub(service, 'fetch')
       .resolves(formattedEntriesMockResponse)
   })
 
