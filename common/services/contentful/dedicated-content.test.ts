@@ -30,9 +30,8 @@ const formattedEntriesMockResponse = {
 
 describe('DedicatedContentService', function () {
   beforeEach(function () {
-    // @ts-ignore
-    contentfulService = new ContentfulService()
     service = new DedicatedContentService()
+
     sinon.stub((service as any).client, 'getEntries').resolves([])
     sinon
       .stub(service, 'fetch')
@@ -41,6 +40,7 @@ describe('DedicatedContentService', function () {
 
   it('requests the right content type from Contentful', async function () {
     await service.fetch()
+
     expect((service as any).client.getEntries).to.have.been.calledOnceWith({
       content_type: 'dedicatedContent',
     })
