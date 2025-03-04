@@ -8,6 +8,11 @@ import { mockDate, unmockDate } from '../../../mocks/date'
 import { ContentfulContent, ContentfulService } from './contentful'
 
 const todaysDate = new Date()
+const formattedTodaysDate = todaysDate.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+})
 
 const whatsNewMockedResponse = {
   items: [
@@ -442,7 +447,7 @@ const dedicatedContentMockedResponse = {
 const formattedEntriesMockResponse = {
   bannerContent: {
     body: "Some text briefly explaining the changes.",
-    date: todaysDate.toString(),
+    date: formattedTodaysDate
   },
   posts: [{
     title: 'Whats new today!',
@@ -456,7 +461,7 @@ const formattedEntriesMockResponse = {
           '</p></li><li><p class="govuk-template__body">TEST LINE 2</p></li></ol><figure class="govuk-!-margin-top-6 ' +
           'govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc' +
           '14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>',
-    date: todaysDate.toString()
+    date: formattedTodaysDate
   }]
 }
 
