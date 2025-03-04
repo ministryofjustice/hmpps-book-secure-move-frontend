@@ -442,7 +442,7 @@ const dedicatedContentMockedResponse = {
 const formattedEntriesMockResponse = {
   bannerContent: {
     body: "Some text briefly explaining the changes.",
-    date: "3 March 2025",
+    date: todaysDate.toString(),
   },
   posts: [{
     title: 'Whats new today!',
@@ -456,7 +456,7 @@ const formattedEntriesMockResponse = {
           '</p></li><li><p class="govuk-template__body">TEST LINE 2</p></li></ol><figure class="govuk-!-margin-top-6 ' +
           'govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc' +
           '14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>',
-    date: '3 March 2025'
+    date: todaysDate.toString()
   }]
 }
 
