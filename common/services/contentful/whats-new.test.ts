@@ -29,17 +29,12 @@ const formattedEntriesMockResponse = {
 describe('WhatsNewService', function () {
   beforeEach(function () {
     service = new WhatsNewService()
-    // sinon.stub((service as any).client, 'getEntries').resolves([])
-    // sinon
-    //   .stub(service, 'fetch')
-    //   .resolves(formattedEntriesMockResponse)
-    sinon.stub((service as any).client, 'getEntries')
-      .withArgs(sinon.match({ content_type: 'whatsNew' }))
-      .resolves([])
+    sinon.stub((service as any).client, 'getEntries').resolves([])
   })
 
   it.only('requests the right content type from Contentful', async function () {
     await service.fetch()
+  
     expect((service as any).client.getEntries).to.have.been.calledOnceWith({
       content_type: 'whatsNew',
     })
