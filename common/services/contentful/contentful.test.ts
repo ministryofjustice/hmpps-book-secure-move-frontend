@@ -449,8 +449,9 @@ const formattedEntriesMockResponse = {
     body: 'Some text briefly explaining the changes.',
     date: formattedTodaysDate,
   },
-  posts: [{
-    title: 'Whats new today!',
+  posts: [
+    {
+      title: 'Whats new today!',
       body:
         '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure' +
         ' move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="govuk-heading-m' +
