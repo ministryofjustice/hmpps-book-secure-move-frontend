@@ -449,7 +449,7 @@ const formattedEntriesMockResponse = {
     body: 'Some text briefly explaining the changes.',
     date: formattedTodaysDate,
   },
-  posts: [{
+  posts: [{    
       title: 'Whats new today!',
       body:
         '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure' +
@@ -463,7 +463,7 @@ const formattedEntriesMockResponse = {
         'govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc' +
         '14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>',
       date: formattedTodaysDate,
-    }
+    },
   ],
 }
 
@@ -478,12 +478,12 @@ describe('ContentfulService', function () {
 
   context('with a response for whats new content', function () {
     beforeEach(function () {
-      sinon.stub((contentfulService as any).client, 'getEntries')
-        .resolves(whatsNewMockedResponse)
-      
-      sinon
-        .stub(contentfulService, 'fetch')
-        .resolves(formattedEntriesMockResponse)
+        sinon.stub((contentfulService as any).client, 'getEntries')
+          .resolves(whatsNewMockedResponse)
+
+        sinon
+          .stub(contentfulService, 'fetch')
+          .resolves(formattedEntriesMockResponse)
     })
 
     it('returns the formatted body', async function () {
@@ -544,7 +544,7 @@ describe('ContentfulService', function () {
       sinon
         .stub((contentfulService as any).client, 'getEntries')
         .resolves(emptyMockedResponse)
-      
+
       sinon
         .stub(contentfulService, 'fetch')
         .resolves(null)
