@@ -26,6 +26,7 @@ const BASE_URL = `${IS_PRODUCTION ? 'https' : 'http'}://${SERVER_HOST}`
 const API_BASE_URL = process.env.API_BASE_URL || ''
 export const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
 export const MANAGE_USERS_API_BASE_URL = process.env.MANAGE_USERS_API_URL
+export const OFF_NETWORK_ALLOWLIST = process.env.OFF_NETWORK_ALLOWLIST
 const AUTH_KEY = process.env.AUTH_PROVIDER_KEY
 const NOMIS_ELITE2_API_BASE_URL = process.env.NOMIS_ELITE2_API_URL
 const NOMIS_ELITE2_API_HEALTHCHECK_PATH =
