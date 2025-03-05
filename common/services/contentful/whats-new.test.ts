@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
-
-import { ContentfulService } from './contentful'
+import { unmockDate } from '../../../mocks/date'
 
 import { WhatsNewService } from './whats-new'
 
@@ -31,15 +30,19 @@ const formattedEntriesMockResponse = {
 describe('WhatsNewService', function () {
   beforeEach(function () {
     service = new WhatsNewService()
-    sinon.stub((service as any).client, 'getEntries').resolves([])
+    
+    sinon.stub((service as any).client, 'getEntries').resolves({ items: [] })
     sinon
       .stub(service, 'fetch')
       .resolves(formattedEntriesMockResponse)
   })
 
-  it.only('requests the right content type from Contentful', async function () {
-    await service.fetch()
+  afterEach(function () {
+    unmockDate()
+  })
   
+  it('requests the right content type from Contentful', async function () {
+    await service.fetch()
     expect((service as any).client.getEntries).to.have.been.calledOnceWith({
       content_type: 'whatsNew',
     })
