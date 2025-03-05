@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
-import { unmockDate } from '../../../mocks/date'
 
 import { WhatsNewService } from './whats-new'
 
@@ -11,10 +10,6 @@ describe('WhatsNewService', function () {
     service = new WhatsNewService()
     
     sinon.stub((service as any).client, 'getEntries').resolves({ items: [] })
-  })
-
-  afterEach(function () {
-    unmockDate()
   })
   
   it('requests the right content type from Contentful', async function () {
