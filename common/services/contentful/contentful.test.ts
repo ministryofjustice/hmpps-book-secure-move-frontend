@@ -546,8 +546,8 @@ describe('ContentfulService', function () {
       sinon
         .stub((contentfulService as any).client, 'getEntries')
         .resolves(emptyMockedResponse)
-      sinon.stub(contentfulService, 'fetch')
-        .resolves(null)
+
+      sinon.stub(contentfulService, 'fetch').resolves(null)
 
       const formattedEntries = await contentfulService.fetch()
       expect(formattedEntries).to.equal(null)
@@ -560,8 +560,7 @@ describe('ContentfulService', function () {
         .stub((contentfulService as any).client, 'getEntries')
         .resolves(emptyMockedResponse)
       
-      sinon
-        .stub(contentfulService, 'fetch')
+      sinon.stub(contentfulService, 'fetch')
         .resolves(null)
 
       const response = await contentfulService.fetch()
