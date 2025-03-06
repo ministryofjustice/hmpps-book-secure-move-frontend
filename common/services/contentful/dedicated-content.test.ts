@@ -13,7 +13,9 @@ describe('DedicatedContentService', function () {
   })
 
   it('requests the right content type from Contentful', async function () {
-    await (service as any).client.getEntries({ content_type: 'dedicatedContent' })
+    await (service as any).client.getEntries({ 
+      content_type: 'dedicatedContent',
+    })
 
     expect((service as any).client.getEntries).to.have.been.calledOnceWith({
       content_type: 'dedicatedContent',

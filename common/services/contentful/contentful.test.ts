@@ -559,6 +559,7 @@ describe('ContentfulService', function () {
       sinon
         .stub((contentfulService as any).client, 'getEntries')
         .resolves(emptyMockedResponse)
+      
       sinon.stub(contentfulService, 'fetch')
         .resolves(null)
 
