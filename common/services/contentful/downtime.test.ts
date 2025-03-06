@@ -10,11 +10,11 @@ const formattedEntriesMockResponse = {
     body: 'Some text briefly explaining the changes.',
     date: '3 March 2025',
   },
-  
+
   posts: [
     {
       title: 'Whats new today!',
-      body: '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure' +
+        body: '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure' +
         ' move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="govuk-heading-m' +
         ' govuk-!-margin-top-4"><em>Test heading 3.</em></h3><h4 class="govuk-heading-s govuk-!-margin-top-3">Test' +
         ' heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-template__body">' +
@@ -25,8 +25,8 @@ const formattedEntriesMockResponse = {
         'govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc' +
         '14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>',
       date: '3 March 2025',
-    }
-  ]
+    },
+  ],
 }
 
 describe('DowntimeService', function () {
