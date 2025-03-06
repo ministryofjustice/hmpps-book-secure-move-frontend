@@ -75,8 +75,8 @@ describe('DowntimeService', function () {
         ],
       })
       sinon
-            .stub(service, 'fetchPosts')
-            .resolves(formattedEntriesMockResponse.posts)
+        .stub(service, 'fetchPosts')
+        .resolves(formattedEntriesMockResponse.posts)
     })
 
     it('only returns content that isActive', async function () {
