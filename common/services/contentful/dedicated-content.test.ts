@@ -13,7 +13,7 @@ describe('DedicatedContentService', function () {
   })
 
   it('requests the right content type from Contentful', async function () {
-    await (service as any).client.getEntries({ 
+   await (service as any).client.getEntries({ 
       content_type: 'dedicatedContent',
     })
 
