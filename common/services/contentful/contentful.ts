@@ -148,28 +148,28 @@ export class ContentfulService {
 
     if(cachedEntries) {
       return cachedEntries
-    } else {
-      let entries = (await this.client.getEntries({
-        content_type: this.contentType,
-      })) as contentful.EntryCollection<ContentfulFields>
-
-      const entriesToCache = entries.items?.length ? entries : []
-
-      await set(`cache:entries:${this.contentType}`, 
-        entriesToCache,
-        300,
-        true)
-
-        if (!entries.items?.length) {
-          return []
-        } 
-
-      return entries.items
-        .map(e => this.createContent(e.fields))
-        .sort((a, b) => {
-          return b.date.getTime() - a.date.getTime()
-        })
     }
+
+    const entries = (await this.client.getEntries({
+      content_type: this.contentType,
+    })) as contentful.EntryCollection<ContentfulFields>
+
+    const entriesToCache = entries.items?.length ? entries : []
+
+    await set(`cache:entries:${this.contentType}`, 
+      entriesToCache,
+      300,
+      true)
+
+      if (!entries.items?.length) {
+        return []
+      } 
+
+    return entries.items
+      .map(e => this.createContent(e.fields))
+      .sort((a, b) => {
+        return b.date.getTime() - a.date.getTime()
+      })
   }
 
   async fetch() {
