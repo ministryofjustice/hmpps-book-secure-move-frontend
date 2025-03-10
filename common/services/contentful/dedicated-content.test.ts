@@ -1,7 +1,5 @@
 import { expect } from 'chai'
-
 import * as contentful from 'contentful'
-
 import sinon from 'sinon'
 
 import { DedicatedContentService } from './dedicated-content'
@@ -26,7 +24,7 @@ describe('DedicatedContentService', function () {
       content_type: 'dedicatedContent',
     })
 
-    expect( service.getClient().getEntries).to.have.been.calledOnceWith({
+    expect(service.getClient().getEntries).to.have.been.calledOnceWith({
       content_type: 'dedicatedContent',
     })
   })
