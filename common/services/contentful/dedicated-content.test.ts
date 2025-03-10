@@ -1,8 +1,10 @@
 import { expect } from 'chai'
+
+import * as contentful from 'contentful'
+
 import sinon from 'sinon'
 
 import { DedicatedContentService } from './dedicated-content'
-import * as contentful from 'contentful'
 
 let service: DedicatedContentService
 
