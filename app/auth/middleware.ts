@@ -7,7 +7,6 @@ import { BasmResponse } from '../../common/types/basm_response'
 
 const { decodeAccessToken } = require('../../common/lib/access-token')
 const { loadUser } = require('../../common/lib/user')
-const { OFF_NETWORK_ALLOWLIST } = require('../../config')
 
 function processAuthResponse() {
   return async function middleware(
@@ -35,31 +34,6 @@ function processAuthResponse() {
         }
 
         req.session.authExpiry = decodedAccessToken.exp
-
-        const authSource = decodedAccessToken.auth_source
-
-        if (authSource !== 'auth' && OFF_NETWORK_ALLOWLIST !== '*') {
-          // user is a staff member
-          // check their IP address against OFF_NETWORK_ALLOWLIST
-          let ipAddress =
-            (req.headers && req.headers['x-forwarded-for']) ||
-            req.connection?.remoteAddress ||
-            req.socket?.remoteAddress ||
-            req.connection?.socket?.remoteAddress
-
-          // convert ip from ipv6 to ipv4
-          if (ipAddress?.startsWith('::ffff:')) {
-            ipAddress = ipAddress.replace('::ffff:', '')
-          }
-
-          if (ipAddress && !(OFF_NETWORK_ALLOWLIST || '').includes(ipAddress)) {
-            const error = new Error(
-              'Access denied from this network location'
-            ) as BasmError
-            error.statusCode = 403
-            return next(error)
-          }
-        }
 
         req.session.user = user
 
