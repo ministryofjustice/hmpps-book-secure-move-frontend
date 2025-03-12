@@ -61,4 +61,5 @@ export interface BasmRequest extends Express.Request {
     id: string
     permissions: never[]
   }
+  url: string
 }

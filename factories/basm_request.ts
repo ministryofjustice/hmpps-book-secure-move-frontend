@@ -51,6 +51,7 @@ export const defaultParams = {
   headers: {},
   connection: {},
   socket: {},
+  url: '',
 }
 
 export const BasmRequestFactory = Factory.define<BasmRequest>(() => ({

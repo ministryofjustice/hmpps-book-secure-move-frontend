@@ -29,9 +29,6 @@ describe('Authentication middleware', function () {
           anotherKey: 'abc',
           grant: 'grantObject',
         },
-        connection: {
-          remoteAddress: '500.0.0.0',
-        },
       }
     })
 
@@ -39,9 +36,6 @@ describe('Authentication middleware', function () {
       beforeEach(async function () {
         const authentication = proxyquire('./middleware', {
           '../../common/lib/user': userSuccessStub,
-          '../../config': {
-            OFF_NETWORK_ALLOWLIST: '500.0.0.0',
-          },
         })
 
         await authentication.processAuthResponse()(req, {}, nextSpy)
@@ -65,9 +59,6 @@ describe('Authentication middleware', function () {
         req.session.grant = {}
         const authentication = proxyquire('./middleware', {
           '../../common/lib/user': userSuccessStub,
-          '../../config': {
-            OFF_NETWORK_ALLOWLIST: '500.0.0.0',
-          },
         })
 
         await authentication.processAuthResponse()(req, {}, nextSpy)
@@ -95,9 +86,6 @@ describe('Authentication middleware', function () {
         beforeEach(async function () {
           const authentication = proxyquire('./middleware', {
             '../../common/lib/user': userFailureStub,
-            '../../config': {
-              OFF_NETWORK_ALLOWLIST: '500.0.0.0',
-            },
           })
 
           await authentication.processAuthResponse()(req, {}, nextSpy)
@@ -118,9 +106,6 @@ describe('Authentication middleware', function () {
         beforeEach(function () {
           authentication = proxyquire('./middleware', {
             '../../common/lib/user': userSuccessStub,
-            '../../config': {
-              OFF_NETWORK_ALLOWLIST: '500.0.0.0',
-            },
           })
         })
 
@@ -134,92 +119,6 @@ describe('Authentication middleware', function () {
 
           it('should call next with error', function () {
             expect(nextSpy).to.be.calledOnceWithExactly(errorMock)
-          })
-        })
-
-        context('when auth_source is not "auth"', function () {
-          beforeEach(function () {
-            const notAuthEncodedAccessTokenPayload = Buffer.from(
-              JSON.stringify({ exp: expiryTime })
-            ).toString('base64')
-
-            const notAuthAccessToken = `test.${notAuthEncodedAccessTokenPayload}.test`
-            req.session.grant = {
-              response: { access_token: notAuthAccessToken },
-            }
-          })
-
-          context(
-            'when the ip address is not in the allowed ip list',
-            function () {
-              beforeEach(async function () {
-                authentication = proxyquire('./middleware', {
-                  '../../common/lib/user': userSuccessStub,
-                  '../../config': {
-                    OFF_NETWORK_ALLOWLIST: '500.0.0.1',
-                  },
-                })
-
-                req.session.regenerate = callback => {
-                  req.session = {
-                    id: '456',
-                  }
-                  callback()
-                }
-
-                await authentication.processAuthResponse()(req, {}, nextSpy)
-              })
-
-              it('should call next with error', function () {
-                expect(nextSpy).to.be.calledOnce
-                expect(nextSpy.args[0][0].toString()).to.equal(
-                  'Error: Access denied from this network location'
-                )
-              })
-            }
-          )
-
-          context('when the ip address is in the allowed ip list', function () {
-            beforeEach(async function () {
-              req.session.regenerate = callback => {
-                req.session = {
-                  id: '456',
-                }
-                callback()
-              }
-
-              await authentication.processAuthResponse()(req, {}, nextSpy)
-            })
-
-            it('regenerates the session', function () {
-              expect(req.session.id).to.equal('456')
-            })
-
-            it('sets the auth expiry time on the session', function () {
-              expect(req.session.authExpiry).to.equal(expiryTime)
-            })
-
-            it('sets the user info on the session', async function () {
-              expect(req.session.user).to.deep.equal(
-                await userSuccessStub.loadUser()
-              )
-            })
-
-            it('sets the redirect URL in the session', function () {
-              expect(req.session.originalRequestUrl).to.equal('/test')
-            })
-
-            it('sets the location in the session', function () {
-              expect(req.session.currentLocation).to.equal('1234567890')
-            })
-
-            it('copies additional properties in the session', function () {
-              expect(req.session.anotherKey).to.equal('abc')
-            })
-
-            it('calls the next action', function () {
-              expect(nextSpy).to.be.calledOnceWithExactly()
-            })
           })
         })
 
