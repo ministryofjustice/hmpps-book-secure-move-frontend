@@ -25,6 +25,9 @@
 {% from "moj/components/organisation-switcher/macro.njk"  import mojOrganisationSwitcher %}
 {% from "moj/components/primary-navigation/macro.njk"     import mojPrimaryNavigation %}
 
+{# HMRC Timeout component #}
+{% from "hmrc/components/timeout-dialog/macro.njk" import hmrcTimeoutDialog %}
+
 {# App level components #}
 {% from "raw/macro.njk"               import raw %}
 {% from "add-another/macro.njk"       import appAddAnother %}
@@ -73,6 +76,17 @@
       });
     </script>
   {% endif %}
+  
+  <script src="/scripts/all.js" type="text/javascript" crossorigin></script>
+  
+  {{ hmrcTimeoutDialog ({
+    timeout: 10,
+    countdown: 8,
+    keepAliveUrl: "?continue=true",
+    signOutUrl: "?lang=English",
+    language: "en"
+  }) }}
+
 {% endblock %}
 
 {% block pageTitle %}
@@ -88,6 +102,7 @@
 {% endblock %}
 
 {% block bodyStart %}
+
   {% if GA_ID %}
     <!-- Google Tag Manager (noscript) -->
     <noscript>

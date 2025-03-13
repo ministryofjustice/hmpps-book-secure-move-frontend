@@ -33,7 +33,7 @@ const NOMIS_ELITE2_API_HEALTHCHECK_PATH =
 export const SESSION = {
   NAME: process.env.SESSION_NAME || 'book-secure-move.sid',
   SECRET: process.env.SESSION_SECRET,
-  TTL: (process.env.SESSION_TTL || 60 * 30 * 1000) as number, // 30 mins
+  TTL: (process.env.SESSION_TTL || 60 * 1 * 1000) as number, // 30 mins
   DB: process.env.SESSION_DB_INDEX || 0,
 }
 export const REDIS: {
