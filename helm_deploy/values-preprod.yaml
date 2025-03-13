@@ -27,8 +27,6 @@ generic-service:
     OFF_NETWORK_ALLOWLIST:
       groups:
         - internal
-        - prisons
-        - private_prisons
 
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
