@@ -9,7 +9,11 @@ const { encodeAccessToken } = require('../lib/access-token')
 
 const checkStaffNetwork = proxyquire('./check-staff-network', {
   '../../config': {
-    OFF_NETWORK_ALLOWLIST: ['500.0.0.1'],
+    OFF_NETWORK_ALLOWLIST: [
+      '123.123.123.42/32',
+      '100.100.100.0/24',
+      '10.10.10.0/29',
+    ],
   },
 }).default
 
@@ -19,7 +23,7 @@ describe('checkStaffNetwork', function () {
   beforeEach(function () {
     req = {
       connection: {
-        remoteAddress: '500.0.0.1',
+        remoteAddress: '123.123.123.42',
       },
       session: {},
       url: '/',
@@ -33,7 +37,7 @@ describe('checkStaffNetwork', function () {
       accessToken = {}
       req = {
         connection: {
-          remoteAddress: '500.0.0.1',
+          remoteAddress: '123.123.123.42',
         },
         session: {
           grant: {
@@ -62,7 +66,7 @@ describe('checkStaffNetwork', function () {
 
         context('when the ip is ipv6', function () {
           beforeEach(function () {
-            req.connection!.remoteAddress = '::ffff:500.0.0.1'
+            req.connection!.remoteAddress = '::ffff:123.123.123.42'
           })
 
           it('calls next', function () {
@@ -71,11 +75,37 @@ describe('checkStaffNetwork', function () {
             expect(next).to.be.calledOnceWithExactly()
           })
         })
+
+        context('when the ip is /24 subnet', function () {
+          it('calls next', function () {
+            const next = sinon.stub()
+
+            for (let i = 1; i < 255; i++) {
+              req.connection!.remoteAddress = `::ffff:100.100.100.${i}`
+              checkStaffNetwork(req, 'res', next)
+              expect(next).to.be.calledOnceWithExactly()
+              next.reset()
+            }
+          })
+        })
+
+        context('when the ip is /29 subnet', function () {
+          it('calls next', function () {
+            const next = sinon.stub()
+
+            for (let i = 1; i < 8; i++) {
+              req.connection!.remoteAddress = `::ffff:10.10.10.${i}`
+              checkStaffNetwork(req, 'res', next)
+              expect(next).to.be.calledOnceWithExactly()
+              next.reset()
+            }
+          })
+        })
       })
 
       context('when the ip is not in the OFF_NETWORK_ALLOWLIST', function () {
         beforeEach(function () {
-          req.connection!.remoteAddress = '123.123.123.123'
+          req.connection!.remoteAddress = '1.1.1.1'
         })
 
         it('calls next with an error', function () {
@@ -90,7 +120,7 @@ describe('checkStaffNetwork', function () {
 
         context('when the ip is ipv6', function () {
           beforeEach(function () {
-            req.connection!.remoteAddress = '::ffff:123.123.123.123'
+            req.connection!.remoteAddress = '::ffff:1.1.1.1'
           })
 
           it('calls next with an error', function () {
@@ -101,6 +131,23 @@ describe('checkStaffNetwork', function () {
               'Error: Access denied from this network location'
             )
             expect(next.args[0][0].statusCode).to.equal(403)
+          })
+        })
+
+        context('when the ip is /29 subnet', function () {
+          it('calls next', function () {
+            const next = sinon.stub()
+
+            for (let i = 8; i < 255; i++) {
+              req.connection!.remoteAddress = `::ffff:10.10.10.${i}`
+              checkStaffNetwork(req, 'res', next)
+              expect(next).to.be.calledOnce
+              expect(next.args[0][0].toString()).to.equal(
+                'Error: Access denied from this network location'
+              )
+              expect(next.args[0][0].statusCode).to.equal(403)
+              next.reset()
+            }
           })
         })
       })
@@ -123,7 +170,7 @@ describe('checkStaffNetwork', function () {
 
       context('when the ip is not in the OFF_NETWORK_ALLOWLIST', function () {
         beforeEach(function () {
-          req.connection!.remoteAddress = '123.123.123.123'
+          req.connection!.remoteAddress = '1.1.1.1'
         })
 
         it('calls next', function () {
