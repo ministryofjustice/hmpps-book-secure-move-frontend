@@ -9,6 +9,10 @@ export class DedicatedContentService extends ContentfulService {
     this.contentType = 'dedicatedContent'
   }
 
+  public getClient() {
+    return this.client;
+  }
+
   async fetchEntryBySlugId(slugId: any) {
     const entry = (await this.client.getEntries({
       content_type: this.contentType,
