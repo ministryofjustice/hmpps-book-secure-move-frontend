@@ -1,5 +1,6 @@
 import { NextFunction } from 'express'
 import { get } from 'lodash'
+import { Netmask } from 'netmask'
 
 import { OFF_NETWORK_ALLOWLIST } from '../../config'
 import { BasmError } from '../types/basm_error'
@@ -38,7 +39,12 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
       ipAddress = ipAddress.replace('::ffff:', '')
     }
 
-    if (ipAddress && !OFF_NETWORK_ALLOWLIST.includes(ipAddress)) {
+    if (
+      ipAddress &&
+      !OFF_NETWORK_ALLOWLIST.find(subnet =>
+        new Netmask(subnet).contains(ipAddress!)
+      )
+    ) {
       const error = new Error(
         'Access denied from this network location'
       ) as BasmError
