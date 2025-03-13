@@ -45,12 +45,5 @@ generic-service:
     PROMETHEUS_MOUNTPATH: "/metrics"
     SUPPORT_EMAIL: "bookasecuremove@digital.justice.gov.uk"
 
-  allowlist_envs:
-    APPLICATION_AUTHENTICATION_OFF_NETWORK_ALLOWLIST:
-      groups:
-        - internal
-        - prisons
-        - private_prisons
-
   poddisruptionbudget:
     minAvailable: 50%
