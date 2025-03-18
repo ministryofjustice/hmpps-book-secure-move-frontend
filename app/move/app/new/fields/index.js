@@ -7,6 +7,7 @@ const date = require('./date')
 const dateCustom = require('./date-custom')
 const dateFrom = require('./date-from')
 const dateOfBirth = require('./date-of-birth')
+const datePicker = require('./date-picker')
 const dateTo = require('./date-to')
 const dateType = require('./date-type')
 const documents = require('./documents')
@@ -52,6 +53,7 @@ const fields = {
   court_hearing__court_case: courtHearingCourtCase,
   court_hearing__start_time: courtHearingStartTime,
   date,
+  date_picker: datePicker,
   date_custom: dateCustom,
   date_from: dateFrom,
   date_of_birth: dateOfBirth,

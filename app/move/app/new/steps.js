@@ -218,7 +218,7 @@ module.exports = {
       'risk-information',
     ],
     controller: MoveDate,
-    fields: ['date', 'date_type', 'date_custom'],
+    fields: ['date', 'date_type', 'date_custom', 'date_picker'],
   },
   '/extradition-details': {
     editable: true,
