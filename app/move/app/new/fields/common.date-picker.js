@@ -16,7 +16,7 @@ const date = {
         For example, 17/5/2024.
       </div>
 
-      <input class="govuk-input moj-js-datepicker-input" id="date-picker" name="date-picker" type="text" aria-describedby="date-hint" autocomplete="off">
+      <input class="govuk-input moj-js-datepicker-input" id="date_picker" name="date_picker" type="text" aria-describedby="date-hint" autocomplete="off">
 
     </div>
 
