@@ -355,35 +355,34 @@
   "cancellation_reason": {
     "label": "Why are you cancelling this move request?",
     "items": {
-      "made_in_error": {
-        "label": "Made in error",
-        "hint": "For example, there’s a mistake or the person no longer needs to move"
+      "combined_with_another_request": {
+        "label": "Efficiency: move combined with another request"
       },
-      "supplier_declined_to_move": {
-        "label": "Supplier declined to move this person",
-        "hint": "For example, the request was made late"
+      "operational_issues_prison": {
+        "label": "Operational issues - prison"
+      },
+      "tornado_event": {
+        "label": "Overriding tornado event"
       },
       "cancelled_by_pmu": {
-        "label": "Cancelled by Population Management Unit (PMU)"
+        "label": "Population Management Unit (PMU) cancelled request"
       },
-      "database_correction": {
-        "label": "Actual cancellation reason and time unknown due to missing supplier data"
+      "prisoner_refusal": {
+        "label": "Prisoner refusal"
       },
-      "incomplete_per": {
-        "label": "Cancelled due to incomplete PER"
+      "receiver_unable_to_accept_prisoner": {
+        "label": "Receiving prison unable to accept prisoner"
       },
-      "other": {
-        "label": "Another reason"
+      "receiver_unable_to_fulfil_draft": {
+        "label": "Receiving prison unable to fulfil draft"
+      },
+      "sender_cancelled_request": {
+        "label": "Sending prison cancelled request"
+      },
+      "supplier_no_resource": {
+        "label": "Supplier does not have the resource to fulfil this request"
       }
     }
-  },
-  "cancellation_reason_cancelled_by_pmu_comment": {
-    "label": "Additional information"
-  },
-  "cancellation_reason_other_comment": {
-    "label": "Additional information",
-    "label_optional": "Additional information (optional)",
-    "label_with_error": "additional information"
   },
   "other_court": {
     "label": "Any other information details"

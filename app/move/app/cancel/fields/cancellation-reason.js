@@ -10,31 +10,41 @@ const cancellationReason = {
   },
   items: [
     {
-      id: 'cancellation_reason',
-      value: 'made_in_error',
-      text: 'fields::cancellation_reason.items.made_in_error.label',
-      hint: {
-        text: 'fields::cancellation_reason.items.made_in_error.hint',
-      },
+      value: 'combined_with_another_request',
+      text: 'fields::cancellation_reason.items.combined_with_another_request.label',
     },
     {
-      value: 'supplier_declined_to_move',
-      text: 'fields::cancellation_reason.items.supplier_declined_to_move.label',
-      hint: {
-        text: 'fields::cancellation_reason.items.supplier_declined_to_move.hint',
-      },
+      value: 'operational_issues_prison',
+      text: 'fields::cancellation_reason.items.operational_issues_prison.label',
+    },
+    {
+      value: 'tornado_event',
+      text: 'fields::cancellation_reason.items.tornado_event.label',
     },
     {
       value: 'cancelled_by_pmu',
       text: 'fields::cancellation_reason.items.cancelled_by_pmu.label',
-      conditional: 'cancellation_reason_cancelled_by_pmu_comment',
     },
     {
-      value: 'other',
-      text: 'fields::cancellation_reason.items.other.label',
-      conditional: 'cancellation_reason_other_comment',
+      value: 'prisoner_refusal',
+      text: 'fields::cancellation_reason.items.prisoner_refusal.label',
+    },
+    {
+      value: 'receiver_unable_to_accept_prisoner',
+      text: 'fields::cancellation_reason.items.receiver_unable_to_accept_prisoner.label',
+    },
+    {
+      value: 'receiver_unable_to_fulfil_draft',
+      text: 'fields::cancellation_reason.items.receiver_unable_to_fulfil_draft.label',
+    },
+    {
+      value: 'sender_cancelled_request',
+      text: 'fields::cancellation_reason.items.sender_cancelled_request.label',
+    },
+    {
+      value: 'supplier_no_resource',
+      text: 'fields::cancellation_reason.items.supplier_no_resource.label',
     },
   ],
 }
-
 module.exports = cancellationReason

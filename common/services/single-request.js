@@ -54,7 +54,7 @@ class SingleRequestService extends BaseService {
           status: 'cancelled',
           // TODO: Find a better filter for this. Currently we will need to add any new reasons from the API here.
           cancellation_reason:
-            'made_in_error,supplier_declined_to_move,cancelled_by_pmu,incomplete_per,other',
+            'combined_with_another_request,operational_issues_prison,tornado_event,cancelled_by_pmu,prisoner_refusal,receiver_unable_to_accept_prisoner,receiver_unable_to_fulfil_draft,sender_cancelled_request,supplier_no_resource',
         }
         break
       default:
