@@ -16,8 +16,7 @@ module.exports = {
   mojFrontend: path.resolve(
     root,
     'node_modules',
-    '@ministryofjustice',
-    'frontend'
+    '@ministryofjustice/frontend'
   ),
   fixtures: path.resolve(root, 'test', 'fixtures'),
   frameworks: {
