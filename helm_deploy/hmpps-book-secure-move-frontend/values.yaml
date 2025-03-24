@@ -45,5 +45,7 @@ generic-service:
     PROMETHEUS_MOUNTPATH: "/metrics"
     SUPPORT_EMAIL: "bookasecuremove@digital.justice.gov.uk"
 
+  allowlist: false
+
   poddisruptionbudget:
     minAvailable: 50%
