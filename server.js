@@ -250,6 +250,7 @@ module.exports = async () => {
             'www.googletagmanager.com',
             'www.google-analytics.com',
             'region1.google-analytics.com',
+            'code.jquery.com',
             'cdn.jsdelivr.net',
             "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
             (req, res) => `'nonce-${res.locals.cspNonce}'`,
