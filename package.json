@@ -155,7 +155,7 @@
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.2.1",
     "applicationinsights": "^2.6.0",
-    "axios": "1.7.2",
+    "axios": "1.8.2",
     "axios-debug-log": "1.0.0",
     "bluebird": "3.7.2",
     "chrono-node": "2.5.0",
