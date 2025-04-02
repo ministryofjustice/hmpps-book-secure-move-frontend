@@ -1,15 +1,13 @@
 const proxyquire = require('proxyquire')
 
-const userSuccessStub = {
-  loadUser: () => Promise.resolve({ id: 'id', permissions: [] }),
-}
+const userSuccessStub = { loadUser: () => Promise.resolve('user') }
 const userFailureError = new Error('test')
 const userFailureStub = { loadUser: () => Promise.reject(userFailureError) }
 
 const expiryTime = 1000
 
 const encodedAccessTokenPayload = Buffer.from(
-  JSON.stringify({ exp: expiryTime, auth_source: 'auth' })
+  JSON.stringify({ exp: expiryTime })
 ).toString('base64')
 
 const accessToken = `test.${encodedAccessTokenPayload}.test`
@@ -143,10 +141,8 @@ describe('Authentication middleware', function () {
             expect(req.session.authExpiry).to.equal(expiryTime)
           })
 
-          it('sets the user info on the session', async function () {
-            expect(req.session.user).to.deep.equal(
-              await userSuccessStub.loadUser()
-            )
+          it('sets the user info on the session', function () {
+            expect(req.session.user).to.equal('user')
           })
 
           it('sets the redirect URL in the session', function () {
