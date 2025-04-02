@@ -26,6 +26,8 @@
 {% from "moj/components/primary-navigation/macro.njk"     import mojPrimaryNavigation %}
 {% from "moj/components/date-picker/macro.njk"            import mojDatePicker %}
 
+{% from "hmrc/components/timeout-dialog/macro.njk" import hmrcTimeoutDialog %}
+
 {# App level components #}
 {% from "raw/macro.njk"               import raw %}
 {% from "add-another/macro.njk"       import appAddAnother %}
@@ -97,9 +99,19 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
   {% endif %}
+  
 {% endblock %}
 
 {% block header %}
+
+  {# {{ hmrcTimeoutDialog ({
+      timeout: 5,
+      countdown: 3,
+      keepAliveUrl: "?continue=true",
+      signOutUrl: "?lang=English",
+      language: "en"
+    }) }} #}
+
   {{ appInternalHeader({
     organisationHomepageUrl: AUTH_BASE_URL + "/auth",
     homepageUrl: "/",
