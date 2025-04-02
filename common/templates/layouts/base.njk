@@ -103,15 +103,6 @@
 {% endblock %}
 
 {% block header %}
-
-  {# {{ hmrcTimeoutDialog ({
-      timeout: 5,
-      countdown: 3,
-      keepAliveUrl: "?continue=true",
-      signOutUrl: "?lang=English",
-      language: "en"
-    }) }} #}
-
   {{ appInternalHeader({
     organisationHomepageUrl: AUTH_BASE_URL + "/auth",
     homepageUrl: "/",
@@ -170,6 +161,14 @@
 {% endblock %}
 
 {% block beforeContent %}
+{{ hmrcTimeoutDialog ({
+      timeout: 20,
+      countdown: 5,
+      keepAliveUrl: "?continue=true",
+      signOutUrl: "?lang=English",
+      language: "en"
+    }) }}
+
   {% if downtimeContent %}
     {{ appNotificationBanner(downtimeContent) }}
   {% endif %}

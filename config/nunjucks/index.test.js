@@ -20,6 +20,7 @@ const mockPaths = {
   app: '_app/',
   govukFrontend: '_govukFrontend/',
   mojFrontend: '_mojFrontend/',
+  hmrcFrontend: '_hmrcFrontend/',
 }
 
 const nunjucksEnv = proxyquire('./', {
@@ -67,6 +68,7 @@ describe('Nunjucks', function () {
         expect(views).to.deep.equal([
           '_govukFrontend/',
           '_mojFrontend/',
+          '_hmrcFrontend/',
           '_templates/',
           '_components/',
           '_app/',
