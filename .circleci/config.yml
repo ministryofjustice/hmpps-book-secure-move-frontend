@@ -107,7 +107,7 @@ jobs:
       - attach_workspace:
           at: .
       - browser-tools/install-browser-tools :
-          chrome-version: 123.0.6312.86
+          chrome-version: latest
       - run:
           name: Compile typescript, build assets and frameworks
           command: npm run build
