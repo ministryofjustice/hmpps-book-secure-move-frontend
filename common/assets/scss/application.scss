@@ -65,6 +65,9 @@ $govuk-grid-widths: (
 @import "@ministryofjustice/frontend/moj/components/date-picker/date-picker";
 @import "@ministryofjustice/frontend/moj/all";
 
+// Import HMRC Frontend Components
+@import "hmrc-frontend/hmrc/components/timeout-dialog/_timeout-dialog";
+
 // Import app settings/tools/helpers
 @import "settings/all";
 @import "helpers/all";

@@ -16,6 +16,7 @@ const views = [
   configPaths.components,
   configPaths.govukFrontend,
   configPaths.mojFrontend,
+  configPaths.hmrcFrontend,
 ]
 
 const nunjucksEnvironment = nunjucks.configure(views, {
