@@ -26,6 +26,8 @@
 {% from "moj/components/primary-navigation/macro.njk"     import mojPrimaryNavigation %}
 {% from "moj/components/date-picker/macro.njk"            import mojDatePicker %}
 
+{% from "hmrc/components/timeout-dialog/macro.njk" import hmrcTimeoutDialog %}
+
 {# App level components #}
 {% from "raw/macro.njk"               import raw %}
 {% from "add-another/macro.njk"       import appAddAnother %}
@@ -75,6 +77,7 @@
   {% endif %}
 {% endblock %}
 
+
 {% block pageTitle %}
   {{ SERVICE_NAME }}
 {% endblock %}
@@ -89,6 +92,14 @@
 
 {% block bodyStart %}
 
+  {{ hmrcTimeoutDialog ({
+    timeout: 1800,
+    countdown: 120,
+    keepAliveUrl: "?continue=true",
+    signOutUrl: "/auth/sign-out",
+    language: "en"
+  }) }}
+
   {% if GA_ID %}
     <!-- Google Tag Manager (noscript) -->
     <noscript>
@@ -97,6 +108,7 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
   {% endif %}
+  
 {% endblock %}
 
 {% block header %}
@@ -125,6 +137,7 @@
       items: primaryNavigation
     }) }}
   {% endblock %}
+
   {% block organisationSwitcher %}
     {% if CURRENT_LOCATION or CURRENT_REGION or canAccess("locations:all") %}
       <div class="govuk-width-container">

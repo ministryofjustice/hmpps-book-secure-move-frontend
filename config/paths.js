@@ -18,6 +18,7 @@ module.exports = {
     'node_modules',
     '@ministryofjustice/frontend'
   ),
+  hmrcFrontend: path.resolve(root, 'node_modules', 'hmrc-frontend'),
   fixtures: path.resolve(root, 'test', 'fixtures'),
   frameworks: {
     source: path.resolve(
