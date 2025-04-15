@@ -22,13 +22,6 @@ generic-service:
     SENTRY_ENVIRONMENT: "production"
     SERVER_HOST: "bookasecuremove.service.justice.gov.uk"
 
-  allowlist_envs:
-    OFF_NETWORK_ALLOWLIST:
-      groups:
-        - internal
-        - prisons
-        - private_prisons
-
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
   #   [name of kubernetes secret]:

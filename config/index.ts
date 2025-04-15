@@ -323,9 +323,7 @@ export const FEATURE_FLAGS = {
     process.env.FEATURE_FLAG_ADD_LODGE_BUTTON || ''
   ),
   DATE_OF_ARREST: /true/i.test(process.env.FEATURE_FLAG_DATE_OF_ARREST || ''),
-  EXTRADITION_MOVES: /true/i.test(
-    process.env.FEATURE_FLAG_EXTRADITION_MOVES || ''
-  ),
+  EXTRADITION_MOVES: /true/i.test(process.env.FEATURE_FLAG_EXTRADITION_MOVES || ''),
 }
 export const FRAMEWORKS = {
   CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,

@@ -1,15 +1,15 @@
 import I18n from '../../config/i18n'
-import { EventService } from '../services/event'
 import { LodgingService } from '../services/lodging'
-import { SupplierService } from '../services/supplier'
-
 import { Allocation } from './allocation'
+
 import { BasmError } from './basm_error'
 import { Journey } from './journey'
 import { Lodging } from './lodging'
 import { Move } from './move'
 import { Service } from './service'
 import { SessionModel } from './session_model'
+import { SupplierService } from '../services/supplier'
+import { EventService } from '../services/event'
 
 interface Session {
   authExpiry: number
@@ -23,8 +23,8 @@ interface Session {
 }
 
 export interface BasmRequest extends Express.Request {
-  allocation?: Allocation
   body: any
+  allocation?: Allocation
   canAccess: (permission: string) => boolean
   connection: {
     remoteAddress?: string
@@ -48,7 +48,9 @@ export interface BasmRequest extends Express.Request {
   move: Move
   lodging?: Lodging
   params: any
-  session: Session
+  session: {
+    save: () => void
+  }
   sessionModel: SessionModel
   services: {
     allocation: Service
