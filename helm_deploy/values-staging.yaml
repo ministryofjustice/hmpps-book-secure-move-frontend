@@ -27,6 +27,9 @@ generic-service:
     SERVER_HOST: "hmpps-book-secure-move-frontend-staging.apps.cloud-platform.service.justice.gov.uk"
     FEATURE_FLAG_EXTRADITION_MOVES: "true"
     OFF_NETWORK_ALLOWLIST: "*"
+    OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT"
+    DISALLOWED_DEVICES: "iPhone,Android"
+    DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT"
 
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.

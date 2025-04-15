@@ -1,7 +1,7 @@
 import { NextFunction } from 'express'
 import { get } from 'lodash'
 import { Netmask } from 'netmask'
-
+import * as Sentry from '@sentry/node'
 
 import {
   DISALLOWED_DEVICES,
@@ -12,7 +12,6 @@ import {
 import { BasmError } from '../types/basm_error'
 import { BasmRequest } from '../types/basm_request'
 import { BasmResponse } from '../types/basm_response'
-import Sentry from '@sentry/node'
 
 const { decodeAccessToken } = require('../lib/access-token')
 
@@ -46,7 +45,7 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
       ipAddress = ipAddress.replace('::ffff:', '')
     }
     if (ipAddress?.startsWith('::1')) {
-      ipAddress = ipAddress.replace('::1', '127.0.0.1')
+      ipAddress = '127.0.0.1'
     }
 
     let device =  (req.headers && req.headers['user-agent'])
