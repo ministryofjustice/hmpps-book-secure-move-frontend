@@ -26,6 +26,7 @@ generic-service:
     SENTRY_ENVIRONMENT: "staging"
     SERVER_HOST: "hmpps-book-secure-move-frontend-staging.apps.cloud-platform.service.justice.gov.uk"
     FEATURE_FLAG_EXTRADITION_MOVES: "true"
+    OFF_NETWORK_ALLOWLIST: "*"
 
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
