@@ -47,6 +47,7 @@ export const defaultParams = {
   user: {
     id: '',
     permissions: [],
+    username: '',
   },
   headers: {},
   connection: {},
