@@ -59,6 +59,7 @@ export interface BasmRequest extends Express.Request {
   t: typeof I18n.t
   user: {
     id: string
+    username: string
     permissions: never[]
   }
   url: string
