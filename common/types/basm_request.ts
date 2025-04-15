@@ -48,9 +48,7 @@ export interface BasmRequest extends Express.Request {
   move: Move
   lodging?: Lodging
   params: any
-  session: {
-    save: () => void
-  }
+  session: Session
   sessionModel: SessionModel
   services: {
     allocation: Service

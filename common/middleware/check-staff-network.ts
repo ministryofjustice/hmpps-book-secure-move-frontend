@@ -19,7 +19,6 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
   if (req.url.startsWith('/auth/') || req.url.startsWith('/connect/')) {
     return next()
   }
-
   const accessToken = get(req.session, 'grant.response.access_token')
 
   if (!accessToken) {

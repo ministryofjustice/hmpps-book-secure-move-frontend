@@ -5,8 +5,9 @@ import { BasmRequest } from '../common/types/basm_request'
 import I18n from '../config/i18n'
 
 import { MoveFactory } from './move'
-import {SupplierService} from "../common/services/supplier"
+import { SupplierService } from "../common/services/supplier"
 import { EventService } from '../common/services/event'
+import { BasmError } from '../common/types/basm_error'
 
 export const defaultParams = {
   canAccess: (permission: string) => true,
@@ -19,7 +20,13 @@ export const defaultParams = {
   move: MoveFactory.build(),
   params: {},
   session: {
+    authExpiry: 17416129189670,
+    regenerate: (_func: (error: BasmError) => void) => {},
     save: () => {},
+    user: {
+      id: '',
+      permissions: [],
+    },
   },
   sessionModel: {
     reset: () => {},
@@ -42,6 +49,10 @@ export const defaultParams = {
     permissions: [],
     username: '',
   },
+  headers: {},
+  connection: {},
+  socket: {},
+  url: '',
 }
 
 export const BasmRequestFactory = Factory.define<BasmRequest>(() => ({
