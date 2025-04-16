@@ -29,14 +29,16 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
   }
 
   const decodedAccessToken = decodeAccessToken(accessToken)
+  let badDevice = false
 
   if (decodedAccessToken.auth_source !== 'auth') {
     // user is a staff member
     if (DISALLOWED_DEVICES && DISALLOWED_DEVICES.length) {
 
-      let device = (req.headers && req.headers['user-agent'])
+      let device = (req.headers && req.headers['user-agent'] || 'Unknown')
 
       if (DISALLOWED_DEVICES.some(d => device.includes(d))) {
+        badDevice = true
         if (DISALLOWED_DEVICES_ACTIONS.includes('WARN')) {
           console.log(`${req.user.username} has accessed service from a disallowed device: ${device}`)
         }
@@ -90,7 +92,7 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
           return next(error)
         }
 
-        if (OFF_NETWORK_ALLOWLIST_ACTIONS.includes('ENFORCE_IF_BAD_DEVICE')){
+        if (badDevice && OFF_NETWORK_ALLOWLIST_ACTIONS.includes('ENFORCE_IF_BAD_DEVICE')){
           const error = new Error(
             'Access denied from this device and network location'
           ) as BasmError

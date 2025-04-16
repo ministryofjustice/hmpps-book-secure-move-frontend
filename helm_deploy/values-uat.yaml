@@ -21,6 +21,9 @@ generic-service:
     SENTRY_ENVIRONMENT: "uat"
     SERVER_HOST: "hmpps-book-secure-move-frontend-uat.apps.cloud-platform.service.justice.gov.uk"
     OFF_NETWORK_ALLOWLIST: "*"
+    OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT"
+    DISALLOWED_DEVICES: "iPhone,Android"
+    DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT"
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:

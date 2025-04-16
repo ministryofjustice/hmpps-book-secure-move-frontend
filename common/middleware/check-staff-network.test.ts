@@ -24,6 +24,7 @@ describe('checkStaffNetwork', function () {
     req = {
       connection: {
         remoteAddress: '123.123.123.42',
+
       },
       session: {},
       url: '/',
