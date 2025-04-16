@@ -77,7 +77,7 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
         )
       ) {
         if (OFF_NETWORK_ALLOWLIST_ACTIONS.includes('WARN')){
-          console.log(`${req.user.id} has accessed service from an IP address outside of the allowlist: ${ipAddress}`)
+          console.log(`${req.user.username} has accessed service from an IP address outside of the allowlist: ${ipAddress}`)
         }
 
         if (OFF_NETWORK_ALLOWLIST_ACTIONS.includes('REPORT')){
