@@ -27,7 +27,7 @@ describe('subapp mounter', function () {
     })
 
     it('should use the subapp', function () {
-      expect(use).to.be.calledOnceWithExactly('app1')
+      expect(use.args[1]).to.deep.equal(['app1'])
     })
 
     it('should return the used middleware', function () {
@@ -41,7 +41,7 @@ describe('subapp mounter', function () {
     })
 
     it('should use the subapp', function () {
-      expect(use).to.be.calledOnceWithExactly('/app1', 'app1')
+      expect(use.args[1]).to.deep.equal(['/app1', 'app1'])
     })
 
     it('should return the used middleware', function () {
@@ -55,7 +55,7 @@ describe('subapp mounter', function () {
     })
 
     it('should use the subapp', function () {
-      expect(use.callCount).to.equal(2)
+      expect(use.callCount).to.equal(3)
       expect(use).to.be.calledWithExactly('app1')
       expect(use).to.be.calledWithExactly('app2')
     })
@@ -71,7 +71,8 @@ describe('subapp mounter', function () {
     })
 
     it('should only use the non-skipped subapps', function () {
-      expect(use).to.be.calledOnceWithExactly('app2')
+      expect(use.callCount).to.equal(2)
+      expect(use).to.be.calledWithExactly('app2')
     })
 
     it('should return the used middleware', function () {
@@ -85,7 +86,8 @@ describe('subapp mounter', function () {
     })
 
     it('should only use the non-missing subapps', function () {
-      expect(use).to.be.calledOnceWithExactly('app2')
+      expect(use.callCount).to.equal(2)
+      expect(use).to.be.calledWithExactly('app2')
     })
 
     it('should return the used middleware', function () {
@@ -99,7 +101,7 @@ describe('subapp mounter', function () {
     })
 
     it('should not attempt to use any subapps', function () {
-      expect(use).to.not.be.called
+      expect(use.callCount).to.equal(1)
     })
 
     it('should return a noop middleware', function () {

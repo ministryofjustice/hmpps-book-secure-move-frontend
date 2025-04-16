@@ -22,6 +22,14 @@ generic-service:
     NOMIS_ELITE2_API_URL: "https://prison-api-preprod.prison.service.justice.gov.uk"
     SENTRY_ENVIRONMENT: "preproduction"
     SERVER_HOST: "hmpps-book-secure-move-frontend-preprod.apps.cloud-platform.service.justice.gov.uk"
+    OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT,ENFORCE_IF_BAD_DEVICE"
+    DISALLOWED_DEVICES: "iPhone,Android"
+    DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT"
+
+  allowlist_envs:
+    OFF_NETWORK_ALLOWLIST:
+      groups:
+        - internal
 
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
