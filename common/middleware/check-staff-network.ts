@@ -22,7 +22,11 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
   if (
     url.startsWith('/auth/') ||
     url.startsWith('/connect/') ||
-    (url.startsWith('/person/') && url.endsWith('/image'))
+    (url.startsWith('/person/') && url.endsWith('/image')) ||
+    url.startsWith('/moves/outgoing') ||
+    url.startsWith('/moves/incoming') ||
+    url.startsWith('/moves/requested') ||
+    url.startsWith('/allocations/outgoing')
   ) {
     return next()
   }
