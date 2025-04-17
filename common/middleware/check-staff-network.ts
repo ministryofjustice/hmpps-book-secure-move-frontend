@@ -60,7 +60,7 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
     } else
     {
       if (offNetwork && OFF_NETWORK_ALLOWLIST_ACTIONS.includes('WARN')) {
-        console.log(`${req.user.username} has accessed service from an IP address outside of the allowlist: [${device}]`)
+        console.log(`${req.user.username} has accessed service from an IP address outside of the allowlist: [${ipAddress}]`)
       }
       if (badDevice && DISALLOWED_DEVICES_ACTIONS.includes('WARN')) {
         console.log(`${req.user.username} has accessed service from a disallowed device: ${device}`)
