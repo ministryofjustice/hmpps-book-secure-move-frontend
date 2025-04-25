@@ -21,16 +21,20 @@ generic-service:
     NOMIS_ELITE2_API_URL: "https://prison-api.prison.service.justice.gov.uk"
     SENTRY_ENVIRONMENT: "production"
     SERVER_HOST: "bookasecuremove.service.justice.gov.uk"
-    OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT_IF_BAD_DEVICE"
+    OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT_INTERNAL_IF_BAD_DEVICE"
     DISALLOWED_DEVICES: "iPhone,Android"
-    DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT,REPORT_IF_OFF_NETWORK"
+    DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT_INTERNAL,REPORT_IF_OFF_NETWORK"
 
   allowlist_envs:
     OFF_NETWORK_ALLOWLIST:
       groups:
-        - internal
+        - digital_staff_and_mojo
         - prisons
         - private_prisons
+        - police
+        - prisoner_escort
+        - mitie_staff
+        - probation
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:

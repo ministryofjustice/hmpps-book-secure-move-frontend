@@ -14,7 +14,7 @@ const checkStaffNetwork = proxyquire('./check-staff-network', {
       '100.100.100.0/24',
       '10.10.10.0/29',
     ],
-    OFF_NETWORK_ALLOWLIST_ACTIONS: ['ENFORCE'],
+    OFF_NETWORK_ALLOWLIST_ACTIONS: ['ENFORCE_INTERNAL'],
   },
 }).default
 
