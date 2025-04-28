@@ -9,6 +9,7 @@ module.exports = (app, { IS_DEV = false }, paths) => {
   const views = [
     paths.govukFrontend,
     paths.mojFrontend,
+    paths.hmrcFrontend,
     paths.templates,
     paths.components,
     paths.app,
