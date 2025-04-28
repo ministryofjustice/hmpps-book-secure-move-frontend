@@ -6,19 +6,15 @@ import { home } from '../../_routes'
 
 import { testLodges } from './_lodging-helpers'
 
-fixture('A move without any lodgings - adding one').beforeEach(async t => {
+fixture('Two-day lodgings').beforeEach(async t => {
   await t.useRole(pmuUser).navigateTo(home)
   await createMove()
 })
 
-test('One-day lodging', async function (t) {
-  await testLodges(t, 1, 1)
-})
-
-test('Two-day lodging', async function (t) {
+test('Adding one', async function (t) {
   await testLodges(t, 1, 2)
 })
 
-test('Seven-day lodging', async function (t) {
-  await testLodges(t, 1, 7)
+test('Adding two', async function (t) {
+  await testLodges(t, 2, 2)
 })
