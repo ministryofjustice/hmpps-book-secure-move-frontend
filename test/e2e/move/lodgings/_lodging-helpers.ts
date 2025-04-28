@@ -1,3 +1,5 @@
+import { Selector } from 'testcafe'
+
 import { addDays } from 'date-fns'
 
 import {
