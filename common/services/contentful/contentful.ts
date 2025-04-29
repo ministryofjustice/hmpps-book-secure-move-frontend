@@ -184,14 +184,15 @@ export class ContentfulService {
       posts: await this.fetchPosts(entries),
     }
   }
-
+  
   async fetchBanner(entries?: ContentfulContent[]) {
-    
-    if (!entries) {
-      entries = await this.fetchEntries()
+    if (!Array.isArray(entries)) {
+      entries = entries !== undefined ? [entries] : [];
     }
-
-    return entries?.filter(entry => entry.isCurrent())[0]?.getBannerData()
+  
+    return entries
+      .filter(entry => typeof entry.isCurrent === 'function' && entry.isCurrent())
+      [0]?.getBannerData();
   }
 
   async fetchPosts(entries?: ContentfulContent[]) {
