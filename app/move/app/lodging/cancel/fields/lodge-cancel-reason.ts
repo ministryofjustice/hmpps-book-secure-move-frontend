@@ -11,27 +11,36 @@ export const lodgeCancelReason = {
   items: [
     {
       id: 'lodge_cancel_reason',
-      value: 'made_in_error',
-      text: 'fields::lodge_cancel_reason.items.made_in_error.label',
-      hint: {
-        text: 'fields::lodge_cancel_reason.items.made_in_error.hint',
-      },
+      value: 'combined_with_another_request',
+      text: 'fields::lodge_cancel_reason.items.combined_with_another_request.label',
     },
     {
-      value: 'supplier_declined_to_move',
-      text: 'fields::lodge_cancel_reason.items.supplier_declined_to_move.label',
-      hint: {
-        text: 'fields::lodge_cancel_reason.items.supplier_declined_to_move.hint',
-      },
+      value: 'operational_issues_prison',
+      text: 'fields::lodge_cancel_reason.items.operational_issues_prison.label',
+    },
+    {
+      value: 'tornado_event',
+      text: 'fields::lodge_cancel_reason.items.tornado_event.label',
     },
     {
       value: 'cancelled_by_pmu',
       text: 'fields::lodge_cancel_reason.items.cancelled_by_pmu.label',
     },
     {
-      value: 'other',
-      text: 'fields::lodge_cancel_reason.items.another.label',
-      conditional: 'lodge_cancel_reason_custom',
+      value: 'prisoner_refusal',
+      text: 'fields::lodge_cancel_reason.items.prisoner_refusal.label',
     },
+    {
+      value: 'prisoner_unfit_to_travel',
+      text: 'fields::lodge_cancel_reason.items.prisoner_unfit_to_travel.label',
+    },
+    {
+      value: 'receiver_unable_to_accept_prisoner',
+      text: 'fields::lodge_cancel_reason.items.receiver_unable_to_accept_prisoner.label',
+    },
+    {
+      value: 'supplier_no_resource',
+      text: 'fields::lodge_cancel_reason.items.supplier_no_resource.label',
+    }
   ],
 }
