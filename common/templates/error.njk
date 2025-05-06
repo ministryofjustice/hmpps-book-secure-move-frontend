@@ -19,10 +19,10 @@
     </ul>
      {% set other %}  {{ t(message.alternative | string , { link: message.link } ) | safe }}  {% endset %}
      <Trans>
-       <p> {{ other | safe}} <p>
-</Trans
+       <p> {{ other | safe}} </p>
+     </Trans>
   {% else %}
-    <p>{{ t(message.content) }}</p>
+    <p>{{ t(message.content | string | safe) }}</p>
     <p> {{ reference }} </p>
   {% endif %}
 
