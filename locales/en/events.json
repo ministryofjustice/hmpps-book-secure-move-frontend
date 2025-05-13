@@ -436,7 +436,7 @@
     "description": "{{notes}}"
   },
   "PersonMoveBookedIntoReceivingEstablishment": {
-    "heading": "$t(events::person) booked into {{location.title}}",
+    "heading": "$t(events::person) booked for arrival at {{location.title}}",
     "description": ""
   },
   "PersonMoveDeathInCustody": {
