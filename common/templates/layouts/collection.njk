@@ -19,6 +19,12 @@
   {% set other = 'week' %}
 {% endif %}
 
+{% if group_by === 'vehicle' %}
+  {% set other_group_by = 'location' %}
+{% else %}
+  {% set other_group_by = 'vehicle' %}
+{% endif %}
+
 {% block pageTitle %}
   {{ t("collections::page_title_with_date", {
     context: context,
@@ -106,13 +112,20 @@
             </li>
             {% if datePagination %}
              <li>
-               <a href="{{ REQUEST_PATH }}/switch-view" class="app-icon app-icon--switch">
+               <a href="{{ REQUEST_PATH }}/switch-view" class="app-icon app-icon--{{ other }}-view">
                  {{ t("collections::switch_view", {
                    other: other
                     }) }}
                   </a>
                 </li>
             {% endif %}
+            <li>
+              <a href="{{ REQUEST_PATH }}/switch-group-by" class="app-icon app-icon--{{ other_group_by }}">
+                {{ t("collections::switch_group_by", {
+                  other_group_by: other_group_by
+                }) }}
+              </a>
+            </li>
           </ul>
         </div>
       {% endblock %}
