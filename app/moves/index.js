@@ -14,6 +14,7 @@ const {
   setDateRange,
   setPagination,
   switchPeriod,
+  switchGroupBy,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 const setLocation = require('../../common/middleware/set-location')
@@ -131,6 +132,10 @@ viewRouter.get(
 viewRouter.get(
   COLLECTION_VIEW_PATH + '/switch-view',
   switchPeriod(DEFAULTS.TIME_PERIOD)
+)
+viewRouter.get(
+  COLLECTION_VIEW_PATH + '/switch-group-by',
+  switchGroupBy(DEFAULTS.GROUP_BY)
 )
 
 router.get('/', redirectBaseUrl)

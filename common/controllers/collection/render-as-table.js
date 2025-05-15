@@ -19,6 +19,7 @@ module.exports = function listAsTable(req, res) {
     filter,
     pagination,
     period,
+    group_by: req.session?.group_by,
     resultsAsTable,
     activeStatus: req.query.status,
     totalResults: sumBy(filter, 'value'),
