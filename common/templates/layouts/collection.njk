@@ -95,7 +95,7 @@
           <ul class="govuk-list govuk-!-font-size-16 app-!-float-right app-print--hide">
             {% if canAccess('moves:download') and context !== "allocations" %}
               <li>
-                <a href="{{ REQUEST_PATH }}/download.csv" class="app-icon app-icon--download">
+                <a href="{{ REQUEST_PATH }}/download.csv" class="govuk-link govuk-link--no-visited-state app-icon app-icon--download">
                   {{ t("collections::download_csv", {
                     context: context
                   }) }}
@@ -104,7 +104,7 @@
             {% endif %}
 
             <li>
-              <a href="#" class="app-icon app-icon--print" id="print-link">
+              <a href="#" class="govuk-link govuk-link--no-visited-state app-icon app-icon--print" id="print-link">
                 {{ t("collections::print_collection", {
                     context: context
                   }) }}
@@ -112,7 +112,7 @@
             </li>
             {% if datePagination %}
              <li>
-               <a href="{{ REQUEST_PATH }}/switch-view" class="app-icon app-icon--{{ other }}-view">
+               <a href="{{ REQUEST_PATH }}/switch-view" class="govuk-link govuk-link--no-visited-state app-icon app-icon--{{ other }}-view">
                  {{ t("collections::switch_view", {
                    other: other
                     }) }}
@@ -120,7 +120,7 @@
                 </li>
             {% endif %}
             <li>
-              <a href="{{ REQUEST_PATH }}/switch-group-by" class="app-icon app-icon--{{ other_group_by }}">
+              <a href="{{ REQUEST_PATH }}/switch-group-by" class="govuk-link govuk-link--no-visited-state app-icon app-icon--{{ other_group_by }}">
                 {{ t("collections::switch_group_by", {
                   other_group_by: other_group_by
                 }) }}
