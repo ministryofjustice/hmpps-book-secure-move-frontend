@@ -43,6 +43,7 @@ const {
   setFilterMoves,
   setResultsSingleRequests,
   setResultsMoves,
+  allowGroupByVehicle,
 } = require('./middleware')
 
 // Define param middleware
@@ -86,6 +87,7 @@ viewRouter.get(
   protectRoute('moves:view:outgoing'),
   setContext('outgoing_moves'),
   setFromLocation,
+  allowGroupByVehicle,
   COLLECTION_MIDDLEWARE,
   [
     setBodyMoves('outgoing', 'fromLocationId'),
@@ -110,6 +112,7 @@ viewRouter.get(
   protectRoute('moves:view:incoming'),
   setContext('incoming_moves'),
   setFromLocation,
+  allowGroupByVehicle,
   COLLECTION_MIDDLEWARE,
   [
     setBodyMoves('incoming', 'toLocationId'),
