@@ -1,3 +1,4 @@
+const allowGroupByVehicle = require('./allow-group-by-vehicle')
 const redirectBaseUrl = require('./redirect-base-url')
 const saveUrl = require('./save-url')
 const setBodyRequestFilters = require('./set-body-request-filters')
@@ -24,4 +25,5 @@ module.exports = {
   setFilterSingleRequests,
   setResultsMoves,
   setResultsSingleRequests,
+  allowGroupByVehicle,
 }

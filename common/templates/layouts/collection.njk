@@ -119,6 +119,7 @@
                   </a>
                 </li>
             {% endif %}
+            {% if groupBySwitcher %}
             <li>
               <a href="{{ REQUEST_PATH }}/switch-group-by" class="govuk-link govuk-link--no-visited-state app-icon app-icon--{{ other_group_by }}">
                 {{ t("collections::switch_group_by", {
@@ -126,6 +127,7 @@
                 }) }}
               </a>
             </li>
+            {% endif %}
           </ul>
         </div>
       {% endblock %}
