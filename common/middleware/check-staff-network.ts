@@ -115,6 +115,7 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
       'Access denied from this device and network location'
     ) as BasmError
     error.statusCode = 403
+    error.cause = ['BAD_DEVICE', 'OFF_NETWORK']
     return next(error)
   }
 
@@ -123,6 +124,7 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
       'Access denied from this network location'
     ) as BasmError
     error.statusCode = 403
+    error.cause = ['OFF_NETWORK']
     return next(error)
   }
   if (badDevice && DISALLOWED_DEVICES && (DISALLOWED_DEVICES_ACTIONS.includes('ENFORCE') || DISALLOWED_DEVICES_ACTIONS.includes(`ENFORCE_${intExtUser}`))) {
@@ -130,6 +132,7 @@ export default (req: BasmRequest, _res: BasmResponse, next: NextFunction) => {
       'Access denied from this device'
     ) as BasmError
     error.statusCode = 403
+    error.cause = ['BAD_DEVICE']
     return next(error)
   }
   next()

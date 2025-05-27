@@ -14,6 +14,12 @@ async function _getMessage(error) {
     errorLookup = 'tampered_with'
   } else if (error.statusCode === 404) {
     errorLookup = 'not_found'
+  } else if (error.statusCode === 403 && error.cause?.includes('BAD_DEVICE')) {
+    errorLookup = 'unauthorized_bad_device'
+  } else if (error.statusCode === 403 && error.cause?.includes('OFF_NETWORK')) {
+    errorLookup = 'unauthorized_off_network'
+  } else if (error.statusCode === 403 || error.statusCode === 401) {
+    errorLookup = 'unauthorized'
   } else if (error.statusCode === 403 || error.statusCode === 401) {
     errorLookup = 'unauthorized'
   } else if (error.statusCode === 422) {
