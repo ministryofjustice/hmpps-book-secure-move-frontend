@@ -34,6 +34,11 @@ const DEFAULTS = {
     outgoing: 'day',
     incoming: 'day',
   },
+  GROUP_BY: {
+    requested: 'location',
+    outgoing: 'location',
+    incoming: 'location',
+  },
 }
 
 const FILTERS = {
