@@ -35,14 +35,37 @@ $_icon-height: 20px;
   }
 }
 
-.app-icon--switch {
-  background-image: url("../images/switch-icon.png");
+.app-icon--day-view {
+  background-image: url("../images/day-view-icon.png");
 
   @include govuk-device-pixel-ratio {
-    background-image: url("../images/switch-icon@2x.png");
+    background-image: url("../images/day-view-icon@2x.png");
   }
 }
 
+.app-icon--week-view {
+  background-image: url("../images/week-view-icon.png");
+
+  @include govuk-device-pixel-ratio {
+    background-image: url("../images/week-view-icon@2x.png");
+  }
+}
+
+.app-icon--vehicle {
+  background-image: url("../images/vehicle-icon.png");
+
+  @include govuk-device-pixel-ratio {
+    background-image: url("../images/vehicle-icon@2x.png");
+  }
+}
+
+.app-icon--location {
+  background-image: url("../images/location-icon.png");
+
+  @include govuk-device-pixel-ratio {
+    background-image: url("../images/location-icon@2x.png");
+  }
+}
 
 .app-icon--warning {
   background-image: url("../images/warning-icon.png");
