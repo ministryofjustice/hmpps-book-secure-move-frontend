@@ -53,7 +53,7 @@ describe('Collection controllers', function () {
 
       it('should contain correct number of properties', function () {
         const params = res.render.args[0][1]
-        expect(Object.keys(params)).to.have.length(10)
+        expect(Object.keys(params)).to.have.length(11)
       })
 
       it('should contain actions property', function () {
