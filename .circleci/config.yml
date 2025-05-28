@@ -8,7 +8,7 @@ aliases:
   - &node_container
     executor:
       name: hmpps/node
-      tag: 20.18.2-browsers
+      tag: 22.16-browsers
   # Common steps
   - &install_dependencies
     run:
