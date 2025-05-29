@@ -110,10 +110,11 @@ jobs:
       - name: Set up NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Compile typescript
         run: |
+          npm install -g npm@11
           npm install
           npx tsc --project ./
 
@@ -197,3 +198,4 @@ jobs:
             } catch (e) {
               core.setFailed(e)
             }
+

@@ -6,6 +6,7 @@ import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
 import * as contentful from 'contentful'
 import { format } from 'date-fns'
 
+const { get, set } = require('../../../common/lib/api-client/cache')
 const {
   CONTENTFUL_SPACE_ID,
   CONTENTFUL_ACCESS_TOKEN,
@@ -143,13 +144,26 @@ export class ContentfulService {
   }
 
   async fetchEntries() {
+    let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
+
+    if(cachedEntries) {
+      return cachedEntries
+    }
+
     const entries = (await this.client.getEntries({
       content_type: this.contentType,
     })) as contentful.EntryCollection<ContentfulFields>
 
-    if (!entries.items?.length) {
-      return []
-    }
+    const entriesToCache = entries.items?.length ? entries : []
+
+    await set(`cache:entries:${this.contentType}`, 
+      entriesToCache,
+      300,
+      true)
+
+      if (!entries.items?.length) {
+        return []
+      } 
 
     return entries.items
       .map(e => this.createContent(e.fields))
@@ -170,13 +184,15 @@ export class ContentfulService {
       posts: await this.fetchPosts(entries),
     }
   }
-
+  
   async fetchBanner(entries?: ContentfulContent[]) {
-    if (!entries) {
-      entries = await this.fetchEntries()
+    if (!Array.isArray(entries)) {
+      entries = entries !== undefined ? [entries] : [];
     }
-
-    return entries.filter(entry => entry.isCurrent())[0]?.getBannerData()
+  
+    return entries
+      .filter(entry => typeof entry.isCurrent === 'function' && entry.isCurrent())
+      [0]?.getBannerData();
   }
 
   async fetchPosts(entries?: ContentfulContent[]) {
@@ -184,6 +200,6 @@ export class ContentfulService {
       entries = await this.fetchEntries()
     }
 
-    return entries.map(entry => entry.getPostData())
+    return entries?.map(entry => entry.getPostData())
   }
 }

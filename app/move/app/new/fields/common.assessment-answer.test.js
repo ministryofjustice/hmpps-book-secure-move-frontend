@@ -27,6 +27,7 @@ describe('Move fields', function () {
       beforeEach(function () {
         field = assessmentAnswer({
           isRequired: true,
+          name: 'test',
         })
       })
 
@@ -36,6 +37,7 @@ describe('Move fields', function () {
           rows: 3,
           component: 'govukTextarea',
           classes: 'govuk-input--width-20',
+          id: 'test',
           label: {
             text: 'fields::assessment_comment.required',
             classes: 'govuk-label--s',
@@ -74,6 +76,7 @@ describe('Move fields', function () {
           field = assessmentAnswer({
             isRequired: true,
             isExplicit: true,
+            name: 'test',
           })
         })
 
@@ -83,6 +86,7 @@ describe('Move fields', function () {
             rows: 3,
             component: 'govukTextarea',
             classes: 'govuk-input--width-20',
+            id: 'test',
             label: {
               text: 'fields::assessment_comment.required',
               classes: 'govuk-label--s',

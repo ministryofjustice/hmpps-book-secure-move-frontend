@@ -19,6 +19,7 @@ describe('Move fields', function () {
 
       it('should return correct object', function () {
         expect(field).to.deep.equal({
+          id: 'foo',
           name: mockName,
           validate: 'required',
           component: 'govukRadios',

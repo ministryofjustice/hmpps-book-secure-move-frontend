@@ -1,4 +1,5 @@
 const dateType = {
+  id: 'date_type',
   validate: 'required',
   component: 'govukRadios',
   name: 'date_type',
@@ -10,7 +11,6 @@ const dateType = {
   },
   items: [
     {
-      id: 'date_type',
       value: 'today',
       text: 'fields::date_type.items.today.label',
     },

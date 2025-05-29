@@ -1,4 +1,5 @@
 const gender = {
+  id: 'gender',
   validate: 'required',
   component: 'govukRadios',
   fieldset: {

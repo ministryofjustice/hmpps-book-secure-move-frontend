@@ -16,6 +16,9 @@ import '../images/tick-icon@2x.png'
 import '../images/person-fallback.png'
 import '../images/person-fallback@2x.png'
 
+import * as MOJFrontend from '@ministryofjustice/frontend'
+import * as HMRCFrontend from 'hmrc-frontend/hmrc/all'
+
 import MultiFileUpload from '../../components/multi-file-upload/multi-file-upload'
 
 const accessibleAutocomplete = require('accessible-autocomplete')
@@ -35,6 +38,8 @@ const Analytics = require('./analytics')
 const { nodeListForEach } = require('./utils')
 
 initAll()
+HMRCFrontend.initAll()
+MOJFrontend.initAll()
 
 // eslint-disable-next-line no-new
 new AddAnother('.moj-add-another')

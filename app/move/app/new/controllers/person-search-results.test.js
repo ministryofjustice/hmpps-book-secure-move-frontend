@@ -69,7 +69,7 @@ describe('Move controllers', function () {
     })
 
     describe('#setPeople()', function () {
-      let req, nextSpy
+      let req, res, nextSpy
 
       beforeEach(function () {
         req = {
@@ -85,30 +85,53 @@ describe('Move controllers', function () {
       context('when query contains filter', function () {
         beforeEach(function () {
           req.query.filter = {
-            foo: 'bar',
+            prison_number: 'G1234TX',
+          }
+          res = {
+            locals: {},
           }
         })
 
         context('when person service resolves', function () {
           const mockResponse = [1, 2, 3, 4]
 
-          beforeEach(async function () {
+          beforeEach(function () {
             personService.getByIdentifiers.resolves(mockResponse)
-            await controller.setPeople(req, {}, nextSpy)
           })
 
-          it('should call service', function () {
+          it('should call service', async function () {
+            await controller.setPeople(req, res, nextSpy)
+
             expect(personService.getByIdentifiers).to.be.calledOnceWithExactly(
               req.query.filter
             )
           })
 
-          it('should set req.people to empty array', function () {
+          it('should set req.people to empty array', async function () {
+            await controller.setPeople(req, res, nextSpy)
+
             expect(req).to.have.property('people')
             expect(req.people).to.deep.equal(mockResponse)
           })
 
-          it('should call next', function () {
+          it('should set res.locals.filterBy to prison number', async function () {
+            await controller.setPeople(req, res, nextSpy)
+
+            expect(res.locals.filterBy).to.equal('prison number')
+          })
+
+          it('should set res.locals.filterBy to PNC number when filtering by that', async function () {
+            req.query.filter = {
+              police_national_computer: '05/1234X',
+            }
+            await controller.setPeople(req, res, nextSpy)
+
+            expect(res.locals.filterBy).to.equal('PNC number')
+          })
+
+          it('should call next', async function () {
+            await controller.setPeople(req, res, nextSpy)
+
             expect(nextSpy).to.be.calledOnceWithExactly()
           })
         })

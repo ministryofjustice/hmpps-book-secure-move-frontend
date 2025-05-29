@@ -41,6 +41,14 @@
     "heading": "You don’t have permission to view this page",
     "content": "If you think you should have access please contact the support team."
   },
+  "unauthorized_bad_device": {
+    "heading": "Access to Book a Secure Move is not permitted from personal devices",
+    "content": "This incident has been reported. If you think you should have access from this device please contact the support team."
+  },
+  "unauthorized_off_network": {
+    "heading": "Access to Book a Secure Move is not permitted from this network",
+    "content": "This incident has been reported. If you think you should have access from this network please contact the support team."
+  },
   "unprocessable_entity": {
     "heading": "Sorry, there is a problem with the service",
     "content": "Contact the helpdesk on 0800 917 5148 or #6598 from inside an establishment and quote the reference number below."

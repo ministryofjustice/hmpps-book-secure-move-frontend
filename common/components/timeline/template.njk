@@ -1,5 +1,3 @@
-{% from "tag/macro.njk" import appTag %}
-
 <div class="app-timeline {{- ' ' + params.classes if params.classes}}" {%- for attribute, value in params.attributes -%} {{ attribute }}="{{ value }}"{% endfor %}>
 
   {%- for item in params.items %}
@@ -16,10 +14,10 @@
         {{- item.html | safe if item.html else item.text -}}
       </div>
 
-      <p class="app-timeline__date {{- ' ' + item.datetime.classes if item.datetime.classes}}">
+      <p class="app-timeline__date {{- ' ' + item.datetime.classes if item.datetime.classes}} ">
         <time datetime="{{ item.datetime.timestamp }}">
           {%- if item.datetime.type %}
-            {{- item.datetime.timestamp | formatDateTimeForEvents -}}
+            {{- item.datetime.timestamp | formatDateWithTimeAndDay -}}
           {% else %}
             {{- item.datetime.timestamp | date(item.datetime.format) -}}
           {% endif -%}

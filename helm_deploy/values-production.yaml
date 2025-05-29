@@ -7,12 +7,10 @@ generic-service:
   ingress:
     hosts:
       - bookasecuremove.service.justice.gov.uk
-      - hmpps-book-secure-move-frontend-production.apps.cloud-platform.service.justice.gov.uk
-      - hmpps-book-secure-move-frontend-production.apps.live-1.cloud-platform.service.justice.gov.uk
     tlsSecretName: hmpps-book-secure-move-frontend-production-cert
 
   env:
-    API_BASE_URL: "https://hmpps-book-secure-move-api-production.apps.cloud-platform.service.justice.gov.uk"
+    API_BASE_URL: "https://api.bookasecuremove.service.justice.gov.uk"
     AUTH_PROVIDER_URL: "https://sign-in.hmpps.service.justice.gov.uk"
     FEATURE_FLAG_ADD_LODGE_BUTTON: "false"
     FEEDBACK_URL: "https://eu.surveymonkey.com/r/3CKYXSC"
@@ -23,6 +21,20 @@ generic-service:
     NOMIS_ELITE2_API_URL: "https://prison-api.prison.service.justice.gov.uk"
     SENTRY_ENVIRONMENT: "production"
     SERVER_HOST: "bookasecuremove.service.justice.gov.uk"
+    OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT_INTERNAL_IF_BAD_DEVICE,ENFORCE_INTERNAL_IF_BAD_DEVICE"
+    DISALLOWED_DEVICES: "iPhone,Android"
+    DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT_INTERNAL,REPORT_IF_OFF_NETWORK,ENFORCE_INTERNAL_IF_OFF_NETWORK"
+
+  allowlist_envs:
+    OFF_NETWORK_ALLOWLIST:
+      groups:
+        - digital_staff_and_mojo
+        - prisons
+        - private_prisons
+        - police
+        - prisoner_escort
+        - mitie_staff
+        - probation
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:

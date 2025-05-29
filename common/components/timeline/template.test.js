@@ -297,7 +297,7 @@ describe('Timeline component', function () {
     })
 
     it('should output expected shortdatetime', function () {
-      expect($time.html().trim()).to.equal('14 June 2019 at 15:01')
+      expect($time.html().trim()).to.equal('15:01 on Friday 14 Jun 2019')
     })
   })
 

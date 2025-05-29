@@ -40,7 +40,9 @@ module.exports = async function (token, move = {}) {
     .filter(
       ({ event_type: eventType, classification }) =>
         eventType === 'PerPropertyChange' ||
-        ['incident', 'medical'].includes(classification)
+        ['incident', 'medical', 'suicide_and_self_harm'].includes(
+          classification
+        )
     )
     .sort(({ occurred_at: occurredAtA }, { occurred_at: occurredAtB }) =>
       occurredAtA > occurredAtB ? -1 : 1
