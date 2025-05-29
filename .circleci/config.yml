@@ -13,7 +13,7 @@ aliases:
   - &install_dependencies
     run:
       name: Install NPM dependencies
-      command: npm install && npm rebuild node-sass
+      command: npm install -g npm@11 && npm install && npm rebuild node-sass
   - &restore_cache
     restore_cache:
       name: Restore NPM cache
