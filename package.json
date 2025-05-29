@@ -2,7 +2,7 @@
   "name": "hmpps-book-secure-move-frontend",
   "description": "Frontend rendering app for the Book a secure move service",
   "homepage": "https://github.com/ministryofjustice/hmpps-book-secure-move-frontend#readme",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "main": "start.js",
   "contributors": [
     {
@@ -315,8 +315,8 @@
     "webpack-merge": "5.8.0"
   },
   "engines": {
-    "node": "20",
-    "npm": "10"
+    "node": "22",
+    "npm": "11"
   },
   "files": [],
   "scripts": {
