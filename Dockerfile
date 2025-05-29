@@ -1,4 +1,4 @@
-FROM node:20-alpine3.19 as build-stage
+FROM node:22-alpine3.21 as build-stage
 
 WORKDIR /home/node/app
 
@@ -26,7 +26,7 @@ RUN npx tsc
 RUN NODE_ENV=production npm run build
 ############### End of Build step ###############
 
-FROM node:20-alpine3.19
+FROM node:22-alpine3.21
 
 WORKDIR /home/node/app
 USER 1000
