@@ -114,6 +114,7 @@ jobs:
 
       - name: Compile typescript
         run: |
+          npm install -g npm@11
           npm install
           npx tsc --project ./
 
