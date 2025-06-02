@@ -32,7 +32,8 @@
   "classification": {
     "default": "Incident",
     "incident": "Serious incident",
-    "medical": "Medical incident"
+    "medical": "Medical incident",
+    "suicide_and_self_harm": "Suicide and Self-harm concern"
   },
   "JourneyAdmitToReception": {
     "heading": "Admitted to reception",
@@ -308,6 +309,10 @@
     "heading": "Self-harm",
     "description": "{{notes}}"
   },
+  "PerSuicideAndSelfHarm": {
+    "heading": "",
+    "description": "{{history_of_self_harm_details}}"
+  },
   "PerMedicalDrugsAlcohol": {
     "flag": "medical",
     "heading": "Drugs or Alcohol",
@@ -431,7 +436,7 @@
     "description": "{{notes}}"
   },
   "PersonMoveBookedIntoReceivingEstablishment": {
-    "heading": "$t(events::person) booked into {{location.title}}",
+    "heading": "$t(events::person) booked for arrival at {{location.title}}",
     "description": ""
   },
   "PersonMoveDeathInCustody": {

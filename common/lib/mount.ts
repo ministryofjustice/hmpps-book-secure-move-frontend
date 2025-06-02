@@ -1,12 +1,20 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
+
+import { Router, NextFunction, RequestHandler } from 'express'
+
+import checkStaffNetwork from '../middleware/check-staff-network'
+import { BasmRequest } from '../types/basm_request'
+import { BasmResponse } from '../types/basm_response'
 
 const debug = require('debug')('app:mount')
-const express = require('express')
 
-const mount = dir => {
-  const router = express.Router()
+const mount = (dir: string) => {
+  const router = Router()
   const subApps = fs.readdirSync(dir, { withFileTypes: true })
+
+  // This cast is necessary because eslint moans about the Request/Response being the wrong type
+  router.use(checkStaffNetwork as unknown as RequestHandler)
 
   const appRouters = subApps
     .filter(dirent => dirent.isDirectory())
@@ -31,7 +39,9 @@ const mount = dir => {
     })
     .filter(used => used)
 
-  return appRouters.length ? appRouters : (req, res, next) => next()
+  return appRouters.length
+    ? appRouters
+    : (_req: BasmRequest, _res: BasmResponse, next: NextFunction) => next()
 }
 
 module.exports = mount

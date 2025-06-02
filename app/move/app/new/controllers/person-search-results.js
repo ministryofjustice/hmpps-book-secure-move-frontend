@@ -22,15 +22,22 @@ class PersonSearchResultsController extends PersonController {
 
     if (has(req.query, 'filter')) {
       try {
-        req.people = await req.services.person.getByIdentifiers(
-          req.query.filter
-        )
+        const { filter } = req.query
+        req.people = await req.services.person.getByIdentifiers(filter)
+        res.locals.filterBy = this.filterName(Object.keys(filter)[0])
       } catch (error) {
         return next(error)
       }
     }
 
     next()
+  }
+
+  filterName(filterKey) {
+    return {
+      prison_number: 'prison number',
+      police_national_computer: 'PNC number',
+    }[filterKey]
   }
 
   setPeopleItems(req, res, next) {
@@ -53,6 +60,7 @@ class PersonSearchResultsController extends PersonController {
 
   checkFilter(req, res, next) {
     const sessionData = req.sessionModel.toJSON()
+
     const filters = Object.keys(sessionData)
       .filter(key => key.includes('filter.'))
       .map(

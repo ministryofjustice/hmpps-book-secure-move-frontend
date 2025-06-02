@@ -10,6 +10,7 @@ const {
   setDateRange,
   setPagination,
   switchPeriod,
+  switchGroupBy,
 } = require('../../common/middleware/collection')
 const { protectRoute } = require('../../common/middleware/permissions')
 const setLocation = require('../../common/middleware/set-location')
@@ -35,6 +36,10 @@ router.use(protectRoute('allocations:view'))
 
 router.get('/', (req, res) => res.redirect(`${MOUNTPATH}/outgoing`))
 router.get(COLLECTION_PATH + '/switch-view', switchPeriod(DEFAULTS.TIME_PERIOD))
+router.get(
+  COLLECTION_PATH + '/switch-group-by',
+  switchGroupBy(DEFAULTS.GROUP_BY)
+)
 router.get('/:view(outgoing)', redirectView(DEFAULTS.TIME_PERIOD))
 
 router.get(

@@ -1,4 +1,5 @@
 const people = {
+  id: 'people',
   validate: 'required',
   component: 'govukRadios',
   items: [],

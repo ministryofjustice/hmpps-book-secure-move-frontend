@@ -1,4 +1,8 @@
-function assessmentAnswer({ isRequired = false, isExplicit = false } = {}) {
+function assessmentAnswer({
+  isRequired = false,
+  isExplicit = false,
+  name,
+} = {}) {
   let params = {
     skip: true,
     rows: 3,
@@ -18,6 +22,7 @@ function assessmentAnswer({ isRequired = false, isExplicit = false } = {}) {
         classes: 'govuk-label--s',
       },
       validate: 'required',
+      id: name,
     }
   }
 

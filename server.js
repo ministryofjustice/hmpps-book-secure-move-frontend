@@ -145,6 +145,12 @@ module.exports = async () => {
         '/node_modules/@ministryofjustice/frontend/moj/assets'
       ),
       { maxAge: config.STATIC_ASSETS.CACHE_MAX_AGE }
+    ),
+    express.static(
+      path.join(__dirname, '/node_modules/hmrc-frontend/hmrc/all'),
+      {
+        maxAge: config.STATIC_ASSETS.CACHE_MAX_AGE,
+      }
     )
   )
 

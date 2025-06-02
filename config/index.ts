@@ -26,6 +26,12 @@ const BASE_URL = `${IS_PRODUCTION ? 'https' : 'http'}://${SERVER_HOST}`
 const API_BASE_URL = process.env.API_BASE_URL || ''
 export const AUTH_BASE_URL = process.env.AUTH_PROVIDER_URL
 export const MANAGE_USERS_API_BASE_URL = process.env.MANAGE_USERS_API_URL
+export const OFF_NETWORK_ALLOWLIST = (
+  process.env.OFF_NETWORK_ALLOWLIST || ''
+).split(',')
+export const OFF_NETWORK_ALLOWLIST_ACTIONS = (process.env.OFF_NETWORK_ALLOWLIST_ACTIONS || '').split(',')
+export const DISALLOWED_DEVICES = (process.env.DISALLOWED_DEVICES || '').split(',')
+export const DISALLOWED_DEVICES_ACTIONS = (process.env.DISALLOWED_DEVICES_ACTIONS || '').split(',')
 const AUTH_KEY = process.env.AUTH_PROVIDER_KEY
 const NOMIS_ELITE2_API_BASE_URL = process.env.NOMIS_ELITE2_API_URL
 const NOMIS_ELITE2_API_HEALTHCHECK_PATH =
@@ -317,7 +323,9 @@ export const FEATURE_FLAGS = {
     process.env.FEATURE_FLAG_ADD_LODGE_BUTTON || ''
   ),
   DATE_OF_ARREST: /true/i.test(process.env.FEATURE_FLAG_DATE_OF_ARREST || ''),
-  EXTRADITION_MOVES: /true/i.test(process.env.FEATURE_FLAG_EXTRADITION_MOVES || ''),
+  EXTRADITION_MOVES: /true/i.test(
+    process.env.FEATURE_FLAG_EXTRADITION_MOVES || ''
+  ),
 }
 export const FRAMEWORKS = {
   CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,
