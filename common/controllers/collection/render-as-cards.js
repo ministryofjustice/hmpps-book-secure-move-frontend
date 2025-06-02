@@ -38,6 +38,7 @@ module.exports = function listAsCards(req, res) {
     dateRange,
     datePagination,
     period,
+    group_by: req.session?.group_by,
     resultsAsCards,
     activeStatus: query.status,
     totalResults: sumBy(filter, 'value'),

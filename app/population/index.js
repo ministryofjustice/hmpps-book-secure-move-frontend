@@ -6,6 +6,7 @@ const {
   setDateRange,
   setDatePagination,
   switchPeriod,
+  switchGroupBy,
 } = require('../../common/middleware/collection')
 const setLocation = require('../../common/middleware/set-location')
 const wizard = require('../../common/middleware/unique-form-wizard')
@@ -59,6 +60,8 @@ router.get(
 )
 
 router.get(BASE_PATH + '/switch-view', switchPeriod(DEFAULTS.TIME_PERIOD))
+
+router.get(BASE_PATH + '/switch-group-by', switchGroupBy(DEFAULTS.GROUP_BY))
 
 router.get(
   WEEKLY_PATH,

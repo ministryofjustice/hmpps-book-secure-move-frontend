@@ -26,6 +26,8 @@
 {% from "moj/components/primary-navigation/macro.njk"     import mojPrimaryNavigation %}
 {% from "moj/components/date-picker/macro.njk"            import mojDatePicker %}
 
+{% from "hmrc/components/timeout-dialog/macro.njk" import hmrcTimeoutDialog %}
+
 {# App level components #}
 {% from "raw/macro.njk"               import raw %}
 {% from "add-another/macro.njk"       import appAddAnother %}
@@ -74,8 +76,8 @@
       });
     </script>
   {% endif %}
-
 {% endblock %}
+
 
 {% block pageTitle %}
   {{ SERVICE_NAME }}
@@ -91,6 +93,14 @@
 
 {% block bodyStart %}
 
+  {{ hmrcTimeoutDialog ({
+    timeout: 1800,
+    countdown: 120,
+    keepAliveUrl: "?continue=true",
+    signOutUrl: "/auth/sign-out",
+    language: "en"
+  }) }}
+
   {% if GA_ID %}
     <!-- Google Tag Manager (noscript) -->
     <noscript>
@@ -99,6 +109,7 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
   {% endif %}
+  
 {% endblock %}
 
 {% block header %}
@@ -127,6 +138,7 @@
       items: primaryNavigation
     }) }}
   {% endblock %}
+
   {% block organisationSwitcher %}
     {% if CURRENT_LOCATION or CURRENT_REGION or canAccess("locations:all") %}
       <div class="govuk-width-container">
@@ -204,6 +216,7 @@
     {% endif %}
 
   <script type="module" src="{{ getAssetPath('app.js') }}" nonce="{{ cspNonce }}"></script>
+
   <script type="text/javascript" nonce="{{ cspNonce }}">
     document.addEventListener("DOMContentLoaded", function() {
       const printBtn = document.getElementById('print-link');

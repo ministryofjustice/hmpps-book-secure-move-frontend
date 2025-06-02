@@ -50,6 +50,7 @@
   "download_csv_incoming_moves": "Download moves (.csv)",
   "download_csv_single_requests": "Download moves (.csv)",
   "switch_view" : "Switch to {{other}} view",
+  "switch_group_by" : "Group by {{other_group_by}}",
   "labels": {
     "vehicle_registration": "Vehicle registration",
     "awaiting_vehicle": "Awaiting vehicle",

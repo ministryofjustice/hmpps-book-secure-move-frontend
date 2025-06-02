@@ -60,6 +60,7 @@ export interface BasmRequest extends Express.Request {
   user: {
     id: string
     permissions: never[]
+    username: string
   }
   url: string
 }
