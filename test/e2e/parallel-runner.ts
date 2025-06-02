@@ -18,7 +18,9 @@ const { CIRCLE_PULL_REQUEST = '' } = process.env
 const prNumber = CIRCLE_PULL_REQUEST.replace(/.*\//, '')
 
 process.on('unhandledRejection', (reason, p) => {
-  process.stdout.write(`Unhandled Rejection at: Promise ${p}, reason: ${reason}`)
+  process.stdout.write(
+    `Unhandled Rejection at: Promise ${p}, reason: ${reason}`
+  )
 })
 
 if (prNumber) {
