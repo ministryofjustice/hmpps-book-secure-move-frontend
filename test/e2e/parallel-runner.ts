@@ -17,6 +17,10 @@ import yargs from 'yargs'
 const { CIRCLE_PULL_REQUEST = '' } = process.env
 const prNumber = CIRCLE_PULL_REQUEST.replace(/.*\//, '')
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+})
+
 if (prNumber) {
   const prPrefix = `PR${prNumber}_`
   const prEnvVars = Object.keys(process.env).filter(prKey =>

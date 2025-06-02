@@ -40,7 +40,7 @@ router.get(
   COLLECTION_PATH + '/switch-group-by',
   switchGroupBy(DEFAULTS.GROUP_BY)
 )
-router.get('/:view(outgoing)', redirectView(DEFAULTS.TIME_PERIOD))
+router.get('/outgoing', redirectView(DEFAULTS.TIME_PERIOD))
 
 router.get(
   COLLECTION_PATH,

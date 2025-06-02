@@ -74,7 +74,7 @@ class AllocationViewPage extends Page {
       ),
       To: toLocation,
       Date: formatDateWithRelativeDay(date) as string,
-    })
+    });
   }
 }
 

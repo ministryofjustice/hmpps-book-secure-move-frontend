@@ -851,7 +851,7 @@ class CreateMovePage extends Page {
       .expect(this.steps.confirmation.nodes.confirmationMessage.innerText)
       .contains(fullname)
       .expect(this.steps.confirmation.nodes.confirmationMessage.innerText)
-      .contains(location)
+      .contains(location);
   }
 }
 
