@@ -1,5 +1,3 @@
-const { dateRegex, uuidRegex } = require('../../common/helpers/url')
-
 const MOUNTPATH = '/allocations'
 
 const ACTIONS = [
@@ -10,7 +8,7 @@ const ACTIONS = [
   },
 ]
 
-const COLLECTION_PATH = `/:period(week|day)/:date(${dateRegex})/:locationId(${uuidRegex})?/:view(outgoing)`
+const COLLECTION_PATH = `/:period/:date/{:locationId/}outgoing`
 
 const DEFAULTS = {
   QUERY: {

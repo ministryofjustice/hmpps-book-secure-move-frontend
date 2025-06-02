@@ -677,7 +677,7 @@ export function createLogger(baseUrl: string) {
     }
 
     return request.url.startsWith(baseUrl)
-  })
+  });
 }
 
 /**

@@ -32,7 +32,6 @@ const {
 const { download } = require('./controllers')
 const {
   redirectBaseUrl,
-  saveUrl,
   setFromLocation,
   setDownloadResultsMoves,
   setDownloadResultsSingleRequests,
@@ -51,11 +50,11 @@ router.param('locationId', setLocation)
 router.param('date', setDateRange)
 router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
 
-router.use('^([^.]+)$', saveUrl)
+// router.use('^([^.]+)$', saveUrl)
 
 // Define routes
 viewRouter.get(
-  '/:view(requested)',
+  '/requested',
   protectRoute('moves:view:proposed'),
   setContext('single_requests'),
   setFromLocation,
@@ -71,7 +70,7 @@ viewRouter.get(
   renderAsTable
 )
 viewRouter.get(
-  '/:view(requested)/download.:extension(csv|json)',
+  '/requested/download.:extension',
   protectRoute('moves:download'),
   protectRoute('moves:view:proposed'),
   setFromLocation,
@@ -83,7 +82,7 @@ viewRouter.get(
   download
 )
 viewRouter.get(
-  '/:view(outgoing)',
+  '/outgoing',
   protectRoute('moves:view:outgoing'),
   setContext('outgoing_moves'),
   setFromLocation,
@@ -97,7 +96,7 @@ viewRouter.get(
   renderAsCards
 )
 viewRouter.get(
-  '/:view(outgoing)/download.:extension(csv|json)',
+  '/outgoing/download.:extension',
   protectRoute('moves:download'),
   protectRoute('moves:view:outgoing'),
   setFromLocation,
@@ -108,7 +107,7 @@ viewRouter.get(
   download
 )
 viewRouter.get(
-  '/:view(incoming)',
+  '/incoming',
   protectRoute('moves:view:incoming'),
   setContext('incoming_moves'),
   setFromLocation,
@@ -122,7 +121,7 @@ viewRouter.get(
   renderAsCards
 )
 viewRouter.get(
-  '/:view(incoming)/download.:extension(csv|json)',
+  '/:incoming/download.:extension',
   protectRoute('moves:download'),
   protectRoute('moves:view:incoming'),
   setFromLocation,

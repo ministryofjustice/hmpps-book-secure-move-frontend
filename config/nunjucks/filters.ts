@@ -401,7 +401,7 @@ export function oxfordJoin(arr: string[] = [], lastDelimiter = 'and') {
     return arr.join(` ${lastDelimiter} `)
   }
 
-  return arr.join(', ').replace(/, ([^,]*)$/, `, ${lastDelimiter} $1`)
+  return arr.join(', ').replace(/, ([^,]*)$/, `, ${lastDelimiter} $1`);
 }
 
 /**
@@ -423,7 +423,7 @@ export function nonOxfordJoin(arr: string[] = [], lastDelimiter = 'and') {
     return arr.join(` ${lastDelimiter} `)
   }
 
-  return arr.join(', ').replace(/, ([^,]*)$/, ` ${lastDelimiter} $1`)
+  return arr.join(', ').replace(/, ([^,]*)$/, ` ${lastDelimiter} $1`);
 }
 
 export function filesize(str: string) {

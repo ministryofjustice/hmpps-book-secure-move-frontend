@@ -22,13 +22,10 @@ function isPNCNumberValid(value: string) {
 }
 
 export function time(value: string) {
-  return (
-    value === '' ||
-    Controller.validators.regex(
-      value,
-      /^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) ?([AaPp][Mm])?$/
-    )
-  )
+  return (value === '' || Controller.validators.regex(
+    value,
+    /^([0-9]|0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]) ?([AaPp][Mm])?$/
+  ));
 }
 
 export function datetime(value: string) {
@@ -52,10 +49,7 @@ export function after(value: string, date?: string) {
 }
 
 export function prisonNumber(value: string) {
-  return (
-    value === '' ||
-    Controller.validators.regex(value, /^[A-Z][0-9]{4}[A-Z]{2}$/i)
-  )
+  return (value === '' || Controller.validators.regex(value, /^[A-Z][0-9]{4}[A-Z]{2}$/i));
 }
 
 export function policeNationalComputerNumber(value: string) {

@@ -96,7 +96,7 @@ export class MoveDetailPage extends Page {
       .expect((this.nodes.title as Selector).innerText)
       .contains(fullname, 'Title contains fullname')
       .expect((this.nodes.title as Selector).innerText)
-      .match(/[A-Z]{3}[0-9]{4}[A-Z]/, 'Subtitle contains reference number')
+      .match(/[A-Z]{3}[0-9]{4}[A-Z]/, 'Subtitle contains reference number');
   }
 
   async checkPersonalDetails({

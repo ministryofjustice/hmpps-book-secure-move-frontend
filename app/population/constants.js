@@ -1,11 +1,9 @@
-const { dateRegex, uuidRegex } = require('../../common/helpers/url')
-
 const MOUNTPATH = '/population'
 
-const BASE_PATH = `/:period(week|day)/:date(${dateRegex})`
+const BASE_PATH = `/:period/:date`
 
-const DAILY_PATH = `/:period(day)/:date(${dateRegex})/:locationId(${uuidRegex})`
-const WEEKLY_PATH = `/:period(week)/:date(${dateRegex})/:locationId(${uuidRegex})`
+const DAILY_PATH = `/day/:date/:locationId`
+const WEEKLY_PATH = `/week/:date/:locationId`
 
 module.exports = {
   BASE_PATH,

@@ -30,7 +30,7 @@ describe('Authentication app', function () {
     context('when redirect URL exists in session', function () {
       beforeEach(function () {
         req.session.originalRequestUrl = url
-        controllers.redirect(req, res)
+        controllers.redirect(res, req)
       })
 
       it('redirects to the session URL', function () {
@@ -44,7 +44,7 @@ describe('Authentication app', function () {
 
     context('when redirect URL doesn’t exists in session', function () {
       beforeEach(function () {
-        controllers.redirect(req, res)
+        controllers.redirect(res, req)
       })
 
       it('redirects to the route path', function () {

@@ -4,7 +4,6 @@ const express = require('express')
 const router = express.Router()
 const moveRouter = express.Router({ mergeParams: true })
 // Local dependencies
-const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
 const { ENABLE_DEVELOPMENT_TOOLS } = require('../../config')
 const personEscortRecordApp = require('../person-escort-record')
@@ -32,7 +31,7 @@ const {
 router.use(newApp.mountpath, newApp.router)
 router.use(viewApp.mountpath, viewApp.router)
 
-router.use(`/:moveId(${uuidRegex})`, moveRouter)
+router.use(`/:moveId`, moveRouter)
 
 moveRouter.use(setMove)
 moveRouter.use(setPersonEscortRecord)

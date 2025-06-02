@@ -63,7 +63,7 @@ export async function getDescription(token: string, event: GenericEvent) {
   // and not insert additional space without having to make the <br> conditional
   return i18n
     .t(`events::${eventType}.description`, details as TOptions)
-    .replace(/^(\s*<br>)+/, '')
+    .replace(/^(\s*<br>)+/, '');
 }
 
 const getCompletedBy = async (

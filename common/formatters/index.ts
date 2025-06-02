@@ -38,7 +38,7 @@ export function sentenceFormatTime(date: Date) {
   return date
     .toLocaleTimeString('en-GB', timeOptions)
     .replace(/\s/g, '')
-    .replace(/^0/, '12')
+    .replace(/^0/, '12');
 }
 
 export function array (array: any[] = [], useOxfordComma = false): string {

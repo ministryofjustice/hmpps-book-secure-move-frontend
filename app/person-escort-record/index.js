@@ -5,7 +5,6 @@ const router = require('express').Router({ mergeParams: true })
 const {
   frameworkOverviewController,
 } = require('../../common/controllers/framework')
-const { uuidRegex } = require('../../common/helpers/url')
 const { defineFormWizard } = require('../../common/lib/framework-form-wizard')
 const breadcrumbs = require('../../common/middleware/breadcrumbs')
 const {
@@ -46,5 +45,5 @@ router.use('/:section', setSectionBreadcrumb, defineFormWizard)
 // Export
 module.exports = {
   router,
-  mountpath: `/person-escort-record/:resourceId(${uuidRegex})?`,
+  mountpath: `/person-escort-record/{:resourceId}`,
 }

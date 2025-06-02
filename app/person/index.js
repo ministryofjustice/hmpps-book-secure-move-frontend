@@ -1,6 +1,5 @@
 const router = require('express').Router({ mergeParams: true })
 
-const { uuidRegex } = require('../../common/helpers/url')
 const breadcrumbs = require('../../common/middleware/breadcrumbs')
 const { protectRoute } = require('../../common/middleware/permissions')
 const { PLACEHOLDER_IMAGES } = require('../../config')
@@ -47,5 +46,5 @@ router.get(
 
 module.exports = {
   router,
-  mountpath: `/person/:personId(${uuidRegex})`,
+  mountpath: `/person/:personId`,
 }

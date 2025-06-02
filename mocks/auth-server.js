@@ -70,10 +70,10 @@ app.get('/auth/logout', (req, res) => {
   res.redirect(req.query.redirect_uri)
 })
 
-app.get('/users/:USERNAME', (req, res) => {
+app.get('/users/:username', (req, res) => {
   const username =
-    req.params.USERNAME !== 'me'
-      ? req.params.USERNAME
+    req.params.username !== 'me'
+      ? req.params.username
       : getUserFromToken(req).user_name
   const name = getUserFromUsername(username).name
 
@@ -105,7 +105,7 @@ app.get('/api/users/me/caseLoads', (req, res) => {
   res.json(caseLoadIds)
 })
 
-app.use('*', (req, res, next) => {
+app.use('/{*path}', (req, res, next) => {
   const { url, query, body } = req
 
   res.send(`Received ${JSON.stringify({ url, query, body }, 2, null)}`)

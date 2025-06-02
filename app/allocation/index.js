@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const { v4: uuidv4 } = require('uuid')
 
-const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
 const wizard = require('../../common/middleware/unique-form-wizard')
 const { setMove } = require('../move/middleware')
@@ -22,7 +21,7 @@ router.param('moveId', setMove)
 
 router.get('/new', (req, res) => res.redirect(`${req.baseUrl}/new/${uuidv4()}`))
 router.use(
-  `/new/:id(${uuidRegex})`,
+  `/new/:id`,
   protectRoute('allocation:create'),
   wizard(createSteps, createFields, createConfig, 'params.id')
 )

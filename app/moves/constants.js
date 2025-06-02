@@ -1,4 +1,3 @@
-const { dateRegex, uuidRegex } = require('../../common/helpers/url')
 const {
   setActions,
   setDatePagination,
@@ -14,9 +13,9 @@ const actions = [
 
 const MOUNTPATH = '/moves'
 
-const COLLECTION_BASE_PATH = `/:period(week|day)/:date(${dateRegex})/:locationId(${uuidRegex})?`
+const COLLECTION_BASE_PATH = `/:period/:date/{:locationId}`
 
-const COLLECTION_VIEW_PATH = '/:view(outgoing|incoming|requested)'
+const COLLECTION_VIEW_PATH = '/:view'
 
 const COLLECTION_MIDDLEWARE = [
   setActions(actions),
