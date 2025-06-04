@@ -1,7 +1,7 @@
 const { date: dateFormatter } = require('../../../common/formatters')
 
 const date = {
-  component: 'govukInput',
+  component: 'mojDatePicker',
   autocomplete: 'off',
   classes: 'govuk-input--width-10',
   hint: {
