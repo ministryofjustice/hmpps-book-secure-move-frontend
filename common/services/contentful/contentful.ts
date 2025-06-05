@@ -14,6 +14,7 @@ import {
   CONTENTFUL_HOST,
 } from '../../../config'
 import { DATE_FORMATS } from '../../../config'
+import { Entry } from 'contentful'
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
 
@@ -60,10 +61,11 @@ const options = {
 
 export interface ContentfulFields {
   title: string
-  body: string
+  body: Object
   briefBannerText: string
   date: string
   bannerExpiry: string
+  summary: Object
 }
 
 export interface ContentfulEntry {
@@ -149,6 +151,21 @@ export class ContentfulService {
     })
   }
 
+  protected createContentfulEntry(entry: Entry) {
+    const contentfulEntry: ContentfulEntry = {
+      fields: {
+        title: entry.fields['title'],
+        date: entry.fields['date'],
+        bannerExpiry: entry.fields['bannerExpiry'],
+        briefBannerText: entry.fields['briefBannerText'],
+        body: entry.fields['body'],
+        summary: entry.fields['summary']
+      } as ContentfulFields,
+      contentTypeId: entry.sys.contentType.sys.id
+    }
+    return contentfulEntry
+  }
+
   async fetchEntries() {
     let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
 
@@ -158,21 +175,30 @@ export class ContentfulService {
 
     const entries = (await this.client.getEntries({
       content_type: this.contentType,
-    })) as contentful.EntryCollection<ContentfulEntry>
+    })) // as contentful.EntryCollection<ContentfulEntry>
 
-    const entriesToCache = entries.items?.length ? entries : []
+    // const es: ContentfulEntry  = entries.items.map( e => {
+    //   e.fields.
+    // })
 
-    await set(`cache:entries:${this.contentType}`,
-      entriesToCache,
-      300,
-      true)
+    // console.log('got entries ' + JSON.stringify(entries))
 
-    if (!entries.includes?.Entry?.length) {
-      return []
-    }
+    // const entriesToCache = entries.items?.length ? entries : []
+    //
+    // await set(`cache:entries:${this.contentType}`,
+    //   entriesToCache,
+    //   300,
+    //   true)
 
-    return entries.includes?.Entry
-      .map(e => this.createContent(e))
+    // if (!entries.includes?.Entry?.length) {
+    //   return []
+    // }
+
+    const contentfulEntries: ContentfulEntry[] =  entries.items.map(item => {
+      return this.createContentfulEntry(item)
+    })
+
+    return contentfulEntries.map(e => this.createContent(e))
       .sort((a, b) => {
         return b.date.getTime() - a.date.getTime()
       })
