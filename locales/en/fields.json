@@ -355,6 +355,75 @@
   "cancellation_reason": {
     "label": "Why are you cancelling this move request?",
     "items": {
+      "combined_with_another_request" : {
+        "label" : "Efficiency: move combined with another request"
+      },
+      "operational_issues_prison" : {
+        "label" : "Operational issues - prison"
+      },
+      "tornado_event" :  {
+        "label" : "Overriding tornado event"
+      },
+      "cancelled_by_pmu" : {
+        "label" : "Population Management Unit (PMU) cancelled request"
+      },
+      "prisoner_refusal" :  {
+        "label" : "Prisoner refusal"
+      },
+      "receiver_unable_to_accept_prisoner" : {
+        "label" : "Receiving prison unable to accept prisoner"
+      },
+      "sender_unable_to_fulfil_draft" :  {
+        "label" : "Sending prison unable to fulfil draft"
+      },
+      "sender_cancelled_request" : {
+        "label" : "Sending prison cancelled request"
+      },
+      "supplier_no_resource" :  {
+        "label" : "Supplier does not have the resource to fulfil this request"
+      },
+      "case_not_court_ready" : {
+        "label" : "Case not court ready"
+      },
+      "court_closure" :  {
+        "label" : "Court closure"
+      },
+      "court_no_capacity" : {
+        "label" : "Court does not have the capacity for this request"
+      },
+      "court_not_dda_compliant" :  {
+        "label" : "Court is not DDA compliant"
+      },
+      "list_received_after_5_pm" : {
+        "label" : "HMCTS list received after 5pm"
+      },
+      "incorrect_collection_location" :  {
+        "label" : "Incorrect collection location"
+      },
+      "incorrect_final_location" : {
+        "label" : "Incorrect final location"
+      },
+      "police_transported_prisoner" :  {
+        "label" : "Police transported the prisoner"
+      },
+      "prison_transported_prisoner" : {
+        "label" : "Prison transported the prisoner"
+      },
+      "prisoner_to_be_released_on_bail" :  {
+        "label" : "Prisoner to be released on bail"
+      },
+      "ptr_unachievable" : {
+        "label" : "Prisoner transfer request (PTR) unachievable"
+      },
+      "prisoner_unfit_to_travel" :  {
+        "label" : "Prisoner unfit to travel"
+      },
+      "unsuitable_vehicle" : {
+        "label" : "Unsuitable vehicle booked"
+      },
+      "video_link_to_be_used" :  {
+        "label" : "Video link to be used (move no longer needed)"
+      },
       "made_in_error": {
         "label": "Made in error",
         "hint": "For example, there’s a mistake or the person no longer needs to move"
@@ -362,9 +431,6 @@
       "supplier_declined_to_move": {
         "label": "Supplier declined to move this person",
         "hint": "For example, the request was made late"
-      },
-      "cancelled_by_pmu": {
-        "label": "Cancelled by Population Management Unit (PMU)"
       },
       "database_correction": {
         "label": "Actual cancellation reason and time unknown due to missing supplier data"
