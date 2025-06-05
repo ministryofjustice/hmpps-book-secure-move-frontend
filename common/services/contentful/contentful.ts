@@ -6,13 +6,14 @@ import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
 import * as contentful from 'contentful'
 import { format } from 'date-fns'
 
-const { get, set } = require('../../../common/lib/api-client/cache')
-const {
+// @ts-ignore
+import { get, set } from '../../../common/lib/api-client/cache'
+import {
   CONTENTFUL_SPACE_ID,
   CONTENTFUL_ACCESS_TOKEN,
   CONTENTFUL_HOST,
-} = require('../../../config')
-const { DATE_FORMATS } = require('../../../config/index')
+} from '../../../config'
+import { DATE_FORMATS } from '../../../config'
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
 
@@ -63,6 +64,11 @@ export interface ContentfulFields {
   briefBannerText: string
   date: string
   bannerExpiry: string
+}
+
+export interface ContentfulEntry {
+  fields: ContentfulFields
+  contentTypeId: string
 }
 
 const convertToHTMLFormat = (body: any) => documentToHtmlString(body, options)
@@ -122,24 +128,24 @@ export class ContentfulContent {
 // Don't use this class, use a class that extends it. The constructor should be
 //   protected, but if we set it to protected then we can't test it.
 export class ContentfulService {
-  protected client: contentful.ContentfulClientApi
+  protected client: contentful.ContentfulClientApi<any>
   protected contentType: string = ''
 
   protected constructor() {
     this.client = contentful.createClient({
       host: CONTENTFUL_HOST,
-      space: CONTENTFUL_SPACE_ID,
-      accessToken: CONTENTFUL_ACCESS_TOKEN,
+      space: CONTENTFUL_SPACE_ID as string,
+      accessToken: CONTENTFUL_ACCESS_TOKEN as string,
     })
   }
 
-  protected createContent(fields: ContentfulFields) {
+  protected createContent(entry: ContentfulEntry) {
     return new ContentfulContent({
-      title: fields.title,
-      body: convertToHTMLFormat(fields.body),
-      bannerText: fields.briefBannerText,
-      date: new Date(fields.date),
-      expiry: fields.bannerExpiry ? new Date(fields.bannerExpiry) : undefined,
+      title: entry.fields.title,
+      body: convertToHTMLFormat(entry.fields.body),
+      bannerText: entry.fields.briefBannerText,
+      date: new Date(entry.fields.date),
+      expiry: entry.fields.bannerExpiry ? new Date(entry.fields.bannerExpiry) : undefined,
     })
   }
 
@@ -152,21 +158,21 @@ export class ContentfulService {
 
     const entries = (await this.client.getEntries({
       content_type: this.contentType,
-    })) as contentful.EntryCollection<ContentfulFields>
+    })) as contentful.EntryCollection<ContentfulEntry>
 
     const entriesToCache = entries.items?.length ? entries : []
 
-    await set(`cache:entries:${this.contentType}`, 
+    await set(`cache:entries:${this.contentType}`,
       entriesToCache,
       300,
       true)
 
-      if (!entries.items?.length) {
-        return []
-      } 
+    if (!entries.includes?.Entry?.length) {
+      return []
+    }
 
-    return entries.items
-      .map(e => this.createContent(e.fields))
+    return entries.includes?.Entry
+      .map(e => this.createContent(e))
       .sort((a, b) => {
         return b.date.getTime() - a.date.getTime()
       })
@@ -184,12 +190,12 @@ export class ContentfulService {
       posts: await this.fetchPosts(entries),
     }
   }
-  
+
   async fetchBanner(entries?: ContentfulContent[]) {
     if (!Array.isArray(entries)) {
       entries = entries !== undefined ? [entries] : [];
     }
-  
+
     return entries
       .filter(entry => typeof entry.isCurrent === 'function' && entry.isCurrent())
       [0]?.getBannerData();
