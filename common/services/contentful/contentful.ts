@@ -60,6 +60,7 @@ const options = {
 } as Partial<Options>
 
 export interface ContentfulFields {
+  slug: string
   title: string
   body: Object
   briefBannerText: string
@@ -154,6 +155,7 @@ export class ContentfulService {
   protected createContentfulEntry(entry: Entry) {
     const contentfulEntry: ContentfulEntry = {
       fields: {
+        slug: entry.fields['slug'],
         title: entry.fields['title'],
         date: entry.fields['date'],
         bannerExpiry: entry.fields['bannerExpiry'],
@@ -175,33 +177,27 @@ export class ContentfulService {
 
     const entries = (await this.client.getEntries({
       content_type: this.contentType,
-    })) // as contentful.EntryCollection<ContentfulEntry>
+    })) as contentful.EntryCollection<ContentfulEntry>
 
-    // const es: ContentfulEntry  = entries.items.map( e => {
-    //   e.fields.
-    // })
-
-    // console.log('got entries ' + JSON.stringify(entries))
-
-    // const entriesToCache = entries.items?.length ? entries : []
-    //
-    // await set(`cache:entries:${this.contentType}`,
-    //   entriesToCache,
-    //   300,
-    //   true)
-
-    // if (!entries.includes?.Entry?.length) {
-    //   return []
-    // }
+    if (entries.items.length == 0) {
+      return []
+    }
 
     const contentfulEntries: ContentfulEntry[] =  entries.items.map(item => {
       return this.createContentfulEntry(item)
     })
 
-    return contentfulEntries.map(e => this.createContent(e))
+    const entriesToCache = contentfulEntries.map(e => this.createContent(e))
       .sort((a, b) => {
         return b.date.getTime() - a.date.getTime()
       })
+
+    await set(`cache:entries:${this.contentType}`,
+      entriesToCache,
+      300,
+      true)
+
+    return entriesToCache
   }
 
   async fetch() {

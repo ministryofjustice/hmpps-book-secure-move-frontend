@@ -14,25 +14,15 @@ export class DedicatedContentService extends ContentfulService {
     return this.client;
   }
 
-  // async fetchEntryBySlugId(slugId: any) {
-  //   const entry = (await this.client.getEntries({
-  //     content_type: this.contentType,
-  //     'fields.slug[in]': slugId,
-  //   })) as contentful.EntryCollection<ContentfulFields>
-  //
-  //   if (!entry.items?.length) {
-  //     return undefined
-  //   }
-  //
-  //   return this.createContent(entry.items[0].fields).getPostData()
-  // }
-
   async fetchEntryBySlugId(slugId: any) {
-    const entries = (await this.client.getEntries({
+    // TODO need to work out how to query by field as this returns all then filters
+    const entries = await this.client.getEntries({
       content_type: this.contentType,
-      // 'fields.slug[in]': slugId,
-    })) as contentful.EntryCollection<ContentfulEntry>
+    }) as contentful.EntryCollection<ContentfulEntry>
 
-    return entries.includes?.Entry?.filter(e => e.fields.id === slugId)?.filter(e => this.createContent(e).getPostData())
+    const entry: ContentfulEntry[] = entries.items.filter(item => item.fields.slug === slugId).map(
+      item => this.createContentfulEntry(item)
+    )
+    return this.createContent(entry[0]).getPostData()
   }
 }

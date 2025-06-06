@@ -67,16 +67,8 @@ export class DowntimeService extends ContentfulService {
     this.contentType = 'downtime'
   }
 
-  // protected createContent(fields: DowntimeFields): ContentfulContent {
-  //   return new DowntimeContent({
-  //     start: new Date(fields.start),
-  //     end: new Date(fields.end),
-  //     daysNotice: fields.daysNotice,
-  //     bannerText: fields.briefBannerText
-  //   })
-  // }
-
   protected createContent(entry: DowntimeContentfulEntry): ContentfulContent {
+    console.log('create downtime content')
     return new DowntimeContent({
       start: new Date(entry.fields.start),
       end: new Date(entry.fields.end),
@@ -86,6 +78,7 @@ export class DowntimeService extends ContentfulService {
   }
 
   async fetchPosts(entries?: DowntimeContent[]) {
+    console.log('get downtime posts')
     if (!entries) {
       entries = (await this.fetchEntries()) as DowntimeContent[]
     }
