@@ -178,6 +178,7 @@ test('Reason - `PMU cancelled`', async t => {
 
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
-    content: 'Reason — Population Management Unit (PMU) cancelled request — Locking down sending prison',
+    content:
+      'Reason — Population Management Unit (PMU) cancelled request — Locking down sending prison',
   })
 })
