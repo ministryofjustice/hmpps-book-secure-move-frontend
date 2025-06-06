@@ -39,13 +39,15 @@ class CancelMovePage extends Page {
       },
     }
 
-    if (comment && reason === 'Population Management Unit (PMU) cancelled request') {
+    if (
+      comment &&
+      reason === 'Population Management Unit (PMU) cancelled request'
+    ) {
       fields.cancellation_reason_cancelled_by_pmu_comment = {
         selector: this.fields.cancellationReasonCancelledByPMUComment,
         value: comment,
       }
     }
-
 
     return fillInForm(fields)
   }
