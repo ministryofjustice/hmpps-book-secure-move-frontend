@@ -7,7 +7,6 @@ import { Page } from './page'
 class CancelMovePage extends Page {
   fields: {
     cancellationReason: Selector
-    cancellationReasonOtherComment: Selector
     cancellationReasonCancelledByPMUComment: Selector
   }
 
@@ -16,9 +15,6 @@ class CancelMovePage extends Page {
 
     this.fields = {
       cancellationReason: Selector('[name="cancellation_reason"]'),
-      cancellationReasonOtherComment: Selector(
-        '#cancellation_reason_other_comment'
-      ),
       cancellationReasonCancelledByPMUComment: Selector(
         '#cancellation_reason_cancelled_by_pmu_comment'
       ),
