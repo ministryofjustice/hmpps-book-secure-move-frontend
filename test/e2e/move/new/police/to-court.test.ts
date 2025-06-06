@@ -169,7 +169,7 @@ test('Reason - `Prisoner refusal`', async t => {
     .notContains('/cancel/reason', 'Should not show journey expired page')
 })
 
-test('Reason - `Another reason`', async t => {
+test('Reason - `PMU cancelled`', async t => {
   await cancelMovePage.selectReason(
     'Population Management Unit (PMU) cancelled request',
     'Locking down sending prison'
@@ -178,6 +178,6 @@ test('Reason - `Another reason`', async t => {
 
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
-    content: 'Reason — Locking down sending prison',
+    content: 'Reason — Population Management Unit (PMU) cancelled request — Locking down sending prison',
   })
 })
