@@ -2,7 +2,7 @@ import i18n from '../../../config/i18n'
 import { sentenceFormatDate, sentenceFormatTime } from '../../formatters'
 
 import {
-  ContentfulContent, ContentfulEntry,
+  ContentfulContent,
   ContentfulFields,
   ContentfulService,
 } from './contentful'

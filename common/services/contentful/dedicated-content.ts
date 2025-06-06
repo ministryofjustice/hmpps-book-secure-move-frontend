@@ -1,7 +1,6 @@
 import * as contentful from 'contentful'
 
-import { ContentfulEntry, ContentfulFields, ContentfulService } from './contentful'
-import { entries } from 'lodash'
+import { ContentfulEntry, ContentfulService } from './contentful'
 
 export class DedicatedContentService extends ContentfulService {
   public constructor() {
