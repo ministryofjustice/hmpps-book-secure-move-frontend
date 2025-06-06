@@ -151,7 +151,7 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
     .click(moveDetailPage.nodes.cancelLink as Selector)
 })
 
-test('Reason - `Supplier declined to move this person`', async t => {
+test('Reason - `Prisoner refusal`', async t => {
   await cancelMovePage.selectReason('Prisoner refusal')
   await page.submitForm()
 
@@ -170,7 +170,10 @@ test('Reason - `Supplier declined to move this person`', async t => {
 })
 
 test('Reason - `Another reason`', async t => {
-  await cancelMovePage.selectReason('Population Management Unit (PMU) cancelled request', 'Locking down sending prison')
+  await cancelMovePage.selectReason(
+    'Population Management Unit (PMU) cancelled request',
+    'Locking down sending prison'
+  )
   await page.submitForm()
 
   await moveDetailPage.checkBanner({
