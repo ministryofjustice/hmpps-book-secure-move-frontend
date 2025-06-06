@@ -25,7 +25,7 @@
   "description_combined_with_another_request": "Reason — $t(fields::cancellation_reason.items.combined_with_another_request.label)",
   "description_operational_issues_prison": "Reason — $t(fields::cancellation_reason.items.operational_issues_prison.label)",
   "description_tornado_event": "Reason — $t(fields::cancellation_reason.items.tornado_event.label)",
-  "description_cancelled_by_pmu": "Reason — $t(fields::cancellation_reason.items.cancelled_by_pmu.label)",
+  "description_cancelled_by_pmu": "Reason — $t(fields::cancellation_reason.items.cancelled_by_pmu.label) — {{comment}}",
   "description_prisoner_refusal": "Reason — $t(fields::cancellation_reason.items.prisoner_refusal.label)",
   "description_receiver_unable_to_accept_prisoner": "Reason — $t(fields::cancellation_reason.items.receiver_unable_to_accept_prisoner.label)",
   "sender_unable_to_fulfil_draft": "Reason — $t(fields::cancellation_reason.items.sender_unable_to_fulfil_draft.label)",
