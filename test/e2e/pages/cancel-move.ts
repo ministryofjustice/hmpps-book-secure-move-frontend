@@ -39,19 +39,13 @@ class CancelMovePage extends Page {
       },
     }
 
-    if (comment) {
-      if (reason === 'Another reason') {
-        fields.cancellation_reason_other_comment = {
-          selector: this.fields.cancellationReasonOtherComment,
-          value: comment,
-        }
-      } else if (reason === 'Cancelled by Population Management Unit (PMU)') {
-        fields.cancellation_reason_cancelled_by_pmu_comment = {
-          selector: this.fields.cancellationReasonCancelledByPMUComment,
-          value: comment,
-        }
+    if (comment && reason === 'Population Management Unit (PMU) cancelled request') {
+      fields.cancellation_reason_cancelled_by_pmu_comment = {
+        selector: this.fields.cancellationReasonCancelledByPMUComment,
+        value: comment,
       }
     }
+
 
     return fillInForm(fields)
   }
