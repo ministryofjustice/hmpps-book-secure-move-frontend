@@ -10,6 +10,7 @@ describe('Move view app', function () {
           canAccess: sinon.stub(),
           move: {
             id: '12345',
+            is_lodging: true,
           },
           session: {
             user: {
