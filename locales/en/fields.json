@@ -203,16 +203,32 @@
   "lodge_cancel_reason": {
     "label": "Why are you cancelling the overnight lodge?",
     "items": {
-      "made_in_error": {
-        "label": "Made in error",
-        "hint": "For example, there's a mistake or the person no longer needs to move"
+      "combined_with_another_request": {
+        "label": "Efficiency: move combined with another request"
       },
-      "supplier_declined_to_move": {
-        "label": "Supplier declined to move this person",
-        "hint": "For example, the request was made late"
+      "operational_issues_prison": {
+        "label": "Operational issues - prison"
+      },
+      "tornado_event": {
+        "label": "Overriding tornado event"
       },
       "cancelled_by_pmu": {
-        "label": "Cancelled by Population Management Unit (PMU)"
+        "label": "Population Management Unit (PMU) cancelled request"
+      },
+      "prisoner_refusal": {
+        "label": "Prisoner refusal"
+      },
+      "prisoner_unfit_to_travel": {
+        "label": "Prisoner unfit to travel"
+      },
+      "receiver_unable_to_accept_prisoner": {
+        "label": "Receiving prison unable to accept prisoner"
+      },
+      "supplier_no_resource": {
+        "label": "Supplier does not have the resource to fulfil this request"
+      },
+      "supplier_declined_to_move": {
+        "label": "Supplier declined to move this person"
       },
       "another": {
         "label": "Another reason"
