@@ -95,7 +95,7 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
 
 test('Reason - `Cancelled by PMU`', async t => {
   await cancelMovePage.selectReason(
-    'Cancelled by Population Management Unit (PMU)',
+    'Population Management Unit (PMU) cancelled request',
     'No free space'
   )
   await page.submitForm()
@@ -103,6 +103,6 @@ test('Reason - `Cancelled by PMU`', async t => {
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
     content:
-      'Reason — Cancelled by Population Management Unit (PMU) — No free space',
+      'Reason — Population Management Unit (PMU) cancelled request — No free space',
   })
 })
