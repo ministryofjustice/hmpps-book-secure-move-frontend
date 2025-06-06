@@ -4,7 +4,7 @@ import { sentenceFormatDate, sentenceFormatTime } from '../../formatters'
 import {
   ContentfulContent,
   ContentfulFields,
-  ContentfulService
+  ContentfulService,
 } from './contentful'
 
 const getDateAndTime = (date: Date) => {
@@ -16,6 +16,11 @@ const getDateAndTime = (date: Date) => {
     date: sentenceFormatDate(date).replace(',', ''),
     time: sentenceFormatTime(date),
   }
+}
+
+export interface DowntimeContentfulEntry {
+  fields: DowntimeFields
+  contentTypeId: string
 }
 
 interface DowntimeFields extends ContentfulFields {
@@ -62,16 +67,18 @@ export class DowntimeService extends ContentfulService {
     this.contentType = 'downtime'
   }
 
-  protected createContent(fields: DowntimeFields): ContentfulContent {
+  protected createContent(entry: DowntimeContentfulEntry): ContentfulContent {
+    console.log('create downtime content')
     return new DowntimeContent({
-      start: new Date(fields.start),
-      end: new Date(fields.end),
-      daysNotice: fields.daysNotice,
-      bannerText: fields.briefBannerText
+      start: new Date(entry.fields.start),
+      end: new Date(entry.fields.end),
+      daysNotice: entry.fields.daysNotice,
+      bannerText: entry.fields.briefBannerText
     })
   }
 
   async fetchPosts(entries?: DowntimeContent[]) {
+    console.log('get downtime posts')
     if (!entries) {
       entries = (await this.fetchEntries()) as DowntimeContent[]
     }
