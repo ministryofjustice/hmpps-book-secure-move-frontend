@@ -93,7 +93,7 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
     .click(moveDetailPage.nodes.cancelLink as Selector)
 })
 
-test('Reason - `Combined with another request`', async t => {
+test('Reason - `Police transported the prisoner`', async t => {
   await cancelMovePage.selectReason(
     'Efficiency: move combined with another request'
   )
@@ -101,7 +101,6 @@ test('Reason - `Combined with another request`', async t => {
 
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
-    content:
-      'Reason — Efficiency: move combined with another request',
+    content: 'Reason — Police transported the prisoner',
   })
 })
