@@ -93,16 +93,15 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
     .click(moveDetailPage.nodes.cancelLink as Selector)
 })
 
-test('Reason - `Cancelled by PMU`', async t => {
+test('Reason - `Combined with another request`', async t => {
   await cancelMovePage.selectReason(
-    'Population Management Unit (PMU) cancelled request',
-    'No free space'
+    'Efficiency: move combined with another request'
   )
   await page.submitForm()
 
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
     content:
-      'Reason — Population Management Unit (PMU) cancelled request — No free space',
+      'Reason — Efficiency: move combined with another request',
   })
 })
