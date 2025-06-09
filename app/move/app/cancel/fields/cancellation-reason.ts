@@ -82,6 +82,21 @@ export const cancellationReason = {
       move_types: ['prison_transfer', 'other']
     },
     {
+      value: 'prisoner_to_be_released_on_bail',
+      text: 'fields::cancellation_reason.items.prisoner_to_be_released_on_bail.label',
+      move_types: ['other']
+    },
+    {
+      value: 'ptr_unachievable',
+      text: 'fields::cancellation_reason.items.ptr_unachievable.label',
+      move_types: ['other']
+    },
+    {
+      value: 'prisoner_unfit_to_travel',
+      text: 'fields::cancellation_reason.items.prisoner_unfit_to_travel.label',
+      move_types: ['other']
+    },
+    {
       value: 'receiver_unable_to_accept_prisoner',
       text: 'fields::cancellation_reason.items.receiver_unable_to_accept_prisoner.label',
       move_types: ['prison_transfer', 'other']
@@ -100,21 +115,6 @@ export const cancellationReason = {
       value: 'supplier_no_resource',
       text: 'fields::cancellation_reason.items.supplier_no_resource.label',
       move_types: ['prison_transfer', 'other']
-    },
-    {
-      value: 'prisoner_to_be_released_on_bail',
-      text: 'fields::cancellation_reason.items.prisoner_to_be_released_on_bail.label',
-      move_types: ['other']
-    },
-    {
-      value: 'ptr_unachievable',
-      text: 'fields::cancellation_reason.items.ptr_unachievable.label',
-      move_types: ['other']
-    },
-    {
-      value: 'prisoner_unfit_to_travel',
-      text: 'fields::cancellation_reason.items.prisoner_unfit_to_travel.label',
-      move_types: ['other']
     },
     {
       value: 'unsuitable_vehicle',
