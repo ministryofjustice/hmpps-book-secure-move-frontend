@@ -203,7 +203,7 @@
       }
     },
     "page_title": "Cancel move for this person",
-    "warning": "You must also contact the supplier to cancel the move request for {{-name}}"
+    "warning": "Responsibility for cancelling this move lies with the sending location. If you are cancelling a request on the day a move is due to take place, you must also inform the supplier."
   },
   "review": {
     "page_title": "Review request for",
