@@ -13,48 +13,23 @@ export const cancellationReason = {
       id: 'cancellation_reason',
       value: 'combined_with_another_request',
       text: 'fields::cancellation_reason.items.combined_with_another_request.label',
-      move_types: ['prison_transfer', 'other']
+      move_types: ['prison_transfer']
     },
     {
       value: 'operational_issues_prison',
       text: 'fields::cancellation_reason.items.operational_issues_prison.label',
-      move_types: ['prison_transfer', 'other']
+      move_types: ['prison_transfer']
     },
     {
       value: 'tornado_event',
       text: 'fields::cancellation_reason.items.tornado_event.label',
-      move_types: ['prison_transfer', 'other']
+      move_types: ['prison_transfer']
     },
     {
       value: 'cancelled_by_pmu',
       text: 'fields::cancellation_reason.items.cancelled_by_pmu.label',
       conditional: 'cancellation_reason_cancelled_by_pmu_comment',
-      move_types: ['prison_transfer', 'other']
-    },
-    {
-      value: 'prisoner_refusal',
-      text: 'fields::cancellation_reason.items.prisoner_refusal.label',
-      move_types: ['prison_transfer', 'other']
-    },
-    {
-      value: 'receiver_unable_to_accept_prisoner',
-      text: 'fields::cancellation_reason.items.receiver_unable_to_accept_prisoner.label',
-      move_types: ['prison_transfer', 'other']
-    },
-    {
-      value: 'sender_unable_to_fulfil_draft',
-      text: 'fields::cancellation_reason.items.sender_unable_to_fulfil_draft.label',
-      move_types: ['prison_transfer', 'other']
-    },
-    {
-      value: 'sender_cancelled_request',
-      text: 'fields::cancellation_reason.items.sender_cancelled_request.label',
-      move_types: ['prison_transfer', 'other']
-    },
-    {
-      value: 'supplier_no_resource',
-      text: 'fields::cancellation_reason.items.supplier_no_resource.label',
-      move_types: ['prison_transfer', 'other']
+      move_types: ['prison_transfer']
     },
     {
       value: 'case_not_court_ready',
@@ -100,6 +75,31 @@ export const cancellationReason = {
       value: 'prison_transported_prisoner',
       text: 'fields::cancellation_reason.items.prison_transported_prisoner.label',
       move_types: ['other']
+    },
+    {
+      value: 'prisoner_refusal',
+      text: 'fields::cancellation_reason.items.prisoner_refusal.label',
+      move_types: ['prison_transfer', 'other']
+    },
+    {
+      value: 'receiver_unable_to_accept_prisoner',
+      text: 'fields::cancellation_reason.items.receiver_unable_to_accept_prisoner.label',
+      move_types: ['prison_transfer', 'other']
+    },
+    {
+      value: 'sender_unable_to_fulfil_draft',
+      text: 'fields::cancellation_reason.items.sender_unable_to_fulfil_draft.label',
+      move_types: ['prison_transfer']
+    },
+    {
+      value: 'sender_cancelled_request',
+      text: 'fields::cancellation_reason.items.sender_cancelled_request.label',
+      move_types: ['prison_transfer']
+    },
+    {
+      value: 'supplier_no_resource',
+      text: 'fields::cancellation_reason.items.supplier_no_resource.label',
+      move_types: ['prison_transfer', 'other']
     },
     {
       value: 'prisoner_to_be_released_on_bail',
