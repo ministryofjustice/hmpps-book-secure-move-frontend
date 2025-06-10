@@ -91,6 +91,7 @@ export class ContentfulContent {
     bannerText: string
     date: Date
     expiry?: Date
+
   }) {
     this.date = data.date
 
@@ -168,11 +169,22 @@ export class ContentfulService {
     return contentfulEntry
   }
 
-  async fetchEntries() {
+  protected createFromCache(c: any) {
+    return new ContentfulContent({
+      title: c.title,
+      body: c.body,
+      bannerText: c.briefBannerText,
+      date: new Date(c.date),
+      expiry: c.bannerExpiry ? new Date(c.bannerExpiry) : undefined,
+    })
+  }
+
+  async fetchEntries(): Promise<ContentfulContent[]> {
     let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
 
     if(cachedEntries) {
-      return cachedEntries
+      const cached = [...cachedEntries]
+      return cached.filter(e => e.title !== undefined).map(e => this.createFromCache(e))
     }
 
     const entries = (await this.client.getEntries({
@@ -214,6 +226,7 @@ export class ContentfulService {
   }
 
   async fetchBanner(entries?: ContentfulContent[]) {
+    console.log('banner: ' + JSON.stringify(entries))
     if (!Array.isArray(entries)) {
       entries = entries !== undefined ? [entries] : [];
     }

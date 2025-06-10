@@ -14,7 +14,6 @@ export class DedicatedContentService extends ContentfulService {
   }
 
   async fetchEntryBySlugId(slugId: any) {
-    // TODO need to work out how to query by field as this returns all then filters
     const entries = await this.client.getEntries({
       content_type: this.contentType,
     }) as contentful.EntryCollection<ContentfulEntry>
