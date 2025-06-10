@@ -1,6 +1,6 @@
 import * as contentful from 'contentful'
 
-import { ContentfulFields, ContentfulService } from './contentful'
+import { ContentfulEntry, ContentfulService } from './contentful'
 
 export class DedicatedContentService extends ContentfulService {
   public constructor() {
@@ -14,15 +14,13 @@ export class DedicatedContentService extends ContentfulService {
   }
 
   async fetchEntryBySlugId(slugId: any) {
-    const entry = (await this.client.getEntries({
+    const entries = await this.client.getEntries({
       content_type: this.contentType,
-      'fields.slug[in]': slugId,
-    })) as contentful.EntryCollection<ContentfulFields>
+    }) as contentful.EntryCollection<ContentfulEntry>
 
-    if (!entry.items?.length) {
-      return undefined
-    }
-
-    return this.createContent(entry.items[0].fields).getPostData()
+    const entry: ContentfulEntry[] = entries.items.filter(item => item.fields.slug === slugId).map(
+      item => this.createContentfulEntry(item)
+    )
+    return this.createContent(entry[0]).getPostData()
   }
 }
