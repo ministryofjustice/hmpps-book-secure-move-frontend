@@ -2,6 +2,7 @@ const createSteps = require('../new/steps')
 
 const {
   Court,
+  DateChangeReason,
   Hospital,
   MoveDate,
   MoveDetails,
@@ -49,7 +50,15 @@ const updateSteps = [
         ...createSteps['/move-date'],
         ...updateStepPropOverrides,
         controller: MoveDate,
+        template: '../../edit/views/move-date',
+        next: 'date-change-reason',
+        buttonText: 'Continue'
       },
+      '/date-change-reason': {
+        controller: DateChangeReason,
+        ...updateStepPropOverrides,
+        fields: ['date_change_reason'],
+      }
     },
   },
   {

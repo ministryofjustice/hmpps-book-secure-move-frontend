@@ -3,10 +3,14 @@ const CreateMoveDateController = require('../../new/controllers/move-date')
 
 const UpdateBase = require('./base')
 
-class UpdateMoveDetailsController extends UpdateBase {
+class UpdateMoveDateController extends UpdateBase {
   constructor(options) {
     super(options)
-    this.saveFields = ['date']
+    // this.saveFields = ['date']
+  }
+
+  setNextStep(req, res, next) {
+    next()
   }
 
   getUpdateValues(req, res) {
@@ -36,10 +40,11 @@ class UpdateMoveDetailsController extends UpdateBase {
   }
 
   saveValues(req, res, next) {
-    this.saveMove(req, res, next)
+    req.sessionModel.set('proposed')
+    next()
   }
 }
 
-UpdateBase.mixin(UpdateMoveDetailsController, CreateMoveDateController)
+UpdateBase.mixin(UpdateMoveDateController, CreateMoveDateController)
 
-module.exports = UpdateMoveDetailsController
+module.exports = UpdateMoveDateController

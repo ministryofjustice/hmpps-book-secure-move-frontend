@@ -341,7 +341,7 @@ class MoveService extends BaseService {
       .then(response => response.data)
   }
 
-  update(data) {
+  update(data, reason) {
     if (!data.id) {
       return Promise.reject(new Error(noMoveIdMessage))
     }

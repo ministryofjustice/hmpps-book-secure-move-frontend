@@ -233,6 +233,41 @@
     "label": "Is there a date this move has to be completed by?",
     "error_message": "Enter whether a move needs to be completed by a date"
   },
+  "date_change_reason": {
+    "label": "Why are you changing the move date?",
+    "items": {
+      "combined_with_another_request" : {
+        "label" : "Efficiency: move combined with another request"
+      },
+      "operational_issues_prison" : {
+        "label" : "Operational issues - prison"
+      },
+      "tornado_event" :  {
+        "label" : "Overriding tornado event"
+      },
+      "cancelled_by_pmu" : {
+        "label" : "Population Management Unit (PMU) cancelled request"
+      },
+      "prisoner_refusal" :  {
+        "label" : "Prisoner refusal"
+      },
+      "receiver_unable_to_accept_prisoner" : {
+        "label" : "Receiving prison unable to accept prisoner"
+      },
+      "sender_unable_to_fulfil_draft" :  {
+        "label" : "Sending prison unable to fulfil draft"
+      },
+      "sender_cancelled_request" : {
+        "label" : "Sending prison cancelled request"
+      },
+      "supplier_no_resource" :  {
+        "label" : "Supplier does not have the resource to fulfil this request"
+      },
+      "prisoner_unfit_to_travel" :  {
+        "label" : "Prisoner unfit to travel"
+      }
+    }
+  },
   "date_custom": {
     "label": "Date of travel"
   },
