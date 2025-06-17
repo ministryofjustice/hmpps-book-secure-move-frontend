@@ -977,7 +977,10 @@ describe('Move Service', function () {
                 'requested,accepted,booked,in_transit,completed,cancelled',
             },
           },
-          { format: 'text/csv' }
+          {
+            format: 'text/csv',
+            raw: true,
+          }
         )
       })
 
@@ -1022,6 +1025,7 @@ describe('Move Service', function () {
           },
           {
             format: 'text/csv',
+            raw: true,
           }
         )
       })

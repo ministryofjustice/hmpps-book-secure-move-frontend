@@ -284,6 +284,7 @@ class MoveService extends BaseService {
       { filter },
       {
         format: 'text/csv',
+        raw: true,
       }
     )
   }
