@@ -281,7 +281,7 @@ class MoveService extends BaseService {
     return await restClient.post(
       req,
       '/moves/csv',
-      { filter },
+      { filter, async: 'allow' },
       {
         format: 'text/csv',
         raw: true,

@@ -976,6 +976,7 @@ describe('Move Service', function () {
               status:
                 'requested,accepted,booked,in_transit,completed,cancelled',
             },
+            async: 'allow',
           },
           {
             format: 'text/csv',
@@ -1022,6 +1023,7 @@ describe('Move Service', function () {
               from_location_id: mockFromLocationId,
               to_location_id: mockToLocationId,
             },
+            async: 'allow',
           },
           {
             format: 'text/csv',
