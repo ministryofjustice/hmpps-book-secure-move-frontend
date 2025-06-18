@@ -1,0 +1,26 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{ t(pageTitle) }} – {{ super() }}
+{% endblock %}
+
+{% block beforeContent %}
+  {% if backLink %}
+    {{ govukBackLink({
+      text: t("actions::back"),
+      href: backLink
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <header>
+    <h1 class="govuk-heading-xl">
+      {{ t(pageTitle) }}
+    </h1>
+  </header>
+
+  <p>The document is too large to download and has been sent to your email.</p>
+  <p>If it doesn’t arrive, try requesting a smaller range such as a single location or one day’s data.</p>
+
+{% endblock %}
