@@ -29,7 +29,7 @@ const {
   FILTERS,
   MOUNTPATH,
 } = require('./constants')
-const { download } = require('./controllers')
+const { download, emailedIntercept } = require('./controllers')
 const {
   redirectBaseUrl,
   saveUrl,
@@ -80,8 +80,10 @@ viewRouter.get(
     setBodyRequestFilters,
     setDownloadResultsSingleRequests,
   ],
+  emailedIntercept,
   download
 )
+viewRouter.get('/document-emailed', protectRoute('moves:download'))
 viewRouter.get(
   '/:view(outgoing)',
   protectRoute('moves:view:outgoing'),
@@ -105,6 +107,7 @@ viewRouter.get(
     setBodyMoves('outgoing', 'fromLocationId'),
     setDownloadResultsMoves('outgoing'),
   ],
+  emailedIntercept,
   download
 )
 viewRouter.get(
@@ -130,6 +133,7 @@ viewRouter.get(
     setBodyMoves('incoming', 'toLocationId'),
     setDownloadResultsMoves('incoming'),
   ],
+  emailedIntercept,
   download
 )
 viewRouter.get(
