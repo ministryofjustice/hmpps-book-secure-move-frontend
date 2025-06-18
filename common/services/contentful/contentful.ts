@@ -143,6 +143,18 @@ export class ContentfulService {
     })
   }
 
+  toContentfulContent(entries: contentful.EntryCollection<ContentfulEntry>): ContentfulContent[] {
+    const contentfulEntries: ContentfulEntry[] =  entries.items.map(item => {
+      return this.createContentfulEntry(item)
+    })
+
+    const contentfulContents = contentfulEntries.map(e => this.createContent(e))
+      .sort((a, b) => {
+        return b.date.getTime() - a.date.getTime()
+      })
+    return contentfulContents
+  }
+
   protected createContent(entry: ContentfulEntry) {
     return new ContentfulContent({
       title: entry.fields.title,
@@ -195,14 +207,7 @@ export class ContentfulService {
       return []
     }
 
-    const contentfulEntries: ContentfulEntry[] =  entries.items.map(item => {
-      return this.createContentfulEntry(item)
-    })
-
-    const entriesToCache = contentfulEntries.map(e => this.createContent(e))
-      .sort((a, b) => {
-        return b.date.getTime() - a.date.getTime()
-      })
+    const entriesToCache = this.toContentfulContent(entries)
 
     await set(`cache:entries:${this.contentType}`,
       entriesToCache,

@@ -74,6 +74,19 @@ export class DowntimeService extends ContentfulService {
     this.contentType = 'downtime'
   }
 
+  toDowntimeContent(entries: contentful.EntryCollection<DowntimeContentfulEntry>): DowntimeContent[] {
+    const downtimeContentfulEntries: DowntimeContentfulEntry[] =  entries.items.map(item => {
+      return this.createContentfulEntry(item)
+    })
+
+    const downtimeContents = downtimeContentfulEntries.map(e => this.createContent(e))
+      .sort((a, b) => {
+        return b.date.getTime() - a.date.getTime()
+      })
+
+    return downtimeContents
+  }
+
   protected createContent(entry: DowntimeContentfulEntry): DowntimeContent {
     const a = new DowntimeContent({
       start: new Date(entry.fields.start),
@@ -143,14 +156,7 @@ export class DowntimeService extends ContentfulService {
       return []
     }
 
-    const downtimeContentfulEntries: DowntimeContentfulEntry[] =  entries.items.map(item => {
-      return this.createContentfulEntry(item)
-    })
-
-    const entriesToCache = downtimeContentfulEntries.map(e => this.createContent(e))
-      .sort((a, b) => {
-        return b.date.getTime() - a.date.getTime()
-      })
+    const entriesToCache = this.toDowntimeContent(entries)
 
     await set(`cache:entries:${this.contentType}`,
       entriesToCache,
