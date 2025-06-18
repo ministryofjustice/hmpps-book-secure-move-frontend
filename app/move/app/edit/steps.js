@@ -52,13 +52,13 @@ const updateSteps = [
         controller: MoveDate,
         template: '../../edit/views/move-date',
         next: 'date-change-reason',
-        buttonText: 'Continue'
+        buttonText: 'Continue',
       },
       '/date-change-reason': {
         controller: DateChangeReason,
         ...updateStepPropOverrides,
-        fields: ['date_change_reason'],
-      }
+        fields: ['date_changed_reason'],
+      },
     },
   },
   {

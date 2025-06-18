@@ -6,7 +6,7 @@ const UpdateBase = require('./base')
 class UpdateMoveDateController extends UpdateBase {
   constructor(options) {
     super(options)
-    // this.saveFields = ['date']
+    this.saveFields = ['date']
   }
 
   setNextStep(req, res, next) {
@@ -40,7 +40,7 @@ class UpdateMoveDateController extends UpdateBase {
   }
 
   saveValues(req, res, next) {
-    req.sessionModel.set('proposed')
+    req.sessionModel.set('proposedDate', req.form.values.date)
     next()
   }
 }
