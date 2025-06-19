@@ -1,4 +1,5 @@
 import { expect } from 'chai'
+import * as contentful from 'contentful'
 import { format } from 'date-fns'
 import sinon from 'sinon'
 
@@ -10,7 +11,6 @@ import {
   ContentfulEntry,
   ContentfulService,
 } from './contentful'
-import * as contentful from 'contentful'
 
 const todaysDate = new Date()
 const formattedTodaysDate = todaysDate.toLocaleDateString('en-GB', {
@@ -573,11 +573,10 @@ describe('ContentfulService', function () {
   })
 
   context('contentful response transformation', function () {
-    it('transform contentful response to contentful content', async function () {
-
+    it('transform contentful response to contentful content', function () {
       const entries = {
         sys: {
-          type: "Array"
+          type: 'Array',
         },
         total: 14,
         skip: 0,
@@ -586,39 +585,39 @@ describe('ContentfulService', function () {
           {
             metadata: {
               tags: [],
-              concepts: []
+              concepts: [],
             },
             sys: {
               space: {
                 sys: {
-                  type: "Link",
-                  linkType: "Space",
-                  id: "m5k1kmk3zqwh"
-                }
+                  type: 'Link',
+                  linkType: 'Space',
+                  id: 'm5k1kmk3zqwh',
+                },
               },
-              type: "Entry",
-              id: "7uxSgsLxRXVFUuo8x38JIy",
+              type: 'Entry',
+              id: '7uxSgsLxRXVFUuo8x38JIy',
               contentType: {
                 sys: {
-                  type: "Link",
-                  linkType: "ContentType",
-                  id: "whatsNew"
-                }
+                  type: 'Link',
+                  linkType: 'ContentType',
+                  id: 'whatsNew',
+                },
               },
               revision: 0,
-              createdAt: "2025-06-04T16:32:17.348Z",
-              updatedAt: "2025-06-06T14:32:20.443Z",
+              createdAt: '2025-06-04T16:32:17.348Z',
+              updatedAt: '2025-06-06T14:32:20.443Z',
               environment: {
                 sys: {
-                  id: "master",
-                  type: "Link",
-                  linkType: "Environment"
-                }
+                  id: 'master',
+                  type: 'Link',
+                  linkType: 'Environment',
+                },
               },
-              locale: "en-US"
+              locale: 'en-US',
             },
             fields: {
-              title: "New Test Whats new",
+              title: 'New Test Whats new',
               body: {
                 data: {},
                 content: [
@@ -628,14 +627,14 @@ describe('ContentfulService', function () {
                       {
                         data: {},
                         marks: [],
-                        value: "this is a body text",
-                        nodeType: "text"
-                      }
+                        value: 'this is a body text',
+                        nodeType: 'text',
+                      },
                     ],
-                    nodeType: "paragraph"
-                  }
+                    nodeType: 'paragraph',
+                  },
                 ],
-                nodeType: "document"
+                nodeType: 'document',
               },
               summary: {
                 data: {},
@@ -646,59 +645,59 @@ describe('ContentfulService', function () {
                       {
                         data: {},
                         marks: [],
-                        value: "this is a summary",
-                        nodeType: "text"
-                      }
+                        value: 'this is a summary',
+                        nodeType: 'text',
+                      },
                     ],
-                    nodeType: "paragraph"
-                  }
+                    nodeType: 'paragraph',
+                  },
                 ],
-                nodeType: "document"
+                nodeType: 'document',
               },
-              date: "2025-06-04T00:00+01:00",
-              bannerExpiry: "2025-06-12T00:00+01:00",
-              briefBannerText: "banner text"
-            }
+              date: '2025-06-04T00:00+01:00',
+              bannerExpiry: '2025-06-12T00:00+01:00',
+              briefBannerText: 'banner text',
+            },
           },
           {
             metadata: {
               tags: [],
-              concepts: []
+              concepts: [],
             },
             sys: {
               space: {
                 sys: {
-                  type: "Link",
-                  linkType: "Space",
-                  id: "m5k1kmk3zqwh"
-                }
+                  type: 'Link',
+                  linkType: 'Space',
+                  id: 'm5k1kmk3zqwh',
+                },
               },
-              type: "Entry",
-              id: "TeU8RHgSneQQY9mMf0OiA",
+              type: 'Entry',
+              id: 'TeU8RHgSneQQY9mMf0OiA',
               contentType: {
                 sys: {
-                  type: "Link",
-                  linkType: "ContentType",
-                  id: "whatsNew"
-                }
+                  type: 'Link',
+                  linkType: 'ContentType',
+                  id: 'whatsNew',
+                },
               },
               revision: 3,
-              createdAt: "2025-01-07T18:44:07.142Z",
-              updatedAt: "2025-01-07T18:54:56.245Z",
-              publishedAt: "2025-01-07T18:54:56.245Z",
-              firstPublishedAt: "2025-01-07T18:46:57.955Z",
+              createdAt: '2025-01-07T18:44:07.142Z',
+              updatedAt: '2025-01-07T18:54:56.245Z',
+              publishedAt: '2025-01-07T18:54:56.245Z',
+              firstPublishedAt: '2025-01-07T18:46:57.955Z',
               publishedVersion: 26,
               environment: {
                 sys: {
-                  id: "master",
-                  type: "Link",
-                  linkType: "Environment"
-                }
+                  id: 'master',
+                  type: 'Link',
+                  linkType: 'Environment',
+                },
               },
-              locale: "en-US"
+              locale: 'en-US',
             },
             fields: {
-              title: "How to update a move",
+              title: 'How to update a move',
               body: {
                 data: {},
                 content: [
@@ -708,11 +707,11 @@ describe('ContentfulService', function () {
                       {
                         data: {},
                         marks: [],
-                        value: "Update a move",
-                        nodeType: "text"
-                      }
+                        value: 'Update a move',
+                        nodeType: 'text',
+                      },
                     ],
-                    nodeType: "paragraph"
+                    nodeType: 'paragraph',
                   },
                   {
                     data: {},
@@ -726,14 +725,14 @@ describe('ContentfulService', function () {
                               {
                                 data: {},
                                 marks: [],
-                                value: "Open the move",
-                                nodeType: "text"
-                              }
+                                value: 'Open the move',
+                                nodeType: 'text',
+                              },
                             ],
-                            nodeType: "paragraph"
-                          }
+                            nodeType: 'paragraph',
+                          },
                         ],
-                        nodeType: "list-item"
+                        nodeType: 'list-item',
                       },
                       {
                         data: {},
@@ -744,14 +743,14 @@ describe('ContentfulService', function () {
                               {
                                 data: {},
                                 marks: [],
-                                value: "Navigate to some page",
-                                nodeType: "text"
-                              }
+                                value: 'Navigate to some page',
+                                nodeType: 'text',
+                              },
                             ],
-                            nodeType: "paragraph"
-                          }
+                            nodeType: 'paragraph',
+                          },
                         ],
-                        nodeType: "list-item"
+                        nodeType: 'list-item',
                       },
                       {
                         data: {},
@@ -762,17 +761,17 @@ describe('ContentfulService', function () {
                               {
                                 data: {},
                                 marks: [],
-                                value: "Add the details",
-                                nodeType: "text"
-                              }
+                                value: 'Add the details',
+                                nodeType: 'text',
+                              },
                             ],
-                            nodeType: "paragraph"
-                          }
+                            nodeType: 'paragraph',
+                          },
                         ],
-                        nodeType: "list-item"
-                      }
+                        nodeType: 'list-item',
+                      },
                     ],
-                    nodeType: "ordered-list"
+                    nodeType: 'ordered-list',
                   },
                   {
                     data: {},
@@ -780,11 +779,11 @@ describe('ContentfulService', function () {
                       {
                         data: {},
                         marks: [],
-                        value: "",
-                        nodeType: "text"
-                      }
+                        value: '',
+                        nodeType: 'text',
+                      },
                     ],
-                    nodeType: "paragraph"
+                    nodeType: 'paragraph',
                   },
                   {
                     data: {},
@@ -792,11 +791,11 @@ describe('ContentfulService', function () {
                       {
                         data: {},
                         marks: [],
-                        value: "This will notify",
-                        nodeType: "text"
-                      }
+                        value: 'This will notify',
+                        nodeType: 'text',
+                      },
                     ],
-                    nodeType: "paragraph"
+                    nodeType: 'paragraph',
                   },
                   {
                     data: {},
@@ -804,14 +803,14 @@ describe('ContentfulService', function () {
                       {
                         data: {},
                         marks: [],
-                        value: "",
-                        nodeType: "text"
-                      }
+                        value: '',
+                        nodeType: 'text',
+                      },
                     ],
-                    nodeType: "paragraph"
-                  }
+                    nodeType: 'paragraph',
+                  },
                 ],
-                nodeType: "document"
+                nodeType: 'document',
               },
               summary: {
                 data: {},
@@ -822,11 +821,11 @@ describe('ContentfulService', function () {
                       {
                         data: {},
                         marks: [],
-                        value: "If you realise",
-                        nodeType: "text"
-                      }
+                        value: 'If you realise',
+                        nodeType: 'text',
+                      },
                     ],
-                    nodeType: "paragraph"
+                    nodeType: 'paragraph',
                   },
                   {
                     data: {},
@@ -840,14 +839,14 @@ describe('ContentfulService', function () {
                               {
                                 data: {},
                                 marks: [],
-                                value: "Open the move",
-                                nodeType: "text"
-                              }
+                                value: 'Open the move',
+                                nodeType: 'text',
+                              },
                             ],
-                            nodeType: "paragraph"
-                          }
+                            nodeType: 'paragraph',
+                          },
                         ],
-                        nodeType: "list-item"
+                        nodeType: 'list-item',
                       },
                       {
                         data: {},
@@ -858,14 +857,14 @@ describe('ContentfulService', function () {
                               {
                                 data: {},
                                 marks: [],
-                                value: "Navigate",
-                                nodeType: "text"
-                              }
+                                value: 'Navigate',
+                                nodeType: 'text',
+                              },
                             ],
-                            nodeType: "paragraph"
-                          }
+                            nodeType: 'paragraph',
+                          },
                         ],
-                        nodeType: "list-item"
+                        nodeType: 'list-item',
                       },
                       {
                         data: {},
@@ -876,17 +875,17 @@ describe('ContentfulService', function () {
                               {
                                 data: {},
                                 marks: [],
-                                value: "Add the details",
-                                nodeType: "text"
-                              }
+                                value: 'Add the details',
+                                nodeType: 'text',
+                              },
                             ],
-                            nodeType: "paragraph"
-                          }
+                            nodeType: 'paragraph',
+                          },
                         ],
-                        nodeType: "list-item"
-                      }
+                        nodeType: 'list-item',
+                      },
                     ],
-                    nodeType: "ordered-list"
+                    nodeType: 'ordered-list',
                   },
                   {
                     data: {},
@@ -894,11 +893,11 @@ describe('ContentfulService', function () {
                       {
                         data: {},
                         marks: [],
-                        value: "",
-                        nodeType: "text"
-                      }
+                        value: '',
+                        nodeType: 'text',
+                      },
                     ],
-                    nodeType: "paragraph"
+                    nodeType: 'paragraph',
                   },
                   {
                     data: {},
@@ -906,23 +905,24 @@ describe('ContentfulService', function () {
                       {
                         data: {},
                         marks: [],
-                        value: "This will notify",
-                        nodeType: "text"
-                      }
+                        value: 'This will notify',
+                        nodeType: 'text',
+                      },
                     ],
-                    nodeType: "paragraph"
-                  }
+                    nodeType: 'paragraph',
+                  },
                 ],
-                nodeType: "document"
+                nodeType: 'document',
               },
-              date: "2025-01-07T18:00+01:00",
-              briefBannerText: "If you realise"
-            }
-          }
-        ]
+              date: '2025-01-07T18:00+01:00',
+              briefBannerText: 'If you realise',
+            },
+          },
+        ],
       } as unknown as contentful.EntryCollection<ContentfulEntry>
 
-      const transformedContentfulContent = contentfulService.toContentfulContent(entries)
+      const transformedContentfulContent =
+        contentfulService.toContentfulContent(entries)
 
       const content1 = {
         date: new Date('2025-06-03T23:00:00.000Z'),
@@ -940,7 +940,9 @@ describe('ContentfulService', function () {
         expiry: new Date('2025-01-21T17:00:00.000Z'),
       } as unknown as ContentfulContent
 
-      expect(JSON.stringify(transformedContentfulContent)).eq(JSON.stringify([content1, content2]))
+      expect(JSON.stringify(transformedContentfulContent)).eq(
+        JSON.stringify([content1, content2])
+      )
     })
   })
 })
