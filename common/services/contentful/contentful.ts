@@ -4,17 +4,17 @@ import {
 } from '@contentful/rich-text-html-renderer'
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
 import * as contentful from 'contentful'
+import { Entry } from 'contentful'
 import { format } from 'date-fns'
 
 // @ts-ignore
 import { get, set } from '../../../common/lib/api-client/cache'
 import {
-  CONTENTFUL_SPACE_ID,
   CONTENTFUL_ACCESS_TOKEN,
   CONTENTFUL_HOST,
+  CONTENTFUL_SPACE_ID,
+  DATE_FORMATS,
 } from '../../../config'
-import { DATE_FORMATS } from '../../../config'
-import { Entry } from 'contentful'
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
 
@@ -91,7 +91,6 @@ export class ContentfulContent {
     bannerText: string
     date: Date
     expiry?: Date
-
   }) {
     this.date = data.date
 
@@ -143,12 +142,15 @@ export class ContentfulService {
     })
   }
 
-  toContentfulContent(entries: contentful.EntryCollection<ContentfulEntry>): ContentfulContent[] {
-    const contentfulEntries: ContentfulEntry[] =  entries.items.map(item => {
+  toContentfulContent(
+    entries: contentful.EntryCollection<ContentfulEntry>
+  ): ContentfulContent[] {
+    const contentfulEntries: ContentfulEntry[] = entries.items.map(item => {
       return this.createContentfulEntry(item)
     })
 
-    const contentfulContents = contentfulEntries.map(e => this.createContent(e))
+    const contentfulContents = contentfulEntries
+      .map(e => this.createContent(e))
       .sort((a, b) => {
         return b.date.getTime() - a.date.getTime()
       })
@@ -161,22 +163,24 @@ export class ContentfulService {
       body: convertToHTMLFormat(entry.fields.body),
       bannerText: entry.fields.briefBannerText,
       date: new Date(entry.fields.date),
-      expiry: entry.fields.bannerExpiry ? new Date(entry.fields.bannerExpiry) : undefined,
+      expiry: entry.fields.bannerExpiry
+        ? new Date(entry.fields.bannerExpiry)
+        : undefined,
     })
   }
 
   protected createContentfulEntry(entry: Entry) {
     const contentfulEntry: ContentfulEntry = {
       fields: {
-        slug: entry.fields['slug'],
-        title: entry.fields['title'],
-        date: entry.fields['date'],
-        bannerExpiry: entry.fields['bannerExpiry'],
-        briefBannerText: entry.fields['briefBannerText'],
-        body: entry.fields['body'],
-        summary: entry.fields['summary']
+        slug: entry.fields.slug,
+        title: entry.fields.title,
+        date: entry.fields.date,
+        bannerExpiry: entry.fields.bannerExpiry,
+        briefBannerText: entry.fields.briefBannerText,
+        body: entry.fields.body,
+        summary: entry.fields.summary,
       } as ContentfulFields,
-      contentTypeId: entry.sys.contentType.sys.id
+      contentTypeId: entry.sys.contentType.sys.id,
     }
     return contentfulEntry
   }
@@ -192,27 +196,26 @@ export class ContentfulService {
   }
 
   async fetchEntries(): Promise<ContentfulContent[]> {
-    let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
+    const cachedEntries = await get(`cache:entries:${this.contentType}`, true)
 
-    if(cachedEntries) {
+    if (cachedEntries) {
       const cached = [...cachedEntries]
-      return cached.filter(e => e.title !== undefined).map(e => this.createFromCache(e))
+      return cached
+        .filter(e => e.title !== undefined)
+        .map(e => this.createFromCache(e))
     }
 
     const entries = (await this.client.getEntries({
       content_type: this.contentType,
     })) as contentful.EntryCollection<ContentfulEntry>
 
-    if (entries.items.length == 0) {
+    if (entries.items.length === 0) {
       return []
     }
 
     const entriesToCache = this.toContentfulContent(entries)
 
-    await set(`cache:entries:${this.contentType}`,
-      entriesToCache,
-      300,
-      true)
+    await set(`cache:entries:${this.contentType}`, entriesToCache, 300, true)
 
     return entriesToCache
   }
@@ -231,9 +234,8 @@ export class ContentfulService {
   }
 
   async fetchBanner(entries?: ContentfulContent[]) {
-    console.log('banner: ' + JSON.stringify(entries))
     if (!Array.isArray(entries)) {
-      entries = entries !== undefined ? [entries] : [];
+      entries = entries !== undefined ? [entries] : []
     }
 
     return entries

@@ -1,15 +1,16 @@
+import { Entry } from 'contentful'
+import * as contentful from 'contentful'
+
+// @ts-ignore
+import { get, set } from '../../../common/lib/api-client/cache'
 import i18n from '../../../config/i18n'
 import { sentenceFormatDate, sentenceFormatTime } from '../../formatters'
+
 import {
   ContentfulContent,
   ContentfulFields,
   ContentfulService,
 } from './contentful'
-import * as contentful from 'contentful'
-import { Entry } from 'contentful'
-
-// @ts-ignore
-import { get, set } from '../../../common/lib/api-client/cache'
 
 const getDateAndTime = (date: Date) => {
   if (!date) {
@@ -22,16 +23,16 @@ const getDateAndTime = (date: Date) => {
   }
 }
 
-export interface DowntimeContentfulEntry {
-  fields: DowntimeFields
-  contentTypeId: string
-}
-
 interface DowntimeFields extends ContentfulFields {
   start: string
   end: string
   daysNotice: number
   briefBannerText: string
+}
+
+export interface DowntimeContentfulEntry {
+  fields: DowntimeFields
+  contentTypeId: string
 }
 
 // Exported for testing
@@ -40,7 +41,12 @@ export class DowntimeContent extends ContentfulContent {
   private end: Date
   private daysNotice: number
 
-  constructor(data: { start: Date; end: Date; daysNotice: number; bannerText: string; }) {
+  constructor(data: {
+    start: Date
+    end: Date
+    daysNotice: number
+    bannerText: string
+  }) {
     const date = new Date(data.start)
     date.setDate(date.getDate() - data.daysNotice)
 
@@ -52,7 +58,10 @@ export class DowntimeContent extends ContentfulContent {
     super({
       title: '',
       body: i18n.t('downtime::page_text', formattedDates),
-      bannerText: i18n.t('downtime::banner_text', { message : data.bannerText} ).split('\n').join('<br/>'),
+      bannerText: i18n
+        .t('downtime::banner_text', { message: data.bannerText })
+        .split('\n')
+        .join('<br/>'),
       date,
       expiry: data.end,
     })
@@ -74,12 +83,16 @@ export class DowntimeService extends ContentfulService {
     this.contentType = 'downtime'
   }
 
-  toDowntimeContent(entries: contentful.EntryCollection<DowntimeContentfulEntry>): DowntimeContent[] {
-    const downtimeContentfulEntries: DowntimeContentfulEntry[] =  entries.items.map(item => {
-      return this.createContentfulEntry(item)
-    })
+  toDowntimeContent(
+    entries: contentful.EntryCollection<DowntimeContentfulEntry>
+  ): DowntimeContent[] {
+    const downtimeContentfulEntries: DowntimeContentfulEntry[] =
+      entries.items.map(item => {
+        return this.createContentfulEntry(item)
+      })
 
-    const downtimeContents = downtimeContentfulEntries.map(e => this.createContent(e))
+    const downtimeContents = downtimeContentfulEntries
+      .map(e => this.createContent(e))
       .sort((a, b) => {
         return b.date.getTime() - a.date.getTime()
       })
@@ -92,7 +105,7 @@ export class DowntimeService extends ContentfulService {
       start: new Date(entry.fields.start),
       end: new Date(entry.fields.end),
       daysNotice: entry.fields.daysNotice,
-      bannerText: entry.fields.briefBannerText
+      bannerText: entry.fields.briefBannerText,
     })
     return a
   }
@@ -100,12 +113,12 @@ export class DowntimeService extends ContentfulService {
   protected createContentfulEntry(entry: Entry) {
     const contentfulEntry: DowntimeContentfulEntry = {
       fields: {
-        start: entry.fields['start'],
-        end: entry.fields['end'],
-        daysNotice: entry.fields['daysNotice'],
-        briefBannerText: entry.fields['briefBannerText']
+        start: entry.fields.start,
+        end: entry.fields.end,
+        daysNotice: entry.fields.daysNotice,
+        briefBannerText: entry.fields.briefBannerText,
       } as DowntimeFields,
-      contentTypeId: entry.sys.contentType.sys.id
+      contentTypeId: entry.sys.contentType.sys.id,
     }
     return contentfulEntry
   }
@@ -123,27 +136,30 @@ export class DowntimeService extends ContentfulService {
     if (!entries) {
       entries = (await this.fetchEntries()) as DowntimeContent[]
     }
+
     return entries.filter(c => c.isActive()).map(entry => entry.getPostData())
   }
 
   async fetchBanner(entries?: DowntimeContent[]) {
     if (!Array.isArray(entries)) {
-      entries = entries !== undefined ? [entries] : [];
+      entries = entries !== undefined ? [entries] : []
     }
 
-    if(entries.length === 0) {
+    if (entries.length === 0) {
       entries = await this.fetchEntries()
     }
 
     return entries
-      .filter(entry => typeof entry.isCurrent === 'function' && entry.isCurrent())
-      [0]?.getBannerData();
+      .filter(
+        entry => typeof entry.isCurrent === 'function' && entry.isCurrent()
+      )[0]
+      ?.getBannerData()
   }
 
   async fetchEntries(): Promise<DowntimeContent[]> {
-    let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
+    const cachedEntries = await get(`cache:entries:${this.contentType}`, true)
 
-    if(cachedEntries) {
+    if (cachedEntries) {
       const cached = [...cachedEntries]
       return cached.map(e => this.createFromCache(e))
     }
@@ -152,16 +168,13 @@ export class DowntimeService extends ContentfulService {
       content_type: this.contentType,
     })) as contentful.EntryCollection<DowntimeContentfulEntry>
 
-    if (entries.items.length == 0) {
+    if (entries.items.length === 0) {
       return []
     }
 
     const entriesToCache = this.toDowntimeContent(entries)
 
-    await set(`cache:entries:${this.contentType}`,
-      entriesToCache,
-      300,
-      true)
+    await set(`cache:entries:${this.contentType}`, entriesToCache, 300, true)
 
     return entriesToCache
   }
