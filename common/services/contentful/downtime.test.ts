@@ -1,9 +1,14 @@
 import { expect } from 'chai'
+import * as contentful from 'contentful'
 import sinon from 'sinon'
 
 import { mockDate, unmockDate } from '../../../mocks/date'
 
-import { DowntimeContent, DowntimeService } from './downtime'
+import {
+  DowntimeContent,
+  DowntimeContentfulEntry,
+  DowntimeService,
+} from './downtime'
 
 const formattedEntriesMockResponse = {
   bannerContent: {
@@ -80,6 +85,135 @@ describe('DowntimeService', function () {
 
     it('only returns content that isActive', async function () {
       expect((await service.fetchPosts()).length).to.eq(1)
+    })
+  })
+
+  describe('downtime response transformation', function () {
+    it('transform downtime response to contentful content', function () {
+      const entries = {
+        sys: {
+          type: 'Array',
+        },
+        total: 11,
+        skip: 0,
+        limit: 100,
+        items: [
+          {
+            metadata: {
+              tags: [],
+              concepts: [],
+            },
+            sys: {
+              space: {
+                sys: {
+                  type: 'Link',
+                  linkType: 'Space',
+                  id: 'm5k1kmk3zqwh',
+                },
+              },
+              type: 'Entry',
+              id: '2dh8UdBv5meM7XUPuXfEsv',
+              contentType: {
+                sys: {
+                  type: 'Link',
+                  linkType: 'ContentType',
+                  id: 'downtime',
+                },
+              },
+              revision: 0,
+              createdAt: '2025-06-09T09:24:49.593Z',
+              updatedAt: '2025-06-18T15:05:07.738Z',
+              environment: {
+                sys: {
+                  id: 'master',
+                  type: 'Link',
+                  linkType: 'Environment',
+                },
+              },
+              locale: 'en-US',
+            },
+            fields: {
+              title: 'Downtime testing',
+              start: '2025-06-21T00:00+01:00',
+              end: '2025-06-23T00:00+01:00',
+              daysNotice: 7,
+              briefBannerText: 'this is to test the downtime banner ',
+            },
+          },
+          {
+            metadata: {
+              tags: [],
+              concepts: [],
+            },
+            sys: {
+              space: {
+                sys: {
+                  type: 'Link',
+                  linkType: 'Space',
+                  id: 'm5k1kmk3zqwh',
+                },
+              },
+              type: 'Entry',
+              id: 'p5N7muzUAijDCtwTiPEZO',
+              contentType: {
+                sys: {
+                  type: 'Link',
+                  linkType: 'ContentType',
+                  id: 'downtime',
+                },
+              },
+              revision: 2,
+              createdAt: '2024-06-25T16:04:10.810Z',
+              updatedAt: '2024-12-30T11:33:06.665Z',
+              firstPublishedAt: '2024-06-25T16:05:30.129Z',
+              environment: {
+                sys: {
+                  id: 'master',
+                  type: 'Link',
+                  linkType: 'Environment',
+                },
+              },
+              locale: 'en-US',
+            },
+            fields: {
+              title: 'The warning overview may contain inaccurate information',
+              start: '2024-06-24T00:00+01:00',
+              end: '2024-06-26T00:00+01:00',
+              daysNotice: 4,
+              briefBannerText:
+                'How to update a move if a special vehicle is required',
+            },
+          },
+        ],
+      } as unknown as contentful.EntryCollection<DowntimeContentfulEntry>
+
+      const transformedDowntimeContent = service.toDowntimeContent(entries)
+
+      const content1: DowntimeContent = {
+        date: new Date('2025-06-13T23:00:00.000Z'),
+        title: '',
+        body: 'You will be able to use the service again from 12am on Monday 23 June 2025.',
+        bannerText: 'this is to test the downtime banner ',
+        expiry: new Date('2025-06-22T23:00:00.000Z'),
+        start: new Date('2025-06-20T23:00:00.000Z'),
+        end: new Date('2025-06-22T23:00:00.000Z'),
+        daysNotice: 7,
+      } as unknown as DowntimeContent
+
+      const content2 = {
+        date: new Date('2024-06-19T23:00:00.000Z'),
+        title: '',
+        body: 'You will be able to use the service again from 12am on Wednesday 26 June 2024.',
+        bannerText: 'How to update a move if a special vehicle is required',
+        expiry: new Date('2024-06-25T23:00:00.000Z'),
+        start: new Date('2024-06-23T23:00:00.000Z'),
+        end: new Date('2024-06-25T23:00:00.000Z'),
+        daysNotice: 4,
+      } as unknown as DowntimeContent
+
+      expect(JSON.stringify(transformedDowntimeContent)).eq(
+        JSON.stringify([content1, content2])
+      )
     })
   })
 })

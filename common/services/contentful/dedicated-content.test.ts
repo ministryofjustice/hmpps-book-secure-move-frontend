@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import * as contentful from 'contentful'
 import sinon from 'sinon'
 
+import { ContentfulEntry } from './contentful'
 import { DedicatedContentService } from './dedicated-content'
 
 let service: DedicatedContentService
@@ -16,7 +17,7 @@ describe('DedicatedContentService', function () {
       skip: 0,
       limit: 0,
       stringifySafe: '',
-    } as unknown as contentful.EntryCollection<unknown>)
+    } as unknown as contentful.EntryCollection<ContentfulEntry>)
   })
 
   it('requests the right content type from Contentful', async function () {
