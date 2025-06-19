@@ -99,7 +99,8 @@
         "date_from": null,
         "date_to": null,
         "is_lockout": false,
-        "recall_date": null
+        "recall_date": null,
+        "date_changed_reason": null
       },
       "relationships": {
         "supplier": {
@@ -176,7 +177,8 @@
         "date_from": null,
         "date_to": null,
         "is_lockout": false,
-        "recall_date": null
+        "recall_date": null,
+        "date_changed_reason": null
       },
       "relationships": {
         "supplier": {
@@ -253,7 +255,8 @@
         "date_from": null,
         "date_to": null,
         "is_lockout": false,
-        "recall_date": null
+        "recall_date": null,
+        "date_changed_reason": null
       },
       "relationships": {
         "supplier": {
@@ -330,7 +333,8 @@
         "date_from": null,
         "date_to": null,
         "is_lockout": false,
-        "recall_date": null
+        "recall_date": null,
+        "date_changed_reason": null
       },
       "relationships": {
         "supplier": {
