@@ -24,7 +24,7 @@ const restClient = async (req, url, args, options = {}) => {
     ...options,
     headers,
   })
-  return response.data
+  return options.raw ? response : response.data
 }
 
 restClient.get = restClient
