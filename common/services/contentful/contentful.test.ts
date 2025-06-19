@@ -1,11 +1,16 @@
 import { expect } from 'chai'
+import * as contentful from 'contentful'
 import { format } from 'date-fns'
 import sinon from 'sinon'
 
 import { DATE_FORMATS } from '../../../config'
 import { mockDate, unmockDate } from '../../../mocks/date'
 
-import { ContentfulContent, ContentfulService } from './contentful'
+import {
+  ContentfulContent,
+  ContentfulEntry,
+  ContentfulService,
+} from './contentful'
 
 const todaysDate = new Date()
 const formattedTodaysDate = todaysDate.toLocaleDateString('en-GB', {
@@ -564,6 +569,380 @@ describe('ContentfulService', function () {
 
       const response = await contentfulService.fetch()
       expect(response).to.equal(null)
+    })
+  })
+
+  context('contentful response transformation', function () {
+    it('transform contentful response to contentful content', function () {
+      const entries = {
+        sys: {
+          type: 'Array',
+        },
+        total: 14,
+        skip: 0,
+        limit: 100,
+        items: [
+          {
+            metadata: {
+              tags: [],
+              concepts: [],
+            },
+            sys: {
+              space: {
+                sys: {
+                  type: 'Link',
+                  linkType: 'Space',
+                  id: 'm5k1kmk3zqwh',
+                },
+              },
+              type: 'Entry',
+              id: '7uxSgsLxRXVFUuo8x38JIy',
+              contentType: {
+                sys: {
+                  type: 'Link',
+                  linkType: 'ContentType',
+                  id: 'whatsNew',
+                },
+              },
+              revision: 0,
+              createdAt: '2025-06-04T16:32:17.348Z',
+              updatedAt: '2025-06-06T14:32:20.443Z',
+              environment: {
+                sys: {
+                  id: 'master',
+                  type: 'Link',
+                  linkType: 'Environment',
+                },
+              },
+              locale: 'en-US',
+            },
+            fields: {
+              title: 'New Test Whats new',
+              body: {
+                data: {},
+                content: [
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        marks: [],
+                        value: 'this is a body text',
+                        nodeType: 'text',
+                      },
+                    ],
+                    nodeType: 'paragraph',
+                  },
+                ],
+                nodeType: 'document',
+              },
+              summary: {
+                data: {},
+                content: [
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        marks: [],
+                        value: 'this is a summary',
+                        nodeType: 'text',
+                      },
+                    ],
+                    nodeType: 'paragraph',
+                  },
+                ],
+                nodeType: 'document',
+              },
+              date: '2025-06-04T00:00+01:00',
+              bannerExpiry: '2025-06-12T00:00+01:00',
+              briefBannerText: 'banner text',
+            },
+          },
+          {
+            metadata: {
+              tags: [],
+              concepts: [],
+            },
+            sys: {
+              space: {
+                sys: {
+                  type: 'Link',
+                  linkType: 'Space',
+                  id: 'm5k1kmk3zqwh',
+                },
+              },
+              type: 'Entry',
+              id: 'TeU8RHgSneQQY9mMf0OiA',
+              contentType: {
+                sys: {
+                  type: 'Link',
+                  linkType: 'ContentType',
+                  id: 'whatsNew',
+                },
+              },
+              revision: 3,
+              createdAt: '2025-01-07T18:44:07.142Z',
+              updatedAt: '2025-01-07T18:54:56.245Z',
+              publishedAt: '2025-01-07T18:54:56.245Z',
+              firstPublishedAt: '2025-01-07T18:46:57.955Z',
+              publishedVersion: 26,
+              environment: {
+                sys: {
+                  id: 'master',
+                  type: 'Link',
+                  linkType: 'Environment',
+                },
+              },
+              locale: 'en-US',
+            },
+            fields: {
+              title: 'How to update a move',
+              body: {
+                data: {},
+                content: [
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        marks: [],
+                        value: 'Update a move',
+                        nodeType: 'text',
+                      },
+                    ],
+                    nodeType: 'paragraph',
+                  },
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        content: [
+                          {
+                            data: {},
+                            content: [
+                              {
+                                data: {},
+                                marks: [],
+                                value: 'Open the move',
+                                nodeType: 'text',
+                              },
+                            ],
+                            nodeType: 'paragraph',
+                          },
+                        ],
+                        nodeType: 'list-item',
+                      },
+                      {
+                        data: {},
+                        content: [
+                          {
+                            data: {},
+                            content: [
+                              {
+                                data: {},
+                                marks: [],
+                                value: 'Navigate to some page',
+                                nodeType: 'text',
+                              },
+                            ],
+                            nodeType: 'paragraph',
+                          },
+                        ],
+                        nodeType: 'list-item',
+                      },
+                      {
+                        data: {},
+                        content: [
+                          {
+                            data: {},
+                            content: [
+                              {
+                                data: {},
+                                marks: [],
+                                value: 'Add the details',
+                                nodeType: 'text',
+                              },
+                            ],
+                            nodeType: 'paragraph',
+                          },
+                        ],
+                        nodeType: 'list-item',
+                      },
+                    ],
+                    nodeType: 'ordered-list',
+                  },
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        marks: [],
+                        value: '',
+                        nodeType: 'text',
+                      },
+                    ],
+                    nodeType: 'paragraph',
+                  },
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        marks: [],
+                        value: 'This will notify',
+                        nodeType: 'text',
+                      },
+                    ],
+                    nodeType: 'paragraph',
+                  },
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        marks: [],
+                        value: '',
+                        nodeType: 'text',
+                      },
+                    ],
+                    nodeType: 'paragraph',
+                  },
+                ],
+                nodeType: 'document',
+              },
+              summary: {
+                data: {},
+                content: [
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        marks: [],
+                        value: 'If you realise',
+                        nodeType: 'text',
+                      },
+                    ],
+                    nodeType: 'paragraph',
+                  },
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        content: [
+                          {
+                            data: {},
+                            content: [
+                              {
+                                data: {},
+                                marks: [],
+                                value: 'Open the move',
+                                nodeType: 'text',
+                              },
+                            ],
+                            nodeType: 'paragraph',
+                          },
+                        ],
+                        nodeType: 'list-item',
+                      },
+                      {
+                        data: {},
+                        content: [
+                          {
+                            data: {},
+                            content: [
+                              {
+                                data: {},
+                                marks: [],
+                                value: 'Navigate',
+                                nodeType: 'text',
+                              },
+                            ],
+                            nodeType: 'paragraph',
+                          },
+                        ],
+                        nodeType: 'list-item',
+                      },
+                      {
+                        data: {},
+                        content: [
+                          {
+                            data: {},
+                            content: [
+                              {
+                                data: {},
+                                marks: [],
+                                value: 'Add the details',
+                                nodeType: 'text',
+                              },
+                            ],
+                            nodeType: 'paragraph',
+                          },
+                        ],
+                        nodeType: 'list-item',
+                      },
+                    ],
+                    nodeType: 'ordered-list',
+                  },
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        marks: [],
+                        value: '',
+                        nodeType: 'text',
+                      },
+                    ],
+                    nodeType: 'paragraph',
+                  },
+                  {
+                    data: {},
+                    content: [
+                      {
+                        data: {},
+                        marks: [],
+                        value: 'This will notify',
+                        nodeType: 'text',
+                      },
+                    ],
+                    nodeType: 'paragraph',
+                  },
+                ],
+                nodeType: 'document',
+              },
+              date: '2025-01-07T18:00+01:00',
+              briefBannerText: 'If you realise',
+            },
+          },
+        ],
+      } as unknown as contentful.EntryCollection<ContentfulEntry>
+
+      const transformedContentfulContent =
+        contentfulService.toContentfulContent(entries)
+
+      const content1 = {
+        date: new Date('2025-06-03T23:00:00.000Z'),
+        title: 'New Test Whats new',
+        body: '<p class="govuk-template__body">this is a body text</p>',
+        bannerText: 'banner text',
+        expiry: new Date('2025-06-11T23:00:00.000Z'),
+      } as unknown as ContentfulContent
+
+      const content2 = {
+        date: new Date('2025-01-07T17:00:00.000Z'),
+        title: 'How to update a move',
+        body: '<p class="govuk-template__body">Update a move</p><ol class="govuk-list govuk-list--number"><li><p class="govuk-template__body">Open the move</p></li><li><p class="govuk-template__body">Navigate to some page</p></li><li><p class="govuk-template__body">Add the details</p></li></ol><p class="govuk-template__body"></p><p class="govuk-template__body">This will notify</p><p class="govuk-template__body"></p>',
+        bannerText: 'If you realise',
+        expiry: new Date('2025-01-21T17:00:00.000Z'),
+      } as unknown as ContentfulContent
+
+      expect(JSON.stringify(transformedContentfulContent)).eq(
+        JSON.stringify([content1, content2])
+      )
     })
   })
 })

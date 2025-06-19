@@ -4,15 +4,17 @@ import {
 } from '@contentful/rich-text-html-renderer'
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types'
 import * as contentful from 'contentful'
+import { Entry } from 'contentful'
 import { format } from 'date-fns'
 
-const { get, set } = require('../../../common/lib/api-client/cache')
-const {
-  CONTENTFUL_SPACE_ID,
+// @ts-ignore
+import { get, set } from '../../../common/lib/api-client/cache'
+import {
   CONTENTFUL_ACCESS_TOKEN,
   CONTENTFUL_HOST,
-} = require('../../../config')
-const { DATE_FORMATS } = require('../../../config/index')
+  CONTENTFUL_SPACE_ID,
+  DATE_FORMATS,
+} from '../../../config'
 
 const TWO_WEEKS = 2 * 7 * 24 * 60 * 60 * 1000
 
@@ -58,11 +60,18 @@ const options = {
 } as Partial<Options>
 
 export interface ContentfulFields {
+  slug: string
   title: string
-  body: string
+  body: Object
   briefBannerText: string
   date: string
   bannerExpiry: string
+  summary: Object
+}
+
+export interface ContentfulEntry {
+  fields: ContentfulFields
+  contentTypeId: string
 }
 
 const convertToHTMLFormat = (body: any) => documentToHtmlString(body, options)
@@ -122,54 +131,93 @@ export class ContentfulContent {
 // Don't use this class, use a class that extends it. The constructor should be
 //   protected, but if we set it to protected then we can't test it.
 export class ContentfulService {
-  protected client: contentful.ContentfulClientApi
+  protected client: contentful.ContentfulClientApi<any>
   protected contentType: string = ''
 
   protected constructor() {
     this.client = contentful.createClient({
       host: CONTENTFUL_HOST,
-      space: CONTENTFUL_SPACE_ID,
-      accessToken: CONTENTFUL_ACCESS_TOKEN,
+      space: CONTENTFUL_SPACE_ID as string,
+      accessToken: CONTENTFUL_ACCESS_TOKEN as string,
     })
   }
 
-  protected createContent(fields: ContentfulFields) {
+  toContentfulContent(
+    entries: contentful.EntryCollection<ContentfulEntry>
+  ): ContentfulContent[] {
+    const contentfulEntries: ContentfulEntry[] = entries.items.map(item => {
+      return this.createContentfulEntry(item)
+    })
+
+    const contentfulContents = contentfulEntries
+      .map(e => this.createContent(e))
+      .sort((a, b) => {
+        return b.date.getTime() - a.date.getTime()
+      })
+    return contentfulContents
+  }
+
+  protected createContent(entry: ContentfulEntry) {
     return new ContentfulContent({
-      title: fields.title,
-      body: convertToHTMLFormat(fields.body),
-      bannerText: fields.briefBannerText,
-      date: new Date(fields.date),
-      expiry: fields.bannerExpiry ? new Date(fields.bannerExpiry) : undefined,
+      title: entry.fields.title,
+      body: convertToHTMLFormat(entry.fields.body),
+      bannerText: entry.fields.briefBannerText,
+      date: new Date(entry.fields.date),
+      expiry: entry.fields.bannerExpiry
+        ? new Date(entry.fields.bannerExpiry)
+        : undefined,
     })
   }
 
-  async fetchEntries() {
-    let cachedEntries = await get(`cache:entries:${this.contentType}`, true)
+  protected createContentfulEntry(entry: Entry) {
+    const contentfulEntry: ContentfulEntry = {
+      fields: {
+        slug: entry.fields.slug,
+        title: entry.fields.title,
+        date: entry.fields.date,
+        bannerExpiry: entry.fields.bannerExpiry,
+        briefBannerText: entry.fields.briefBannerText,
+        body: entry.fields.body,
+        summary: entry.fields.summary,
+      } as ContentfulFields,
+      contentTypeId: entry.sys.contentType.sys.id,
+    }
+    return contentfulEntry
+  }
 
-    if(cachedEntries) {
-      return cachedEntries
+  protected createFromCache(c: any) {
+    return new ContentfulContent({
+      title: c.title,
+      body: c.body,
+      bannerText: c.briefBannerText,
+      date: new Date(c.date),
+      expiry: c.bannerExpiry ? new Date(c.bannerExpiry) : undefined,
+    })
+  }
+
+  async fetchEntries(): Promise<ContentfulContent[]> {
+    const cachedEntries = await get(`cache:entries:${this.contentType}`, true)
+
+    if (cachedEntries) {
+      const cached = [...cachedEntries]
+      return cached
+        .filter(e => e.title !== undefined)
+        .map(e => this.createFromCache(e))
     }
 
     const entries = (await this.client.getEntries({
       content_type: this.contentType,
-    })) as contentful.EntryCollection<ContentfulFields>
+    })) as contentful.EntryCollection<ContentfulEntry>
 
-    const entriesToCache = entries.items?.length ? entries : []
+    if (entries.items.length === 0) {
+      return []
+    }
 
-    await set(`cache:entries:${this.contentType}`, 
-      entriesToCache,
-      300,
-      true)
+    const entriesToCache = this.toContentfulContent(entries)
 
-      if (!entries.items?.length) {
-        return []
-      } 
+    await set(`cache:entries:${this.contentType}`, entriesToCache, 300, true)
 
-    return entries.items
-      .map(e => this.createContent(e.fields))
-      .sort((a, b) => {
-        return b.date.getTime() - a.date.getTime()
-      })
+    return entriesToCache
   }
 
   async fetch() {
@@ -184,12 +232,12 @@ export class ContentfulService {
       posts: await this.fetchPosts(entries),
     }
   }
-  
+
   async fetchBanner(entries?: ContentfulContent[]) {
     if (!Array.isArray(entries)) {
-      entries = entries !== undefined ? [entries] : [];
+      entries = entries !== undefined ? [entries] : []
     }
-  
+
     return entries
       .filter(entry => typeof entry.isCurrent === 'function' && entry.isCurrent())
       [0]?.getBannerData();
