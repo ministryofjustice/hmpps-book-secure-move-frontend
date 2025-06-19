@@ -207,7 +207,7 @@
   },
   "edit": {
     "page_title": "Edit this move",
-    "warning": "If you are changing the move date on the day the move is due to take place, you must also inform the supplier."
+    "warning": "If you are changing the move date on the day the move is due to take place, or to today, you must also inform the supplier."
   },
   "review": {
     "page_title": "Review request for",
