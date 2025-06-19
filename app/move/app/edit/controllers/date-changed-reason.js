@@ -1,6 +1,6 @@
 const UpdateBase = require('./base')
 
-class DateChangeReasonController extends UpdateBase {
+class DateChangedReasonController extends UpdateBase {
   constructor(options) {
     super(options)
     this.flashKey = 'date'
@@ -13,4 +13,4 @@ class DateChangeReasonController extends UpdateBase {
   }
 }
 
-module.exports = DateChangeReasonController
+module.exports = DateChangedReasonController
