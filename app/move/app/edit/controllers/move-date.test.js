@@ -40,7 +40,7 @@ describe('Move controllers', function () {
       })
 
       it('should only have the expected methods of its own', function () {
-        const ownMethods = ['getUpdateValues', 'saveValues']
+        const ownMethods = ['setNextStep', 'getUpdateValues', 'saveValues']
         const mixedinMethods = Object.getOwnPropertyNames(MixinProto)
         const ownProps = Object.getOwnPropertyNames(ownProto).filter(
           prop => !mixedinMethods.includes(prop) || ownMethods.includes(prop)

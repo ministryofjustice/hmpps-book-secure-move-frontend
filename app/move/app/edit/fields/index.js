@@ -2,8 +2,8 @@ const { cloneDeep } = require('lodash')
 
 const createFields = require('../../new/fields')
 
-const policeNationalComputer = require('./police-national-computer')
 const dateChangedReason = require('./date-changed-reason')
+const policeNationalComputer = require('./police-national-computer')
 
 const fields = {
   ...cloneDeep(createFields),
