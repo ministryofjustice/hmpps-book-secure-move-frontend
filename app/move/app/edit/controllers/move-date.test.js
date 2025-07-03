@@ -120,24 +120,31 @@ describe('Move controllers', function () {
     })
 
     describe('#saveValues', function () {
-      const req = {}
+      let req
       const res = {}
       let nextSpy
 
       beforeEach(function () {
-        sinon.stub(UpdateBaseController.prototype, 'saveMove')
+        req = {
+          form: {
+            values: {
+              date: '2021-08-02',
+            },
+          },
+          sessionModel: {
+            set: sinon.spy(),
+          },
+        }
         nextSpy = sinon.spy()
         controller.saveValues(req, res, nextSpy)
       })
 
-      it('should call base’s saveMove', function () {
-        expect(
-          UpdateBaseController.prototype.saveMove
-        ).to.be.calledOnceWithExactly(req, res, nextSpy)
+      it('should set move date in session model', function () {
+        expect(req.sessionModel.set).to.be.calledOnce
       })
 
-      it('should not invoke next itself', function () {
-        expect(nextSpy).to.not.be.called
+      it('should invoke next', function () {
+        expect(nextSpy).to.be.called
       })
     })
   })

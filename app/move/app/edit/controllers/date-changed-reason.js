@@ -7,8 +7,12 @@ class DateChangedReasonController extends UpdateBase {
     this.saveFields = ['date', 'date_changed_reason']
   }
 
-  saveValues(req, res, next) {
+  process(req, res, next) {
     req.form.values.date = req.sessionModel.get('proposedDate')
+    return super.process(req, res, next)
+  }
+
+  saveValues(req, res, next) {
     this.saveMove(req, res, next)
   }
 }
