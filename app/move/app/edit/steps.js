@@ -52,7 +52,6 @@ const updateSteps = [
         controller: MoveDate,
         template: '../../edit/views/move-date',
         next: 'date-changed-reason',
-        buttonText: 'Continue',
       },
       '/date-changed-reason': {
         controller: DateChangedReason,

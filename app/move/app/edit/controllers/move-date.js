@@ -10,6 +10,17 @@ class UpdateMoveDateController extends UpdateBase {
   }
 
   setNextStep(req, res, next) {
+    if (this.isPrisonTransfer(req)) {
+      next()
+    } else {
+      super.setNextStep(req, res, next)
+    }
+  }
+
+  setButtonText(req, res, next) {
+    req.form.options.buttonText = this.isPrisonTransfer(req)
+      ? 'actions::continue'
+      : 'actions::save_and_continue'
     next()
   }
 
@@ -40,8 +51,16 @@ class UpdateMoveDateController extends UpdateBase {
   }
 
   saveValues(req, res, next) {
-    req.sessionModel.set('proposedDate', req.form.values.date)
-    next()
+    if (this.isPrisonTransfer(req)) {
+      req.sessionModel.set('proposedDate', req.form.values.date)
+      next()
+    } else {
+      this.saveMove(req, res, next)
+    }
+  }
+
+  isPrisonTransfer(req) {
+    return req.getMove().move_type === 'prison_transfer'
   }
 }
 
