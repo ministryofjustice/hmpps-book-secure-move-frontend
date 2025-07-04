@@ -9,7 +9,7 @@ const controller = new MoveDateController({ route: '/' })
 const ownProto = Object.getPrototypeOf(controller)
 
 describe('Move controllers', function () {
-  describe('Update move details controller', function () {
+  describe('Update move date controller', function () {
     it('should extend UpdateBaseController', function () {
       expect(Object.getPrototypeOf(ownProto)).to.equal(
         UpdateBaseController.prototype
@@ -40,7 +40,13 @@ describe('Move controllers', function () {
       })
 
       it('should only have the expected methods of its own', function () {
-        const ownMethods = ['setNextStep', 'getUpdateValues', 'saveValues']
+        const ownMethods = [
+          'setNextStep',
+          'setButtonText',
+          'getUpdateValues',
+          'saveValues',
+          'isPrisonTransfer',
+        ]
         const mixedinMethods = Object.getOwnPropertyNames(MixinProto)
         const ownProps = Object.getOwnPropertyNames(ownProto).filter(
           prop => !mixedinMethods.includes(prop) || ownMethods.includes(prop)
@@ -123,28 +129,71 @@ describe('Move controllers', function () {
       let req
       const res = {}
       let nextSpy
+      const move = { id: '#move', date: '2019-10-04' }
+      const sessionModel = { set: sinon.stub() }
 
       beforeEach(function () {
-        req = {
-          form: {
-            values: {
-              date: '2021-08-02',
+        sessionModel.set.resetHistory()
+        sinon.stub(UpdateBaseController.prototype, 'saveMove')
+      })
+
+      context('when move type is prison transfer', function () {
+        beforeEach(function () {
+          req = {
+            form: {
+              values: {
+                date: '2021-08-02',
+              },
             },
-          },
-          sessionModel: {
-            set: sinon.spy(),
-          },
-        }
-        nextSpy = sinon.spy()
-        controller.saveValues(req, res, nextSpy)
-      })
+            sessionModel,
+            getMove: sinon.stub(),
+          }
+          nextSpy = sinon.spy()
+          move.move_type = 'prison_transfer'
+          req.getMove.returns(move)
+          controller.saveValues(req, res, nextSpy)
+        })
+        it('should set move date in session model', function () {
+          expect(sessionModel.set).to.be.calledOnce
+        })
 
-      it('should set move date in session model', function () {
-        expect(req.sessionModel.set).to.be.calledOnce
-      })
+        it('should invoke next', function () {
+          expect(nextSpy).to.be.called
+        })
 
-      it('should invoke next', function () {
-        expect(nextSpy).to.be.called
+        it('should not call base’s saveMove', function () {
+          expect(UpdateBaseController.prototype.saveMove).to.not.be.called
+        })
+      })
+      context('when move type is not prison transfer', function () {
+        beforeEach(function () {
+          req = {
+            form: {
+              values: {
+                date: '2021-08-02',
+              },
+            },
+            sessionModel,
+            getMove: sinon.stub(),
+          }
+          nextSpy = sinon.spy()
+          move.move_type = 'hospital'
+          req.getMove.returns(move)
+          controller.saveValues(req, res, nextSpy)
+        })
+        it('should not set move date in session model', function () {
+          expect(sessionModel.set).to.not.be.called
+        })
+
+        it('should not invoke next', function () {
+          expect(nextSpy).to.not.be.called
+        })
+
+        it('should call base’s saveMove', function () {
+          expect(
+            UpdateBaseController.prototype.saveMove
+          ).to.be.calledOnceWithExactly(req, res, nextSpy)
+        })
       })
     })
   })
