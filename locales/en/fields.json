@@ -233,8 +233,9 @@
     "label": "Is there a date this move has to be completed by?",
     "error_message": "Enter whether a move needs to be completed by a date"
   },
-  "date_change_reason": {
+  "date_changed_reason": {
     "label": "Why are you changing the move date?",
+    "error_message": "Select a reason for changing the date of the move",
     "items": {
       "combined_with_another_request" : {
         "label" : "Efficiency: move combined with another request"
