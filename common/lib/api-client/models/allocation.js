@@ -11,6 +11,7 @@ module.exports = {
     estate: '',
     estate_comment: '',
     date: '',
+    date_changed_reason: '',
     prisoner_category: '',
     sentence_length: '',
     sentence_length_comment: '',

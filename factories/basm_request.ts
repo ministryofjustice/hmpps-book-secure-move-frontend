@@ -33,6 +33,7 @@ export const defaultParams = {
     reset: () => {},
     set: () => {},
     toJSON: () => ({}),
+    get: () => {},
   },
   services: {
     allocation: {
@@ -56,6 +57,7 @@ export const defaultParams = {
   url: '',
 }
 
+// @ts-ignore
 export const BasmRequestFactory = Factory.define<BasmRequest>(() => ({
   ...defaultParams,
   getMove: function () {

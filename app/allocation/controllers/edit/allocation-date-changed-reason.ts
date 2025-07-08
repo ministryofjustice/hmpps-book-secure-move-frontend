@@ -20,12 +20,12 @@ class AllocationDateChangedReasonController extends UpdateBaseController {
     try {
       const id = req.allocation.id
       const date = req.sessionModel.get('proposedDate')
-
-      console.log(date)
+      const date_changed_reason = req.form.values.date_changed_reason
 
       const allocation = await req.services.allocation.update({
         id,
         date,
+        date_changed_reason,
       })
 
       req.sessionModel.set('allocation', allocation)

@@ -9,9 +9,6 @@ type FormValues = { date?: string }
 
 class AllocationDateController extends UpdateBaseController {
 
-  setContext(){
-
-  }
   getValues(
     req: AllocationRequest,
     res: BasmResponse,
