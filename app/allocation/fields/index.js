@@ -3,6 +3,7 @@ const cancellationReasonOtherComment = require('./cancellation_reason_other_comm
 const completeInFull = require('./complete_in_full')
 const complexCases = require('./complex-cases')
 const allocationDate = require('./date')
+const dateChangedReason = require('./date-changed-reason')
 const estate = require('./estate')
 const estateComment = require('./estate_comment')
 const fromLocation = require('./from-location')
@@ -43,6 +44,7 @@ const cancelFields = {
 
 const editFields = {
   date: allocationDate,
+  date_changed_reason: dateChangedReason,
 }
 
 module.exports = {

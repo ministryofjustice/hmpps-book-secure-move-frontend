@@ -1,27 +1,36 @@
-import { AllocationDetailsController } from '../controllers/edit'
+import {
+  AllocationDateChangedReasonController,
+  AllocationDateController,
+} from '../controllers/edit'
 
 const createSteps = require('./create')
 
 const updateStepPropOverrides = {
   entryPoint: true,
   backLink: null,
-  next: undefined,
-  buttonText: 'actions::save_and_continue',
+  buttonText: 'actions::continue'
 }
 
 const updateSteps = [
   {
-    key: 'allocation_details',
+    key: 'allocation_date',
     permission: 'allocation:update',
     steps: {
-      '/allocation-details': {
+      '/allocation-date': {
         ...createSteps['/allocation-details'],
         ...updateStepPropOverrides,
-        controller: AllocationDetailsController,
-        key: 'allocation_details',
+        controller: AllocationDateController,
+        next: 'date-changed-reason',
+        key: 'allocation_details'
       },
-    },
-  },
+      '/date-changed-reason': {
+        ...updateStepPropOverrides,
+        controller: AllocationDateChangedReasonController,
+        key: 'date_changed_reason',
+        fields: ['date_changed_reason']
+      }
+    }
+  }
 ]
 
 export default updateSteps

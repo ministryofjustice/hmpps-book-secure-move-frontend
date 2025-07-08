@@ -6,6 +6,7 @@ function getFieldErrorMessage({
   question = '',
   key: fieldKey,
   type: errorType,
+  objectType,
 } = {}) {
   if (!fieldKey) {
     return ''
@@ -25,6 +26,7 @@ function getFieldErrorMessage({
   })
   return i18n.t([`fields::${fieldKey}.error_message`, fallback], {
     context: errorType,
+    objectType,
   })
 }
 

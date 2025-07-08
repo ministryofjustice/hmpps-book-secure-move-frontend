@@ -5,5 +5,6 @@ export interface SessionModel {
   allocation?: Allocation
   reset: () => void
   set: (key: string, value: any) => any
+  get: <T>(key: string) => T
   toJSON: () => any
 }

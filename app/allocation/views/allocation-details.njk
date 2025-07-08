@@ -11,6 +11,9 @@
   }) }}
 
   {{ super() }}
+  <p>
+  {{  context | dump }}
+  </p>
 {% endblock %}
 
 {% block contentSidebar %}

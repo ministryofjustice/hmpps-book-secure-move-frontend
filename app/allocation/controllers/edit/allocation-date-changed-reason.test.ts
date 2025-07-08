@@ -8,9 +8,10 @@ import { Move } from '../../../../common/types/move'
 import { AllocationRequestFactory } from '../../../../factories/allocation_request'
 import { MoveFactory } from '../../../../factories/move'
 
-import AllocationDetailsController from './allocation-details'
+import AllocationDateController from './allocation-date'
+import AllocationDateChangedReasonController from './allocation-date-changed-reason'
 
-const controller = new AllocationDetailsController({ route: '/' })
+const controller = new AllocationDateChangedReasonController({ route: '/' })
 
 const locations: Location[] = [
   {
@@ -196,7 +197,7 @@ describe('#saveValues', function () {
       expect(next).to.have.been.calledOnce
     })
 
-    it('updates the sessionModel with the allocation', function () {
+    it('updates the sessionModel with the proposed date', function () {
       expect(sessionModel.set).to.have.been.calledWithExactly('allocation', {
         ...allocation,
         date: '2023-01-02',

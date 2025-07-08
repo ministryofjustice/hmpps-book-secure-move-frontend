@@ -7,6 +7,7 @@ describe('Field helpers', function () {
     const mockFieldError = {
       key: 'first_name',
       type: 'required',
+      object: 'move',
     }
     let errorMessage
 
@@ -32,6 +33,7 @@ describe('Field helpers', function () {
         errorMessage = getFieldErrorMessage({
           ...mockFieldError,
           message: 'Custom error message',
+          objectType: 'move',
         })
       })
 
@@ -59,6 +61,7 @@ describe('Field helpers', function () {
           `validation::${mockFieldError.type}`,
           {
             context: 'with_label',
+            objectType: 'move',
             label: [`fields::${mockFieldError.key}.label`, ''],
           }
         )
@@ -96,6 +99,7 @@ describe('Field helpers', function () {
             [`fields::${mockFieldError.key}.label`, 'Field name'],
             {
               context: 'with_error',
+              objectType: 'move',
             }
           )
         })
@@ -140,6 +144,7 @@ describe('Field helpers', function () {
             [`fields::${mockFieldError.key}.label`, 'What is life?'],
             {
               context: 'with_error',
+              objectType: 'move',
             }
           )
         })
@@ -162,6 +167,7 @@ describe('Field helpers', function () {
             ],
             {
               context: mockFieldError.type,
+              objectType: 'move',
             }
           )
         })

@@ -14,6 +14,7 @@ export const defaultParams = {
   journeyModel: {
     reset: () => {},
     set: () => {},
+    get: () => {},
     toJSON: () => {},
   },
   journeys: [],
