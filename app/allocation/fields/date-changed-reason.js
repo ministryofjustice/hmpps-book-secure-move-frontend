@@ -30,24 +30,12 @@ const dateChangedReason = {
       text: 'fields::date_changed_reason.items.tornado_event.label',
     },
     {
-      value: 'cancelled_by_pmu',
-      text: 'fields::date_changed_reason.items.cancelled_by_pmu.label',
-    },
-    {
-      value: 'prisoner_refusal',
-      text: 'fields::date_changed_reason.items.prisoner_refusal.label',
-    },
-    {
-      value: 'receiver_unable_to_accept_prisoner',
-      text: 'fields::date_changed_reason.items.receiver_unable_to_accept_prisoner.label',
+      value: 'amended_by_pmu',
+      text: 'fields::date_changed_reason.items.amended_by_pmu.label',
     },
     {
       value: 'sender_unable_to_fulfil_draft',
       text: 'fields::date_changed_reason.items.sender_unable_to_fulfil_draft.label',
-    },
-    {
-      value: 'sender_cancelled_request',
-      text: 'fields::date_changed_reason.items.sender_cancelled_request.label',
     },
     {
       value: 'supplier_no_resource',

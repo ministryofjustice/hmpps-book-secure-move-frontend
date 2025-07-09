@@ -50,6 +50,7 @@ class AllocationDateController extends UpdateBaseController {
   }
 
   render(req: AllocationRequest, res: BasmResponse, next: () => void) {
+    res.locals.show_warning = true
     super.render(req, res, next)
   }
 }

@@ -1,0 +1,40 @@
+{% extends "form-wizard.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Change allocation date'});
+{% endblock %}
+
+{% block beforeContent %}
+  {% if not backLink %}
+  {{ govukBackLink({
+    text: t("actions::back_to_allocation"),
+    href: "/allocation/" + allocation.id
+  }) }}
+ {% endif %}
+  {{ super() }}
+  <p>
+  {{  context | dump }}
+  </p>
+{% endblock %}
+
+{% block beforeFields %}
+  {% if show_warning %}
+    {{ govukWarningText({
+      html: t("allocation::edit.warning"),
+      iconFallbackText: "Warning"
+    }) }}
+  {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block contentSidebar %}
+  <div class="sticky-sidebar">
+    <div class="sticky-sidebar__inner">
+      <h3 class="govuk-heading-m app-border-top-2 app-border--blue govuk-!-padding-top-4 govuk-!-margin-bottom-3">
+        {{ t("allocation::view.summary.heading") }}
+      </h3>
+
+      {{ appMetaList(summary) }}
+    </div>
+  </div>
+{% endblock %}

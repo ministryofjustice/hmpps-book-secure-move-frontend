@@ -249,6 +249,9 @@
       "cancelled_by_pmu" : {
         "label" : "Population Management Unit (PMU) cancelled request"
       },
+      "amended_by_pmu" : {
+        "label" : "Population Management Unit (PMU) amended date"
+      },
       "prisoner_refusal" :  {
         "label" : "Prisoner refusal"
       },
@@ -485,6 +488,9 @@
   },
   "date_of_allocation": {
     "label": "Date of allocation"
+  },
+  "change_date_of_allocation": {
+    "label": "New date of allocation"
   },
   "prisoner_common_category": {
     "label": "Prisoner category",

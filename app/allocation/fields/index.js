@@ -1,5 +1,6 @@
 const cancellationReason = require('./cancellation_reason')
 const cancellationReasonOtherComment = require('./cancellation_reason_other_comment')
+const changeDate = require('./change-date')
 const completeInFull = require('./complete_in_full')
 const complexCases = require('./complex-cases')
 const allocationDate = require('./date')
@@ -43,7 +44,7 @@ const cancelFields = {
 }
 
 const editFields = {
-  date: allocationDate,
+  date: changeDate,
   date_changed_reason: dateChangedReason,
 }
 
