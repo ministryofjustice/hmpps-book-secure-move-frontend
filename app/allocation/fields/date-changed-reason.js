@@ -1,20 +1,8 @@
-const i18n = require('../../../config/i18n').default
-
-const label = `${i18n.t(`fields::date_changed_reason.label`, {
-  objectType: 'allocation',
-})}`
-
 const dateChangedReason = {
   validate: 'required',
   component: 'govukRadios',
   name: 'date_changed_reason',
   objectType: 'allocation',
-  fieldset: {
-    legend: {
-      text: label,
-      classes: 'govuk-fieldset__legend--m',
-    },
-  },
   items: [
     {
       id: 'date_changed_reason',
