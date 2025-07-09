@@ -142,7 +142,6 @@ describe('#saveValues', function () {
 
   context('happy path', function () {
     beforeEach(async function () {
-
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
         set: sinon.stub(),
@@ -175,12 +174,14 @@ describe('#saveValues', function () {
     })
 
     it('updates the sessionModel with the propsedDate', function () {
-      expect(sessionModel.set).to.have.been.calledWithExactly('proposedDate', '2023-01-02')
+      expect(sessionModel.set).to.have.been.calledWithExactly(
+        'proposedDate',
+        '2023-01-02'
+      )
     })
 
     it(`doesn't set the flash`, function () {
       expect(flash).to.not.have.been.called
     })
   })
-
 })

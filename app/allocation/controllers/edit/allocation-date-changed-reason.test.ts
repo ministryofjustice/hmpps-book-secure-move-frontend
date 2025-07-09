@@ -8,7 +8,6 @@ import { Move } from '../../../../common/types/move'
 import { AllocationRequestFactory } from '../../../../factories/allocation_request'
 import { MoveFactory } from '../../../../factories/move'
 
-import AllocationDateController from './allocation-date'
 import AllocationDateChangedReasonController from './allocation-date-changed-reason'
 
 const controller = new AllocationDateChangedReasonController({ route: '/' })
@@ -144,7 +143,7 @@ describe('#saveValues', function () {
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
         set: sinon.stub(),
-        get: sinon.stub().returns('2023-01-02')
+        get: sinon.stub().returns('2023-01-02'),
       }
       next = sinon.stub()
       flash = sinon.stub()
@@ -215,7 +214,7 @@ describe('#saveValues', function () {
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
         set: sinon.stub(),
-        get: sinon.stub().returns('2023-02-01')
+        get: sinon.stub().returns('2023-02-01'),
       }
       next = sinon.stub()
       flash = sinon.stub()

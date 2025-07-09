@@ -38,7 +38,7 @@ describe('save lodging controller', function () {
       },
       reset: sinon.stub(),
       get: sinon.stub(),
-      set: sinon.stub()
+      set: sinon.stub(),
     },
     journeyModel: {
       reset: sinon.stub(),
