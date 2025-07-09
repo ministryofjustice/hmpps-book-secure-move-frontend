@@ -1,5 +1,3 @@
-import { faker } from '@faker-js/faker'
-import { format, startOfTomorrow } from 'date-fns'
 import { Selector, t } from 'testcafe'
 
 import { fillInForm } from '../_helpers'

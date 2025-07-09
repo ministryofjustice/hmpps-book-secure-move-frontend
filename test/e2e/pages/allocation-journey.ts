@@ -2,13 +2,13 @@ import { t } from 'testcafe'
 
 import AllocationCancelPage from './allocation-cancel'
 import AllocationCriteriaPage from './allocation-criteria'
+import AllocationDateChangePage from './allocation-date-change'
+import AllocationDateChangeReasonPage from './allocation-date-change-reason'
 import AllocationDetailsPage from './allocation-details'
 import AllocationViewPage from './allocation-view'
 import { Page } from './page'
 
 import { allocationJourney } from './index'
-import AllocationDateChangePage from './allocation-date-change'
-import AllocationDateChangeReasonPage from './allocation-date-change-reason'
 
 const allocationDetailsPage = new AllocationDetailsPage()
 const allocationCriteriaPage = new AllocationCriteriaPage()

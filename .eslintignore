@@ -191,8 +191,9 @@ test/e2e/pages/page.js
 test/e2e/pages/cancel-move.js
 test/e2e/pages/allocation-cancel.js
 test/e2e/pages/allocation-criteria.js
-test/e2e/pages/allocation-details.js
 test/e2e/pages/allocation-date-change.js
+test/e2e/pages/allocation-date-change-reason.js
+test/e2e/pages/allocation-details.js
 test/e2e/pages/allocation-view.js
 test/e2e/pages/allocation-journey.js
 test/e2e/pages/confirm-person-escort-record.js
