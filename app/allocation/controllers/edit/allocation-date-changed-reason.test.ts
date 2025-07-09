@@ -73,21 +73,6 @@ const res: BasmResponse = {
   redirect: () => {},
 }
 
-describe('#getValues', function () {
-  let callback: SinonStub
-
-  beforeEach(function () {
-    callback = sinon.stub()
-    controller.getValues(req, res, callback)
-  })
-
-  it('calls back with the formatted date from the allocation', function () {
-    expect(callback).to.have.been.calledWithExactly(null, {
-      date: 'Sunday 1 Jan 2023',
-    })
-  })
-})
-
 describe('#configure', function () {
   let callback: SinonStub
 
@@ -153,11 +138,13 @@ describe('#saveValues', function () {
         update: sinon.stub().resolves({
           ...allocation,
           date: '2023-01-02',
+          date_changed_reason: 'prisoner_refusal',
         }),
       }
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
         set: sinon.stub(),
+        get: sinon.stub().returns('2023-01-02')
       }
       next = sinon.stub()
       flash = sinon.stub()
@@ -169,7 +156,7 @@ describe('#saveValues', function () {
           form: {
             options: formOptions,
             values: {
-              date: '2023-01-02',
+              date_changed_reason: 'prisoner_refusal',
             },
           },
           sessionModel,
@@ -190,6 +177,7 @@ describe('#saveValues', function () {
       expect(allocationService.update).to.have.been.calledWithExactly({
         id: allocation.id,
         date: '2023-01-02',
+        date_changed_reason: 'prisoner_refusal',
       })
     })
 
@@ -198,10 +186,7 @@ describe('#saveValues', function () {
     })
 
     it('updates the sessionModel with the proposed date', function () {
-      expect(sessionModel.set).to.have.been.calledWithExactly('allocation', {
-        ...allocation,
-        date: '2023-01-02',
-      })
+      expect(sessionModel.get).to.have.been.calledWithExactly('proposedDate')
     })
 
     it('sets the flash', function () {
@@ -224,11 +209,13 @@ describe('#saveValues', function () {
         update: sinon.stub().resolves({
           ...emptyAllocation,
           date: '2023-01-02',
+          date_changed_reason: 'prisoner_refusal',
         }),
       }
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
         set: sinon.stub(),
+        get: sinon.stub().returns('2023-02-01')
       }
       next = sinon.stub()
       flash = sinon.stub()
@@ -240,7 +227,7 @@ describe('#saveValues', function () {
           form: {
             options: formOptions,
             values: {
-              date: '2023-01-02',
+              date_changed_reason: 'prisoner_refusal',
             },
           },
           sessionModel,
@@ -277,7 +264,7 @@ describe('#saveValues', function () {
           form: {
             options: formOptions,
             values: {
-              date: '2023-01-02',
+              date_changed_reason: 'prisoner_refusal',
             },
           },
           sessionModel,

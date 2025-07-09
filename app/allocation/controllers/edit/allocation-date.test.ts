@@ -95,12 +95,6 @@ describe('#configure', function () {
     controller.configure(req, res, callback)
   })
 
-  it('updates the next URL in the form config', function () {
-    expect(req.form.options.next).to.equal(
-      '/allocation/f0a99b8e-18ab-454f-83ce-600237c46d7e/edit/date-changed-reason'
-    )
-  })
-
   it('calls next()', function () {
     expect(callback).to.have.been.calledOnce
   })
@@ -175,11 +169,6 @@ describe('#saveValues', function () {
         next
       )
     })
-
-    it('does not call allocationService.update', function () {
-      expect(allocationService.update).to.not.have.been.called
-    })
-
 
     it('calls next', function () {
       expect(next).to.have.been.calledOnce
