@@ -26,7 +26,7 @@ class AllocationDetailsEditPage extends Page {
     await t
       .expect(this.getCurrentUrl())
       .match(
-        /\/allocation\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/edit\/allocation-details$/
+        /\/allocation\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/edit\/allocation-date$/
       )
 
     const fieldsToFill = {
