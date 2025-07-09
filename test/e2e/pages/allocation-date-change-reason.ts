@@ -6,19 +6,19 @@ import { fillInForm } from '../_helpers'
 
 import { Page } from './page'
 
-class AllocationDetailsEditPage extends Page {
-  fields: { date: Selector }
+class AllocationDateChangeReasonPage extends Page {
+  fields: { date_changed_reason: Selector }
   errorList: any[]
 
   constructor() {
     super()
     this.fields = {
-      date: Selector('#date'),
+      date_changed_reason: Selector('#date_changed_reason'),
     }
     this.errorList = [
       (this.nodes.errorSummary as Selector)
         .find('a')
-        .withAttribute('href', '#date'),
+        .withAttribute('href', '#date_changed_reason'),
     ]
   }
 
@@ -26,20 +26,17 @@ class AllocationDetailsEditPage extends Page {
     await t
       .expect(this.getCurrentUrl())
       .match(
-        /\/allocation\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/edit\/allocation-date$/
+        /\/allocation\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/edit\/date-changed-reason$/
       )
 
     const fieldsToFill = {
-      date: {
-        selector: this.fields.date,
-        value: format(
-          faker.date.future({ years: 1, refDate: startOfTomorrow() }),
-          'yyyy-MM-dd'
-        ),
+      reason: {
+        selector: this.fields.date_changed_reason,
+        value: 'tornado_event',
       },
     }
 
     return fillInForm(fieldsToFill)
   }
 }
-export default AllocationDetailsEditPage
+export default AllocationDateChangeReasonPage

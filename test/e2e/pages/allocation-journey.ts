@@ -3,29 +3,34 @@ import { t } from 'testcafe'
 import AllocationCancelPage from './allocation-cancel'
 import AllocationCriteriaPage from './allocation-criteria'
 import AllocationDetailsPage from './allocation-details'
-import AllocationDetailsEditPage from './allocation-details-edit'
 import AllocationViewPage from './allocation-view'
 import { Page } from './page'
 
 import { allocationJourney } from './index'
+import AllocationDateChangePage from './allocation-date-change'
+import AllocationDateChangeReasonPage from './allocation-date-change-reason'
 
 const allocationDetailsPage = new AllocationDetailsPage()
 const allocationCriteriaPage = new AllocationCriteriaPage()
 const allocationCancelPage = new AllocationCancelPage()
 const allocationViewPage = new AllocationViewPage()
-const allocationDetailsEditPage = new AllocationDetailsEditPage()
+const allocationDateChangePage = new AllocationDateChangePage()
+
+const allocationDateChangeReasonPage = new AllocationDateChangeReasonPage()
 
 class AllocationJourney extends Page {
   allocationCancelPage: AllocationCancelPage
   allocationCriteriaPage: AllocationCriteriaPage
-  allocationDetailsEditPage: AllocationDetailsEditPage
+  allocationDateChangePage: AllocationDateChangePage
+  allocationDateChangeReasonPage: AllocationDateChangeReasonPage
   allocationViewPage: AllocationViewPage
   allocationDetailsPage: AllocationDetailsPage
   constructor() {
     super()
     this.allocationCancelPage = allocationCancelPage
     this.allocationCriteriaPage = allocationCriteriaPage
-    this.allocationDetailsEditPage = allocationDetailsEditPage
+    this.allocationDateChangePage = allocationDateChangePage
+    this.allocationDateChangeReasonPage = allocationDateChangeReasonPage
     this.allocationDetailsPage = allocationDetailsPage
     this.allocationViewPage = allocationViewPage
   }
