@@ -238,7 +238,7 @@
     "error_message": "Select a reason for changing the date of the {{objectType}}",
     "items": {
       "combined_with_another_request" : {
-        "label" : "Efficiency: move combined with another request"
+        "label" : "Efficiency - move combined with another request"
       },
       "operational_issues_prison" : {
         "label" : "Operational issues - prison"
