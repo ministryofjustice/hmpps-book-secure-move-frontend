@@ -18,7 +18,7 @@ function getActions(allocation, canAccess) {
   return [
     {
       text: 'Change date of allocation',
-      url: `/allocation/${allocation.id}/edit/allocation-details`,
+      url: `/allocation/${allocation.id}/edit/allocation-date`,
     },
   ]
 }

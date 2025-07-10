@@ -22,5 +22,10 @@
   "unassign": {
     "page_title": "Remove person from allocation",
     "detail": "Remove <strong>{{name}}</strong> from the allocation for <a href=\"{{href}}\"><strong>$t(n_person)</strong></a> from <strong>{{from_location}}</strong> to <strong>{{to_location}}</strong> on <strong>{{date}}</strong>."
+  },
+  "edit": {
+    "page_title": "Change date of allocation",
+    "warning": "If you are changing the date of allocation on the day the allocation is due to take place, you must also inform the supplier.",
+    "reason_page_title": "Why are you changing the allocation date?"
   }
 }

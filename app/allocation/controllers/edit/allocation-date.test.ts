@@ -8,9 +8,9 @@ import { Move } from '../../../../common/types/move'
 import { AllocationRequestFactory } from '../../../../factories/allocation_request'
 import { MoveFactory } from '../../../../factories/move'
 
-import AllocationDetailsController from './allocation-details'
+import AllocationDateController from './allocation-date'
 
-const controller = new AllocationDetailsController({ route: '/' })
+const controller = new AllocationDateController({ route: '/' })
 
 const locations: Location[] = [
   {
@@ -95,12 +95,6 @@ describe('#configure', function () {
     controller.configure(req, res, callback)
   })
 
-  it('updates the next URL in the form config', function () {
-    expect(req.form.options.next).to.equal(
-      '/allocation/f0a99b8e-18ab-454f-83ce-600237c46d7e'
-    )
-  })
-
   it('calls next()', function () {
     expect(callback).to.have.been.calledOnce
   })
@@ -148,12 +142,6 @@ describe('#saveValues', function () {
 
   context('happy path', function () {
     beforeEach(async function () {
-      allocationService = {
-        update: sinon.stub().resolves({
-          ...allocation,
-          date: '2023-01-02',
-        }),
-      }
       sessionModel = {
         toJSON: sinon.stub().returns(mockData),
         set: sinon.stub(),
@@ -181,116 +169,19 @@ describe('#saveValues', function () {
       )
     })
 
-    it('calls allocationService.update', function () {
-      expect(allocationService.update).to.have.been.calledOnce
-    })
-
-    it('ignores the errors and csrf from session model', function () {
-      expect(allocationService.update).to.have.been.calledWithExactly({
-        id: allocation.id,
-        date: '2023-01-02',
-      })
-    })
-
     it('calls next', function () {
       expect(next).to.have.been.calledOnce
     })
 
-    it('updates the sessionModel with the allocation', function () {
-      expect(sessionModel.set).to.have.been.calledWithExactly('allocation', {
-        ...allocation,
-        date: '2023-01-02',
-      })
-    })
-
-    it('sets the flash', function () {
-      expect(flash).to.have.been.calledWithExactly('success', {
-        title: 'Allocation updated',
-        content: 'This move has been updated with the supplier',
-      })
-    })
-  })
-
-  context('when count is zero (all moves cancelled)', function () {
-    const emptyAllocation = {
-      ...allocation,
-      moves: [],
-      moves_count: 0,
-    }
-
-    beforeEach(async function () {
-      allocationService = {
-        update: sinon.stub().resolves({
-          ...emptyAllocation,
-          date: '2023-01-02',
-        }),
-      }
-      sessionModel = {
-        toJSON: sinon.stub().returns(mockData),
-        set: sinon.stub(),
-      }
-      next = sinon.stub()
-      flash = sinon.stub()
-
-      await controller.saveValues(
-        AllocationRequestFactory.build({
-          allocation: emptyAllocation,
-          flash,
-          form: {
-            options: formOptions,
-            values: {
-              date: '2023-01-02',
-            },
-          },
-          sessionModel,
-          services: {
-            allocation: allocationService,
-          },
-        }),
-        res,
-        next
+    it('updates the sessionModel with the propsedDate', function () {
+      expect(sessionModel.set).to.have.been.calledWithExactly(
+        'proposedDate',
+        '2023-01-02'
       )
     })
 
-    it('sets the flash without error', function () {
-      expect(flash).to.have.been.calledWithExactly('success', {
-        title: 'Allocation updated',
-        content: 'This move has been updated with the supplier',
-      })
-    })
-  })
-
-  context('unhappy path', function () {
-    const error = new Error('bad!')
-
-    beforeEach(async function () {
-      sessionModel = {
-        toJSON: sinon.stub().returns(mockData),
-      }
-
-      allocationService.update = sinon.stub().throws(error)
-      next = sinon.stub()
-
-      await controller.saveValues(
-        AllocationRequestFactory.build({
-          form: {
-            options: formOptions,
-            values: {
-              date: '2023-01-02',
-            },
-          },
-          sessionModel,
-          services: {
-            allocation: allocationService,
-          },
-        }),
-        res,
-        next
-      )
-    })
-
-    it('calls next with the error', function () {
-      expect(next).to.be.calledOnceWithExactly(error)
+    it(`doesn't set the flash`, function () {
+      expect(flash).to.not.have.been.called
     })
   })
 })

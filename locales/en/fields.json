@@ -234,11 +234,11 @@
     "error_message": "Enter whether a move needs to be completed by a date"
   },
   "date_changed_reason": {
-    "label": "Why are you changing the move date?",
-    "error_message": "Select a reason for changing the date of the move",
+    "label": "Why are you changing the {{objectType}} date?",
+    "error_message": "Select a reason for changing the date of the {{objectType}}",
     "items": {
       "combined_with_another_request" : {
-        "label" : "Efficiency: move combined with another request"
+        "label" : "Efficiency - move combined with another request"
       },
       "operational_issues_prison" : {
         "label" : "Operational issues - prison"
@@ -248,6 +248,9 @@
       },
       "cancelled_by_pmu" : {
         "label" : "Population Management Unit (PMU) cancelled request"
+      },
+      "amended_by_pmu" : {
+        "label" : "Population Management Unit (PMU) amended date"
       },
       "prisoner_refusal" :  {
         "label" : "Prisoner refusal"
@@ -485,6 +488,9 @@
   },
   "date_of_allocation": {
     "label": "Date of allocation"
+  },
+  "change_date_of_allocation": {
+    "label": "New date of allocation"
   },
   "prisoner_common_category": {
     "label": "Prisoner category",
