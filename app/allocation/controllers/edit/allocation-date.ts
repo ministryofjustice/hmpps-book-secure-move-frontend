@@ -39,8 +39,6 @@ class AllocationDateController extends UpdateBaseController {
     try {
       const date = req.form.values.date
 
-      console.log(date)
-
       req.sessionModel.set('proposedDate', date)
 
       next()
