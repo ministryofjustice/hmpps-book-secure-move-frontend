@@ -19,7 +19,7 @@ class AllocationDateController extends UpdateBaseController {
         return callback(err)
       }
 
-      const { date } = req.allocation
+      const date = req.sessionModel.get('proposedDate') || req.allocation.date
 
       if (!date) {
         values.date = req.allocation.date
