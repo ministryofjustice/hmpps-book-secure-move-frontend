@@ -299,7 +299,7 @@ describe('Allocation controllers', function () {
       it('should include the edit allocation details action', function () {
         expect(locals.actions[0]).to.deep.equal({
           text: 'Change date of allocation',
-          url: `/allocation/${allocationExample.id}/edit/allocation-date`,
+          url: `/allocation/${allocationExample.id}/edit`,
         })
       })
     })

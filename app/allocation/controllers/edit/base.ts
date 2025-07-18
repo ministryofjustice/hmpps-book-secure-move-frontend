@@ -39,8 +39,6 @@ class UpdateBaseController extends CreateBaseController {
     }
     callback(null, locals)
   }
-
-
 }
 
 export { AllocationRequest }
