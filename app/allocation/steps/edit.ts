@@ -1,6 +1,6 @@
 import {
   AllocationDateChangedReasonController,
-  AllocationDateController,
+  AllocationDateController
 } from '../controllers/edit'
 
 const updateSteps = [
@@ -8,15 +8,20 @@ const updateSteps = [
     key: 'allocation_date',
     permission: 'allocation:update',
     steps: {
-      '/allocation-date': {
+      '/': {
         entryPoint: true,
+        reset: true,
+        skip: true,
+        next: 'allocation-date'
+      },
+      '/allocation-date': {
         backLink: null,
         buttonText: 'actions::continue',
         pageTitle: 'allocation::edit.page_title',
         fields: ['date'],
         controller: AllocationDateController,
         next: 'date-changed-reason',
-        key: 'allocation_details'
+        key: 'allocation_date'
       },
       '/date-changed-reason': {
         pageTitle: 'allocation::edit.reason_page_title',
