@@ -11,6 +11,7 @@ const updateSteps = [
       '/': {
         entryPoint: true,
         reset: true,
+        resetJourney: true,
         skip: true,
         next: 'allocation-date'
       },
