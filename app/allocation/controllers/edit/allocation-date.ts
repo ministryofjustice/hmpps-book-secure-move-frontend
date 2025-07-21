@@ -19,7 +19,7 @@ class AllocationDateController extends UpdateBaseController {
         return callback(err)
       }
 
-      const { date } = req.allocation
+      const date = req.sessionModel.get('proposedDate') || req.allocation.date
 
       if (!date) {
         values.date = req.allocation.date
@@ -49,6 +49,7 @@ class AllocationDateController extends UpdateBaseController {
 
   render(req: AllocationRequest, res: BasmResponse, next: () => void) {
     res.locals.show_warning = true
+    res.locals.allocation = req.allocation
     super.render(req, res, next)
   }
 }
