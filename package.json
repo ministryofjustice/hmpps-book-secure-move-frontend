@@ -224,7 +224,7 @@
     "user-time": "1.0.5",
     "uuid": "9.0.0",
     "winston": "3.8.2",
-    "yargs": "17.7.1"
+    "yargs": "18.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.27.1",
