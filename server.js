@@ -305,7 +305,7 @@ module.exports = async () => {
   app.use(router)
 
   // error handling
-  app.use(Sentry.Handlers.errorHandler())
+  app.use(Sentry.expressErrorHandler)
   app.use(errorHandlers.notFound)
   app.use(errorHandlers.catchAll(config.IS_DEV))
 
