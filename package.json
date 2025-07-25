@@ -282,7 +282,7 @@
     "imagemin-pngquant": "10.0.0",
     "imagemin-svgo": "10.0.1",
     "lint-staged": "13.1.2",
-    "mini-css-extract-plugin": "2.7.2",
+    "mini-css-extract-plugin": "2.9.2",
     "mocha": "10.8.2",
     "mocha-junit-reporter": "2.2.0",
     "mock-fs": "5.2.0",
