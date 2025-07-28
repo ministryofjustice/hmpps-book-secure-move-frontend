@@ -4,7 +4,7 @@ import { join } from 'path'
 
 import { faker } from '@faker-js/faker'
 import * as Sentry from '@sentry/node'
-import { Context } from '@sentry/types'
+import { Context } from '@sentry/core'
 import { format } from 'date-fns'
 import glob from 'glob'
 import { isArray, isNil } from 'lodash'
