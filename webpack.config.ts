@@ -1,19 +1,23 @@
-const path = require('path')
+import { WebpackAssetsManifest } from 'webpack-assets-manifest'
 
-const CopyPlugin = require('copy-webpack-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
-const YAML = require('js-yaml')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const WebpackAssetsManifest = require('webpack-assets-manifest')
-const { merge } = require('webpack-merge')
+import path from 'path'
+
+import CopyPlugin from 'copy-webpack-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin'
+import YAML from 'js-yaml'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
+import { merge } from 'webpack-merge'
 
 const frameworksService = require('./common/services/frameworks')
-const { IS_DEV, IS_PRODUCTION } = require('./config')
-const configPaths = require('./config/paths')
+import { IS_DEV, IS_PRODUCTION } from './config'
+// @ts-ignore
+import configPaths from './config/paths'
 
+// @ts-ignore
 function transformManifestFile(transformMethod) {
+  // @ts-ignore
   return (content, absolutePath) => {
     const yaml = YAML.load(content)
     const basename = path.basename(absolutePath, '.yml')
