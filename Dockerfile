@@ -10,7 +10,7 @@ USER 1000
 RUN npm install typescript
 RUN npm install
 
-COPY --chown=node:node webpack.config.js .
+COPY --chown=node:node webpack.config.ts .
 COPY --chown=node:node tsconfig.json .
 COPY --chown=node:node webpack.config.production.js .
 COPY --chown=node:node config config
