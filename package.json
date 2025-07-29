@@ -154,7 +154,7 @@
     "@sentry/tracing": "7.120.3",
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.2.1",
-    "applicationinsights": "^2.6.0",
+    "applicationinsights": "^3.8.0",
     "axios": "1.8.3",
     "axios-debug-log": "1.0.0",
     "bluebird": "3.7.2",
