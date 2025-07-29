@@ -238,7 +238,7 @@
     "@types/express": "4.17.17",
     "@types/i18next-fs-backend": "1.1.2",
     "@types/js-yaml": "4.0.9",
-    "@types/lodash": "4.14.192",
+    "@types/lodash": "4.17.20",
     "@types/mocha": "10.0.1",
     "@types/mock-fs": "4.13.4",
     "@types/netmask": "2.0.5",
