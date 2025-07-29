@@ -3,11 +3,8 @@ const crypto = require('crypto')
 const path = require('path')
 
 // NPM dependencies
+const Tracing = require('@sentry/core')
 const Sentry = require('@sentry/node')
-// Tracing needs to be imported for it to work
-// Source: https://docs.sentry.io/platforms/node/performance/
-// eslint-disable-next-line no-unused-vars
-const Tracing = require('@sentry/tracing')
 const compression = require('compression')
 const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
@@ -305,7 +302,7 @@ module.exports = async () => {
   app.use(router)
 
   // error handling
-  app.use(Sentry.Handlers.errorHandler())
+  app.use(Sentry.expressErrorHandler())
   app.use(errorHandlers.notFound)
   app.use(errorHandlers.catchAll(config.IS_DEV))
 
