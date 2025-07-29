@@ -187,7 +187,7 @@
     "grant-express": "5.4.8",
     "hc-sticky": "2.2.7",
     "helmet": "6.0.1",
-    "hmpo-form-wizard": "13.0.0",
+    "hmpo-form-wizard": "15.0.3",
     "hmrc-frontend": "6.60.0",
     "i18next": "22.4.10",
     "i18next-express-middleware": "2.0.0",
