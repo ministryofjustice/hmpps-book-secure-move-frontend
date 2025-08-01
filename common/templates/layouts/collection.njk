@@ -112,7 +112,7 @@
             </li>
             {% if datePagination %}
              <li>
-               <a href="{{ REQUEST_PATH }}/switch-view" class="govuk-link govuk-link--no-visited-state app-icon app-icon--{{ other }}-view">
+               <a href="{{ REQUEST_PATH }}/switch-view?status={{ activeStatus }}" class="govuk-link govuk-link--no-visited-state app-icon app-icon--{{ other }}-view">
                  {{ t("collections::switch_view", {
                    other: other
                     }) }}
@@ -121,7 +121,7 @@
             {% endif %}
             {% if groupBySwitcher %}
             <li>
-              <a href="{{ REQUEST_PATH }}/switch-group-by" class="govuk-link govuk-link--no-visited-state app-icon app-icon--{{ other_group_by }}">
+              <a href="{{ REQUEST_PATH }}/switch-group-by?status={{ activeStatus }}" class="govuk-link govuk-link--no-visited-state app-icon app-icon--{{ other_group_by }}">
                 {{ t("collections::switch_group_by", {
                   other_group_by: other_group_by
                 }) }}
