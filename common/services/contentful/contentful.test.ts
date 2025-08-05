@@ -464,7 +464,7 @@ const formattedEntriesMockResponse = {
         ' heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-template__body">' +
         '<strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet ' +
         'govuk-list-bullet-bottom-padding"><li><p class="govuk-template__body">TEST LINE 1</p></li><li><p class="govuk-template__body">' +
-        'TEST LINE 2</p></li></ul><ol class="govuk-list govuk-list--number"><li><p class="govuk-template__body">TEST LINE 1' +
+        'TEST LINE 2</p></li></ul><ol class="govuk-list govuk-list--number govuk-list-number-bottom-padding"><li><p class="govuk-template__body">TEST LINE 1' +
         '</p></li><li><p class="govuk-template__body">TEST LINE 2</p></li></ol><figure class="govuk-!-margin-top-6 ' +
         'govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc' +
         '14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>',
