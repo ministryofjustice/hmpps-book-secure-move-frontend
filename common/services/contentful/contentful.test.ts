@@ -927,7 +927,7 @@ describe('ContentfulService', function () {
       const content1 = {
         date: new Date('2025-06-03T23:00:00.000Z'),
         title: 'New Test Whats new',
-        body: '<p class="govuk-template__body">this is a body text</p>',
+        body: '<p class="govuk-template__body govuk-!-margin-bottom-4">this is a body text</p>',
         bannerText: 'banner text',
         expiry: new Date('2025-06-11T23:00:00.000Z'),
       } as unknown as ContentfulContent
@@ -935,7 +935,7 @@ describe('ContentfulService', function () {
       const content2 = {
         date: new Date('2025-01-07T17:00:00.000Z'),
         title: 'How to update a move',
-        body: '<p class="govuk-template__body">Update a move</p><ol class="govuk-list govuk-list--number"><li><p class="govuk-template__body">Open the move</p></li><li><p class="govuk-template__body">Navigate to some page</p></li><li><p class="govuk-template__body">Add the details</p></li></ol><p class="govuk-template__body"></p><p class="govuk-template__body">This will notify</p><p class="govuk-template__body"></p>',
+        body: '<p class="govuk-template__body govuk-!-margin-bottom-4">Update a move</p><ol class="govuk-list govuk-list--number govuk-list-number-bottom-padding"><li><p class="govuk-template__body govuk-!-margin-bottom-4">Open the move</p></li><li><p class="govuk-template__body govuk-!-margin-bottom-4">Navigate to some page</p></li><li><p class="govuk-template__body govuk-!-margin-bottom-4">Add the details</p></li></ol><p class="govuk-template__body govuk-!-margin-bottom-4"></p><p class="govuk-template__body govuk-!-margin-bottom-4">This will notify</p><p class="govuk-template__body govuk-!-margin-bottom-4"></p>',
         bannerText: 'If you realise',
         expiry: new Date('2025-01-21T17:00:00.000Z'),
       } as unknown as ContentfulContent
