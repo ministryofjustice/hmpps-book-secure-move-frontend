@@ -45,9 +45,9 @@ const options = {
         node.content
       )}</ul>`,
     [BLOCKS.OL_LIST]: (node: { content: any }, next: (arg0: any) => any) =>
-      `<ol class="govuk-list govuk-list--number">${next(node.content)}</ol>`,
+      `<ol class="govuk-list govuk-list--number govuk-list-number-bottom-padding">${next(node.content)}</ol>`,
     [BLOCKS.PARAGRAPH]: (node: { content: any }, next: (arg0: any) => any) =>
-      `<p class="govuk-template__body">${next(node.content)}</p>`,
+      `<p class="govuk-template__body govuk-!-margin-bottom-4">${next(node.content)}</p>`,
     [BLOCKS.EMBEDDED_ASSET]: ({
       data: {
         target: { fields },

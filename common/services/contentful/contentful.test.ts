@@ -461,11 +461,11 @@ const formattedEntriesMockResponse = {
         '<h1 class="govuk-heading-xl govuk-!-margin-top-6">The latest updates and improvements to Book a secure' +
         ' move.</h1><h2 class="govuk-heading-l govuk-!-margin-top-5">Test heading 2.</h2><h3 class="govuk-heading-m' +
         ' govuk-!-margin-top-4"><em>Test heading 3.</em></h3><h4 class="govuk-heading-s govuk-!-margin-top-3">Test' +
-        ' heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-template__body">' +
+        ' heading 4.</h4><a class="govuk-link" href="https://google.com">Test Link</a><p class="govuk-template__body govuk-!-margin-bottom-4">' +
         '<strong>Some random paragraph text.</strong></p><ul class="govuk-list govuk-list--bullet ' +
-        'govuk-list-bullet-bottom-padding"><li><p class="govuk-template__body">TEST LINE 1</p></li><li><p class="govuk-template__body">' +
-        'TEST LINE 2</p></li></ul><ol class="govuk-list govuk-list--number"><li><p class="govuk-template__body">TEST LINE 1' +
-        '</p></li><li><p class="govuk-template__body">TEST LINE 2</p></li></ol><figure class="govuk-!-margin-top-6 ' +
+        'govuk-list-bullet-bottom-padding"><li><p class="govuk-template__body govuk-!-margin-bottom-4">TEST LINE 1</p></li><li><p class="govuk-template__body govuk-!-margin-bottom-4">' +
+        'TEST LINE 2</p></li></ul><ol class="govuk-list govuk-list--number govuk-list-number-bottom-padding"><li><p class="govuk-template__body govuk-!-margin-bottom-4">TEST LINE 1' +
+        '</p></li><li><p class="govuk-template__body govuk-!-margin-bottom-4">TEST LINE 2</p></li></ol><figure class="govuk-!-margin-top-6 ' +
         'govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc' +
         '14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>',
       date: formattedTodaysDate,
@@ -927,7 +927,7 @@ describe('ContentfulService', function () {
       const content1 = {
         date: new Date('2025-06-03T23:00:00.000Z'),
         title: 'New Test Whats new',
-        body: '<p class="govuk-template__body">this is a body text</p>',
+        body: '<p class="govuk-template__body govuk-!-margin-bottom-4">this is a body text</p>',
         bannerText: 'banner text',
         expiry: new Date('2025-06-11T23:00:00.000Z'),
       } as unknown as ContentfulContent
@@ -935,7 +935,7 @@ describe('ContentfulService', function () {
       const content2 = {
         date: new Date('2025-01-07T17:00:00.000Z'),
         title: 'How to update a move',
-        body: '<p class="govuk-template__body">Update a move</p><ol class="govuk-list govuk-list--number"><li><p class="govuk-template__body">Open the move</p></li><li><p class="govuk-template__body">Navigate to some page</p></li><li><p class="govuk-template__body">Add the details</p></li></ol><p class="govuk-template__body"></p><p class="govuk-template__body">This will notify</p><p class="govuk-template__body"></p>',
+        body: '<p class="govuk-template__body govuk-!-margin-bottom-4">Update a move</p><ol class="govuk-list govuk-list--number govuk-list-number-bottom-padding"><li><p class="govuk-template__body govuk-!-margin-bottom-4">Open the move</p></li><li><p class="govuk-template__body govuk-!-margin-bottom-4">Navigate to some page</p></li><li><p class="govuk-template__body govuk-!-margin-bottom-4">Add the details</p></li></ol><p class="govuk-template__body govuk-!-margin-bottom-4"></p><p class="govuk-template__body govuk-!-margin-bottom-4">This will notify</p><p class="govuk-template__body govuk-!-margin-bottom-4"></p>',
         bannerText: 'If you realise',
         expiry: new Date('2025-01-21T17:00:00.000Z'),
       } as unknown as ContentfulContent
