@@ -1,72 +1,15 @@
 $govuk-global-styles: true;
-$govuk-new-link-styles: true;
+$path: "/assets/images/";
 
-// Override font styles to replace NTA with Inter UI
-$govuk-fonts-path: "../fonts/inter/";
-$govuk-font-family: "Inter", system-ui, sans-serif;
-$govuk-assets-path: "govuk-frontend/dist/govuk/assets/";
-$moj-assets-path: "@ministryofjustice/frontend/moj/assets/";
-
-$govuk-page-width: 1170px;
 $moj-page-width: 1170px;
+$govuk-page-width: $moj-page-width;
 
-$govuk-grid-widths: (
-  one-quarter: 25%,
-  one-third: 33.3333%,
-  one-half: 50%,
-  one-sixth: 16.6667%,
-  two-thirds: 66.6666%,
-  two-sixths: 33.3334%,
-  three-quarters: 75%,
-  four-sixths: 66.6668%,
-  five-sixths: 83.3335%,
-  full: 100%
-);
+@import "node_modules/govuk-frontend/dist/govuk/index";
+@import "node_modules/@ministryofjustice/frontend/moj/all";
 
-// Import GOV.UK Frontend
-@import "govuk-frontend/dist/govuk/base";
-
-@import "govuk-frontend/dist/govuk/core/all";
-@import "govuk-frontend/dist/govuk/objects/all";
-
-@import "govuk-frontend/dist/govuk/components/back-link/index";
-@import "govuk-frontend/dist/govuk/components/breadcrumbs/index";
-@import "govuk-frontend/dist/govuk/components/button/index";
-@import "govuk-frontend/dist/govuk/components/checkboxes/index";
-@import "govuk-frontend/dist/govuk/components/cookie-banner/index";
-@import "govuk-frontend/dist/govuk/components/date-input/index";
-@import "govuk-frontend/dist/govuk/components/details/index";
-@import "govuk-frontend/dist/govuk/components/error-summary/index";
-@import "govuk-frontend/dist/govuk/components/footer/index";
-@import "govuk-frontend/dist/govuk/components/input/index";
-@import "govuk-frontend/dist/govuk/components/inset-text/index";
-@import "govuk-frontend/dist/govuk/components/notification-banner/index";
-@import "govuk-frontend/dist/govuk/components/panel/index";
-@import "govuk-frontend/dist/govuk/components/radios/index";
-@import "govuk-frontend/dist/govuk/components/select/index";
-@import "govuk-frontend/dist/govuk/components/skip-link/index";
-@import "govuk-frontend/dist/govuk/components/summary-list/index";
-@import "govuk-frontend/dist/govuk/components/table/index";
-@import "govuk-frontend/dist/govuk/components/tabs/index";
-@import "govuk-frontend/dist/govuk/components/tag/index";
-@import "govuk-frontend/dist/govuk/components/textarea/index";
-@import "govuk-frontend/dist/govuk/components/warning-text/index";
-
-@import "govuk-frontend/dist/govuk/utilities/all";
-@import "govuk-frontend/dist/govuk/overrides/all";
-
-// Import MoJ Frontend Components
-@import "@ministryofjustice/frontend/moj/settings/all";
-@import "@ministryofjustice/frontend/moj/objects/all";
-@import "@ministryofjustice/frontend/moj/components/organisation-switcher/organisation-switcher";
-@import "@ministryofjustice/frontend/moj/components/primary-navigation/primary-navigation";
-@import "@ministryofjustice/frontend/moj/components/badge/badge";
-@import "@ministryofjustice/frontend/moj/components/filter/filter";
-@import "@ministryofjustice/frontend/moj/components/date-picker/date-picker";
-@import "@ministryofjustice/frontend/moj/all";
 
 // Import HMRC Frontend Components
-@import "hmrc-frontend/hmrc/components/timeout-dialog/_timeout-dialog";
+@import "node_modules/hmrc-frontend/hmrc/components/timeout-dialog/_timeout-dialog";
 
 // Import app settings/tools/helpers
 @import "settings/all";
