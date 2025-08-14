@@ -1,12 +1,17 @@
 .whats-new-banner {
-	width: 100% ; 
-	left: 0px;
-	background: #F8F8F8;
-}
+	width: 100% ;
+	left: 0;
+  }
 
 .banner-padding {
-	padding-top: 4%;
-	padding-bottom: 3.5%;
+	padding-top: 2%;
+	padding-bottom: 2%;
+  background: #F8F8F8;
+}
+
+.text-padding {
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .dismiss-button {
