@@ -42,7 +42,7 @@ describe('Whats new banner component', function () {
 
     it('should render the body text and date tag and content', function () {
       expect($component.html()).to.contain(
-        '<p class="govuk-template__body">4th March 2022: Some random banner text.</p>'
+        '<p>4th March 2022: Some random banner text.</p>'
       )
     })
   })
