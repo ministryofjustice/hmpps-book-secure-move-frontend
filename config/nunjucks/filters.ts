@@ -20,8 +20,6 @@ import pluralizejs from 'pluralize'
 export const pluralize = pluralizejs
 export { kebabCase, startCase } from 'lodash'
 
-const mojFilters = require('@ministryofjustice/frontend/moj/filters/all')()
-
 const { DATE_FORMATS } = require('../index')
 
 function _parseDate(date: Date | string) {
@@ -435,5 +433,3 @@ export function filesize(str: string) {
 export function containsElement(array: any[] = [], element: any) {
   return array.some(e => e.error === element)
 }
-
-export const { date, mojDate } = mojFilters

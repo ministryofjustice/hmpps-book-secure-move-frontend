@@ -33,7 +33,7 @@ Banner.prototype = {
       this.sendEvent(
         'dismiss-whats-new-banner',
         'banner-dismissed',
-        'When a user has clicked the dimiss banner button'
+        'When a user has clicked the dismiss banner button'
       )
     }
   },
@@ -78,8 +78,7 @@ Banner.prototype = {
   },
   getContentDate: function (element) {
     const dateElement = element.getAttribute('data-content-date')
-    const date = new Date(dateElement)
-    return date
+    return new Date(dateElement)
   },
   setBannerCookie: function () {
     const date = this.getContentDate(this.$module)

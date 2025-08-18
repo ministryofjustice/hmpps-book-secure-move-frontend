@@ -41,9 +41,6 @@ initAll()
 HMRCFrontend.initAll()
 MOJFrontend.initAll()
 
-// eslint-disable-next-line no-new
-new AddAnother('.moj-add-another')
-
 new Analytics().init()
 
 const $times = document.querySelectorAll('[data-module="app-time"]')
@@ -121,6 +118,9 @@ const $multiFileUploads = document.querySelectorAll(
 nodeListForEach($multiFileUploads, function ($multiFileUpload) {
   new MultiFileUpload($multiFileUpload).init()
 })
+
+// eslint-disable-next-line no-new
+new AddAnother('.moj-add-another')
 
 const $footer = document.querySelectorAll('footer')
 nodeListForEach($footer, function ($module) {
