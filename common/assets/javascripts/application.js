@@ -66,6 +66,9 @@ nodeListForEach($toggleBanner, function ($toggleBanner) {
   developmentTools.attachToggleWhatsNewBanner($toggleBanner)
 })
 
+// eslint-disable-next-line no-new
+new AddAnother('.moj-add-another')
+
 const $messages = document.querySelectorAll('[data-module="app-message"]')
 nodeListForEach($messages, function ($message) {
   new Message($message).init()
@@ -118,9 +121,6 @@ const $multiFileUploads = document.querySelectorAll(
 nodeListForEach($multiFileUploads, function ($multiFileUpload) {
   new MultiFileUpload($multiFileUpload).init()
 })
-
-// eslint-disable-next-line no-new
-new AddAnother('.moj-add-another')
 
 const $footer = document.querySelectorAll('footer')
 nodeListForEach($footer, function ($module) {
