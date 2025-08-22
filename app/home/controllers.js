@@ -14,14 +14,14 @@ async function dashboard(req, res) {
   req.session.viewDate = undefined
 
   try {
-    downtimeContent = await new DowntimeService().fetchBanner()
+    downtimeContent = (await new DowntimeService().fetch()).bannerContent
   } catch (e) {
     downtimeContent = null
   }
 
   if (!downtimeContent) {
     try {
-      whatsNewContent = await new WhatsNewService().fetchBanner()
+      whatsNewContent = (await new WhatsNewService().fetch()).bannerContent
     } catch (e) {
       whatsNewContent = null
     }
