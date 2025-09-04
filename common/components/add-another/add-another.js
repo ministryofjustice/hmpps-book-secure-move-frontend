@@ -1,4 +1,4 @@
-const MOJFrontend = require('@ministryofjustice/frontend/moj/all')
+const MOJFrontend = require('@ministryofjustice/frontend')
 const { initAll } = require('govuk-frontend')
 
 const _onAddButtonClick = MOJFrontend.AddAnother.prototype.onAddButtonClick
