@@ -1,15 +1,36 @@
 $govuk-global-styles: true;
-$path: "/assets/images/";
+$govuk-new-link-styles: true;
 
+// Override font styles to replace NTA with Inter UI
+$govuk-fonts-path: "../fonts/inter/";
+$govuk-font-family: "Inter", system-ui, sans-serif;
+$govuk-assets-path: "govuk-frontend/dist/govuk/assets/";
+$moj-assets-path: "@ministryofjustice/frontend/moj/assets/";
+
+$govuk-page-width: 1170px;
 $moj-page-width: 1170px;
-$govuk-page-width: $moj-page-width;
+$moj-fonts-path: "../fonts/inter/";
 
-@import "node_modules/govuk-frontend/dist/govuk/index";
-@import "node_modules/@ministryofjustice/frontend/moj/all";
+$govuk-grid-widths: (
+  one-quarter: 25%,
+  one-third: 33.3333%,
+  one-half: 50%,
+  one-sixth: 16.6667%,
+  two-thirds: 66.6666%,
+  two-sixths: 33.3334%,
+  three-quarters: 75%,
+  four-sixths: 66.6668%,
+  five-sixths: 83.3335%,
+  full: 100%
+);
 
+// Import GOV.UK Frontend
+@import "govuk-frontend/dist/govuk/index";
+// Import MoJ Frontend Components
+@import "@ministryofjustice/frontend/moj/all";
 
 // Import HMRC Frontend Components
-@import "node_modules/hmrc-frontend/hmrc/components/timeout-dialog/_timeout-dialog";
+@import "hmrc-frontend/hmrc/components/timeout-dialog/_timeout-dialog";
 
 // Import app settings/tools/helpers
 @import "settings/all";

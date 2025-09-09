@@ -189,9 +189,9 @@ export class ContentfulService {
     return new ContentfulContent({
       title: c.title,
       body: c.body,
-      bannerText: c.briefBannerText,
+      bannerText: c.bannerText,
       date: new Date(c.date),
-      expiry: c.bannerExpiry ? new Date(c.bannerExpiry) : undefined,
+      expiry: c.expiry ? new Date(c.expiry) : undefined,
     })
   }
 
