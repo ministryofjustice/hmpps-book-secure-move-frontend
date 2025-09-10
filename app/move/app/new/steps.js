@@ -406,6 +406,7 @@ module.exports = {
       'wheelchair',
       'pregnant',
       'other_health',
+      'special_vehicle',
     ],
     next: [
       {
@@ -416,7 +417,7 @@ module.exports = {
     ],
   },
   '/special-vehicle-interrupt': {
-    pageTitle: 'moves::steps.special_vehicle.heading',
+    pageTitle: null,
     next: 'save',
     template: 'special-vehicle-interrupt',
   },

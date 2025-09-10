@@ -1,40 +1,33 @@
-{%- from "moj/components/interruption-card/macro.njk" import interruptionCard -%}
+{% extends "form-wizard.njk" %}
 
+{%- from "moj/components/interruption-card/macro.njk" import interruptionCard -%}
+{% block fields %}
  {% call interruptionCard({
    heading: "A special vehicle will be requested",
    primaryAction: {
      text: "Request move",
-     preventDoubleClick: true,
-     type: "submit"
+     element: 'button',
+     attributes: {
+       name: "continue",
+       type: "submit",
+       "data-prevent-double-click": true
+     },
+     classes: "govuk-button--inverse"
    },
    secondaryAction: {
-     text: "Change details",
-     href: backLink,
+     text: "Cancel",
+     href: cancelUrl,
      preventDoubleClick: true,
-     type: "reset",
-     style: "button"
+     type: "reset"
    }
  }) -%}
 
-   <p> A special vehicle will be requested as you have indicated that the person travelling is pregnant and/or requires a wheelchair</p>
+   <p> A special vehicle will be requested as you have indicated that the person travelling is pregnant and/or requires a wheelchair.</p>
+   <p>If this is incorrect, <a href="{{ backLink }}" class="govuk-link govuk-link--inverse">go back</a> and correct the provided health information.</p>
 
  {%- endcall %}
+{% endblock  %}
 
-
-{% call interruptionCard({
-  heading: "Are you sure you want to change this?",
-  primaryAction: {
-    text: "Continue",
-    href: "#"
-  },
-  secondaryAction: {
-    text: "Go back to application",
-    href: "#"
-  }
-}) -%}
-  <p>You've changed the person's address from Wales to England. This means that the referral needs to be cancelled.</p>
-  <p>Previous home address: 1 Willow Lane, Newchurch, Kington, HR5 3QF</p>
-  <p>New home address: 9 Elm Street, Whitney-on-Wye, Hereford, HR3 6EH</p>
-  <p>You can go back to undo this change.</p>
-{%- endcall %}
+{% block formActions %}
+{% endblock %}
 
