@@ -76,7 +76,6 @@ const healthStep = {
   assessmentCategory: 'health',
   template: 'assessment',
   pageTitle: 'moves::steps.health_information.heading',
-  next: 'save',
 }
 
 const moveDateSteps = [
@@ -409,12 +408,25 @@ module.exports = {
       'other_health',
       'special_vehicle',
     ],
+    next: [
+      {
+        fn: Base.prototype.shouldAskSpecialVehicleStep,
+        next: 'special-vehicle',
+      },
+      'special-vehicle-interrupt',
+    ],
+  },
+  '/special-vehicle-interrupt': {
+    pageTitle: null,
+    next: 'save',
+    template: 'special-vehicle-interrupt',
   },
   '/special-vehicle': {
     ...healthStep,
     showPreviousAssessment: true,
     pageTitle: 'moves::steps.special_vehicle.heading',
     fields: ['special_vehicle'],
+    next: 'save',
   },
   '/document': {
     enctype: 'multipart/form-data',

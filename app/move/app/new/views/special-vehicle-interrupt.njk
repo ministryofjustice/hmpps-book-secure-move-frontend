@@ -1,0 +1,33 @@
+{% extends "form-wizard.njk" %}
+
+{%- from "moj/components/interruption-card/macro.njk" import interruptionCard -%}
+{% block fields %}
+ {% call interruptionCard({
+   heading: "A special vehicle will be requested",
+   primaryAction: {
+     text: "Request move",
+     element: 'button',
+     attributes: {
+       name: "continue",
+       type: "submit",
+       "data-prevent-double-click": true
+     },
+     classes: "govuk-button--inverse"
+   },
+   secondaryAction: {
+     text: "Cancel",
+     href: cancelUrl,
+     preventDoubleClick: true,
+     type: "reset"
+   }
+ }) -%}
+
+   <p>As the person who is travelling is pregnant or requires a wheelchair, a special vehicle will be requested.</p>
+   <p>If the person is not pregnant or does not require a wheelchair, you can <a href="{{ backLink }}" class="govuk-link govuk-link--inverse">go back</a> and change their health information.</p>
+
+ {%- endcall %}
+{% endblock  %}
+
+{% block formActions %}
+{% endblock %}
+
