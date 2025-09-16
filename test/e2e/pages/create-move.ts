@@ -709,6 +709,8 @@ class CreateMovePage extends Page {
   async fillInHealthInformation({
     selectAll = true,
     fillInOptional = false,
+    selectPregnant = true,
+    selectWheelchair = true,
   } = {}) {
     await t.expect(this.getCurrentUrl()).contains('/health-information')
 
@@ -721,21 +723,27 @@ class CreateMovePage extends Page {
         },
       })
     }
+    const specialDiet = 0
+    const healthIssue = 1
+    const medication = 2
+    const wheelchair = 3
+    const pregnant = 4
+    const other = 5
+
+    const values = [specialDiet, healthIssue, medication, other]
+
+    if (selectPregnant) {
+      values.push(pregnant)
+    }
+    if (selectWheelchair) {
+      values.push(wheelchair)
+    }
 
     const fields: any = {
       selectedItems: {
         selector: this.fields.healthInformation,
-        value: [0, 1, 2, 3, 4, 5],
+        value: values,
         type: 'checkbox',
-      },
-      specialVehicleRadio: {
-        selector: this.fields.specialVehicleRadio,
-        value: 'Yes',
-        type: 'radio',
-      },
-      specialVehicle: {
-        selector: this.fields.specialVehicle,
-        value: faker.lorem.sentence(6),
       },
       otherHealth: {
         selector: this.fields.otherHealth,
@@ -756,17 +764,18 @@ class CreateMovePage extends Page {
         selector: this.fields.medication,
         value: faker.lorem.sentence(6),
       }
-      fields.wheelchair = {
-        selector: this.fields.wheelchair,
-        value: faker.lorem.sentence(6),
-      }
-      fields.pregnant = {
-        selector: this.fields.pregnant,
-        value: faker.lorem.sentence(6),
-      }
     }
 
     return fillInForm(fields)
+  }
+
+  /**
+   * Expect special vehicle interrupt
+   *
+   * @returns {Promise}
+   */
+  async expectSpecialVehicleInterrupt() {
+    await t.expect(this.getCurrentUrl()).contains('/special-vehicle-interrupt')
   }
 
   /**
