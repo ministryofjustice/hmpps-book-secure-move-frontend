@@ -707,6 +707,7 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInHealthInformation({
+    selectSpecialVehicle = false,
     fillInOptional = false,
     selectPregnant = true,
     selectWheelchair = true,
@@ -754,6 +755,14 @@ class CreateMovePage extends Page {
       fields.medication = {
         selector: this.fields.medication,
         value: faker.lorem.sentence(6),
+      }
+    }
+
+    if (selectSpecialVehicle) {
+      fields.specialVehicleRadio = {
+        selector: this.fields.specialVehicleRadio,
+        value: 'No',
+        type: 'radio',
       }
     }
 
