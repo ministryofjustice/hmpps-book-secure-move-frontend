@@ -82,5 +82,5 @@ test('With existing person', async t => {
   // Check assessment
   await moveDetailPage.checkCourtHearings(courtHearings)
   await moveDetailPage.checkRiskInformation(riskInformation)
-  await moveDetailPage.checkHealthInformation(healthInformation, true)
+  await moveDetailPage.checkHealthInformation(healthInformation, false)
 })

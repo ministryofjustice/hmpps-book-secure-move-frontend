@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { omit } from 'lodash'
+import { omit, pick } from 'lodash'
 
 export default function autoAnswerSpecialVehicle (req) {
   const pregnant = req.questions.find(q => q.key === 'pregnant')
@@ -24,6 +24,13 @@ export default function autoAnswerSpecialVehicle (req) {
 export function hideSpecialVehicleQuestion (res) {
   // We want the values for special vehicle to be valid, but don't display the question
   res.locals.options.fields = omit({ ...res.locals.options.fields }, [
+    'special_vehicle__explicit',
+    'special_vehicle'
+  ])
+}
+
+export function showOnlySpecialVehicleQuestion (res) {
+  res.locals.options.fields = pick({ ...res.locals.options.fields }, [
     'special_vehicle__explicit',
     'special_vehicle'
   ])

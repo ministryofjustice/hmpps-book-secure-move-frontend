@@ -23,7 +23,7 @@ fixture(
   await t.useRole(policeUser).navigateTo(newMove)
 })
 
-test('No special vehicle', async t => {
+test('With special vehicle', async t => {
   const personalDetails = await createPersonFixture()
 
   // PNC lookup
@@ -62,7 +62,7 @@ test('No special vehicle', async t => {
   })
   await page.submitForm()
 
-  await createMovePage.declineSpecialVehicle()
+  await createMovePage.requestSpecialVehicle()
   await page.submitForm()
 
   // Confirmation page

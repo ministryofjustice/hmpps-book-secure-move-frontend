@@ -707,22 +707,12 @@ class CreateMovePage extends Page {
    * @returns {Promise}
    */
   async fillInHealthInformation({
-    selectAll = true,
     fillInOptional = false,
     selectPregnant = true,
     selectWheelchair = true,
   } = {}) {
     await t.expect(this.getCurrentUrl()).contains('/health-information')
 
-    if (!selectAll) {
-      return fillInForm({
-        specialVehicleRadio: {
-          selector: this.fields.specialVehicleRadio,
-          value: 'No',
-          type: 'radio',
-        },
-      })
-    }
     const specialDiet = 0
     const healthIssue = 1
     const medication = 2
@@ -735,6 +725,7 @@ class CreateMovePage extends Page {
     if (selectPregnant) {
       values.push(pregnant)
     }
+
     if (selectWheelchair) {
       values.push(wheelchair)
     }
@@ -791,6 +782,44 @@ class CreateMovePage extends Page {
         selector: this.fields.specialVehicleRadio,
         value: 'No',
         type: 'radio',
+      },
+    })
+  }
+
+  /**
+   * Fill in special vehicle
+   *
+   * @returns {Promise}
+   */
+  async declineSpecialVehicle() {
+    await t.expect(this.getCurrentUrl()).contains('/explicit-special-vehicle')
+
+    return fillInForm({
+      specialVehicleRadio: {
+        selector: this.fields.specialVehicleRadio,
+        value: 'No',
+        type: 'radio',
+      },
+    })
+  }
+
+  /**
+   * Fill in special vehicle
+   *
+   * @returns {Promise}
+   */
+  async requestSpecialVehicle() {
+    await t.expect(this.getCurrentUrl()).contains('/explicit-special-vehicle')
+
+    return fillInForm({
+      specialVehicleRadio: {
+        selector: this.fields.specialVehicleRadio,
+        value: 'Yes',
+        type: 'radio',
+      },
+      specialVehicle: {
+        selector: this.fields.specialVehicle(),
+        value: faker.lorem.sentence(6),
       },
     })
   }

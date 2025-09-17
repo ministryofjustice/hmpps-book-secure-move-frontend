@@ -16,6 +16,8 @@ const {
   Timetable,
 } = require('./controllers')
 const CourtInformation = require('./controllers/court-information').default
+const ExplicitSpecialVehicle =
+  require('./controllers/explicit-special-vehicle').default
 const HealthInformation = require('./controllers/health-information').default
 const RiskInformation = require('./controllers/risk-information').default
 
@@ -411,7 +413,7 @@ module.exports = {
     next: [
       {
         fn: Base.prototype.shouldAskSpecialVehicleStep,
-        next: 'special-vehicle',
+        next: 'explicit-special-vehicle',
       },
       'special-vehicle-interrupt',
     ],
@@ -420,6 +422,22 @@ module.exports = {
     pageTitle: null,
     next: 'save',
     template: 'special-vehicle-interrupt',
+  },
+  '/explicit-special-vehicle': {
+    ...healthStep,
+    controller: ExplicitSpecialVehicle,
+    showPreviousAssessment: true,
+    pageTitle: 'moves::steps.special_vehicle.heading',
+    fields: [
+      'special_diet_or_allergy',
+      'health_issue',
+      'medication',
+      'wheelchair',
+      'pregnant',
+      'other_health',
+      'special_vehicle',
+    ],
+    next: 'save',
   },
   '/special-vehicle': {
     ...healthStep,
