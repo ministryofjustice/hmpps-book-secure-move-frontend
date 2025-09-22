@@ -62,6 +62,10 @@ test('With unfound person', async t => {
   const healthInformation: any = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
+  // Special Vehicle Interrupt
+  await createMovePage.expectSpecialVehicleInterrupt()
+  await page.submitForm()
+
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
@@ -82,7 +86,7 @@ test('With unfound person', async t => {
   // Check assessment
   await moveDetailPage.checkCourtInformation(courtInformation)
   await moveDetailPage.checkRiskInformation(riskInformation)
-  await moveDetailPage.checkHealthInformation(healthInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation, true)
 })
 
 test('With existing person', async t => {
@@ -120,6 +124,10 @@ test('With existing person', async t => {
   const healthInformation: any = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
+  // Special Vehicle Interrupt
+  await createMovePage.expectSpecialVehicleInterrupt()
+  await page.submitForm()
+
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
@@ -140,7 +148,7 @@ test('With existing person', async t => {
   // Check assessment
   await moveDetailPage.checkCourtInformation(courtInformation)
   await moveDetailPage.checkRiskInformation(riskInformation)
-  await moveDetailPage.checkHealthInformation(healthInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation, true)
 })
 
 fixture('Cancel move from Police Custody').beforeEach(async t => {

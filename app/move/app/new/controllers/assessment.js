@@ -98,6 +98,7 @@ class AssessmentController extends CreateBaseController {
   saveValues(req, res, next) {
     const assessment = req.sessionModel.get('assessment') || {}
     const { assessmentCategory } = req.form.options
+    req.sessionModel.set(`${assessmentCategory}-form`, req.form.values)
 
     assessment[assessmentCategory] = this.getAssessments(req, res)
 

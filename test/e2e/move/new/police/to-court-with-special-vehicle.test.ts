@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe'
 
-import { FEATURE_FLAGS } from '../../../../../config'
+import { createPersonFixture } from '../../../_helpers'
 import { policeUser } from '../../../_roles'
 import { newMove } from '../../../_routes'
 import {
@@ -17,37 +17,37 @@ const registerMoveUrl = async () => {
   createdMoves.push(currentUrl)
 }
 
-fixture('New move from Police Custody to Prison (recall)').beforeEach(
-  async t => {
-    await t.useRole(policeUser).navigateTo(newMove)
-  }
-)
+fixture(
+  'New move from Police Custody to Court with explicit special vehicle question'
+).beforeEach(async t => {
+  await t.useRole(policeUser).navigateTo(newMove)
+})
 
-test('With a new person', async t => {
+test('With special vehicle', async t => {
+  const personalDetails = await createPersonFixture()
+
   // PNC lookup
-  await t
-    .expect(page.getCurrentUrl())
-    .contains('/person-lookup-pnc')
-    .click(createMovePage.steps.personLookup.nodes.noIdentifierLink)
-    .click(createMovePage.steps.personLookup.nodes.moveSomeoneNew)
+  await createMovePage.fillInPncSearch(personalDetails.policeNationalComputer)
+  await page.submitForm()
 
-  // Personal details
-  const personalDetails: any = await createMovePage.fillInPersonalDetails()
+  // PNC lookup results
+  await createMovePage.checkPersonLookupResults(
+    1,
+    personalDetails.policeNationalComputer
+  )
+  await createMovePage.selectSearchResults(personalDetails.fullname)
   await page.submitForm()
 
   // Move details
-  await createMovePage.fillInMoveDetails('Prison recall')
+  const moveDetails = await createMovePage.fillInMoveDetails('Court')
   await page.submitForm()
-
-  // TODO: find a way to test feature flags properly
-  if (FEATURE_FLAGS.DATE_OF_ARREST) {
-    // Recall info
-    await createMovePage.fillInRecallInfo()
-    await page.submitForm()
-  }
 
   // Fill in date
   await createMovePage.fillInDate()
+  await page.submitForm()
+
+  // Court information
+  const courtInformation: any = await createMovePage.fillInCourtInformation()
   await page.submitForm()
 
   // Risk information
@@ -55,17 +55,20 @@ test('With a new person', async t => {
   await page.submitForm()
 
   // Health information
-  const healthInformation: any = await createMovePage.fillInHealthInformation()
+  const healthInformation: any = await createMovePage.fillInHealthInformation({
+    fillInOptional: false,
+    selectPregnant: false,
+    selectWheelchair: false,
+  })
   await page.submitForm()
 
-  // Special Vehicle Interrupt
-  await createMovePage.expectSpecialVehicleInterrupt()
+  await createMovePage.requestSpecialVehicle()
   await page.submitForm()
 
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
-    location: 'Prison',
+    location: moveDetails.courtLocation,
   })
   await t.click(Selector('a').withExactText(personalDetails.fullname))
 
@@ -80,13 +83,9 @@ test('With a new person', async t => {
   await moveDetailPage.checkPersonalDetails(personalDetails)
 
   // Check assessment
+  await moveDetailPage.checkCourtInformation(courtInformation)
   await moveDetailPage.checkRiskInformation(riskInformation)
-  await moveDetailPage.checkHealthInformation(healthInformation, true)
-  await t
-    .expect((moveDetailPage.nodes.courtInformationHeading as Selector).exists)
-    .notOk()
-    .expect((moveDetailPage.nodes.courtInformation as Selector).exists)
-    .notOk()
+  await moveDetailPage.checkHealthInformation(healthInformation, false)
 })
 
 fixture('Cancel move from Police Custody').beforeEach(async t => {
@@ -97,16 +96,12 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
     .click(moveDetailPage.nodes.cancelLink as Selector)
 })
 
-test('Reason - `Cancelled by PMU`', async t => {
-  await cancelMovePage.selectReason(
-    'Cancelled by Population Management Unit (PMU)',
-    'No free space'
-  )
+test('Reason - `Supplier declined to move this person`', async t => {
+  await cancelMovePage.selectReason('Supplier declined to move this person')
   await page.submitForm()
 
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
-    content:
-      'Reason — Cancelled by Population Management Unit (PMU) — No free space',
+    content: 'Reason — Supplier declined to move this person',
   })
 })
