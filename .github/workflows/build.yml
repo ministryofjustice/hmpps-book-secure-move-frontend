@@ -44,10 +44,14 @@ jobs:
         shell: bash
         run: |
           npm run build
+      - name: write eslintignore
+        shell: bash
+        run: |
+          npx tsc --listFilesOnly | grep -v 'node_modules' | sed 's/\.ts/\.js/' | sed "s#$(pwd)/##" > ./.eslintignore
       - name: Linter check # Run linter after build because the integration test code depend on compiled typescript...
         shell: bash
         run: |
-          npm run lint
+          npm run circle:lint
       - name: upload the artifacts
         uses: actions/upload-artifact@v4
         with:
