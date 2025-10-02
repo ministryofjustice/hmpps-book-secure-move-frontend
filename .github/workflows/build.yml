@@ -26,6 +26,8 @@ jobs:
         run: |
           corepack disable
           sudo npm install -g npm@11
+          export PATH="$(npm bin -g):$PATH"
+          echo "npm path: $(which npm)"
           npm --version
       - name: update npm
         shell: bash
