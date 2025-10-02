@@ -22,10 +22,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: ${{ inputs.node_version_file }}
+      - name: Upgrade npm to v11
+        run: |
+          corepack disable
+          sudo npm install -g npm@11
+          npm --version
       - name: update npm
         shell: bash
         run: |
-          sudo npm install -g npm@11 && npm install && npm rebuild node-sass
+          npm rebuild node-sass
       - name: restore cache
         id: restore-cache
         uses: actions/cache/restore@v4
