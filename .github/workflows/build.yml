@@ -24,15 +24,7 @@ jobs:
           node-version-file: ${{ inputs.node_version_file }}
       - name: Upgrade npm to v11
         run: |
-          corepack disable
-          sudo npm install -g npm@11
-          export PATH="$(npm bin -g):$PATH"
-          echo "npm path: $(which npm)"
-          npm --version
-      - name: update npm
-        shell: bash
-        run: |
-          npm rebuild node-sass
+          sudo npm install -g npm@11 && npm install && npm rebuild node-sass
       - name: restore cache
         id: restore-cache
         uses: actions/cache/restore@v4
