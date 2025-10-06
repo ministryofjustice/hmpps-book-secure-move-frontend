@@ -403,6 +403,7 @@
   "PerGeneric": {
     "heading": "{{supplier.name}} has logged a generic event note",
     "heading_without_supplier": "Generic lockout event added",
+    "heading_for_stakeholder": "{{stakeholder_group}} had contact with the person in custody",
     "description": "{{notes}}"
   },
   "PerMedicalAid": {

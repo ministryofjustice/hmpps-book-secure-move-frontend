@@ -33,6 +33,14 @@ interface PostEventData {
   relationships?: { [key: string]: { data: { id: string, type: string } } }
 }
 
+export interface StakeholderEventData {
+  eventableType: 'PersonEscortRecord'
+  eventableId: string
+  type: 'PerGeneric'
+  details?: EventDetails
+  relationships?: { [key: string]: { data: { id: string, type: string } } }
+}
+
 type LockoutEventType =
   | 'PerViolentDangerous'
   | 'PerWeapons'
@@ -66,6 +74,14 @@ interface PostLockoutEventsData {
   PersonMoveDeathInCustody: string
 }
 
+interface PostStakeholderEventData {
+  perId: string
+  stakeholder: string
+  occurredAt: Date
+  summary: string
+  details: string
+}
+
 export class EventService extends BaseService {
   async getEvent(req: BasmRequest, id: string) {
     return (await restClient.get(req, `/events/${id}`)).data
@@ -92,6 +108,40 @@ export class EventService extends BaseService {
             },
           },
           ...eventData.relationships,
+        },
+      },
+    }
+
+    return await restClient.post(req, '/events', payload)
+  }
+
+  async postStakeholderEvent(
+    req: BasmRequest, data:  PostStakeholderEventData) {
+    const todaysDate = new Date()
+
+    console.log(data)
+
+    const payload = {
+      data: {
+        type: 'events',
+        attributes: {
+          occurred_at: data.occurredAt.toISOString(),
+          recorded_at: todaysDate.toISOString(),
+          notes: '',
+          details: {
+            stakeholder: data.stakeholder,
+            summary: data.summary,
+            further_details: data.details ? data.details : null,
+          },
+          event_type: 'PerGeneric',
+        },
+        relationships: {
+          eventable: {
+            data: {
+              type: 'person_escort_records',
+              id: req.move.profile?.person_escort_record?.id,
+            },
+          },
         },
       },
     }

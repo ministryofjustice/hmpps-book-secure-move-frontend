@@ -74,5 +74,12 @@
   "events_added": {
     "heading": "{{type}} events added successfully",
     "content": "You have added new {{type}} events for <strong>{{fullName}}</strong>. You can view the details in the <a href='#tab-history-of-events' class='govuk-link'>history of events</a>."
+  },
+  "record_event": {
+    "page_title": "Event recorded",
+    "success": {
+      "heading": "You have recorded the event",
+      "detail": "The summary and further details you provided will appear in the history of events for the move form <a href=\"{{href}}\"><strong>{{name}}</strong></a>."
+    }
   }
 }

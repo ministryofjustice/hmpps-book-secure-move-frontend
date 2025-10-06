@@ -64,6 +64,7 @@
   "confirm_handover": "Confirm handover",
   "confirm_and_complete_record": "Confirm and complete record",
   "confirm_youth_risk_assessment": "Confirm assessment",
+  "record_event": "Record an event",
   "add_item": "Add {{name}}",
   "add_item_with_items": "Add another {{name}}",
   "remove_item": "Remove <span class=\"govuk-visually-hidden\">{{name}} {{index}}</span>",
