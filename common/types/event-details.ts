@@ -71,8 +71,8 @@ export interface EventDetails {
   end_date?: string
   old_end_date?: string
   location?: Location
-  old_location?: Location,
-  stakeholder?: string,
-  summary?: string,
+  old_location?: Location
+  stakeholder?: string
+  summary?: string
   further_details?: string
 }
