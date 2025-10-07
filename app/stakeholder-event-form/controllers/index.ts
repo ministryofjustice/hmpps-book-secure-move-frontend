@@ -3,13 +3,6 @@ import FormWizardController from '../../../common/controllers/form-wizard'
 import { isFuture, parseISO, set } from 'date-fns'
 
 export class StakeholderEvent extends FormWizardController {
-  process (req, res, next) {
-    console.log('Process')
-    console.log(req.body)
-
-    next()
-  }
-
   validateFields (req, res, callback) {
     super.validateFields(req, res, errors => {
       // Don't apply this extra validation unless we have both date and time
@@ -46,10 +39,7 @@ export class StakeholderEvent extends FormWizardController {
         ...(eventTimeError && { event_time: eventTimeError }),
         ...errors
       }
-      console.log('validateFields')
-      console.log(req.body)
 
-      console.log(req.form.values)
       callback(formErrors)
     })
   }
@@ -57,20 +47,10 @@ export class StakeholderEvent extends FormWizardController {
 
 export class SaveController extends FormWizardController {
   saveValues (req, res, next) {
-    console.log('Save')
-    console.log(req.body)
     const { stakeholder_group: stakeholder, event_date: date, event_time: time, event_summary: summary, further_details: details } = req.sessionModel.attributes
-
-    console.log(stakeholder)
-    console.log(date)
-    console.log(time)
-    console.log(summary)
-    console.log(details)
 
     const occurredAt = new Date(date)
     occurredAt.setHours(time.split(':')[0], time.split(':')[1])
-
-    console.log(req.sessionModel)
 
     const postData = {
       stakeholder,
