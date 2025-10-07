@@ -20,6 +20,10 @@ const rejectionReason = {
       value: 'no_transport_available',
       text: 'fields::rejection_reason.items.no_transport_available',
     },
+    {
+      value: 'more_info_required',
+      text: 'fields::rejection_reason.items.more_info_required',
+    },
   ],
 }
 
