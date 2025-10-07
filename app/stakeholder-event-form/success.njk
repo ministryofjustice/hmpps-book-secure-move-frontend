@@ -1,0 +1,25 @@
+{% extends "layouts/base.njk" %}
+
+{% block pageTitle %}
+  {{ t("messages::record_event.page_title") }} – {{ SERVICE_NAME }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {{ govukPanel({
+        classes: "govuk-!-margin-bottom-7",
+        titleText: t("messages::record_event.success.heading")
+      }) }}
+
+      <p>
+        {{ t("messages::record_event.success.detail", {
+          href: "/move/" + move.id + "/timeline",
+          name: move.profile.person._fullname
+        }) | safe }}
+      </p>
+
+    </div>
+  </div>
+{% endblock %}

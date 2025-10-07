@@ -112,6 +112,17 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
         })
       }
     }
+
+    if (canAccess(`${context}:record_event`)) {
+      actions.push({
+        html: componentService.getComponent('govukButton', {
+          text: i18n.t('actions::record_event'),
+          classes: 'govuk-button',
+          preventDoubleClick: true,
+          href: `/move/${move.id}/record-event`,
+        }),
+      })
+    }
   }
 
   return actions

@@ -18,6 +18,9 @@ describe('Presenters', function () {
           return obj
         })
         canAccessStub = sinon.stub().returns(true)
+        canAccessStub
+          .withArgs('person_escort_record:record_event')
+          .returns(false)
         featureFlagStub = { ADD_LODGE_BUTTON: false }
 
         mockMove = {
@@ -640,6 +643,34 @@ describe('Presenters', function () {
                     preventDoubleClick: true,
                     text: 'actions::view_assessment',
                     classes: 'govuk-button--secondary',
+                  },
+                },
+              },
+            ])
+          })
+        })
+        context('with record event access', function () {
+          beforeEach(function () {
+            canAccessStub.withArgs('person_escort_record:create').returns(false)
+            canAccessStub
+              .withArgs('person_escort_record:record_event')
+              .returns(true)
+            output = presenter(
+              mockMove,
+              { canAccess: canAccessStub },
+              featureFlagStub
+            )
+          })
+
+          it('should only show record event button', function () {
+            expect(output).to.deep.equal([
+              {
+                html: {
+                  govukButton: {
+                    href: `/move/${mockMove.id}/record-event`,
+                    preventDoubleClick: true,
+                    text: 'actions::record_event',
+                    classes: 'govuk-button',
                   },
                 },
               },

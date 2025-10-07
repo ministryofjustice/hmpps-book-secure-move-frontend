@@ -9,6 +9,7 @@ const { protectRoute } = require('../../common/middleware/permissions')
 const { ENABLE_DEVELOPMENT_TOOLS } = require('../../config')
 const personEscortRecordApp = require('../person-escort-record')
 const policeCustodyFormApp = require('../police-custody-form')
+const stakeholderEventFormApp = require('../stakeholder-event-form')
 const youthRiskAssessmentApp = require('../youth-risk-assessment')
 
 const assignApp = require('./app/assign')
@@ -57,6 +58,10 @@ moveRouter.get(
 moveRouter.use(personEscortRecordApp.mountpath, personEscortRecordApp.router)
 moveRouter.use(youthRiskAssessmentApp.mountpath, youthRiskAssessmentApp.router)
 moveRouter.use(policeCustodyFormApp.mountpath, policeCustodyFormApp.router)
+moveRouter.use(
+  stakeholderEventFormApp.mountpath,
+  stakeholderEventFormApp.router
+)
 moveRouter.use(reviewApp.mountpath, reviewApp.router)
 moveRouter.use(cancelApp.mountpath, cancelApp.router)
 moveRouter.use(unassignApp.mountpath, unassignApp.router)

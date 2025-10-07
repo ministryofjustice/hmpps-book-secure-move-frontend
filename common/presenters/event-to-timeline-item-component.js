@@ -2,6 +2,7 @@ const eventHelpers = require('../helpers/events')
 const componentService = require('../services/component')
 
 const eventToTimelinePanel = require('./event-to-timeline-panel')
+const stakeholderEventToTimelinePanel = require('./stakeholder-event-to-timeline-panel')
 
 const getItem = ({
   containerClasses,
@@ -40,8 +41,12 @@ const eventToTimelineItemComponent = async (token, moveEvent, move) => {
   let description
 
   if (moveEvent.event_type === 'PerSuicideAndSelfHarm') {
-    description = await eventToTimelinePanel(token, moveEvent, move, false)
-    description = description.html
+    description = await eventToTimelinePanel(token, moveEvent, move, false).html
+  } else if (
+    moveEvent.event_type === 'PerGeneric' &&
+    moveEvent.details.stakeholder != null
+  ) {
+    description = stakeholderEventToTimelinePanel(moveEvent, move).html
   } else {
     description = await eventHelpers.getDescription(token, event)
   }
