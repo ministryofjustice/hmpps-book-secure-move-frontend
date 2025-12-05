@@ -11,9 +11,10 @@ module.exports = function (req, res, next) {
     {
       text: 'actions::cancel_lodge',
       classes: 'app-link--destructive',
-      url: canAccess('move:lodging:cancel')
-        ? `/move/${move.id}/lodging/cancel`
-        : undefined,
+      url:
+        canAccess('move:lodging:cancel') && move.is_lodging
+          ? `/move/${move.id}/lodging/cancel`
+          : undefined,
     },
     {
       text: 'actions::cancel_move',
