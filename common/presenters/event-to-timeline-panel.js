@@ -127,7 +127,9 @@ module.exports = async (
             '<h4 class="govuk-heading-s govuk-!-font-size-16">Signed and dated</h4>',
         },
         {
-          html: `<p class="govuk-!-font-size-16">${reportingOfficerSignedAt}</p>`,
+          html: `<p class="govuk-!-font-size-16">${filters.formatDateTimeForEvents(
+            reportingOfficerSignedAt
+          )}</p>`,
         },
       ])
 
@@ -149,7 +151,9 @@ module.exports = async (
             '<h4 class="govuk-heading-s govuk-!-font-size-16">Signed and dated</h4>',
         },
         {
-          html: `<p class="govuk-!-font-size-16">${receptionOfficerSignedAt}</p>`,
+          html: `<p class="govuk-!-font-size-16">${filters.formatDateTimeForEvents(
+            receptionOfficerSignedAt
+          )}</p>`,
         },
       ])
   }
