@@ -41,7 +41,8 @@ const eventToTimelineItemComponent = async (token, moveEvent, move) => {
   let description
 
   if (moveEvent.event_type === 'PerSuicideAndSelfHarm') {
-    description = await eventToTimelinePanel(token, moveEvent, move, false).html
+    description = (await eventToTimelinePanel(token, moveEvent, move, false))
+      .html
   } else if (
     moveEvent.event_type === 'PerGeneric' &&
     moveEvent.details.stakeholder != null
