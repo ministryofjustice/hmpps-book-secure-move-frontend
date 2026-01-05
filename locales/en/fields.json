@@ -380,7 +380,8 @@
     "label": "Reason for rejection",
     "items": {
       "no_space_at_receiving_prison": "No spaces at receiving prison",
-      "no_transport_available": "No transport available for this move"
+      "no_transport_available": "No transport available for this move",
+      "more_info_required": "More information is required"
     }
   },
   "rebook": {
