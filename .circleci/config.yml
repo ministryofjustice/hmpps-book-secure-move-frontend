@@ -10,14 +10,14 @@ aliases:
       name: hmpps/node
       tag: 22.16-browsers
   # Common steps
+  - &install_system_deps
+    run:
+      name: Install system dependencies for image optimization
+      command: yarn add pngquant optipng cjpeg
   - &install_dependencies
     run:
       name: Install NPM dependencies
       command: npm install -g npm@11 && npm install && npm rebuild node-sass
-  - &install_system_deps
-    run:
-      name: Install system dependencies for image optimization
-      command: sudo apt-get update && sudo apt-get install -y pngquant
   - &restore_cache
     restore_cache:
       name: Restore NPM cache
@@ -51,8 +51,8 @@ jobs:
       - checkout
       - *set_package_version
       - *restore_cache
-      - *install_dependencies
       - *install_system_deps
+      - *install_dependencies
       - *save_cache
       - run:
           name: Compile typescript, build assets and frameworks
@@ -69,8 +69,8 @@ jobs:
       - attach_workspace:
           at: .
       - *restore_cache
-      - *install_dependencies
       - *install_system_deps
+      - *install_dependencies
       - run:
           name: Write eslintignore
           command: npx tsc --listFilesOnly | grep -v 'node_modules' | sed 's/\.ts/\.js/' | sed "s#$(pwd)/##" > ./.eslintignore
