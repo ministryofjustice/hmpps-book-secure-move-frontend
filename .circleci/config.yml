@@ -13,7 +13,7 @@ aliases:
   - &install_system_deps
     run:
       name: Install system dependencies for image optimization
-      command: yarn add pngquant optipng cjpeg
+      command: yarn add pngquant optipng
   - &install_dependencies
     run:
       name: Install NPM dependencies
