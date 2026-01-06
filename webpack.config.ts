@@ -116,7 +116,7 @@ const commonConfig = {
                   plugins: [
                     'imagemin-gifsicle',
                     'imagemin-jpegtran',
-                    'imagemin-pngquant',
+                    ['imagemin-pngquant', { errorLevel: 4 }],
                     'imagemin-svgo',
                   ],
                 },

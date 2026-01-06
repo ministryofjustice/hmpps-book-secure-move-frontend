@@ -7,7 +7,7 @@ $_message-border-width: 5px;
   padding: $_message-padding;
   position: relative;
 
-  @include mq ($from: tablet) {
+  @include govuk-media-query($from: tablet) {
     .js-enabled &[data-module="app-message"] {
       padding-right: 90px;
     }
@@ -62,7 +62,7 @@ $_message-border-width: 5px;
   @include govuk-font($size: 16);
   display: table;
 
-  @include mq ($from: tablet) {
+  @include govuk-media-query($from: tablet) {
     position: absolute;
     line-height: 26px;
     margin-top: 0;

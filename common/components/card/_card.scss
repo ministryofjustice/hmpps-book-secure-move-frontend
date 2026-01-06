@@ -48,7 +48,7 @@ $_image-height: 100px;
   display: inline-block;
   margin-bottom: govuk-spacing(2);
 
-  @include mq($from: desktop) {
+  @include govuk-media-query($from: desktop) {
     float: right;
     margin-bottom: 0;
     margin-left: govuk-spacing(3);
@@ -91,7 +91,7 @@ $_image-height: 100px;
   width: 100%;
   margin: govuk-spacing(2) 0 0;
 
-  @include mq($from: desktop) {
+  @include govuk-media-query($from: desktop) {
     display: grid;
     grid-auto-columns: max-content;
     grid-auto-flow: column;
@@ -103,7 +103,7 @@ $_image-height: 100px;
   & + & {
     margin-top: govuk-spacing(2);
 
-    @include mq($from: desktop) {
+    @include govuk-media-query($from: desktop) {
       margin-top: 0;
     }
   }

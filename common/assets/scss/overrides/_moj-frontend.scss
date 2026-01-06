@@ -8,7 +8,7 @@
 }
 
 .moj-organisation-nav__link {
-  @include mq ($from: tablet) {
+  @include govuk-media-query($from: tablet) {
     float: left;
     margin-left: govuk-spacing(3);
   }

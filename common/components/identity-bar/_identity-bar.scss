@@ -61,7 +61,7 @@
   padding: govuk-spacing(6) 0 0;
   list-style: none;
 
-  @include mq($from: desktop) {
+  @include govuk-media-query($from: desktop) {
     float: right;
   }
 
@@ -81,7 +81,7 @@
     margin-top: govuk-spacing(2);
   }
 
-  @include mq($from: desktop) {
+  @include govuk-media-query($from: desktop) {
     float: right;
   }
 }
