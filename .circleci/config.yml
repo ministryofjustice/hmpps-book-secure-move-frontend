@@ -17,7 +17,7 @@ aliases:
   - &install_system_deps
     run:
       name: Install system dependencies for image optimization
-      command: sudo apt-get update && apt-get install -y pngquant
+      command: sudo apt-get update && sudo apt-get install -y pngquant
   - &restore_cache
     restore_cache:
       name: Restore NPM cache
