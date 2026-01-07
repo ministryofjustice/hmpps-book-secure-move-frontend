@@ -171,7 +171,7 @@
     "css-minimizer-webpack-plugin": "7.0.2",
     "csurf": "1.11.0",
     "date-fns": "4.1.0",
-    "debug": "4.3.4",
+    "debug": "4.4.3",
     "devour-client": "3.1.5",
     "dotenv": "17.2.1",
     "dropzone": "5.9.3",
