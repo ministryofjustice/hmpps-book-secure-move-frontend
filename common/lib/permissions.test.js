@@ -445,6 +445,7 @@ describe('Permissions', function () {
           'youth_risk_assessment:create',
           'youth_risk_assessment:update',
           'youth_risk_assessment:confirm',
+          'profile:move_history',
         ]
 
         expect(permissions).to.have.members(allPermissions)
