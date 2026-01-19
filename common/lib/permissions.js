@@ -48,6 +48,7 @@ const contractDeliveryManagerPermissions = [
   'person_escort_record:view',
   'person_escort_record:print',
   'youth_risk_assessment:view',
+  'profile:move_history',
 ]
 
 const readOnlyPermissions = [
@@ -157,6 +158,7 @@ const prisonPermissions = [
   'youth_risk_assessment:create',
   'youth_risk_assessment:update',
   'youth_risk_assessment:confirm',
+  'profile:move_history',
 ]
 const ocaPermissions = [
   'dashboard:view',

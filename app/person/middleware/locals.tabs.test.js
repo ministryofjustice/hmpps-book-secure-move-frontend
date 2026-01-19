@@ -80,11 +80,11 @@ describe('Person app', function () {
         })
       })
 
-      context('with a CDM user', function () {
+      context('with moves history permission', function () {
         beforeEach(function () {
           req.session = {
             user: {
-              permissions: ['locations:contract_delivery_manager'],
+              permissions: ['profile:move_history'],
             },
           }
           setTabs(req, res, nextSpy)
