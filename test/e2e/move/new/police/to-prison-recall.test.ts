@@ -98,9 +98,7 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
 })
 
 test('Reason - `Police transported the prisoner`', async t => {
-  await cancelMovePage.selectReason(
-    'Police transported the prisoner'
-  )
+  await cancelMovePage.selectReason('Police transported the prisoner')
   await page.submitForm()
 
   await moveDetailPage.checkBanner({
