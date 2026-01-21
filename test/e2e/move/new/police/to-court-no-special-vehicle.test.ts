@@ -96,12 +96,12 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
     .click(moveDetailPage.nodes.cancelLink as Selector)
 })
 
-test('Reason - `Supplier declined to move this person`', async t => {
-  await cancelMovePage.selectReason('Supplier declined to move this person')
+test('Reason - `Supplier resource issue`', async t => {
+  await cancelMovePage.selectReason('Supplier resource issue')
   await page.submitForm()
 
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
-    content: 'Reason — Supplier declined to move this person',
+    content: 'Reason — Supplier resource issue',
   })
 })

@@ -99,7 +99,7 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
 
 test('Reason - `Police transported the prisoner`', async t => {
   await cancelMovePage.selectReason(
-    'Efficiency: move combined with another request'
+    'Police transported the prisoner'
   )
   await page.submitForm()
 
