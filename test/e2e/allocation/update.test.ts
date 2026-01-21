@@ -15,7 +15,11 @@ test('Change allocation date', async t => {
     allocationJourney.allocationViewPage.nodes.editDetailsLink as Selector
   )
 
-  const details = await allocationJourney.allocationDetailsEditPage.fill()
+  const details = await allocationJourney.allocationDateChangePage.fill()
+  await page.submitForm()
+
+  await allocationJourney.allocationDateChangeReasonPage.fill()
+
   await page.submitForm()
 
   await allocationJourney.allocationViewPage.checkSummary({

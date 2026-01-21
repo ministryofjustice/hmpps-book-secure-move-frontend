@@ -7,7 +7,7 @@
   transform: translate3d(0, 0, 0);
   will-change: position, transform;
 
-  @include mq ($until: tablet) {
+  @include govuk-media-query($until: tablet) {
     position: static !important;
   }
 }

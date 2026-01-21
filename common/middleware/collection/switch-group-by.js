@@ -1,3 +1,5 @@
+const querystring = require('qs')
+
 function switchGroupBy(defaults = {}) {
   return function handleSwitchGroupBy(req, res) {
     const { view } = req.params
@@ -11,11 +13,17 @@ function switchGroupBy(defaults = {}) {
     const switchedGroupBy =
       currentGroupBy === 'location' ? 'vehicle' : 'location'
     req.session.group_by = switchedGroupBy
-    const redir = req.originalUrl
+    const redir = req.headers.referer
+      .substring(0, req.headers.referer.indexOf('?'))
       .replace('/switch-group-by', '')
-      .replace(`?group_by=${currentGroupBy}`, '')
+      .replace(`group_by=${currentGroupBy}`, `group_by=${switchedGroupBy}`)
 
-    res.redirect(`${redir}?group_by=${switchedGroupBy}`)
+    res.redirect(
+      `${redir}?${querystring.stringify({
+        ...req.query,
+        group_by: switchedGroupBy,
+      })}`
+    )
   }
 }
 

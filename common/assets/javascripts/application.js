@@ -41,9 +41,6 @@ initAll()
 HMRCFrontend.initAll()
 MOJFrontend.initAll()
 
-// eslint-disable-next-line no-new
-new AddAnother('.moj-add-another')
-
 new Analytics().init()
 
 const $times = document.querySelectorAll('[data-module="app-time"]')
@@ -68,6 +65,9 @@ const $toggleBanner = document.querySelectorAll(
 nodeListForEach($toggleBanner, function ($toggleBanner) {
   developmentTools.attachToggleWhatsNewBanner($toggleBanner)
 })
+
+// eslint-disable-next-line no-new
+new AddAnother('.moj-add-another')
 
 const $messages = document.querySelectorAll('[data-module="app-message"]')
 nodeListForEach($messages, function ($message) {

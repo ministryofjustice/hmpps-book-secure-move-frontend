@@ -6,7 +6,7 @@ import { fillInForm } from '../_helpers'
 
 import { Page } from './page'
 
-class AllocationDetailsEditPage extends Page {
+class AllocationDateChangePage extends Page {
   fields: { date: Selector }
   errorList: any[]
 
@@ -26,7 +26,7 @@ class AllocationDetailsEditPage extends Page {
     await t
       .expect(this.getCurrentUrl())
       .match(
-        /\/allocation\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/edit\/allocation-details$/
+        /\/allocation\/[\w]{8}(-[\w]{4}){3}-[\w]{12}\/edit\/allocation-date$/
       )
 
     const fieldsToFill = {
@@ -42,4 +42,4 @@ class AllocationDetailsEditPage extends Page {
     return fillInForm(fieldsToFill)
   }
 }
-export default AllocationDetailsEditPage
+export default AllocationDateChangePage

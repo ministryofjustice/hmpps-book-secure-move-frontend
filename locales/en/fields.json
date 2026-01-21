@@ -249,6 +249,45 @@
     "label": "Is there a date this move has to be completed by?",
     "error_message": "Enter whether a move needs to be completed by a date"
   },
+  "date_changed_reason": {
+    "label": "Why are you changing the {{objectType}} date?",
+    "error_message": "Select a reason for changing the date of the {{objectType}}",
+    "items": {
+      "combined_with_another_request" : {
+        "label" : "Efficiency - move combined with another request"
+      },
+      "operational_issues_prison" : {
+        "label" : "Operational issues - prison"
+      },
+      "tornado_event" :  {
+        "label" : "Overriding tornado event"
+      },
+      "cancelled_by_pmu" : {
+        "label" : "Population Management Unit (PMU) cancelled request"
+      },
+      "amended_by_pmu" : {
+        "label" : "Population Management Unit (PMU) amended date"
+      },
+      "prisoner_refusal" :  {
+        "label" : "Prisoner refusal"
+      },
+      "receiver_unable_to_accept_prisoner" : {
+        "label" : "Receiving prison unable to accept prisoner"
+      },
+      "sender_unable_to_fulfil_draft" :  {
+        "label" : "Sending prison unable to fulfil draft"
+      },
+      "sender_cancelled_request" : {
+        "label" : "Sending prison cancelled request"
+      },
+      "supplier_no_resource" :  {
+        "label" : "Supplier does not have the resource to fulfil this request"
+      },
+      "prisoner_unfit_to_travel" :  {
+        "label" : "Prisoner unfit to travel"
+      }
+    }
+  },
   "date_custom": {
     "label": "Date of travel"
   },
@@ -357,7 +396,8 @@
     "label": "Reason for rejection",
     "items": {
       "no_space_at_receiving_prison": "No spaces at receiving prison",
-      "no_transport_available": "No transport available for this move"
+      "no_transport_available": "No transport available for this move",
+      "more_info_required": "More information is required"
     }
   },
   "rebook": {
@@ -531,6 +571,9 @@
   },
   "date_of_allocation": {
     "label": "Date of allocation"
+  },
+  "change_date_of_allocation": {
+    "label": "New date of allocation"
   },
   "prisoner_common_category": {
     "label": "Prisoner category",
@@ -737,5 +780,19 @@
     "number" : "Flight number",
     "date": "Flight date",
     "time": "Flight time"
+  },
+  "stakeholder_group": {
+    "error_message_required": "Select a professional group"
+  },
+  "event_date": {
+    "label": "Event date",
+    "error_message_required": "Enter or select a date"
+  },
+  "event_time": {
+    "label": "Event time",
+    "error_message_required": "Enter a time"
+  },
+  "event_summary": {
+    "error_message_required": "Provide a summary of the event"
   }
 }

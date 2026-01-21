@@ -142,6 +142,13 @@ module.exports = async () => {
     express.static(
       path.join(
         __dirname,
+        '/node_modules/@ministryofjustice/frontend/moj/components'
+      ),
+      { maxAge: config.STATIC_ASSETS.CACHE_MAX_AGE }
+    ),
+    express.static(
+      path.join(
+        __dirname,
         '/node_modules/@ministryofjustice/frontend/moj/assets'
       ),
       { maxAge: config.STATIC_ASSETS.CACHE_MAX_AGE }

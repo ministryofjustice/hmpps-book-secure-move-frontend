@@ -37,6 +37,8 @@ describe('save lodging controller', function () {
         lodge_start_date: lodging.start_date,
       },
       reset: sinon.stub(),
+      get: sinon.stub(),
+      set: sinon.stub(),
     },
     journeyModel: {
       reset: sinon.stub(),

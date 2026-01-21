@@ -30,7 +30,7 @@ router.use(localsTabs)
 
 router.get(
   '/moves',
-  protectRoute('locations:contract_delivery_manager'),
+  protectRoute('profile:move_history'),
   setPerson,
   setBreadcrumb,
   localsIdentityBar,

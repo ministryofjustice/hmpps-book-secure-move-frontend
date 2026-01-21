@@ -52,6 +52,7 @@
   "description_other": "Reason — {{comment}}",
   "description_rejected": "Comments — {{comment}}",
   "description_no_transport_available": "<p>Reason — $t(fields::rejection_reason.items.no_transport_available)</p> $t(statuses::description_cancelled_rejected)",
+  "description_more_info_required": "<p>Reason — $t(fields::rejection_reason.items.more_info_required)</p> $t(statuses::description_cancelled_rejected)",
   "description_no_space_at_receiving_prison": "<p>Reason — $t(fields::rejection_reason.items.no_space_at_receiving_prison)</p> $t(statuses::description_cancelled_rejected)",
   "description_cancelled_rejected": "<p>$t(events::MoveReject.select_rebook)</p> </p>$t(events::MoveReject.select_cancellation_reason_comment)</p>",
   "cancelled_allocation": "Allocation cancelled",

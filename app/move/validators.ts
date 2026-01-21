@@ -1,4 +1,4 @@
-const { parseISO, isValid, isAfter } = require('date-fns')
+import { parseISO, isValid, isAfter, isBefore } from 'date-fns'
 const { Controller } = require('hmpo-form-wizard')
 
 function isPNCNumberValid(value: string) {
@@ -37,18 +37,31 @@ export function datetime(value: string) {
 
 export function after(value: string, date?: string) {
   const test = parseISO(value)
-  let comparator = new Date()
-
-  if (arguments.length === 2 && Controller.validators.date(date)) {
-    if (date != null) {
-      comparator = parseISO(date)
-    }
-  }
+  const comparator = getComparator(date)
 
   return (
     value === '' ||
     (Controller.validators.date(value) && isAfter(test, comparator))
   )
+}
+
+export function before(value: string, date?: string) {
+  const test = parseISO(value)
+  const comparator = getComparator(date)
+
+  return (
+    value === '' ||
+    (Controller.validators.date(value) && isBefore(test, comparator))
+  )
+}
+
+function getComparator(date?: string){
+  if (Controller.validators.date(date)) {
+    if (date != null) {
+      return parseISO(date)
+    }
+  }
+  return new Date()
 }
 
 export function prisonNumber(value: string) {

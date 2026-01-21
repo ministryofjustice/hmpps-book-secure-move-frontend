@@ -350,6 +350,7 @@ export async function checkUpdatePage(
   const { profile } = t.ctx.move
   await moveDetailPage.clickUpdateLink(page)
   const updatedFields = await (createMovePage as any)[fillInMethod]({
+    selectSpecialVehicle: true,
     selectAll,
     fillInOptional,
   })

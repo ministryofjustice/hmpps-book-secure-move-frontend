@@ -16,6 +16,8 @@ const {
   Timetable,
 } = require('./controllers')
 const CourtInformation = require('./controllers/court-information').default
+const ExplicitSpecialVehicle =
+  require('./controllers/explicit-special-vehicle').default
 const HealthInformation = require('./controllers/health-information').default
 const RiskInformation = require('./controllers/risk-information').default
 
@@ -76,7 +78,6 @@ const healthStep = {
   assessmentCategory: 'health',
   template: 'assessment',
   pageTitle: 'moves::steps.health_information.heading',
-  next: 'save',
 }
 
 const moveDateSteps = [
@@ -409,12 +410,41 @@ module.exports = {
       'other_health',
       'special_vehicle',
     ],
+    next: [
+      {
+        fn: Base.prototype.shouldAskSpecialVehicleStep,
+        next: 'explicit-special-vehicle',
+      },
+      'special-vehicle-interrupt',
+    ],
+  },
+  '/special-vehicle-interrupt': {
+    pageTitle: null,
+    next: 'save',
+    template: 'special-vehicle-interrupt',
+  },
+  '/explicit-special-vehicle': {
+    ...healthStep,
+    controller: ExplicitSpecialVehicle,
+    showPreviousAssessment: true,
+    pageTitle: 'moves::steps.special_vehicle.heading',
+    fields: [
+      'special_diet_or_allergy',
+      'health_issue',
+      'medication',
+      'wheelchair',
+      'pregnant',
+      'other_health',
+      'special_vehicle',
+    ],
+    next: 'save',
   },
   '/special-vehicle': {
     ...healthStep,
     showPreviousAssessment: true,
     pageTitle: 'moves::steps.special_vehicle.heading',
     fields: ['special_vehicle'],
+    next: 'save',
   },
   '/document': {
     enctype: 'multipart/form-data',

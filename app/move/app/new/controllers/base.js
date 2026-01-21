@@ -185,6 +185,14 @@ class CreateBaseController extends FormWizardController {
     return false
   }
 
+  shouldAskSpecialVehicleStep(req) {
+    const healthAssessment = req.sessionModel.get('assessment')?.health
+    const pregnant = healthAssessment?.some(a => a.key === 'pregnant')
+    const wheelchair = healthAssessment?.some(a => a.key === 'wheelchair')
+
+    return !(pregnant || wheelchair)
+  }
+
   shouldAskRecallInfoStep(req) {
     return (
       FEATURE_FLAGS.DATE_OF_ARREST &&

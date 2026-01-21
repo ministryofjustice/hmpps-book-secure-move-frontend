@@ -16,7 +16,7 @@ const FORMATTED_SECTIONS: { [key: string]: string } = {
 }
 
 export async function getDescription(token: string, event: GenericEvent) {
-  const { event_type: eventType, details, supplier } = event
+  const { event_type: eventType, details, supplier  } = event
 
   details.vehicle_reg =
     details.vehicle_reg || details.journey?.vehicle?.registration
@@ -53,11 +53,10 @@ export async function getDescription(token: string, event: GenericEvent) {
     }
 
     details.context = changedFieds.join('_and_')
-  } 
+  }
   else if (supplier === null) {
     details.context = 'without_supplier'
   }
-
   // Some strings that get added together are prefixed with a <br>.
   // This enables them to be used as the first item or where a previous string doesn't get output
   // and not insert additional space without having to make the <br> conditional
@@ -122,4 +121,8 @@ const populatePerUpdated = async (token: string, details: EventDetails) => {
 
   const section = FORMATTED_SECTIONS[details.section || '']
   details.updateSection = section ? `${section} updated` : 'Updated'
+}
+
+const populateStakeholderEventDetails =  (details: EventDetails) => {
+  details.context = 'for_stakeholder'
 }

@@ -14,45 +14,69 @@ describe('Moves middleware', function () {
     let req, res, nextSpy, moveService
 
     beforeEach(function () {
-      moveService = {
-        getDownload: sinon.stub().resolves(mockMoves),
-      }
       nextSpy = sinon.spy()
       res = {}
-      req = {
-        body: {
-          [mockBodyKey]: {
-            dateRange: ['2010-10-10', '2010-10-11'],
-            locationId: '5555',
-          },
-        },
-        services: {
-          move: moveService,
-        },
-      }
     })
 
     context('when API call returns successfully', function () {
-      context('without `locationKey`', function () {
-        beforeEach(async function () {
-          await middleware(mockBodyKey)(req, res, nextSpy)
-        })
+      beforeEach(async function () {
+        moveService = {
+          getDownload: sinon.stub().resolves({ status: 200, data: mockMoves }),
+        }
+        req = initialReq(moveService)
 
-        it('should call API with move date and location ID', function () {
-          expect(moveService.getDownload).to.be.calledOnceWithExactly(
-            req,
-            req.body[mockBodyKey]
-          )
-        })
+        await middleware(mockBodyKey)(req, res, nextSpy)
+      })
 
-        it('should set results on req', function () {
-          expect(req).to.have.property('results')
-          expect(req.results).to.deep.equal(mockMoves)
-        })
+      it('should call API with move date and location ID', function () {
+        expect(moveService.getDownload).to.be.calledOnceWithExactly(
+          req,
+          req.body[mockBodyKey]
+        )
+      })
 
-        it('should call next with no argument', function () {
-          expect(nextSpy).to.be.calledOnceWithExactly()
-        })
+      it('should not set results on req', function () {
+        expect(req).to.have.property('results')
+        expect(req.results).to.deep.equal(mockMoves)
+      })
+
+      it('should set emailFallback to false', function () {
+        expect(req).to.have.property('emailFallback')
+        expect(req.emailFallback).to.equal(false)
+      })
+
+      it('should call next with no argument', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
+      })
+    })
+
+    context('when API call returns 202', function () {
+      beforeEach(async function () {
+        moveService = {
+          getDownload: sinon.stub().resolves({ status: 202, data: null }),
+        }
+        req = initialReq(moveService)
+        await middleware(mockBodyKey)(req, res, nextSpy)
+      })
+
+      it('should call API with move date and location ID', function () {
+        expect(moveService.getDownload).to.be.calledOnceWithExactly(
+          req,
+          req.body[mockBodyKey]
+        )
+      })
+
+      it('should not set results on req', function () {
+        expect(req).to.not.have.property('results')
+      })
+
+      it('should set emailFallback to true', function () {
+        expect(req).to.have.property('emailFallback')
+        expect(req.emailFallback).to.equal(true)
+      })
+
+      it('should call next with no argument', function () {
+        expect(nextSpy).to.be.calledOnceWithExactly()
       })
     })
 
@@ -72,3 +96,17 @@ describe('Moves middleware', function () {
     })
   })
 })
+
+function initialReq(moveService) {
+  return {
+    body: {
+      [mockBodyKey]: {
+        dateRange: ['2010-10-10', '2010-10-11'],
+        locationId: '5555',
+      },
+    },
+    services: {
+      move: moveService,
+    },
+  }
+}

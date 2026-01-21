@@ -6,6 +6,7 @@ function getFieldErrorMessage({
   question = '',
   key: fieldKey,
   type: errorType,
+  objectType,
 } = {}) {
   if (!fieldKey) {
     return ''
@@ -18,13 +19,16 @@ function getFieldErrorMessage({
   const labelFallback = description || question
   const errorLabel = i18n.t([`fields::${fieldKey}.label`, labelFallback], {
     context: 'with_error',
+    objectType,
   })
   const fallback = i18n.t(`validation::${errorType}`, {
     context: 'with_label',
     label: errorLabel,
+    objectType,
   })
   return i18n.t([`fields::${fieldKey}.error_message`, fallback], {
     context: errorType,
+    objectType,
   })
 }
 

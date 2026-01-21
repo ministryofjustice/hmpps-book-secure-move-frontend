@@ -1,0 +1,28 @@
+{% extends "form-wizard.njk" %}
+
+{% block customGtagConfig %}
+  gtag('set', {'page_title': 'Edit move date'});
+{% endblock %}
+
+{% block innerPageTitle %}
+  {{ t("moves::edit.page_title") }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: t("actions::back_to_move"),
+    href: "/move/" + move.id
+  }) }}
+
+  {{ super() }}
+{% endblock %}
+
+{% block beforeFields %}
+{#  {% if move.status != "proposed" %}#}
+    {{ govukWarningText({
+      html: t("moves::edit.warning"),
+      iconFallbackText: "Warning"
+    }) }}
+{#  {% endif %}#}
+  {{ super() }}
+{% endblock %}

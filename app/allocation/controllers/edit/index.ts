@@ -1,3 +1,4 @@
-import AllocationDetailsController from './allocation-details'
+import AllocationDateController from './allocation-date'
+import AllocationDateChangedReasonController from './allocation-date-changed-reason'
 
-export { AllocationDetailsController }
+export { AllocationDateController, AllocationDateChangedReasonController }

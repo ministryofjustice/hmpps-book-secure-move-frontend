@@ -235,29 +235,32 @@ export class MoveDetailPage extends Page {
     })
   }
 
-  checkHealthInformation({
-    selectedItems = [],
-    specialDietOrAllergy,
-    healthIssue,
-    medication,
-    wheelchair,
-    pregnant,
-    otherHealth,
-    specialVehicleRadio,
-    specialVehicle,
-  }: {
-    selectedItems: string[]
-    specialDietOrAllergy: string
-    healthIssue: string
-    medication: string
-    wheelchair: string
-    pregnant: string
-    otherHealth: string
-    specialVehicleRadio: string
-    specialVehicle: string
-  }) {
-    // Special case to handle the yes/no explicit field
-    if (specialVehicleRadio === 'Yes') {
+  checkHealthInformation(
+    {
+      selectedItems = [],
+      specialDietOrAllergy,
+      healthIssue,
+      medication,
+      wheelchair,
+      pregnant,
+      otherHealth,
+      specialVehicleRadio,
+      specialVehicle,
+    }: {
+      selectedItems: string[]
+      specialDietOrAllergy: string
+      healthIssue: string
+      medication: string
+      wheelchair: string
+      pregnant: string
+      otherHealth: string
+      specialVehicleRadio: string
+      specialVehicle: string
+    },
+    autoSpecialVehicle: boolean
+  ) {
+    // Special case to handle the auto answered special vehicle
+    if (specialVehicleRadio === 'Yes' || autoSpecialVehicle) {
       selectedItems.push('Requires special vehicle')
     }
 
@@ -274,7 +277,9 @@ export class MoveDetailPage extends Page {
       'Wheelchair user': wheelchair,
       Pregnant: pregnant,
       'Any other requirements': otherHealth,
-      'Requires special vehicle': specialVehicle,
+      'Requires special vehicle': autoSpecialVehicle
+        ? 'Pregnant or wheelchair selected'
+        : specialVehicle,
     })
   }
 

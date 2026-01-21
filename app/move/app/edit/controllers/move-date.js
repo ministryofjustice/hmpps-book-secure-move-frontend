@@ -3,10 +3,25 @@ const CreateMoveDateController = require('../../new/controllers/move-date')
 
 const UpdateBase = require('./base')
 
-class UpdateMoveDetailsController extends UpdateBase {
+class UpdateMoveDateController extends UpdateBase {
   constructor(options) {
     super(options)
     this.saveFields = ['date']
+  }
+
+  setNextStep(req, res, next) {
+    if (this.isPrisonTransfer(req)) {
+      next()
+    } else {
+      super.setNextStep(req, res, next)
+    }
+  }
+
+  setButtonText(req, res, next) {
+    req.form.options.buttonText = this.isPrisonTransfer(req)
+      ? 'actions::continue'
+      : 'actions::save_and_continue'
+    next()
   }
 
   getUpdateValues(req, res) {
@@ -36,10 +51,19 @@ class UpdateMoveDetailsController extends UpdateBase {
   }
 
   saveValues(req, res, next) {
-    this.saveMove(req, res, next)
+    if (this.isPrisonTransfer(req)) {
+      req.sessionModel.set('proposedDate', req.form.values.date)
+      next()
+    } else {
+      this.saveMove(req, res, next)
+    }
+  }
+
+  isPrisonTransfer(req) {
+    return req.getMove().move_type === 'prison_transfer'
   }
 }
 
-UpdateBase.mixin(UpdateMoveDetailsController, CreateMoveDateController)
+UpdateBase.mixin(UpdateMoveDateController, CreateMoveDateController)
 
-module.exports = UpdateMoveDetailsController
+module.exports = UpdateMoveDateController

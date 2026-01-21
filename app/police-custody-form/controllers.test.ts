@@ -23,6 +23,7 @@ describe('Police Custody Form controllers', function () {
         reset: sinon.stub(),
         set: sinon.stub(),
         toJSON: sinon.stub(),
+        get: sinon.stub(),
       }
 
       eventService = {

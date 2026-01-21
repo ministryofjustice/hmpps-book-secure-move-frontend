@@ -281,9 +281,10 @@ class MoveService extends BaseService {
     return await restClient.post(
       req,
       '/moves/csv',
-      { filter },
+      { filter, async: 'allow' },
       {
         format: 'text/csv',
+        raw: true,
       }
     )
   }
@@ -341,7 +342,7 @@ class MoveService extends BaseService {
       .then(response => response.data)
   }
 
-  update(data) {
+  update(data, reason) {
     if (!data.id) {
       return Promise.reject(new Error(noMoveIdMessage))
     }

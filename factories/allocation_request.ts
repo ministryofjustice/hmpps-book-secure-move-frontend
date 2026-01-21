@@ -1,6 +1,6 @@
 import { Factory } from 'fishery'
 
-import { AllocationRequest } from '../app/allocation/controllers/edit/allocation-details'
+import { AllocationRequest } from '../app/allocation/controllers/edit/base'
 
 import { AllocationFactory } from './allocation'
 import { defaultParams } from './basm_request'

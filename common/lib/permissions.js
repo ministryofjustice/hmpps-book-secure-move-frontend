@@ -48,6 +48,7 @@ const contractDeliveryManagerPermissions = [
   'person_escort_record:view',
   'person_escort_record:print',
   'youth_risk_assessment:view',
+  'profile:move_history',
 ]
 
 const readOnlyPermissions = [
@@ -157,6 +158,7 @@ const prisonPermissions = [
   'youth_risk_assessment:create',
   'youth_risk_assessment:update',
   'youth_risk_assessment:confirm',
+  'profile:move_history',
 ]
 const ocaPermissions = [
   'dashboard:view',
@@ -216,6 +218,14 @@ const personEscortRecordAuthorPermissions = [
   'moves:view:incoming',
   'move:view',
 ]
+const stakeholderDperEditorPermissions = [
+  'person_escort_record:view',
+  'person_escort_record:record_event',
+  'dashboard:view',
+  'moves:view:outgoing',
+  'moves:view:incoming',
+  'move:view',
+]
 
 const permissionsByRole = {
   ROLE_PECS_POLICE: policePermissions,
@@ -228,6 +238,7 @@ const permissionsByRole = {
   ROLE_PECS_SUPPLIER: supplierPermissions,
   ROLE_PECS_COURT: courtPermissions,
   ROLE_PECS_PER_AUTHOR: personEscortRecordAuthorPermissions,
+  ROLE_PECS_STAKEHOLDER_EVENT_AUTHOR: stakeholderDperEditorPermissions,
   ROLE_PECS_CDM: contractDeliveryManagerPermissions,
   ROLE_PECS_READ_ONLY: readOnlyPermissions,
 }

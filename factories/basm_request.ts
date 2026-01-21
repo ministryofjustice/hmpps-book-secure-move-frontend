@@ -8,12 +8,14 @@ import { BasmRequest } from '../common/types/basm_request'
 import I18n from '../config/i18n'
 
 import { MoveFactory } from './move'
+import sinon from 'sinon'
 
 export const defaultParams = {
   canAccess: (permission: string) => true,
   journeyModel: {
     reset: () => {},
     set: () => {},
+    get: sinon.stub(),
     toJSON: () => {},
   },
   journeys: [],
@@ -32,6 +34,7 @@ export const defaultParams = {
     reset: () => {},
     set: () => {},
     toJSON: () => ({}),
+    get: sinon.stub(),
   },
   services: {
     allocation: {

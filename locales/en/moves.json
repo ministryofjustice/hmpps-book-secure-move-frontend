@@ -205,6 +205,10 @@
     "page_title": "Cancel move for this person",
     "warning": "Responsibility for cancelling this move lies with the sending location. If you are cancelling a request on the day a move is due to take place, you must also inform the supplier."
   },
+  "edit": {
+    "page_title": "Edit this move",
+    "warning": "If you are changing the move date on the day the move is due to take place, or to today, you must also inform the supplier."
+  },
   "review": {
     "page_title": "Review request for",
     "steps": {

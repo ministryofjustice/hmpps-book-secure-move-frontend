@@ -58,6 +58,10 @@ test('With a new person', async t => {
   const healthInformation: any = await createMovePage.fillInHealthInformation()
   await page.submitForm()
 
+  // Special Vehicle Interrupt
+  await createMovePage.expectSpecialVehicleInterrupt()
+  await page.submitForm()
+
   // Confirmation page
   await createMovePage.checkConfirmationStep({
     fullname: personalDetails.fullname,
@@ -77,7 +81,7 @@ test('With a new person', async t => {
 
   // Check assessment
   await moveDetailPage.checkRiskInformation(riskInformation)
-  await moveDetailPage.checkHealthInformation(healthInformation)
+  await moveDetailPage.checkHealthInformation(healthInformation, true)
   await t
     .expect((moveDetailPage.nodes.courtInformationHeading as Selector).exists)
     .notOk()

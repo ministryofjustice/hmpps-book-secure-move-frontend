@@ -31,6 +31,8 @@ export const itBehavesLikeALodgingCancelController = (
         },
       },
       sessionModel: {
+        get: sinon.stub(),
+        set: sinon.stub(),
         reset: sinon.stub(),
         toJSON: () => ({
           'csrf-secret': '123',

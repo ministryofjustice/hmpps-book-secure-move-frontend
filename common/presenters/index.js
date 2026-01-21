@@ -39,6 +39,7 @@ const populationToGrid = require('./population-to-grid')
 const profileToCardComponent = require('./profile-to-card-component')
 const singleRequestToSummaryListComponent = require('./single-request-to-summary-list-component')
 const singleRequestsToTableComponent = require('./single-requests-to-table-component')
+const stakeholderEventToTimelinePanelComponent = require('./stakeholder-event-to-timeline-panel')
 const tablePresenters = require('./table')
 const timetableToTableComponent = require('./timetable-to-table-component')
 
@@ -84,6 +85,7 @@ module.exports = {
   profileToCardComponent,
   singleRequestToSummaryListComponent,
   singleRequestsToTableComponent,
+  stakeholderEventToTimelinePanelComponent,
   tablePresenters,
   timetableToTableComponent,
 }
