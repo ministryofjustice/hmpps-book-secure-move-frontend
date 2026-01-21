@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
 
   const userPermissions = get(req.session, 'user.permissions')
 
-  if (check('locations:contract_delivery_manager', userPermissions)) {
+  if (check('profile:move_history', userPermissions)) {
     tabs.push({
       text: 'person::tabs.moves',
       url: `${req.baseUrl}/moves`,

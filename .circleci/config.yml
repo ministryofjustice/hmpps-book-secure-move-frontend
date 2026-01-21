@@ -10,6 +10,10 @@ aliases:
       name: hmpps/node
       tag: 22.16-browsers
   # Common steps
+  - &install_system_deps
+    run:
+      name: Install system dependencies for image optimization
+      command: yarn add pngquant optipng
   - &install_dependencies
     run:
       name: Install NPM dependencies
@@ -47,6 +51,7 @@ jobs:
       - checkout
       - *set_package_version
       - *restore_cache
+      - *install_system_deps
       - *install_dependencies
       - *save_cache
       - run:
@@ -64,6 +69,7 @@ jobs:
       - attach_workspace:
           at: .
       - *restore_cache
+      - *install_system_deps
       - *install_dependencies
       - run:
           name: Write eslintignore

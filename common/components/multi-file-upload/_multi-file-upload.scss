@@ -6,7 +6,7 @@
   margin-bottom: govuk-spacing(6);
   transition: outline-offset .1s ease-in-out, background-color .1s linear;
 
-  @include mq ($from: tablet) {
+  @include govuk-media-query($from: tablet) {
     margin-top: -(govuk-spacing(3));
   }
 
@@ -18,7 +18,7 @@
   .govuk-button {
     margin-top: govuk-spacing(2);
 
-    @include mq ($from: tablet) {
+    @include govuk-media-query($from: tablet) {
       margin: -8px 0 0 govuk-spacing(1);
     }
   }

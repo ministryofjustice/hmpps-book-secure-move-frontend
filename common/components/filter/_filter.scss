@@ -45,7 +45,7 @@ $_filter-border-width: 2px;
   padding: govuk-spacing(2);
   box-sizing: border-box;
 
-  @include mq ($from: desktop) {
+  @include govuk-media-query($from: desktop) {
     padding: govuk-spacing(4);
   }
 }
