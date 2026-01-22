@@ -97,11 +97,11 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
 })
 
 test('Reason - `Supplier resource issue`', async t => {
-  await cancelMovePage.selectReason('Supplier resource issue')
+  await cancelMovePage.selectReason('Supplier does not have the resource to fulfil this request')
   await page.submitForm()
 
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
-    content: 'Reason — Supplier resource issue',
+    content: 'Reason — Supplier does not have the resource to fulfil this request',
   })
 })
