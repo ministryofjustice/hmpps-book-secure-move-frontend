@@ -159,13 +159,13 @@ fixture('Cancel move from Police Custody').beforeEach(async t => {
     .click(moveDetailPage.nodes.cancelLink as Selector)
 })
 
-test('Reason - `Prisoner refusal`', async t => {
-  await cancelMovePage.selectReason('Prisoner refusal')
+test('Reason - `Supplier declined to move this person`', async t => {
+  await cancelMovePage.selectReason('Supplier declined to move this person')
   await page.submitForm()
 
   await moveDetailPage.checkBanner({
     heading: 'Move cancelled',
-    content: 'Reason — Prisoner refusal',
+    content: 'Reason — Supplier declined to move this person',
   })
 
   // Check that navigating back doesn't produce journey error
@@ -175,4 +175,14 @@ test('Reason - `Prisoner refusal`', async t => {
   await t
     .expect(moveDetailPage.getCurrentUrl())
     .notContains('/cancel/reason', 'Should not show journey expired page')
+})
+
+test('Reason - `Another reason`', async t => {
+  await cancelMovePage.selectReason('Another reason', 'Flat tyre on the van')
+  await page.submitForm()
+
+  await moveDetailPage.checkBanner({
+    heading: 'Move cancelled',
+    content: 'Reason — Flat tyre on the van',
+  })
 })
