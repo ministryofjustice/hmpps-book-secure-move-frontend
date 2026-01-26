@@ -1,4 +1,4 @@
-const { pick, set } = require('lodash')
+const { pick } = require('lodash')
 
 const FormWizardController = require('../../../../common/controllers/form-wizard')
 const middleware = require('../../../../common/middleware')
@@ -8,7 +8,6 @@ class CancelController extends FormWizardController {
     super.middlewareLocals()
     this.use(middleware.setMoveSummary)
     this.use(this.setMoveLocal)
-    this.use(this.setCancelOptions)
   }
 
   middlewareChecks() {
@@ -33,22 +32,6 @@ class CancelController extends FormWizardController {
     if (allocation) {
       return res.redirect(`/move/${moveId}`)
     }
-
-    next()
-  }
-
-  setCancelOptions(req, res, next) {
-    const existingItems = req.form.options.fields.cancellation_reason.items
-    const moveType =
-      req.move.move_type === 'prison_transfer' ? 'prison_transfer' : 'other'
-
-    set(
-      req,
-      'form.options.fields.cancellation_reason.items',
-      existingItems.filter(item => {
-        return item.move_types.includes(moveType)
-      })
-    )
 
     next()
   }
