@@ -487,7 +487,7 @@
   },
   "PersonMoveVehicleBrokeDown": {
     "heading": "Supplier vehicle breakdown",
-    "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) broke down $t(events::incident_reported_classified)"
+    "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) broke down at {{location_description}}"
   },
   "PersonMoveVehicleSystemsFailed": {
     "heading": "Supplier vehicle systems failed",
