@@ -31,6 +31,7 @@ const prisonRecallComments = require('./prison-recall-comments')
 const prisonTransferComments = require('./prison-transfer-comments')
 const prisonTransferType = require('./prison-transfer-type')
 const recallDate = require('./recall-date')
+const section46Pace = require('./section-46-pace')
 const servingYouthSentence = require('./serving-youth-sentence')
 const shouldSaveCourtHearings = require('./should-save-court-hearings')
 const timeDue = require('./time-due')
@@ -92,6 +93,7 @@ const fields = {
   prison_transfer_type: prisonTransferType,
   prison_transfer_comments: prisonTransferComments,
   recall_date: recallDate,
+  section_46_pace: section46Pace,
   self_harm: assessmentAnswer(),
   solicitor: assessmentAnswer(),
   special_diet_or_allergy: assessmentAnswer(),
