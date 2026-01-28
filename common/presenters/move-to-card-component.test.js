@@ -8,6 +8,7 @@ const mockMove = {
   status: 'requested',
   is_lodging: false,
   is_lockout: false,
+  isS46: undefined,
   profile: {
     person: {
       _fullname: 'Name, Full',
@@ -29,6 +30,7 @@ const mockLockoutMove = {
   status: 'requested',
   is_lockout: true,
   is_lodging: false,
+  isS46: undefined,
   profile: {
     person: {
       _fullname: 'Name, Full',
@@ -108,6 +110,7 @@ describe('Presenters', function () {
               },
               isLockout: false,
               isLodging: false,
+              isS46: undefined,
               caption: undefined,
               tags: [{ items: 'moveToImportantEventsTagListComponent' }],
             })

@@ -66,6 +66,7 @@ class CreateMovePage extends Page {
     specialVehicleRadio: Selector
     notToBeReleased: Selector
     notToBeReleasedRadio: Selector
+    section46Radio: Selector
     hasCourtCase: Selector
     recallDate: Selector
     extradition_flight_number: Selector
@@ -156,6 +157,7 @@ class CreateMovePage extends Page {
       specialVehicle: Selector('#special_vehicle'),
       specialVehicleRadio: Selector('[name^="special_vehicle"]'),
       notToBeReleased: Selector('#not_to_be_released'),
+      section46Radio: Selector('[name="section_forty_six"]'),
       notToBeReleasedRadio: Selector('[name="not_to_be_released__explicit"]'),
       hasCourtCase: Selector('[name="has_court_case"]'),
       recallDate: Selector('#recall_date'),
@@ -658,6 +660,22 @@ class CreateMovePage extends Page {
     return fillInForm({
       notToBeReleasedRadio: {
         selector: this.fields.notToBeReleasedRadio,
+        value: 'No',
+        type: 'radio',
+      },
+    })
+  }
+  /**
+   * Fill in section 46
+   *
+   * @returns {Promise}
+   */
+  async fillInSection46() {
+    await t.expect(this.getCurrentUrl()).contains('/section-46')
+
+    return fillInForm({
+      section46Radio: {
+        selector: this.fields.section46Radio(),
         value: 'No',
         type: 'radio',
       },

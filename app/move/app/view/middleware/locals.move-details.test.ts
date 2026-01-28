@@ -25,6 +25,7 @@ describe('Move view app', function () {
             id: '12345',
             is_lockout: false,
             is_lodging: false,
+            section_forty_six: false,
             profile: {
               id: 'profile',
               person: {},
@@ -119,6 +120,7 @@ describe('Move view app', function () {
             _hasArrived: false,
             is_lodging: false,
             is_lockout: false,
+            section_forty_six: false,
             important_events: [
               {
                 id: 'lodging-end',
@@ -138,6 +140,7 @@ describe('Move view app', function () {
           moveIsEditable: true,
           moveIsLockout: false,
           moveIsLodging: false,
+          moveIsS46: false,
         })
       })
 
