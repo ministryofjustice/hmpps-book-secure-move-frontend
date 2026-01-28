@@ -713,7 +713,7 @@
   "event_summary": {
     "error_message_required": "Provide a summary of the event"
   },
-  "section_46_pace": {
+  "section_forty_six": {
     "label" : "Is the person subject to Section 46 of PACE?",
     "hint": "Section 46 applies to people who are charged with an offence, detained by policy or a local authority and must be brought before a court within 24 hours"
   }

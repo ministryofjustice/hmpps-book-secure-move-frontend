@@ -190,7 +190,7 @@ module.exports = {
           {
             field: 'from_location_type',
             value: 'police',
-            next: 'section-46-pace',
+            next: 'section-46',
           },
           'court-information',
         ],
@@ -226,8 +226,10 @@ module.exports = {
     controller: MoveDate,
     fields: ['date', 'date_type'],
   },
-  '/section-46-pace': {
-    fields: ['section_46_pace'],
+  '/section-46': {
+    template: 'assessment',
+    pageTitle: 'fields::section_forty_six.label',
+    fields: ['section_forty_six'],
     next: 'court-information',
   },
   '/extradition-details': {

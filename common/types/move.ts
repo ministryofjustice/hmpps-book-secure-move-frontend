@@ -55,4 +55,5 @@ export interface Move {
   extradition_flight?: ExtraditionFlight
   rebook?: boolean
   cancellation_reason?: string
+  section_forty_six?: boolean
 }
