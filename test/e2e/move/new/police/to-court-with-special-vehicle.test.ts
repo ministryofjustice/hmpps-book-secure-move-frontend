@@ -46,6 +46,10 @@ test('With special vehicle', async t => {
   await createMovePage.fillInDate()
   await page.submitForm()
 
+  // Section 46
+  const sectionFortySix: any = await createMovePage.fillInSection46()
+  await page.submitForm()
+
   // Court information
   const courtInformation: any = await createMovePage.fillInCourtInformation()
   await page.submitForm()
