@@ -676,7 +676,7 @@ class CreateMovePage extends Page {
     return fillInForm({
       section46Radio: {
         selector: this.fields.section46Radio(),
-        value: 'No',
+        value: 'false',
         type: 'radio',
       },
     })
