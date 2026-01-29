@@ -51,7 +51,7 @@ class MoveService extends BaseService {
   }
 
   format(data) {
-    const booleansAndNulls = ['move_agreed']
+    const booleansAndNulls = ['move_agreed', 'section_forty_six']
     const relationships = [
       'from_location',
       'person',
