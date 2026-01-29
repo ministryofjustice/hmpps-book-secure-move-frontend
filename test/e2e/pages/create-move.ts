@@ -665,6 +665,7 @@ class CreateMovePage extends Page {
       },
     })
   }
+
   /**
    * Fill in section 46
    *
