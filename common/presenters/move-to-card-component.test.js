@@ -333,6 +333,7 @@ describe('Presenters', function () {
           caption: undefined,
           isLockout: false,
           isLodging: false,
+          isS46: undefined,
         })
       })
     })
@@ -371,6 +372,7 @@ describe('Presenters', function () {
           caption: undefined,
           isLockout: true,
           isLodging: false,
+          isS46: undefined,
         })
       })
     })
@@ -412,6 +414,7 @@ describe('Presenters', function () {
           caption: undefined,
           isLockout: false,
           isLodging: false,
+          isS46: undefined,
         })
       })
     })
@@ -441,6 +444,7 @@ describe('Presenters', function () {
             caption: undefined,
             isLockout: false,
             isLodging: false,
+            isS46: undefined,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
@@ -478,6 +482,7 @@ describe('Presenters', function () {
             caption: undefined,
             isLockout: false,
             isLodging: false,
+            isS46: undefined,
           })
         })
       })
@@ -493,6 +498,7 @@ describe('Presenters', function () {
             classes: mockClasses,
             isLockout: false,
             isLodging: false,
+            isS46: undefined,
             status: {
               text: '__translated__',
             },
