@@ -50,6 +50,10 @@ test('With unfound person', async t => {
   await createMovePage.fillInDate()
   await page.submitForm()
 
+  // Section 46
+  await createMovePage.fillInSection46()
+  await page.submitForm()
+
   // Court information
   const courtInformation: any = await createMovePage.fillInCourtInformation()
   await page.submitForm()
@@ -110,6 +114,10 @@ test('With existing person', async t => {
 
   // Fill in date
   await createMovePage.fillInDate()
+  await page.submitForm()
+
+  // Section 46
+  await createMovePage.fillInSection46()
   await page.submitForm()
 
   // Court information

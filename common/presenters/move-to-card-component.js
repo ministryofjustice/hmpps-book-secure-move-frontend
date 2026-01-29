@@ -88,6 +88,7 @@ function moveToCardComponent({
       ...personCardComponent,
       isLockout: move.is_lockout,
       isLodging: move.is_lodging,
+      isS46: move.section_forty_six,
       status: statusBadge,
       classes: isCompact
         ? `app-card--compact ${personCardComponent.classes || ''}`

@@ -22,7 +22,8 @@
         "date_to": null,
         "is_lockout": false,
         "recall_date": null,
-        "date_changed_reason": null
+        "date_changed_reason": null,
+        "section_forty_six": false
       },
       "relationships": {
         "supplier": {
@@ -100,7 +101,8 @@
         "date_to": null,
         "is_lockout": false,
         "recall_date": null,
-        "date_changed_reason": null
+        "date_changed_reason": null,
+        "section_forty_six": false
       },
       "relationships": {
         "supplier": {
@@ -178,7 +180,8 @@
         "date_to": null,
         "is_lockout": false,
         "recall_date": null,
-        "date_changed_reason": null
+        "date_changed_reason": null,
+        "section_forty_six": false
       },
       "relationships": {
         "supplier": {
@@ -256,7 +259,8 @@
         "date_to": null,
         "is_lockout": false,
         "recall_date": null,
-        "date_changed_reason": null
+        "date_changed_reason": null,
+        "section_forty_six": false
       },
       "relationships": {
         "supplier": {
@@ -334,7 +338,8 @@
         "date_to": null,
         "is_lockout": false,
         "recall_date": null,
-        "date_changed_reason": null
+        "date_changed_reason": null,
+        "section_forty_six": false
       },
       "relationships": {
         "supplier": {

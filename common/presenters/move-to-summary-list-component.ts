@@ -88,6 +88,19 @@ function moveToSummaryListComponent(
       }
     )
 
+    if (move.section_forty_six != null){
+      rows.push(
+        {
+          key: {
+            text: 'PACE',
+          },
+          value: {
+            text: move.section_forty_six ? 'Subject to Section 46' : 'Not subject to Section 46',
+          },
+        },
+      )
+    }
+
     const assessmentLinks = []
     const hasYouthRiskAssessment = !isNil(profile?.youth_risk_assessment)
     const hasPersonEscortRecord = !isNil(profile?.person_escort_record)

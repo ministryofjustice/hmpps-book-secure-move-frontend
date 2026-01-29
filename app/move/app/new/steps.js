@@ -187,6 +187,11 @@ module.exports = {
             value: 'prison',
             next: 'court-hearings',
           },
+          {
+            field: 'from_location_type',
+            value: 'police',
+            next: 'section-46',
+          },
           'court-information',
         ],
       },
@@ -220,6 +225,12 @@ module.exports = {
     ],
     controller: MoveDate,
     fields: ['date', 'date_type'],
+  },
+  '/section-46': {
+    template: 'assessment',
+    pageTitle: 'fields::section_forty_six.label',
+    fields: ['section_forty_six'],
+    next: 'court-information',
   },
   '/extradition-details': {
     editable: true,

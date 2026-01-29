@@ -78,6 +78,19 @@
         </div>
       </div>
     </div>
+    {% elif moveIsS46 %}
+    <div class="govuk-!-margin-bottom-6 section-46-banner">
+      <div class="govuk-width-container section-46-banner-content">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-half">
+            {{ govukWarningText({
+              text: t("moves::is_section_forty_six"),
+              iconFallbackText: "Warning"
+            }) }}
+          </div>
+        </div>
+      </div>
+    </div>
   {% endif %}
 
   {% block contentContainer %}
