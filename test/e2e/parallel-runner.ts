@@ -68,6 +68,9 @@ const E2E_VIDEO = getEnvVar('E2E_VIDEO')
 const FEATURE_FLAG_EXTRADITION_MOVES = getEnvVar(
   'FEATURE_FLAG_EXTRADITION_MOVES'
 )
+const FEATURE_FLAG_SECTION_46 = getEnvVar(
+  'FEATURE_FLAG_SECTION_46'
+)
 
 const args: any = yargs
   .usage(
@@ -176,6 +179,7 @@ E2E_VIDEO:         ${E2E_VIDEO}
 E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
 E2E_BASE_URL:      ${E2E_BASE_URL}
 FEATURE_FLAG_EXTRADITION_MOVES:      ${FEATURE_FLAG_EXTRADITION_MOVES}
+FEATURE_FLAG_SECTION_46:      ${FEATURE_FLAG_SECTION_46}
 `)
 
 if (args.video && args.max_processes > 8) {
@@ -301,7 +305,10 @@ const runTests = async () => {
         3000 + i
       } NOMIS_ELITE2_API_URL=http://localhost:${
         3999 + i
-      } FEATURE_FLAG_ADD_LODGE_BUTTON=true FEATURE_FLAG_EXTRADITION_MOVES=true node start.js`
+      } FEATURE_FLAG_ADD_LODGE_BUTTON=true
+        FEATURE_FLAG_EXTRADITION_MOVES=true
+        FEATURE_FLAG_SECTION_46=true
+        node start.js`
   )
   const authCommandStrings = testBuckets.map(
     (_, i) =>
