@@ -201,6 +201,11 @@ class CreateBaseController extends FormWizardController {
     )
   }
 
+  shouldAskSection46Step(req) {
+    const fromLocationType = req.sessionModel.get('from_location_type')
+    return FEATURE_FLAGS.SECTION_46 && fromLocationType === 'police'
+  }
+
   requiresYouthAssessment(req) {
     const {
       person = {},

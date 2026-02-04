@@ -14,7 +14,7 @@
   "filter": {
     "police_national_computer": {
       "label": "Police National Computer (PNC) number",
-      "hint": "For example, ‘08/012345P’"
+      "hint": "For example, ‘2008/0123456P’"
     },
     "prison_number": {
       "label": "Prison number",
