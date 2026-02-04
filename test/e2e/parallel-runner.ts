@@ -68,9 +68,7 @@ const E2E_VIDEO = getEnvVar('E2E_VIDEO')
 const FEATURE_FLAG_EXTRADITION_MOVES = getEnvVar(
   'FEATURE_FLAG_EXTRADITION_MOVES'
 )
-const FEATURE_FLAG_SECTION_46 = getEnvVar(
-  'FEATURE_FLAG_SECTION_46'
-)
+const FEATURE_FLAG_SECTION_46 = getEnvVar('FEATURE_FLAG_SECTION_46')
 
 const args: any = yargs
   .usage(
