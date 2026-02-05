@@ -188,8 +188,7 @@ module.exports = {
             next: 'court-hearings',
           },
           {
-            field: 'from_location_type',
-            value: 'police',
+            fn: Base.prototype.shouldAskSection46Step,
             next: 'section-46',
           },
           'court-information',
