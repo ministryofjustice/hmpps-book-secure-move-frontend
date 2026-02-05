@@ -265,7 +265,7 @@
     "coveralls": "3.1.1",
     "css-loader": "7.1.2",
     "del-cli": "6.0.0",
-    "eslint": "^8.34.0",
+    "eslint": "^9.39.2",
     "eslint-config-prettier": "8.6.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-import": "2.27.5",
