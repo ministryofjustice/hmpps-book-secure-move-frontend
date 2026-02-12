@@ -1,12 +1,12 @@
 const { mapKeys, mapValues, omitBy, isNil } = require('lodash')
 
+const { FEATURE_FLAGS } = require('../../config')
+
 const { BaseService } = require('./base')
 const unformat = require('./person/person.unformat')
-
 const relationshipKeys = ['gender', 'ethnicity']
 const dateKeys = ['date_of_birth']
 const noPersonIdMessage = 'No person ID supplied'
-
 class PersonService extends BaseService {
   format(data) {
     const formatted = mapValues(data, (value, key) => {
@@ -114,7 +114,12 @@ class PersonService extends BaseService {
 
   getByIdentifiers(identifiers) {
     const filter = {
-      ...mapKeys(identifiers, (value, key) => `filter[${key}]`),
+      ...mapKeys(identifiers, (value, key) => {
+        return key === 'police_national_computer' &&
+          FEATURE_FLAGS.FUZZY_PNC_SEARCH
+          ? `filter[fuzzy_pnc]`
+          : `filter[${key}]`
+      }),
       include: ['gender'],
     }
 

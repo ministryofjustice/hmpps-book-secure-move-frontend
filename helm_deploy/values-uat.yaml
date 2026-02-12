@@ -14,7 +14,7 @@ generic-service:
     API_BASE_URL: "https://hmpps-book-secure-move-api-uat.apps.cloud-platform.service.justice.gov.uk"
     AUTH_PROVIDER_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk"
     CONTENTFUL_HOST: "preview.contentful.com"
-    FRAMEWORKS_VERSION: "2.5.0"
+    FRAMEWORKS_VERSION: "2.5.2"
     GOOGLE_ANALYTICS_ID: "G-3G741W4FQ2"
     MANAGE_USERS_API_URL: "https://manage-users-api-dev.hmpps.service.justice.gov.uk"
     NOMIS_ELITE2_API_URL: "https://prison-api-dev.prison.service.justice.gov.uk"
@@ -24,6 +24,7 @@ generic-service:
     OFF_NETWORK_ALLOWLIST_ACTIONS: ""
     DISALLOWED_DEVICES: ""
     DISALLOWED_DEVICES_ACTIONS: ""
+    FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
