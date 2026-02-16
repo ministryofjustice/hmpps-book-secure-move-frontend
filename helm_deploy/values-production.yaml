@@ -13,6 +13,7 @@ generic-service:
     API_BASE_URL: "https://api.bookasecuremove.service.justice.gov.uk"
     AUTH_PROVIDER_URL: "https://sign-in.hmpps.service.justice.gov.uk"
     FEATURE_FLAG_ADD_LODGE_BUTTON: "false"
+    FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
     FEEDBACK_URL: "https://eu.surveymonkey.com/r/3CKYXSC"
     FRAMEWORKS_VERSION: "2.5.0"
     GOOGLE_ANALYTICS_ID: "G-58WMNWR101"
