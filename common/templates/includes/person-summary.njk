@@ -30,5 +30,12 @@
         </a>
       </p>
     {% endif %}
+    {% if personSummary.moveHistoryLink %}
+      <p class="govuk-!-margin-top-3 govuk-!-margin-bottom-0 govuk-!-font-size-16">
+        <a href="{{ personSummary.moveHistoryLink }}" data-update-link="move_history">
+          {{ t("actions::view_full_move_history") }}
+        </a>
+      </p>
+    {% endif %}
   </div>
 {% endif %}
