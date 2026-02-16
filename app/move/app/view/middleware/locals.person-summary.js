@@ -21,6 +21,9 @@ function localsMoveDetails(req, res, next) {
       alt: person._fullname,
     },
     profileLink: `/person/${person.id}?move=${req.move.id}`,
+    moveHistoryLink: canAccess('profile:move_history')
+      ? `/person/${person.id}/moves?move=${req.move.id}`
+      : null,
     updateLink: updateUrls.personal_details,
   }
 

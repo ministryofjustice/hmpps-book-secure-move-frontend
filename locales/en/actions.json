@@ -58,6 +58,7 @@
   "print_assessment": "Print $t({{context}})",
   "view_assessment": "View $t({{context}})",
   "view_or_edit_profile": "View or change profile",
+  "view_full_move_history": "View full move history",
   "provide_confirmation": "Provide confirmation",
   "provide_confirmation_youth_risk_assessment": "Confirm $t({{context}})",
   "provide_confirmation_person_escort_record": "Record handover",
