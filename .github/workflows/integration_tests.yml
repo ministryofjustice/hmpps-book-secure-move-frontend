@@ -1,0 +1,138 @@
+name: Run end-to-end tests
+
+on:
+  workflow_call:
+    inputs:
+      app_version:
+        description: App version
+        required: true
+        type: string
+      node_version_file:
+        description: "Passed to setup-node action to specify where to source the version of node from"
+        required: false
+        type: string
+        default: ".nvmrc"
+      spec-file-patterns:
+        type: string
+        default: 'integration_tests/e2e/**/*.cy.ts'
+
+jobs:
+  get-timings:
+    name: Get timings
+    uses: ministryofjustice/hmpps-assess-risks-and-needs-github-actions/.github/workflows/cypress_get_timings.yml@v1
+    with:
+      repository: ministryofjustice/hmpps-non-residential-locations-ui
+      spec-file-patterns: ${{ inputs.spec-file-patterns }}
+
+  cypress-test:
+    name: Run Cypress tests
+    runs-on: ubuntu-latest
+    needs: get-timings
+    services:
+      redis:
+        image: redis:8.4
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
+    env:
+      APP_VERSION: ${{ inputs.app_version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        container: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+    outputs:
+      timings-1: ${{ steps.timings.outputs.t1 }}
+      timings-2: ${{ steps.timings.outputs.t2 }}
+      timings-3: ${{ steps.timings.outputs.t3 }}
+      timings-4: ${{ steps.timings.outputs.t4 }}
+      timings-5: ${{ steps.timings.outputs.t5 }}
+      timings-6: ${{ steps.timings.outputs.t6 }}
+      timings-7: ${{ steps.timings.outputs.t7 }}
+      timings-8: ${{ steps.timings.outputs.t8 }}
+      timings-9: ${{ steps.timings.outputs.t9 }}
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+
+      - uses: ministryofjustice/hmpps-assess-risks-and-needs-github-actions/.github/actions/cypress/create_timings_file@v1
+        with:
+          timings: ${{ needs.get-timings.outputs.timings }}
+
+      - name: Use Node.js ${{ inputs.node_version_file }}
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ${{ inputs.node_version_file }}
+
+      - name: download artifacts
+        uses: actions/download-artifact@v7
+        with:
+          name: npm_build_artifacts
+
+      - name: restore cache
+        id: restore-cache
+        uses: actions/cache/restore@v5
+        env:
+          cache-name: node-modules
+        with:
+          path: |
+            ./node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Get wiremock
+        shell: bash
+        run: |
+          curl --fail --retry 2 -o wiremock.jar https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.9.1/wiremock-standalone-3.9.1.jar
+
+      - name: Prepare and run integration tests
+        id: integration-tests
+        shell: bash
+        run: |
+          nohup java -jar wiremock.jar --port 9091 &
+          nohup npm run start-feature &
+          sleep 5
+
+      - name: Run split Cypress tests 🧪
+        uses: cypress-io/github-action@v7.1.2
+        with:
+          browser: chrome
+        env:
+          SPEC: ${{ inputs.spec-file-patterns }}
+          SPLIT: ${{ strategy.job-total }}
+          SPLIT_INDEX: ${{ strategy.job-index }}
+          SPLIT_FILE: 'timings.json'
+
+      - name: Upload any screenshots due to failure
+        uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: Upload screenshots
+          path: integration_tests/screenshots
+          if-no-files-found: ignore
+
+      - name: Output updated timings
+        if: success() || failure()
+        id: timings
+        run: |
+          cat timings.json
+          echo "t${{ matrix.container }}=$(jq -c . < timings.json)" >> $GITHUB_OUTPUT
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: npm_integration_test_artifacts
+          path: |
+            coverage/
+
+  save-timings:
+    name: Save timings
+    uses: ministryofjustice/hmpps-assess-risks-and-needs-github-actions/.github/workflows/cypress_save_timings.yml@v1
+    if: success() || failure()
+    needs:
+      - get-timings
+      - cypress-test
+    with:
+      repository: ministryofjustice/hmpps-book-secure-move-frontend
+      initial-timings: ${{ needs.get-timings.outputs.timings }}
+      updated-timings: ${{ toJSON(needs.cypress-test.outputs) }}

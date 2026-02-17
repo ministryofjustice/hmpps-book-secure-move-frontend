@@ -44,6 +44,12 @@ aliases:
       branches:
         ignore:
           - main
+          - MAP-2834
+  - &not_GHA
+    filters:
+      branches:
+        ignore:
+          - MAP-2834
 jobs:
   build:
     <<: *node_container
@@ -140,16 +146,20 @@ workflows:
       # Tests
       - build
       - lint:
+          <<: *not_GHA
           requires:
             - build
       - hmpps/helm_lint:
+          <<: *not_GHA
           name: helm_lint
           requires:
             - build
       - unit-test:
+          <<: *not_GHA
           requires:
             - build
       - end-to-end-test:
+          <<: *not_GHA
           name: end-to-end-test
           requires:
             - build
