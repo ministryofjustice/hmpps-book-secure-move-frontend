@@ -13,7 +13,7 @@ export default configureAllowedScripts({
     'node_modules/fsevents@2.3.2': 'ALLOW',
     // Used if webpack config
     'node_modules/gifsicle@5.3.0': 'ALLOW',
-    'node_modules/hmrc-frontend@6.87.0': 'ALLOW',
+    'node_modules/hmrc-frontend@6.108.0': 'ALLOW',
     // Used if webpack config
     'node_modules/jpegtran-bin@7.0.0': 'ALLOW',
     'node_modules/optipng-bin@7.0.1': 'ALLOW',
