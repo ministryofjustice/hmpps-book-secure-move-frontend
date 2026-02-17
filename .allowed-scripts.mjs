@@ -19,7 +19,6 @@ export default configureAllowedScripts({
     'node_modules/optipng-bin@7.0.1': 'ALLOW',
     'node_modules/pinst@3.0.0': 'ALLOW',
     // Used if webpack config
-    'node_modules/pngquant/node_modules/pngquant-bin@6.0.1': 'ALLOW',
     'node_modules/pngquant-bin@9.0.0': 'ALLOW',
     'node_modules/preact@8.5.3': 'FORBID',
     'node_modules/sharp@0.32.6': 'FORBID',
