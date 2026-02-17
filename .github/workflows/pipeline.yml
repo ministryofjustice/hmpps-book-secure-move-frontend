@@ -31,6 +31,14 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
+  build_prereqs:
+    name: Install build pre-requisites
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install image optimiser libraries
+        shell: bash
+        run: |
+          yarn add pngquant optipng
   # main node build workflow
   node_build:
     name: node build
