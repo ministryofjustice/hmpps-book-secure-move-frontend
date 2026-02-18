@@ -79,6 +79,10 @@ jobs:
         shell: bash
         run: |
           npm run ci:lint
+      - name: List files
+        shell: bash
+        run: |
+          ls -l
       - name: upload the artifacts
         uses: actions/upload-artifact@v6
         with:
