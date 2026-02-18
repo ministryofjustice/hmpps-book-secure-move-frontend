@@ -89,14 +89,13 @@ jobs:
             node_modules/
       - name: save cache
         id: save-cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         env:
           cache-name: node-modules
         with:
           path: |
-            ./node_modules
-            ~/.cache/Cypress
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json', '!**/node_modules/**') }}
+            node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json', '!**/node_modules/**') }}
 
   # generic node unit tests - feel free to override with local tests if required
   node_unit_tests:
