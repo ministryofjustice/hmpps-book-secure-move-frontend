@@ -81,7 +81,7 @@ jobs:
         run: |
           npm run ci:lint
       - name: upload the artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: npm_build_artifacts
           path: |
@@ -105,6 +105,8 @@ jobs:
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/node_unit_tests.yml@v2 # WORKFLOW_VERSION
     needs: [node_build]
     secrets: inherit
+    with:
+      npm_script: 'ci:coverage'
   # generic node integration tests using wiremock - feel free to override with local tests if required
   node_integration_tests:
     name: node integration tests
