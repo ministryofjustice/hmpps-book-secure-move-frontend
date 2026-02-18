@@ -82,7 +82,7 @@ jobs:
       - name: List files
         shell: bash
         run: |
-          ls -l
+          ls -la
       - name: upload the artifacts
         uses: actions/upload-artifact@v6
         with:
