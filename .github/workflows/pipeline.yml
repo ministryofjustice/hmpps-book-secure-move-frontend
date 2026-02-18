@@ -85,9 +85,8 @@ jobs:
         with:
           name: npm_build_artifacts
           path: |
-            build/
-            dist/
-            assets/stylesheets/
+            .build/
+            node_modules/
       - name: save cache
         id: save-cache
         uses: actions/cache/save@v4
