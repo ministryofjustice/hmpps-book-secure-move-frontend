@@ -45,7 +45,7 @@ jobs:
       - name: Use Node.js ${{ inputs.node_version_file }}
         uses: actions/setup-node@v6
         with:
-          node-version-file: ${{ inputs.node_version_file }}
+          node-version-file: ".nvmrc"
       - name: Install image optimisation libs
         shell: bash
         run: |
