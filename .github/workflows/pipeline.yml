@@ -6,6 +6,11 @@ on:
       - '**'
   workflow_dispatch:
     inputs:
+      node_version_file:
+        description: "Passed to setup-node action to specify where to source the version of node from"
+        required: false
+        type: string
+        default: ".nvmrc"
       additional_docker_tag:
         description: Additional docker tag that can be used to specify stable or testing tags
         required: false
@@ -40,7 +45,7 @@ jobs:
       - name: Use Node.js ${{ inputs.node_version_file }}
         uses: actions/setup-node@v6
         with:
-          node-version-file: ".nvmrc"
+          node-version-file: ${{ inputs.node_version_file }}
       - name: Install image optimisation libs
         shell: bash
         run: |
