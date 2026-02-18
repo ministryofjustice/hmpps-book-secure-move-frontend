@@ -87,8 +87,9 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: npm_build_artifacts
+          include-hidden-files: true
           path: |
-            .build
+            .build/
       - name: save cache
         id: save-cache
         uses: actions/cache/save@v5
