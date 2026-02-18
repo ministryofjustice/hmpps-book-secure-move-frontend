@@ -61,9 +61,8 @@ jobs:
           cache-name: node-modules
         with:
           path: |
-            ./node_modules
-            ~/.cache/Cypress
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json', '!**/node_modules/**') }}
+            node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json', '!**/node_modules/**') }}
       - name: install dependencies
         if: steps.restore-cache.outputs.cache-hit != 'true'
         shell: bash
