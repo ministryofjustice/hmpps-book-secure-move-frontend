@@ -33,11 +33,67 @@ concurrency:
 jobs:
   # main node build workflow
   node_build:
-    name: node build
-    uses: ministryofjustice/hmpps-github-actions/.github/workflows/node_build.yml@v2 # WORKFLOW_VERSION
-    secrets: inherit
-    with:
-      install_command: 'yarn add pngquant optipng && npm install && npm run setup'
+    name: Run the node build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Use Node.js ${{ inputs.node_version_file }}
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ${{ inputs.node_version_file }}
+      - name: Install image optimisation libs
+        shell: bash
+        run: |
+          yarn add pngquant optipng
+      - name: Install npm dependencies
+        shell: bash
+        run: |
+          npm install -g npm@11 && npm install && npm rebuild node-sass
+      - name: restore cache
+        id: restore-cache
+        uses: actions/cache/restore@v4
+        env:
+          cache-name: node-modules
+        with:
+          path: |
+            ./node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json', '!**/node_modules/**') }}
+      - name: install dependencies
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: ""
+      - name: build npm
+        shell: bash
+        run: |
+          npm run build
+      - name: Write eslintignore
+        shell: bash
+        run: |
+          npx tsc --listFilesOnly | grep -v 'node_modules' | sed 's/\.ts/\.js/' | sed "s#$(pwd)/##" > ./.eslintignore
+      - name: Linter check # Run linter after build because the integration test code depend on compiled typescript...
+        shell: bash
+        run: |
+          npm run ci:lint
+      - name: upload the artifacts
+        uses: actions/upload-artifact@v5
+        with:
+          name: npm_build_artifacts
+          path: |
+            build/
+            dist/
+            assets/stylesheets/
+      - name: save cache
+        id: save-cache
+        uses: actions/cache/save@v4
+        env:
+          cache-name: node-modules
+        with:
+          path: |
+            ./node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json', '!**/node_modules/**') }}
+
   # generic node unit tests - feel free to override with local tests if required
   node_unit_tests:
     name: node unit tests

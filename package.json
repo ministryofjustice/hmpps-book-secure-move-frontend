@@ -326,9 +326,9 @@
   "files": [],
   "scripts": {
     "build": "npm run compile && webpack --config webpack.config.js",
+    "ci:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml",
     "circle:coverage": "nyc --reporter=lcov --reporter=html npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
     "circle:coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "circle:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml",
     "clean": "del .build/",
     "clear-cache-reference-data": "node tasks/clear-cache-reference-data.js",
     "compile": "tsc --project ./",
