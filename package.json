@@ -328,6 +328,7 @@
     "build": "npm run compile && webpack --config webpack.config.js",
     "ci:coverage": "nyc --reporter=lcov --reporter=html npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
     "ci:lint": "npm run lint -- --format junit --output-file ./reports/eslint/eslint.xml",
+    "ci:unit-test": "npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=reports/mocha/test-results.xml",
     "circle:coveralls": "nyc report --reporter=text-lcov | coveralls",
     "clean": "del .build/",
     "clear-cache-reference-data": "node tasks/clear-cache-reference-data.js",

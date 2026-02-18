@@ -105,7 +105,7 @@ jobs:
     needs: [node_build]
     secrets: inherit
     with:
-      npm_script: 'ci:coverage'
+      npm_script: 'ci:unit-test'
   # generic node integration tests using wiremock - feel free to override with local tests if required
   node_integration_tests:
     name: node integration tests
