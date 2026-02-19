@@ -165,7 +165,7 @@ jobs:
   node_integration_tests:
     name: node integration tests
     uses: ./.github/workflows/integration_tests.yml
-    needs: [node_build]
+    needs: [node_build, lint, unit_test]
     secrets: inherit
     with:
       app_version: ${{ needs.build_docker.outputs.app_version }}
