@@ -87,6 +87,10 @@ jobs:
           path: |
             node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json', '!**/node_modules/**') }}
+      - name: list files
+        shell: bash
+        run: |
+          ls -la
   # generic node unit tests - feel free to override with local tests if required
   lint:
     name: Run eslint
@@ -106,6 +110,10 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           name: npm_build_artifacts
+      - name: list files
+        shell: bash
+        run: |
+          ls -la
       - name: Write eslintignore
         shell: bash
         run: |
