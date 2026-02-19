@@ -116,10 +116,10 @@ jobs:
         with:
           name: npm_build_artifacts
           path: ".build"
-      - name: list files
+      - name: install
         shell: bash
         run: |
-          ls -la
+          npm install
       - name: Write eslintignore
         shell: bash
         run: |
