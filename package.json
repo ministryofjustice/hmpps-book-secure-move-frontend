@@ -351,7 +351,7 @@
     "release:tags": "git push --follow-tags origin HEAD:main",
     "setup": "npm ci && hmpps-npm-script-run-allowlist",
     "start": "node start.js",
-    "test": "NODE_ENV=test LOG_LEVEL=silent npm exec mocha --loader ts-node/esm './app/**/*.test.ts' './common/**/*.test.ts' './config/**/*.test.ts'",
+    "test": "NODE_ENV=test LOG_LEVEL=silent npm exec mocha --require ts-node/register './app/**/*.test.js' './common/**/*.test.js' './config/**/*.test.js'",
     "test-e2e": "npx ts-node test/e2e/parallel-runner.ts",
     "test-e2e:browserstack:ie": "testcafe 'browserstack:IE@11.0:Windows 10' test/e2e/*.test.js",
     "test-e2e:local": "E2E_BASE_URL='' npm run test-e2e -- --debug --reporter false",
