@@ -132,7 +132,7 @@ jobs:
   unit_test:
     name: Run the unit tests
     runs-on: ubuntu-latest
-    needs: [node_build]
+    needs: [node_build, lint]
     steps:
       - uses: actions/checkout@v6
       - name: Use Node.js ${{ inputs.node_version_file }}
