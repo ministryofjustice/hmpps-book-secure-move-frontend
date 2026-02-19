@@ -101,14 +101,40 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json', '!**/node_modules/**') }}
 
   # generic node unit tests - feel free to override with local tests if required
-  node_unit_tests:
-    name: node unit tests
-    uses: ministryofjustice/hmpps-github-actions/.github/workflows/node_unit_tests.yml@v2 # WORKFLOW_VERSION
-    needs: [node_build]
-    secrets: inherit
-    with:
-      npm_script: 'test'
-  # generic node integration tests using wiremock - feel free to override with local tests if required
+  unit_test:
+    name: Run the unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: restore cache
+        id: restore-cache
+        uses: actions/cache/restore@v4
+        env:
+          cache-name: node-modules
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json', '!**/node_modules/**') }}
+      - name: Install image optimisation libs
+        shell: bash
+        run: |
+          yarn add pngquant optipng
+      - name: Install npm dependencies
+        shell: bash
+        run: |
+          npm install -g npm@11 && npm install && npm rebuild node-sass
+      - name: install dependencies
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: ""
+      - name: download build artifacts
+        uses: actions/download-artifact@v6
+        with:
+          name: npm_build_artifacts
+      - name: Run tests
+        shell: bash
+        run: |
+          npm run test
+
   node_integration_tests:
     name: node integration tests
     uses: ./.github/workflows/integration_tests.yml
@@ -131,7 +157,7 @@ jobs:
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
     needs:
       - node_integration_tests
-      - node_unit_tests
+      - unit_test
     with:
       docker_registry: 'ghcr.io'
       registry_org: 'ministryofjustice'
