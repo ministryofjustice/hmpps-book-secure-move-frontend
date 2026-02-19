@@ -115,18 +115,6 @@ jobs:
           path: |
             node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json', '!**/node_modules/**') }}
-      - name: Install image optimisation libs
-        shell: bash
-        run: |
-          yarn add pngquant optipng
-      - name: Install npm dependencies
-        shell: bash
-        run: |
-          npm install -g npm@11 && npm install && npm rebuild node-sass
-      - name: install dependencies
-        if: steps.restore-cache.outputs.cache-hit != 'true'
-        shell: bash
-        run: ""
       - name: download build artifacts
         uses: actions/download-artifact@v6
         with:
