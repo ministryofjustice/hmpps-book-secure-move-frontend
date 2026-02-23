@@ -3,7 +3,7 @@ import mockFs from 'mock-fs'
 import nock from 'nock'
 import sinon from 'sinon'
 
-import { requireUncached } from './helpers'
+const { requireUncached } = require('./helpers')
 
 chai.use(require('sinon-chai'))
 chai.use(require('chai-as-promised'))
