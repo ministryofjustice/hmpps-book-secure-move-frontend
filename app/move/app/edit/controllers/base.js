@@ -6,7 +6,6 @@ const CreateBaseController = require('../../new/controllers/base')
 class UpdateBaseController extends CreateBaseController {
   middlewareChecks() {
     this.use(this.canEdit)
-    super.middlewareChecks()
   }
 
   canEdit(req, res, next) {

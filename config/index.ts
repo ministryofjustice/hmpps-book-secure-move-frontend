@@ -170,6 +170,7 @@ export const AUTH_WHITELIST_URLS = [
   '/components/(.*)',
   '/help',
   '/help/(.*)',
+  '/move/(.*)',
 ]
 export const AUTH_PROVIDERS = {
   hmpps: {
