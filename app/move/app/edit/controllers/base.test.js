@@ -17,6 +17,7 @@ describe('Move controllers', function () {
   describe('Update base controller', function () {
     describe('#middlewareChecks()', function () {
       beforeEach(function () {
+        sinon.stub(BaseProto, 'middlewareChecks')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'canEdit')
 
