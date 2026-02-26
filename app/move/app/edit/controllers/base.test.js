@@ -17,15 +17,14 @@ describe('Move controllers', function () {
   describe('Update base controller', function () {
     describe('#middlewareChecks()', function () {
       beforeEach(function () {
-        sinon.stub(BaseProto, 'middlewareChecks')
         sinon.stub(controller, 'use')
         sinon.stub(controller, 'canEdit')
 
         controller.middlewareChecks()
       })
 
-      it('should call parent method', function () {
-        expect(BaseProto.middlewareChecks).to.have.been.calledOnce
+      it('should not call parent method', function () {
+        expect(BaseProto.middlewareChecks).not.to.be.called
       })
 
       it('should call canEdit middleware', function () {
