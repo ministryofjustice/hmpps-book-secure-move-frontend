@@ -21,7 +21,6 @@ async function setWarnings(req, res, next) {
       { name: 'Offence information', order: 2 },
       { name: 'Health information', order: 3 },
       { name: 'Property information', order: 4 },
-      { name: 'Release information', order: 4 },
     ],
     presenters.frameworkSectionToPanelList({
       baseUrl: `/move/${moveId}/person-escort-record`,
