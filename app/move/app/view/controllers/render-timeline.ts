@@ -15,14 +15,12 @@ async function ensureSupplierInfo(events: GenericEvent[], supplierService: Suppl
       Supplier !== undefined && Supplier !== null && Supplier.name == null
   )
   if (eventsWithoutSupplierInfo && eventsWithoutSupplierInfo.length > 0){
-    console.log("Found events without supplier details, populating them")
     const suppliers = await supplierService.getAll({})
     eventsWithoutSupplierInfo.forEach(e => {
       const supplierId = e.supplier?.id
       const details = suppliers.filter( (s: { id: string | undefined; }) => s.id === supplierId)
       e.supplier = details[0]
     })
-    console.log("Finished ensuring supplier info")
   }
 }
 export async function renderTimeline(req: BasmRequest, res: BasmResponse) {
@@ -52,6 +50,6 @@ export async function renderTimeline(req: BasmRequest, res: BasmResponse) {
   const locals = {
     timeline,
   }
-       
+
   res.render('move/app/view/views/timeline', locals)
 }

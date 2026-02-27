@@ -24,8 +24,8 @@ describe('Move controllers', function () {
         controller.middlewareChecks()
       })
 
-      it('should call parent method', function () {
-        expect(BaseProto.middlewareChecks).to.have.been.calledOnce
+      it('should not call parent method', function () {
+        expect(BaseProto.middlewareChecks).not.to.be.called
       })
 
       it('should call canEdit middleware', function () {
