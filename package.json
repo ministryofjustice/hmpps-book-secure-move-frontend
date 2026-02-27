@@ -385,6 +385,7 @@
     "package.json": "finepack"
   },
   "overrides": {
+    "fast-xml-parser": "^5.3.5",
     "underscore": "^1.13.6"
   }
 }
