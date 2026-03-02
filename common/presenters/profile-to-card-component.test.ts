@@ -431,7 +431,7 @@ describe('Presenters', function () {
               {
                 section_plural: 's are ',
                 section_hrefs:
-                  '<a href="/move/12345/person-escort-record/offence-information/start">Offence</a>,' +
+                  '<a href="/move/12345/person-escort-record/offence-information/start">Offence</a>, ' +
                   '<a href="/move/12345/person-escort-record/property-information">Property</a> and ' +
                   '<a href="/move/12345/person-escort-record/release-information">Release</a>',
                 interpolation: { escapeValue: false },
