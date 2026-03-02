@@ -133,7 +133,7 @@ describe('Helpers', function () {
               expect(mockEvent.details.propertyUsers).to.equal(
                 'by PROPERTYUSER, PROPERTYUSER2 and PROPERTYUSER3'
               )
-              expect(mockEvent.details.releaseUsers).to.equal( 'by RELEASEUSER')
+              expect(mockEvent.details.releaseUsers).to.equal('by RELEASEUSER')
             })
           }
         )
