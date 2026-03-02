@@ -262,7 +262,8 @@ describe('Presenters', function () {
                       {
                         key: 'offence-information',
                         status: 'not_started',
-                      },                      {
+                      },
+                      {
                         key: 'release-information',
                         status: 'not_started',
                       },
