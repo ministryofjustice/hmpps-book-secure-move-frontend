@@ -17,6 +17,7 @@ const perSections: { [section: string]: string } = {
   'offence-information': 'Offence',
   'health-information': 'Health',
   'property-information': 'Property',
+  'release-information': 'Release',
 }
 
 interface PerSectionStatus {

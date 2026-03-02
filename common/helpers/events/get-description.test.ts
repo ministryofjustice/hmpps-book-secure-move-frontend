@@ -116,6 +116,7 @@ describe('Helpers', function () {
                   'propertyUser2',
                   'propertyUser3',
                 ],
+                'release-information': ['releaseUser'],
               }
               description = await getDescription('token', mockEvent)
             })
@@ -205,6 +206,7 @@ describe('Helpers', function () {
             { key: 'offence-information', formatted: 'Offence information' },
             { key: 'property-information', formatted: 'Property information' },
             { key: 'risk-information', formatted: 'Risk information' },
+            { key: 'release-information', formatted: 'Release information' },
           ].forEach(function (value) {
             context(`value: ${value.key}`, function () {
               beforeEach(async function () {

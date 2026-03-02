@@ -47,6 +47,7 @@ export interface EventDetails {
         'offence-information'?: Array<string | undefined>
         'health-information'?: Array<string | undefined>
         'property-information'?: Array<string | undefined>
+        'release-information'?: Array<string | undefined>
       }
     | string
   confirmed_at?: string
