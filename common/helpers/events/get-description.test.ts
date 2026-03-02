@@ -97,6 +97,7 @@ describe('Helpers', function () {
                   expect(mockEvent.details.offenceUsers).to.equal('')
                   expect(mockEvent.details.healthUsers).to.equal('')
                   expect(mockEvent.details.propertyUsers).to.equal('')
+                  expect(mockEvent.details.releaseUsers).to.equal('')
                 })
               })
             })
@@ -131,6 +132,9 @@ describe('Helpers', function () {
               )
               expect(mockEvent.details.propertyUsers).to.equal(
                 'by PROPERTYUSER, PROPERTYUSER2 and PROPERTYUSER3'
+              )
+              expect(mockEvent.details.releaseUsers).to.equal(
+                'by RELEASEUSER'
               )
             })
           }

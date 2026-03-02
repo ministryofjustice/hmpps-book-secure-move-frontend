@@ -67,6 +67,7 @@ export interface EventDetails {
   offenceUsers?: string
   healthUsers?: string
   propertyUsers?: string
+  releaseUsers?: string
   start_date?: string
   old_start_date?: string
   end_date?: string

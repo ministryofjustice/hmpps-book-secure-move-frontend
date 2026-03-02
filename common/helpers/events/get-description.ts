@@ -13,6 +13,7 @@ const FORMATTED_SECTIONS: { [key: string]: string } = {
   'offence-information': 'Offence information',
   'property-information': 'Property information',
   'risk-information': 'Risk information',
+  'release-information': 'Release information',
 }
 
 export async function getDescription(token: string, event: GenericEvent) {
@@ -90,6 +91,7 @@ const populatePerCompletion = async (token: string, details: EventDetails) => {
     details.offenceUsers = ''
     details.healthUsers = ''
     details.propertyUsers = ''
+    details.releaseUsers = ''
     return
   }
 
@@ -108,6 +110,10 @@ const populatePerCompletion = async (token: string, details: EventDetails) => {
   details.propertyUsers = await getCompletedBy(
     token,
     details.responded_by['property-information']
+  )
+  details.releaseUsers = await getCompletedBy(
+    token,
+    details.responded_by['release-information']
   )
 }
 
