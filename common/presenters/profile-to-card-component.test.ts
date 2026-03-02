@@ -433,7 +433,7 @@ describe('Presenters', function () {
                 section_hrefs:
                   '<a href="/move/12345/person-escort-record/offence-information/start">Offence</a>, ' +
                   '<a href="/move/12345/person-escort-record/property-information">Property</a> and ' +
-                  '<a href="/move/12345/person-escort-record/release-information">Release</a>',
+                  '<a href="/move/12345/person-escort-record/release-information/start">Release</a>',
                 interpolation: { escapeValue: false },
               }
             )
