@@ -97,6 +97,7 @@ describe('Helpers', function () {
                   expect(mockEvent.details.offenceUsers).to.equal('')
                   expect(mockEvent.details.healthUsers).to.equal('')
                   expect(mockEvent.details.propertyUsers).to.equal('')
+                  expect(mockEvent.details.releaseUsers).to.equal('')
                 })
               })
             })
@@ -116,6 +117,7 @@ describe('Helpers', function () {
                   'propertyUser2',
                   'propertyUser3',
                 ],
+                'release-information': ['releaseUser'],
               }
               description = await getDescription('token', mockEvent)
             })
@@ -131,6 +133,7 @@ describe('Helpers', function () {
               expect(mockEvent.details.propertyUsers).to.equal(
                 'by PROPERTYUSER, PROPERTYUSER2 and PROPERTYUSER3'
               )
+              expect(mockEvent.details.releaseUsers).to.equal('by RELEASEUSER')
             })
           }
         )
@@ -205,6 +208,7 @@ describe('Helpers', function () {
             { key: 'offence-information', formatted: 'Offence information' },
             { key: 'property-information', formatted: 'Property information' },
             { key: 'risk-information', formatted: 'Risk information' },
+            { key: 'release-information', formatted: 'Release information' },
           ].forEach(function (value) {
             context(`value: ${value.key}`, function () {
               beforeEach(async function () {
