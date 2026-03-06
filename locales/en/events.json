@@ -499,7 +499,7 @@
   },
   "PerCompletion": {
     "heading": "Person Escort Record completed",
-    "description": "Risk information completed {{riskUsers}}<br>Offence information completed {{offenceUsers}}<br>Health information completed {{healthUsers}}<br>Property information completed {{propertyUsers}}"
+    "description": "Risk information completed {{riskUsers}}<br>Offence information completed {{offenceUsers}}<br>Health information completed {{healthUsers}}<br>Property information completed {{propertyUsers}}<br>Release information completed {{releaseUsers}}"
   },
   "PerUpdated": {
     "heading": "Person Escort Record updated",
