@@ -24,6 +24,9 @@ export async function getDescription(token: string, event: GenericEvent) {
 
   if (eventType === 'PerCompletion') {
     await populatePerCompletion(token, details)
+    if (details.releaseUsers !== ''){
+      details.context = 'withRelease'
+    }
   } else if (eventType === 'PerUpdated') {
     await populatePerUpdated(token, details)
   } else if (eventType === 'LodgingCreate' || eventType === 'LodgingCancel') {
