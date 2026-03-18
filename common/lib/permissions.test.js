@@ -279,6 +279,8 @@ describe('Permissions', function () {
           'person_escort_record:view',
           'person_escort_record:print',
           'youth_risk_assessment:view',
+          'allocations:view',
+          'moves:view:proposed',
         ])
       })
     })
