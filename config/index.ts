@@ -323,6 +323,8 @@ export const FEATURE_FLAGS = {
     process.env.FEATURE_FLAG_ADD_LODGE_BUTTON || ''
   ),
   DATE_OF_ARREST: /true/i.test(process.env.FEATURE_FLAG_DATE_OF_ARREST || ''),
+  SECTION_46: /true/i.test(process.env.FEATURE_FLAG_SECTION_46 || ''),
+  FUZZY_PNC_SEARCH: /true/i.test(process.env.FEATURE_FLAG_FUZZY_PNC_SEARCH || ''),
   EXTRADITION_MOVES: /true/i.test(
     process.env.FEATURE_FLAG_EXTRADITION_MOVES || ''
   ),

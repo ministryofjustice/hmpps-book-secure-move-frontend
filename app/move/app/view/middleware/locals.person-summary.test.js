@@ -21,6 +21,7 @@ describe('Move view app', function () {
               },
             },
           },
+          canAccess: sinon.stub().returns(false),
         }
         res = {
           locals: {},
@@ -53,6 +54,7 @@ describe('Move view app', function () {
               },
               profileLink: '/person/__profile12345__?move=__move1__',
               updateLink: undefined,
+              moveHistoryLink: null,
             },
           })
         })
@@ -78,6 +80,7 @@ describe('Move view app', function () {
                 alt: 'DOE, JOHN',
               },
               profileLink: '/person/__profile12345__?move=__move1__',
+              moveHistoryLink: '/person/__profile12345__/moves?move=__move1__',
               updateLink: '/move/__move1__/edit/personal-details',
             },
           })

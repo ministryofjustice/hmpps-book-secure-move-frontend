@@ -152,8 +152,9 @@ describe('Presenters', function () {
                 section_hrefs:
                   '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Frisk-information%2Fstart">Risk</a>, ' +
                   '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Foffence-information%2Fstart">Offence</a>, ' +
-                  '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fhealth-information%2Fstart">Health</a> and ' +
-                  '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fproperty-information%2Fstart">Property</a>',
+                  '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fhealth-information%2Fstart">Health</a>, ' +
+                  '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Fproperty-information%2Fstart">Property</a> and ' +
+                  '<a href="/move/12345/person-escort-record/new?returnUrl=%2Fmove%2F12345%2Fperson-escort-record%2Frelease-information%2Fstart">Release</a>',
                 interpolation: { escapeValue: false },
               }
             )
@@ -262,6 +263,10 @@ describe('Presenters', function () {
                         key: 'offence-information',
                         status: 'not_started',
                       },
+                      {
+                        key: 'release-information',
+                        status: 'not_started',
+                      },
                     ],
                   },
                 },
@@ -307,8 +312,9 @@ describe('Presenters', function () {
                 section_hrefs:
                   '<a href="/move/12345/person-escort-record/risk-information/start">Risk</a>, ' +
                   '<a href="/move/12345/person-escort-record/offence-information/start">Offence</a>, ' +
-                  '<a href="/move/12345/person-escort-record/health-information/start">Health</a> and ' +
-                  '<a href="/move/12345/person-escort-record/property-information/start">Property</a>',
+                  '<a href="/move/12345/person-escort-record/health-information/start">Health</a>, ' +
+                  '<a href="/move/12345/person-escort-record/property-information/start">Property</a> and ' +
+                  '<a href="/move/12345/person-escort-record/release-information/start">Release</a>',
                 interpolation: { escapeValue: false },
               }
             )
@@ -341,6 +347,10 @@ describe('Presenters', function () {
                           key: 'offence-information',
                           status: 'not_started',
                         },
+                        {
+                          key: 'release-information',
+                          status: 'not_started',
+                        },
                       ],
                     },
                   },
@@ -356,8 +366,9 @@ describe('Presenters', function () {
                   section_hrefs:
                     '<a href="/move/12345/person-escort-record/risk-information/start">Risk</a>, ' +
                     '<a href="/move/12345/person-escort-record/offence-information/start">Offence</a>, ' +
-                    '<a href="/move/12345/person-escort-record/health-information/start">Health</a> and ' +
-                    '<a href="/move/12345/person-escort-record/property-information/start">Property</a>',
+                    '<a href="/move/12345/person-escort-record/health-information/start">Health</a>, ' +
+                    '<a href="/move/12345/person-escort-record/property-information/start">Property</a> and ' +
+                    '<a href="/move/12345/person-escort-record/release-information/start">Release</a>',
                   interpolation: { escapeValue: false },
                 }
               )
@@ -391,6 +402,10 @@ describe('Presenters', function () {
                         key: 'offence-information',
                         status: 'not_started',
                       },
+                      {
+                        key: 'release-information',
+                        status: 'not_started',
+                      },
                     ],
                   },
                 },
@@ -416,8 +431,9 @@ describe('Presenters', function () {
               {
                 section_plural: 's are ',
                 section_hrefs:
-                  '<a href="/move/12345/person-escort-record/offence-information/start">Offence</a> and ' +
-                  '<a href="/move/12345/person-escort-record/property-information">Property</a>',
+                  '<a href="/move/12345/person-escort-record/offence-information/start">Offence</a>, ' +
+                  '<a href="/move/12345/person-escort-record/property-information">Property</a> and ' +
+                  '<a href="/move/12345/person-escort-record/release-information/start">Release</a>',
                 interpolation: { escapeValue: false },
               }
             )

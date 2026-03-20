@@ -72,9 +72,6 @@ jobs:
       - *install_system_deps
       - *install_dependencies
       - run:
-          name: Write eslintignore
-          command: npx tsc --listFilesOnly | grep -v 'node_modules' | sed 's/\.ts/\.js/' | sed "s#$(pwd)/##" > ./.eslintignore
-      - run:
           name: Lint the code
           command: npm run circle:lint
       - store_artifacts:
@@ -122,6 +119,8 @@ jobs:
           environment:
             REDIS_URL: ""
             NODE_OPTIONS: --max-old-space-size=12288
+            FEATURE_FLAG_SECTION_46: true
+            FEATURE_FLAG_ADD_LODGE_BUTTON: true
           command: |
             npm run test-e2e -- --test $(circleci tests glob "test/e2e/**/*.test.js" | circleci tests split --split-by=timings)
       - run:

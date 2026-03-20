@@ -84,6 +84,13 @@
             iconFallbackText: "Warning"
           }) }}
         </div>
+    {% elif params.isS46 %}
+      <div class="govuk-!-padding-top-3">
+        {{ govukWarningText({
+          text: t("moves::is_section_forty_six"),
+          iconFallbackText: "Warning"
+        }) }}
+      </div>
       {% endif %}
   </div>
 </div>

@@ -7,7 +7,6 @@ export default function autoAnswerSpecialVehicle (req) {
   const specialVehicle = req.questions.find(q => q.key === 'special_vehicle')
 
   const { health } = req.form.values
-  console.log(req.form.values)
   if (health.includes(pregnant.id) || health.includes(wheelchair.id)) {
     req.form.values.special_vehicle__explicit = specialVehicle.id
     req.form.values.special_vehicle = 'Pregnant or wheelchair selected'

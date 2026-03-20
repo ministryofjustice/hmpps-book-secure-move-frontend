@@ -95,6 +95,10 @@ describe('Move view app', function () {
                 name: 'Property information',
                 order: 4,
               },
+              {
+                name: 'Release information',
+                order: 5,
+              },
             ])
           })
         })
@@ -131,6 +135,10 @@ describe('Move view app', function () {
               {
                 name: 'Property information',
                 order: 4,
+              },
+              {
+                name: 'Release information',
+                order: 5,
               },
             ])
           })

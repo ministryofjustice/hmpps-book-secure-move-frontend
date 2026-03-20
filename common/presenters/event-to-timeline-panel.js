@@ -23,6 +23,7 @@ module.exports = async (
     reporting_officer_signed_at: reportingOfficerSignedAt,
     reception_officer: receptionOfficer,
     reception_officer_signed_at: receptionOfficerSignedAt,
+    source,
   } = details
   const description = await eventHelpers.getDescription(token, event)
   const rows = []
@@ -30,6 +31,17 @@ module.exports = async (
   let html
 
   if (eventType === 'PerSuicideAndSelfHarm') {
+    source &&
+      rows.push([
+        {
+          heading:
+            '<h4 class="govuk-heading-s govuk-!-font-size-16">Source</h4>',
+        },
+        {
+          html: getSource(source),
+        },
+      ])
+
     natureOfSelfHarm &&
       rows.push([
         {
@@ -193,4 +205,28 @@ module.exports = async (
     isFocusable: true,
     attributes: { id },
   }
+}
+
+function getSource(source) {
+  let html = `<p class="govuk-!-font-size-16">${getSourceOption(source)}`
+
+  if (source.comments) {
+    html += `<p class="govuk-!-font-size-16"><b>Comments: </b>${source.comments}</p>`
+  }
+
+  if (source.observations) {
+    html += `<p class="govuk-!-font-size-16"><b>Observations: </b>${source.observations}</p>`
+  }
+
+  html += `</p>`
+
+  return html
+}
+
+function getSourceOption(source) {
+  if (source.details) {
+    return source.option + ' - ' + source.details
+  }
+
+  return source.option
 }

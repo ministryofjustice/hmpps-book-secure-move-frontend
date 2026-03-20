@@ -26,9 +26,12 @@ generic-service:
     SENTRY_ENVIRONMENT: "staging"
     SERVER_HOST: "hmpps-book-secure-move-frontend-staging.apps.cloud-platform.service.justice.gov.uk"
     FEATURE_FLAG_EXTRADITION_MOVES: "true"
+    FEATURE_FLAG_SECTION_46: "true"
+    FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
     OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT"
     DISALLOWED_DEVICES: "iPhone,Android"
     DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT"
+    FRAMEWORKS_VERSION: "3.0.0"
 
   allowlist_envs:
     OFF_NETWORK_ALLOWLIST:

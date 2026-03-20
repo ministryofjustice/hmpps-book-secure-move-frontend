@@ -10,10 +10,10 @@ export default function localsMoveDetails(
   next: any
 ) {
   const { journeys, move } = req
-
   res.locals.moveDetails = presenters.moveToMetaListComponent(move, journeys)
   res.locals.moveIsLockout = move.is_lockout
   res.locals.moveIsLodging = move.is_lodging
+  res.locals.moveIsS46 = move.section_forty_six
   res.locals.moveIsEditable = move._canEdit
   res.locals.isPerLocked = move._isPerLocked
   res.locals.moveId = move.id

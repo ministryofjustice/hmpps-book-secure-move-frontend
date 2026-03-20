@@ -131,6 +131,9 @@ const supplierPermissions = [
   'person_escort_record:view',
   'person_escort_record:print',
   'youth_risk_assessment:view',
+  // Allow supplier users to see allocations and single requests
+  'allocations:view',
+  'moves:view:proposed',
 ]
 const prisonPermissions = [
   'dashboard:view',
