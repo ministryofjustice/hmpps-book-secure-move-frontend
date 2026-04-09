@@ -28,7 +28,7 @@ jobs:
     steps:
       - id: create_deployment
         name: Create deployment
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
@@ -46,7 +46,7 @@ jobs:
             }
 
       - name: Update deployment
-        uses: actions/github-script@v6
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
         with:
           github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
@@ -62,7 +62,7 @@ jobs:
             }
 
       - name: Delete deployments
-        uses: actions/github-script@v6
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
         with:
           github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
@@ -105,10 +105,10 @@ jobs:
             }
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Set up NodeJS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 24
 
@@ -142,13 +142,13 @@ jobs:
           kubectl config use-context ${KUBE_CLUSTER}
 
       # Assume role in Cloud Platform
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4
         with:
           role-to-assume: ${{ secrets.STAGING_ECR_ROLE_TO_ASSUME }}
           aws-region: ${{ vars.STAGING_ECR_REGION }}
 
         # Login to container repository
-      - uses: aws-actions/amazon-ecr-login@v2
+      - uses: aws-actions/amazon-ecr-login@f2e9fc6c2b355c1890b65e6f6f0e2ac3e6e22f78 # v2
         id: login-ecr
 
       - name: Push docker image to ECR
@@ -182,7 +182,7 @@ jobs:
           kubectl rollout restart deployment "hmpps-book-secure-move-frontend-deployment-pr-${PR_NUMBER}"
 
       - name: Update deployment
-        uses: actions/github-script@v6
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
         with:
           github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
