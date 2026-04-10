@@ -52,6 +52,8 @@ describe('Back-end API client with requests', function () {
               expires_in: 7200,
               created_at: 1618328323,
             })
+          
+          console.log(config.API.BASE_URL)
 
           nock(`${config.API.BASE_URL}`)
             .get('/moves')

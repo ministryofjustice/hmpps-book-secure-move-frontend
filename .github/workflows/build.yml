@@ -18,18 +18,19 @@ jobs:
     name: Run the node build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Use Node.js ${{ inputs.node_version_file }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
-          node-version-file: ${{ inputs.node_version_file }}
+          cache: npm
+          node-version-file: .nvmrc
       - name: update npm
         shell: bash
         run: |
           sudo npm install -g npm@latest
       - name: restore cache
         id: restore-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         env:
           cache-name: node-modules
         with:
@@ -46,21 +47,28 @@ jobs:
         shell: bash
         run: |
           npm run build
+          # Verify the build directory was created
+          if [ ! -d ".build" ]; then
+            echo "ERROR: .build directory was not created!"
+            echo "Contents of current directory:"
+            ls -la
+            exit 1
+          fi
+          echo "Build directory created successfully:"
+          ls -la .build/
       - name: Linter check # Run linter after build because the integration test code depend on compiled typescript...
         shell: bash
         run: |
           npm run lint
       - name: upload the artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: npm_build_artifacts
-          path: |
-            build/
-            dist/
-            assets/stylesheets/
+          path: .build/
+          include-hidden-files: true
       - name: save cache
         id: save-cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         env:
           cache-name: node-modules
         with:
