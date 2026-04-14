@@ -46,7 +46,7 @@ jobs:
             }
 
       - name: Update deployment
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
@@ -62,7 +62,7 @@ jobs:
             }
 
       - name: Delete deployments
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
           script: |
@@ -142,13 +142,13 @@ jobs:
           kubectl config use-context ${KUBE_CLUSTER}
 
       # Assume role in Cloud Platform
-      - uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4
+      - uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6.1.0
         with:
           role-to-assume: ${{ secrets.STAGING_ECR_ROLE_TO_ASSUME }}
           aws-region: ${{ vars.STAGING_ECR_REGION }}
 
         # Login to container repository
-      - uses: aws-actions/amazon-ecr-login@f2e9fc6c2b355c1890b65e6f6f0e2ac3e6e22f78 # v2
+      - uses: aws-actions/amazon-ecr-login@f2e9fc6c2b355c1890b65e6f6f0e2ac3e6e22f78 # v2.1.2
         id: login-ecr
 
       - name: Push docker image to ECR
