@@ -72,7 +72,7 @@ users.forEach(user => {
       .match(/today|this week/)
       .click((movesDashboardPage.nodes.pagination as any).nextLink)
       .expect((page.nodes.pageHeading as Selector).innerText)
-      .match(/today|next week/)
+      .match(/tomorrow|next week/)
   })
 })
 
