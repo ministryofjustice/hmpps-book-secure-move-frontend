@@ -6,6 +6,7 @@ import concurrently, { Command } from 'concurrently'
 import { ProcessCloseCondition } from 'concurrently/dist/src/flow-control/kill-others'
 import glob from 'glob'
 import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers';
 
 /**
  * Allow environment variables set at the project level tp be overridden for current PR
@@ -70,7 +71,7 @@ const FEATURE_FLAG_EXTRADITION_MOVES = getEnvVar(
 )
 const FEATURE_FLAG_SECTION_46 = getEnvVar('FEATURE_FLAG_SECTION_46')
 
-const args: any = yargs
+const args: any = yargs(hideBin(process.argv))
   .usage(
     `
 e2e test runner
