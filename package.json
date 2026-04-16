@@ -267,7 +267,7 @@
     "eslint-formatter-junit": "9.0.1",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import": "2.32.0",
-    "finepack": "^2.12.8",
+    "finepack": "^2.12.15",
     "git-authors-cli": "1.0.45",
     "glob": "8.1.0",
     "husky": "8.0.3",
