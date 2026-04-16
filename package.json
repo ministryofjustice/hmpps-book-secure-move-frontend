@@ -229,7 +229,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.27.1",
-    "@babel/preset-env": "7.20.2",
+    "@babel/preset-env": "7.29.2",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "17.4.4",
     "@faker-js/faker": "10.1.0",
