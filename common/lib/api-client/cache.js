@@ -8,7 +8,7 @@ async function get(key, useRedisCache = false) {
   let data
 
   if (useRedisCache) {
-    data = await (await redisStore()).client.getAsync(key)
+    data = await (await redisStore()).client.get(key)
   } else {
     data = lruCache.get(key)
   }
@@ -23,7 +23,7 @@ async function get(key, useRedisCache = false) {
 async function set(key, data = {}, expiry, useRedisCache) {
   if (useRedisCache) {
     const stringifiedData = JSON.stringify(data)
-    await (await redisStore()).client.setexAsync(key, expiry, stringifiedData)
+    await (await redisStore()).client.setEx(key, expiry, stringifiedData)
   } else {
     lruCache.set(key, data, expiry)
   }

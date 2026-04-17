@@ -56,11 +56,11 @@ export const REDIS: {
   }
 } = {}
 
-if (process.env.REDIS_URL) {
+if (process.env.REDIS_URL && process.env.REDIS_URL.trim() !== '') {
   REDIS.SESSION = {
     url: process.env.REDIS_URL,
   }
-} else if (process.env.REDIS_HOST) {
+} else if (process.env.REDIS_HOST && process.env.REDIS_HOST.trim() !== '') {
   REDIS.SESSION = {
     socket: {
       host: process.env.REDIS_HOST,
