@@ -304,10 +304,7 @@ const runTests = async () => {
         3000 + i
       } NOMIS_ELITE2_API_URL=http://localhost:${
         3999 + i
-      } FEATURE_FLAG_ADD_LODGE_BUTTON=true
-        FEATURE_FLAG_EXTRADITION_MOVES=true
-        FEATURE_FLAG_SECTION_46=true
-        node start.js`
+      } FEATURE_FLAG_ADD_LODGE_BUTTON=true FEATURE_FLAG_EXTRADITION_MOVES=true FEATURE_FLAG_SECTION_46=true node start.js`
   )
   const authCommandStrings = testBuckets.map(
     (_, i) =>
