@@ -3,6 +3,7 @@ import * as contentful from 'contentful'
 
 // @ts-ignore
 import { get, set } from '../../../common/lib/api-client/cache'
+import { API } from '../../../config'
 import i18n from '../../../config/i18n'
 import { sentenceFormatDate, sentenceFormatTime } from '../../formatters'
 
@@ -157,7 +158,10 @@ export class DowntimeService extends ContentfulService {
   }
 
   async fetchEntries(): Promise<DowntimeContent[]> {
-    const cachedEntries = await get(`cache:entries:${this.contentType}`, true)
+    const cachedEntries = await get(
+      `cache:entries:${this.contentType}`,
+      API.USE_REDIS_CACHE
+    )
 
     if (cachedEntries) {
       const cached = [...cachedEntries]
@@ -174,7 +178,12 @@ export class DowntimeService extends ContentfulService {
 
     const entriesToCache = this.toDowntimeContent(entries)
 
-    await set(`cache:entries:${this.contentType}`, entriesToCache, 300, true)
+    await set(
+      `cache:entries:${this.contentType}`,
+      entriesToCache, 
+      300,
+      API.USE_REDIS_CACHE
+    )
 
     return entriesToCache
   }

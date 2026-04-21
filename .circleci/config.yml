@@ -112,6 +112,7 @@ jobs:
           name: Run E2E tests (same instance)
           environment:
             REDIS_URL: ""
+            REDIS_HOST: ""
             NODE_OPTIONS: --max-old-space-size=12288
             FEATURE_FLAG_SECTION_46: true
             FEATURE_FLAG_ADD_LODGE_BUTTON: true

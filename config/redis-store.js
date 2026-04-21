@@ -1,16 +1,19 @@
-const bluebird = require('bluebird')
-const RedisStore = require('connect-redis')(require('express-session'))
-const retryStrategy = require('node-redis-retry-strategy')
+const session = require('express-session')
+const { RedisStore } = require('connect-redis')
 const redis = require('redis')
 
 const logger = require('./logger')
-
 const { REDIS } = require('./')
 
 const defaultOptions = {
+  socket: {
+    reconnectStrategy: (retries) => {
+      const delay = Math.min(2 ** retries * 50, 60_000)
+      logger.error(`Redis reconnect attempt ${retries}, retrying in ${delay}ms`)
+      return delay
+    },
+  },
   ...REDIS.SESSION,
-  logErrors: logger.error,
-  retry_strategy: retryStrategy(),
 }
 
 let store
@@ -20,11 +23,18 @@ module.exports = async function redisStore(options = defaultOptions) {
     return store
   }
 
-  const client = redis.createClient({ ...options, legacyMode: true })
-  await client.connect()
-  bluebird.promisifyAll(client)
+  const client = redis.createClient(options)
 
-  store = new RedisStore({ client })
+  client.on('error', (err) => {
+    logger.error(err)
+  })
+
+  await client.connect()
+
+  store = new RedisStore({
+    client,
+    prefix: 'sess:',
+  })
 
   return store
 }

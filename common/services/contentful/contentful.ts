@@ -10,6 +10,7 @@ import { format } from 'date-fns'
 // @ts-ignore
 import { get, set } from '../../../common/lib/api-client/cache'
 import {
+  API,
   CONTENTFUL_ACCESS_TOKEN,
   CONTENTFUL_HOST,
   CONTENTFUL_SPACE_ID,
@@ -196,7 +197,10 @@ export class ContentfulService {
   }
 
   async fetchEntries(): Promise<ContentfulContent[]> {
-    const cachedEntries = await get(`cache:entries:${this.contentType}`, true)
+    const cachedEntries = await get(
+      `cache:entries:${this.contentType}`,
+      API.USE_REDIS_CACHE
+    )
 
     if (cachedEntries) {
       const cached = [...cachedEntries]
@@ -215,7 +219,12 @@ export class ContentfulService {
 
     const entriesToCache = this.toContentfulContent(entries)
 
-    await set(`cache:entries:${this.contentType}`, entriesToCache, 300, true)
+    await set(
+      `cache:entries:${this.contentType}`,
+      entriesToCache, 
+      300,
+      API.USE_REDIS_CACHE
+    )
 
     return entriesToCache
   }

@@ -7,8 +7,8 @@ lruCache.get = sinon.stub()
 lruCache.set = sinon.stub()
 
 const redisClient = {
-  getAsync: sinon.stub().resolves(),
-  setexAsync: sinon.stub().resolves(),
+  get: sinon.stub().resolves(),
+  setEx: sinon.stub().resolves(),
 }
 
 const cache = proxyquire('./cache', {
@@ -22,8 +22,8 @@ describe('API Client', function () {
   describe('Cache module', function () {
     let cached
     beforeEach(function () {
-      redisClient.getAsync.resetHistory().resolves()
-      redisClient.setexAsync.resetHistory().resolves()
+      redisClient.get.resetHistory().resolves()
+      redisClient.setEx.resetHistory().resolves()
     })
 
     describe('#get', function () {
@@ -78,7 +78,7 @@ describe('API Client', function () {
           })
 
           it('should call the redis cache', function () {
-            expect(redisClient.getAsync).to.be.calledOnceWithExactly(
+            expect(redisClient.get).to.be.calledOnceWithExactly(
               'cache-key'
             )
           })
@@ -96,7 +96,7 @@ describe('API Client', function () {
 
         context('when a value has been cached', function () {
           beforeEach(async function () {
-            redisClient.getAsync.resolves({ foo: 'bar' })
+            redisClient.get.resolves({ foo: 'bar' })
             cached = await cache.get('cache-key', true)
           })
 
@@ -107,7 +107,7 @@ describe('API Client', function () {
 
         context('when a value has been cached as a string', function () {
           beforeEach(async function () {
-            redisClient.getAsync.resolves('{"foo": "bar"}')
+            redisClient.get.resolves('{"foo": "bar"}')
             cached = await cache.get('cache-key', true)
           })
 
@@ -146,7 +146,7 @@ describe('API Client', function () {
           })
 
           it('should call the redis cache', function () {
-            expect(redisClient.setexAsync).to.be.calledOnceWithExactly(
+            expect(redisClient.setEx).to.be.calledOnceWithExactly(
               'cache-key',
               100,
               JSON.stringify(data)
