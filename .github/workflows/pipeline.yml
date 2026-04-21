@@ -42,9 +42,9 @@ jobs:
       artifacts_path: reports
       test_results_path: mocha/test-results.xml
   # generic node integration tests using wiremock - feel free to override with local tests if required
-  node_integration_tests:
-    name: node integration tests
-    uses: ministryofjustice/hmpps-github-actions/.github/workflows/node_integration_tests_redis.yml@v2 # WORKFLOW_VERSION
+  node_e2e_tests:
+    name: node E2E tests
+    uses: ./.github/workflows/node_e2e_tests.yml
     needs: [node_build]
     secrets: inherit
   helm_lint:
@@ -61,7 +61,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
     needs:
-      - node_integration_tests
+      - node_e2e_tests
       - node_unit_tests
     with:
       docker_registry: 'ghcr.io'
