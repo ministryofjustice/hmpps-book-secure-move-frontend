@@ -115,8 +115,8 @@ jobs:
           list-suites: 'failed'
           list-tests: 'failed'
       - name: fail the action if the tests failed
-        if: ${{ steps.unit-tests.outcome == 'failure' }}
+        if: ${{ steps.e2e-tests.outcome == 'failure' }}
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
-            core.setFailed('Unit tests failed')
+            core.setFailed('E2E tests failed')

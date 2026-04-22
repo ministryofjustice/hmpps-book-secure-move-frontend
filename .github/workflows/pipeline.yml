@@ -69,28 +69,73 @@ jobs:
       additional_docker_tag: ${{ inputs.additional_docker_tag }}
       push: ${{ inputs.push || true }}
       docker_multiplatform: false
-  deploy_dev:
-    name: Deploy to the dev environment
-    if: github.ref == 'refs/heads/main'
+  deploy_staging:
+    name: Deploy to the staging environment
     needs:
       - build
       - helm_lint
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
-      environment: 'dev'
+      environment: 'staging'
       app_version: '${{ needs.build.outputs.app_version }}'
-  deploy_preprod:
-    name: Deploy to pre-production environment
+  sentry_staging:
+    name: Publish staging release to Sentry
     needs:
       - build
-      - deploy_dev
+      - deploy_staging
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
+    with:
+      sentry_project: book-a-secure-move-frontend
+      sentry_environment: 'staging'
+      sentry_create_release: 'true'
+      app_version: '${{ needs.build.outputs.app_version }}'
+    secrets: inherit
+  deploy_uat:
+    name: Deploy to UAT environment
+    needs:
+      - build
+      - deploy_staging
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
       environment: 'preprod'
       app_version: '${{ needs.build.outputs.app_version }}'
-  deploy_prod:
+  sentry_uat:
+    name: Publish UAT release to Sentry
+    needs:
+      - build
+      - deploy_uat
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
+    with:
+      sentry_project: book-a-secure-move-frontend
+      sentry_environment: 'uat'
+      sentry_create_release: 'true'
+      app_version: '${{ needs.build.outputs.app_version }}'
+    secrets: inherit
+  deploy_preprod:
+    name: Deploy to pre-production environment
+    needs:
+      - build
+      - deploy_staging
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
+    secrets: inherit
+    with:
+      environment: 'preprod'
+      app_version: '${{ needs.build.outputs.app_version }}'
+  sentry_preprod:
+    name: Publish preprod release to Sentry
+    needs:
+      - build
+      - deploy_preprod
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
+    with:
+      sentry_project: book-a-secure-move-frontend
+      sentry_environment: 'preprod'
+      sentry_create_release: 'true'
+      app_version: '${{ needs.build.outputs.app_version }}'
+    secrets: inherit
+  deploy_production:
     name: Deploy to production environment
     needs:
       - build
@@ -98,5 +143,17 @@ jobs:
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
-      environment: 'prod'
+      environment: 'production'
       app_version: '${{ needs.build.outputs.app_version }}'
+  sentry_production:
+    name: Publish production release to Sentry
+    needs:
+      - build
+      - deploy_production
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
+    with:
+      sentry_project: book-a-secure-move-frontend
+      sentry_environment: 'production'
+      sentry_create_release: 'true'
+      app_version: '${{ needs.build.outputs.app_version }}'
+    secrets: inherit
