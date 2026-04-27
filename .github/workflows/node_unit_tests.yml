@@ -1,0 +1,104 @@
+name: Build and test node
+# Custom script based hmpps-github-actions/node_unit_tests but with customisable test results path.
+# TODO: We should propose a change to that action to bring it in line with this one.
+on:
+  workflow_call:
+    inputs:
+      npm_script:
+        description: 'The main test script to execute with `npm run`'
+        required: false
+        type: string
+        default: 'test:ci'
+      test_results_artifact_name:
+        description: 'Name of uploaded test results artifact; must be unqiue across pipeline (eg. in matrix strategies for parallelised tests)'
+        required: false
+        type: string
+        default: 'npm_unit_test_artifacts'
+      artifacts_path:
+        description: 'File path for artifacts to be uploaded'
+        required: false
+        type: string
+        default: 'test_results'
+      test_results_path:
+        description: 'File path within the artifacts for XML test results to be parsed'
+        required: false
+        type: string
+        default: 'jest/**/*.xml'
+      node_version_file:
+        description: "Passed to setup-node action to specify where to source the version of node from"
+        required: false
+        type: string
+        default: '.nvmrc'
+      redis_tag:
+        description: 'Optionally, start a redis service with this tag'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  node-unit-test:
+    name: ${{ inputs.npm_script == 'test:ci' && 'Run the node unit tests' || format('Run the node unit tests – {0}', inputs.npm_script) }}
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: ${{ inputs.redis_tag && format('redis:{0}', inputs.redis_tag) || '' }}
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Use Node.js ${{ inputs.node_version_file }}
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version-file: ${{ inputs.node_version_file }}
+      - name: restore cache
+        id: restore-cache
+        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+        env:
+          cache-name: node-modules
+        with:
+          path: |
+            ./node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json', '!**/node_modules/**') }}
+      - name: download the artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: npm_build_artifacts
+      - name: unit tests
+        id: unit-tests
+        shell: bash
+        run: |
+          npm run ${{ inputs.npm_script }}
+        # continue-on-error: true
+        # Replacing the above with if: always()
+      - name: upload the artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: ${{ inputs.test_results_artifact_name }}
+          path: ${{ inputs.artifacts_path }}
+      - name: publish test report
+        if: ${{ !cancelled() && github.event.repository.visibility == 'public' }}
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
+        with:
+          artifact: ${{ inputs.test_results_artifact_name }}
+          name: Test Report
+          path: ${{ inputs.test_results_path }}
+          reporter: java-junit
+          fail-on-empty: false
+          fail-on-error: false
+          list-suites: 'failed'
+          list-tests: 'failed'
+      - name: fail the action if the tests failed
+        if: ${{ steps.unit-tests.outcome == 'failure' }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            core.setFailed('Unit tests failed')

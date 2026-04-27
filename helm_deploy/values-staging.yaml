@@ -18,6 +18,7 @@ generic-service:
     CONTENTFUL_HOST: "preview.contentful.com"
     ENABLE_COMPONENTS_LIBRARY: "true"
     ENABLE_DEVELOPMENT_TOOLS: "true"
+    ENVIRONMENT_NAME: dev
     FEEDBACK_URL: "#"
     GOOGLE_ANALYTICS_ID: "G-3G741W4FQ2"
     MANAGE_USERS_API_URL: "https://manage-users-api-dev.hmpps.service.justice.gov.uk"

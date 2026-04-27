@@ -1,0 +1,122 @@
+name: E2E tests
+# Custom script to run integration tests - to be upgraded to run tests in parallel
+on:
+ workflow_call:
+   inputs:
+     node_version_file:
+       description: "Passed to setup-node action to specify where to source the version of node from"
+       required: false
+       type: string
+       default: '.nvmrc'
+
+permissions:
+ contents: read
+
+jobs:
+  integration_test:
+    name: 'Run the E2E tests'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Use Node.js ${{ inputs.node_version_file }}
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version-file: ${{ inputs.node_version_file }}
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@4f8e94349a351df0f048634f25fec36c3c91eded # v2
+        with:
+          chrome-version: latest
+      - name: Compile typescript, build assets and frameworks
+        run: |
+          npm install
+          npm run build
+      - name: Run E2E tests
+        id: e2e-tests
+        run: npm run test-e2e -- --test "test/e2e/**/*.test.js"
+        env:
+          REDIS_URL: ""
+          REDIS_HOST: ""
+          NODE_OPTIONS: --max-old-space-size=12288
+          SESSION_SECRET: example-secret
+          API_PATH: /api
+          API_HEALTHCHECK_PATH: /ping.xml
+          API_AUTH_PATH: /oauth/token
+          API_VERSION: 2
+          API_BASE_URL: https://hmpps-book-secure-move-api-staging.apps.cloud-platform.service.justice.gov.uk
+          API_CLIENT_ID: ${{ secrets.API_CLIENT_ID }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          AUTH_PROVIDER_URL: https://sign-in-dev.hmpps.service.justice.gov.uk
+          AUTH_PROVIDER_KEY: ${{ secrets.AUTH_PROVIDER_KEY }}
+          AUTH_PROVIDER_SECRET: ${{ secrets.AUTH_PROVIDER_SECRET }}
+          SERVER_HOST: localhost:3000
+          NOMIS_ELITE2_API_URL: https://prison-api-dev.prison.service.justice.gov.uk
+          FEEDBACK_URL: http://google.com
+          PERSON_ESCORT_RECORD_FEEDBACK_URL: http://google.com
+          E2E_POLICE_USERNAME: ${{ secrets.E2E_POLICE_USERNAME }}
+          E2E_POLICE_PASSWORD: ${{ secrets.E2E_POLICE_PASSWORD }}
+          E2E_STC_USERNAME: ${{ secrets.E2E_STC_USERNAME }}
+          E2E_STC_PASSWORD: ${{ secrets.E2E_STC_PASSWORD }}
+          E2E_SCH_USERNAME: ${{ secrets.E2E_SCH_USERNAME }}
+          E2E_SCH_PASSWORD: ${{ secrets.E2E_SCH_PASSWORD }}
+          E2E_PRISON_USERNAME: ${{ secrets.E2E_PRISON_USERNAME }}
+          E2E_PRISON_PASSWORD: ${{ secrets.E2E_PRISON_PASSWORD }}
+          E2E_SUPPLIER_USERNAME: ${{ secrets.E2E_SUPPLIER_USERNAME }}
+          E2E_SUPPLIER_PASSWORD: ${{ secrets.E2E_SUPPLIER_PASSWORD }}
+          E2E_OCA_USERNAME: ${{ secrets.E2E_OCA_USERNAME }}
+          E2E_OCA_PASSWORD: ${{ secrets.E2E_OCA_PASSWORD }}
+          E2E_PMU_USERNAME: ${{ secrets.E2E_PMU_USERNAME }}
+          E2E_PMU_PASSWORD: ${{ secrets.E2E_PMU_PASSWORD }}
+          E2E_PER_USERNAME: ${{ secrets.E2E_PER_USERNAME }}
+          E2E_PER_PASSWORD: ${{ secrets.E2E_PER_PASSWORD }}
+          E2E_COURT_USERNAME: ${{ secrets.E2E_COURT_USERNAME }}
+          E2E_COURT_PASSWORD: ${{ secrets.E2E_COURT_PASSWORD }}
+          FEATURE_FLAG_EDITABILITY: "true"
+          FEATURE_FLAG_IMAGES: "true"
+          FEATURE_FLAG_PRISON_COURT_HEARINGS: "true"
+          FEATURE_FLAG_PRISON_COURT_TIMETABLE: "true"
+          FEATURE_FLAG_PERSON_ESCORT_RECORD: "true"
+          FEATURE_FLAG_MOVE_PREVIEW: "true"
+          FEATURE_FLAG_WHATS_NEW_BANNER: "true"
+          FEATURE_FLAG_ADD_LODGE_BUTTON: "true"
+          FEATURE_FLAG_DATE_OF_ARREST: "true"
+          FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
+          FEATURE_FLAG_SECTION_46: "true"
+          CONTENTFUL_HOST: preview.contentful.com
+          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+          E2E_MOCK_AUTH: "true"
+          MANAGE_USERS_API_URL: "http://127.0.0.1"
+          OFF_NETWORK_ALLOWLIST: "127.0.0.1"
+          OFF_NETWORK_ALLOWLIST_ACTIONS: ENFORCE_IF_BAD_DEVICE
+          DISALLOWED_DEVICES: iPhone,Android
+          DISALLOWED_DEVICES_ACTIONS: WARN,REPORT
+      - name: upload the test results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: e2e_test_results
+          path: reports/testcafe
+      - name: upload the screenshots and videos
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: e2e_screen_captures
+          path: artifacts
+      - name: publish test report
+        if: ${{ !cancelled() && github.event.repository.visibility == 'public' }}
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
+        with:
+          artifact: e2e_test_results
+          name: Test Report
+          path: result*.xml
+          reporter: java-junit
+          fail-on-empty: false
+          fail-on-error: false
+          list-suites: 'failed'
+          list-tests: 'failed'
+      - name: fail the action if the tests failed
+        if: ${{ steps.e2e-tests.outcome == 'failure' }}
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            core.setFailed('E2E tests failed')

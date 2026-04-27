@@ -1,0 +1,27 @@
+name: Daily E2E test run
+
+on:
+  schedule:
+    - cron: "17 10 * * 1-5"
+
+permissions:
+  contents: read
+
+concurrency:
+  # if branch is main, append commit sha to the group name, so that other jobs from main don't get cancelled
+  group: ${{ github.workflow }}-${{ github.ref }}${{ (github.ref == 'refs/heads/main') && format('-{0}', github.sha) || '' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  # main node build workflow
+  node_build:
+    name: node build
+    #uses: ministryofjustice/hmpps-github-actions/.github/workflows/node_build.yml@v2 # WORKFLOW_VERSION
+    uses: ./.github/workflows/build.yml # this custom script can be removed when govuk_frontend_toolkit is replaced.
+    secrets: inherit
+  node_e2e_tests:
+    name: node E2E tests
+    uses: ./.github/workflows/node_e2e_tests.yml
+    needs: [node_build]
+    secrets: inherit
+  
