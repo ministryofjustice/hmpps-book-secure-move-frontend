@@ -1,5 +1,5 @@
 name: E2E tests
-# Custom script to run integration tests in parallel.
+# Custom script to run integration tests - to be upgraded to run tests in parallel
 on:
  workflow_call:
    inputs:
