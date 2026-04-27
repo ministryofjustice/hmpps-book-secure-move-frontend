@@ -56,7 +56,7 @@ jobs:
     secrets: inherit
     with:
       environment: ${{ matrix.environments }}
-  build:
+  docker_build:
     name: Build docker image from hmpps-github-actions
     if: github.ref == 'refs/heads/main'
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
@@ -72,88 +72,88 @@ jobs:
   deploy_staging:
     name: Deploy to the staging environment
     needs:
-      - build
+      - docker_build
       - helm_lint
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
       environment: 'staging'
-      app_version: '${{ needs.build.outputs.app_version }}'
+      app_version: '${{ needs.docker_build.outputs.app_version }}'
   sentry_staging:
     name: Publish staging release to Sentry
     needs:
-      - build
+      - docker_build
       - deploy_staging
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
     with:
       sentry_project: book-a-secure-move-frontend
       sentry_environment: 'staging'
       sentry_create_release: 'true'
-      app_version: '${{ needs.build.outputs.app_version }}'
+      app_version: '${{ needs.docker_build.outputs.app_version }}'
     secrets: inherit
   deploy_uat:
     name: Deploy to UAT environment
     needs:
-      - build
+      - docker_build
       - deploy_staging
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
       environment: 'preprod'
-      app_version: '${{ needs.build.outputs.app_version }}'
+      app_version: '${{ needs.docker_build.outputs.app_version }}'
   sentry_uat:
     name: Publish UAT release to Sentry
     needs:
-      - build
+      - docker_build
       - deploy_uat
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
     with:
       sentry_project: book-a-secure-move-frontend
       sentry_environment: 'uat'
       sentry_create_release: 'true'
-      app_version: '${{ needs.build.outputs.app_version }}'
+      app_version: '${{ needs.docker_build.outputs.app_version }}'
     secrets: inherit
   deploy_preprod:
     name: Deploy to pre-production environment
     needs:
-      - build
+      - docker_build
       - deploy_staging
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
       environment: 'preprod'
-      app_version: '${{ needs.build.outputs.app_version }}'
+      app_version: '${{ needs.docker_build.outputs.app_version }}'
   sentry_preprod:
     name: Publish preprod release to Sentry
     needs:
-      - build
+      - docker_build
       - deploy_preprod
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
     with:
       sentry_project: book-a-secure-move-frontend
       sentry_environment: 'preprod'
       sentry_create_release: 'true'
-      app_version: '${{ needs.build.outputs.app_version }}'
+      app_version: '${{ needs.docker_build.outputs.app_version }}'
     secrets: inherit
   deploy_production:
     name: Deploy to production environment
     needs:
-      - build
+      - docker_build
       - deploy_preprod
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
       environment: 'production'
-      app_version: '${{ needs.build.outputs.app_version }}'
+      app_version: '${{ needs.docker_build.outputs.app_version }}'
   sentry_production:
     name: Publish production release to Sentry
     needs:
-      - build
+      - docker_build
       - deploy_production
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
     with:
       sentry_project: book-a-secure-move-frontend
       sentry_environment: 'production'
       sentry_create_release: 'true'
-      app_version: '${{ needs.build.outputs.app_version }}'
+      app_version: '${{ needs.docker_build.outputs.app_version }}'
     secrets: inherit
