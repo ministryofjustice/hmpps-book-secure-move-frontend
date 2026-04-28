@@ -177,7 +177,7 @@
     "dropzone": "5.9.3",
     "express": "4.22.1",
     "express-session": "1.19.0",
-    "faker": "5.5.3",
+    "faker": "6.6.6",
     "filesize": "10.0.6",
     "fishery": "2.3.1",
     "form-data": "4.0.4",
