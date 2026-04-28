@@ -99,7 +99,7 @@ jobs:
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
-      environment: 'preprod'
+      environment: 'uat'
       app_version: '${{ needs.docker_build.outputs.app_version }}'
   sentry_uat:
     name: Publish UAT release to Sentry
