@@ -315,7 +315,7 @@
   "files": [],
   "scripts": {
     "build": "npm run clean && npm run compile && webpack --config webpack.config.js",
-    "clean": "del .build/",
+    "clean": "npx del .build/",
     "clear-cache-reference-data": "node tasks/clear-cache-reference-data.js",
     "compile": "tsc --project ./",
     "contributors": "(git-authors-cli && finepack && git add package.json && git commit -m 'build: contributors' --no-verify) || true",

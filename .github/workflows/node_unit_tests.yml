@@ -75,6 +75,7 @@ jobs:
         id: unit-tests
         shell: bash
         run: |
+          npm install
           npm run ${{ inputs.npm_script }}
         # continue-on-error: true
         # Replacing the above with if: always()
