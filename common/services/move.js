@@ -229,6 +229,7 @@ class MoveService extends BaseService {
         'to_location',
         'lodgings',
         'lodgings.location',
+        'supplier'
       ],
       params: {
         meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',

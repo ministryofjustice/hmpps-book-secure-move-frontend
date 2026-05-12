@@ -2,6 +2,7 @@ const i18n = require('../../config/i18n').default
 
 const moveToImportantEventsTagListComponent = require('./move-to-important-events-tag-list-component')
 const profileToCardComponent = require('./profile-to-card-component')
+const { FEATURE_FLAGS } = require('../../config')
 
 function moveToCardComponent({
   isCompact = false,
@@ -23,6 +24,7 @@ function moveToCardComponent({
       status,
       to_location: toLocation,
       from_location: fromLocation,
+      supplier,
     } = move
     const href = profile ? `/move/${id}${hrefSuffix}` : ''
     const excludedBadgeStatuses = ['cancelled']
@@ -50,6 +52,7 @@ function moveToCardComponent({
     const statusBadge = showStatusBadge
       ? { text: i18n.t(`statuses::${status}`) }
       : undefined
+    const supplierBadge = FEATURE_FLAGS.SHOW_SUPPLIER_BADGE ? { text: supplier.name } : undefined
     const assessmentType =
       move.profile?.requires_youth_risk_assessment &&
       move.profile?.youth_risk_assessment?.status !== 'confirmed'
@@ -90,6 +93,7 @@ function moveToCardComponent({
       isLodging: move.is_lodging,
       isS46: move.section_forty_six,
       status: statusBadge,
+      supplierBadge,
       classes: isCompact
         ? `app-card--compact ${personCardComponent.classes || ''}`
         : personCardComponent.classes || '',
