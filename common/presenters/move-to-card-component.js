@@ -52,7 +52,7 @@ function moveToCardComponent({
     const statusBadge = showStatusBadge
       ? { text: i18n.t(`statuses::${status}`) }
       : undefined
-    const supplierBadge = FEATURE_FLAGS.SHOW_SUPPLIER_BADGE ? { text: supplier.name } : undefined
+    const supplierBadge = FEATURE_FLAGS.SHOW_SUPPLIER_BADGE && supplier ? { text: supplier?.name } : undefined
     const assessmentType =
       move.profile?.requires_youth_risk_assessment &&
       move.profile?.youth_risk_assessment?.status !== 'confirmed'
