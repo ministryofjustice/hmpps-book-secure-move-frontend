@@ -14,13 +14,11 @@
 
   <div class="app-card__content">
     <header class="app-card__header">
-      <table>
       {% if params.status %}
         <span class="app-card__badge">
           {{ mojBadge(params.status) }}
         </span>
       {% endif %}
-      </table>
       {% if params.supplierBadge %}
         <span class="app-card__badge">
           {{ mojBadge(params.supplierBadge) }}
