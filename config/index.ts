@@ -333,6 +333,9 @@ export const FEATURE_FLAGS = {
   SUPPLIER_USERS_VIEW_ALL_MOVES: /true/i.test(
     process.env.FEATURE_FLAG_SUPPLIER_USERS_VIEW_ALL_MOVES || ''
   ),
+  SHOW_SUPPLIER_BADGE: /true/i.test(
+    process.env.FEATURE_FLAG_SHOW_SUPPLIER_BADGE || ''
+  ),
 }
 export const FRAMEWORKS = {
   CURRENT_VERSION: process.env.FRAMEWORKS_VERSION || LATEST_FRAMEWORKS_BUILD,

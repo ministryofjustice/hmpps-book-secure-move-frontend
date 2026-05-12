@@ -112,6 +112,7 @@ describe('Presenters', function () {
               isLodging: false,
               isS46: undefined,
               caption: undefined,
+              supplierBadge: undefined,
               tags: [{ items: 'moveToImportantEventsTagListComponent' }],
             })
           })
@@ -334,6 +335,7 @@ describe('Presenters', function () {
           isLockout: false,
           isLodging: false,
           isS46: undefined,
+          supplierBadge: undefined,
         })
       })
     })
@@ -373,6 +375,7 @@ describe('Presenters', function () {
           isLockout: true,
           isLodging: false,
           isS46: undefined,
+          supplierBadge: undefined,
         })
       })
     })
@@ -415,6 +418,7 @@ describe('Presenters', function () {
           isLockout: false,
           isLodging: false,
           isS46: undefined,
+          supplierBadge: undefined,
         })
       })
     })
@@ -445,6 +449,7 @@ describe('Presenters', function () {
             isLockout: false,
             isLodging: false,
             isS46: undefined,
+            supplierBadge: undefined,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
@@ -483,6 +488,7 @@ describe('Presenters', function () {
             isLockout: false,
             isLodging: false,
             isS46: undefined,
+            supplierBadge: undefined,
           })
         })
       })
@@ -503,6 +509,7 @@ describe('Presenters', function () {
               text: '__translated__',
             },
             caption: undefined,
+            supplierBadge: undefined,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           })
         })
