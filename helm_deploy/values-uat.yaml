@@ -26,6 +26,7 @@ generic-service:
     DISALLOWED_DEVICES: ""
     DISALLOWED_DEVICES_ACTIONS: ""
     FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
+    FEATURE_FLAG_SUPPLIER_USERS_VIEW_ALL_MOVES: "true"
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:

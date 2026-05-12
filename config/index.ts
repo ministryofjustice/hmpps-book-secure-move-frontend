@@ -324,9 +324,14 @@ export const FEATURE_FLAGS = {
   ),
   DATE_OF_ARREST: /true/i.test(process.env.FEATURE_FLAG_DATE_OF_ARREST || ''),
   SECTION_46: /true/i.test(process.env.FEATURE_FLAG_SECTION_46 || ''),
-  FUZZY_PNC_SEARCH: /true/i.test(process.env.FEATURE_FLAG_FUZZY_PNC_SEARCH || ''),
+  FUZZY_PNC_SEARCH: /true/i.test(
+    process.env.FEATURE_FLAG_FUZZY_PNC_SEARCH || ''
+  ),
   EXTRADITION_MOVES: /true/i.test(
     process.env.FEATURE_FLAG_EXTRADITION_MOVES || ''
+  ),
+  SUPPLIER_USERS_VIEW_ALL_MOVES: /true/i.test(
+    process.env.FEATURE_FLAG_SUPPLIER_USERS_VIEW_ALL_MOVES || ''
   ),
 }
 export const FRAMEWORKS = {
