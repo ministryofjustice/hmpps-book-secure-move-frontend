@@ -19,7 +19,7 @@ describe('Back-end API client with requests', function () {
           // First auth request should fail
           authScope = nock(`${config.API.AUTH_URL}`)
             .post('', { grant_type: 'client_credentials' })
-            .query({params: {scope: 'diagnostics.pii'}})
+            .query({ params: {scope: 'diagnostics.pii' }})
             .once()
             .replyWithError('something awful happened')
 
