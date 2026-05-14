@@ -70,6 +70,9 @@ Auth.prototype = {
         username: this.config.username,
         password: this.config.password,
       },
+      params: {
+        scope: 'diagnostics.pii'
+      },
     }
 
     const url = this.config.authUrl
