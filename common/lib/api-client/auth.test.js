@@ -226,6 +226,9 @@ describe('API Client', function () {
                 username: mockOptions.username,
                 password: mockOptions.password,
               },
+              params: {
+                scope: 'diagnostics.pii'
+              },
             }
           )
         })
