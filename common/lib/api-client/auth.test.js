@@ -19,7 +19,6 @@ describe('API Client', function () {
       authUrl: 'http://auth-url.com/token',
       username: 'user-id',
       password: 'asecret',
-      scope: 'diagnostics.pii'
     }
     const mockTokenResponse = {
       access_token: 'newMockToken',
