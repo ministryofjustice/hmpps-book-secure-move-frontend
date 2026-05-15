@@ -32,7 +32,7 @@ jobs:
           npm run build
       - name: Run E2E tests
         id: e2e-tests
-        run: npm run test-e2e -- --test "test/e2e/**/*.test.js"
+        run: npm run test-e2e
         env:
           REDIS_URL: ""
           REDIS_HOST: ""
