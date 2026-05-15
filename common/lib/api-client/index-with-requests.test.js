@@ -19,7 +19,7 @@ describe('Back-end API client with requests', function () {
           // First auth request should fail
           authScope = nock(`${config.API.AUTH_URL}`)
             .post('', { grant_type: 'client_credentials' })
-            .query({ scope: 'diagnostics.pii' })
+            .query({ scope: 'read write' })
             .once()
             .replyWithError('something awful happened')
 
@@ -47,12 +47,14 @@ describe('Back-end API client with requests', function () {
         it('should succeed on subsequent batched requests', function () {
           authScope
             .post('', { grant_type: 'client_credentials' })
+            .query({ scope: 'read write' })
             .once()
             .reply(200, {
               access_token: 'abcdef',
               token_type: 'Bearer',
               expires_in: 7200,
               created_at: 1618328323,
+              scope: 'read write',
             })
 
           nock(`${config.API.BASE_URL}`)

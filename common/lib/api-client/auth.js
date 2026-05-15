@@ -71,7 +71,7 @@ Auth.prototype = {
         password: this.config.password,
       },
       params: {
-        scope: 'diagnostics.pii'
+        scope: 'read write'
       },
     }
 
