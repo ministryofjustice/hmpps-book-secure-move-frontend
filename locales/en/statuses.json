@@ -43,6 +43,7 @@
   "description_prisoner_to_be_released_on_bail": "Reason — $t(fields::cancellation_reason.items.prisoner_to_be_released_on_bail.label)",
   "description_ptr_unachievable": "Reason — $t(fields::cancellation_reason.items.ptr_unachievable.label)",
   "description_prisoner_unfit_to_travel": "Reason — $t(fields::cancellation_reason.items.prisoner_unfit_to_travel.label)",
+  "description_prisoner_no_longer_required": "Reason — $t(fields::cancellation_reason.items.prisoner_no_longer_required.label)",
   "description_unsuitable_vehicle": "Reason — $t(fields::cancellation_reason.items.unsuitable_vehicle.label)",
   "description_video_link_to_be_used": "Reason — $t(fields::cancellation_reason.items.video_link_to_be_used.label)",
   "description_made_in_error": "Reason — $t(fields::cancellation_reason.items.made_in_error.label)",

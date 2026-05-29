@@ -92,6 +92,11 @@ export const cancellationReason = {
       move_types: ['other']
     },
     {
+      value: 'prisoner_no_longer_required',
+      text: 'fields::cancellation_reason.items.prisoner_no_longer_required.label',
+      move_types: ['other']
+    },
+    {
       value: 'prisoner_unfit_to_travel',
       text: 'fields::cancellation_reason.items.prisoner_unfit_to_travel.label',
       move_types: ['other']

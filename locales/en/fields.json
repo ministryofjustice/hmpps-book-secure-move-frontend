@@ -423,6 +423,9 @@
       "cancelled_by_pmu" : {
         "label" : "Population Management Unit (PMU) cancelled request"
       },
+      "prisoner_no_longer_required" :  {
+        "label" : "Prisoner no longer required at court"
+      },
       "prisoner_refusal" :  {
         "label" : "Prisoner refusal"
       },
