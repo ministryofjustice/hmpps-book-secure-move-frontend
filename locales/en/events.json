@@ -309,6 +309,10 @@
     "heading": "Self-harm",
     "description": "{{notes}}"
   },
+  "PerHistoricSelfHarm": {
+    "heading": "History of self-harm",
+    "description": "{{comment}}"
+  },
   "PerSuicideAndSelfHarm": {
     "heading": "",
     "description": "{{history_of_self_harm_details}}"
