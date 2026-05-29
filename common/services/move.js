@@ -9,6 +9,7 @@ const { isPerLocked } = require('../helpers/move/is-per-locked')
 const restClient = require('../lib/api-client/rest-client')
 
 const { BaseService } = require('./base')
+const { FEATURE_FLAGS } = require('../../config')
 
 const defaultInclude = [
   'allocation',
@@ -228,6 +229,7 @@ class MoveService extends BaseService {
         'to_location',
         'lodgings',
         'lodgings.location',
+        'supplier'
       ],
       params: {
         meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',
@@ -238,7 +240,7 @@ class MoveService extends BaseService {
         date_to: endDate,
         from_location_id: fromLocationId.join(','),
         to_location_id: toLocationId.join(','),
-        supplier_id: supplierId,
+        supplier_id: FEATURE_FLAGS.SUPPLIER_USERS_VIEW_ALL_MOVES ? undefined : supplierId,
       },
     })
   }

@@ -13,8 +13,11 @@ generic-service:
   env:
     API_BASE_URL: "https://hmpps-book-secure-move-api-preprod.apps.cloud-platform.service.justice.gov.uk"
     AUTH_PROVIDER_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk"
+    ENVIRONMENT_NAME: preprod
     FEATURE_FLAG_ADD_LODGE_BUTTON: "true"
     FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
+    FEATURE_FLAG_SUPPLIER_USERS_VIEW_ALL_MOVES: "false"
+    FEATURE_FLAG_SHOW_SUPPLIER_BADGE: "false"
     FEEDBACK_URL: "https://eu.surveymonkey.com/r/3CKYXSC"
     FRAMEWORKS_VERSION: "3.0.0"
     GOOGLE_ANALYTICS_ID: "G-3LCJP1TWQC"
