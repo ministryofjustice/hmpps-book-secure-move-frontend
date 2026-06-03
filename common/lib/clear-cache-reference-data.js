@@ -3,13 +3,12 @@ const redisStore = require('../../config/redis-store.js')
 
 const scanAndDelete = async (cursor, pattern) => {
   const client = (await redisStore()).client
-  const [nextCursor, keys] = await client.scanAsync(
-    cursor,
-    'MATCH',
-    pattern,
-    'COUNT',
-    '100'
-  )
+
+  const { cursor: nextCursor, keys } = await client.scan(cursor, {
+    MATCH: pattern,
+    COUNT: 100,
+  })
+
 
   await Promise.all(keys.map(key => client.del(key)))
 
