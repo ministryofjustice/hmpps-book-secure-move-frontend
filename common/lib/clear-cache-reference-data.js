@@ -1,28 +1,28 @@
 const CONFIG = require('../../config')
 const redisStore = require('../../config/redis-store.js')
 
-const scanAndDelete = async (cursor, pattern) => {
+const scanAndDelete = async pattern => {
   const client = (await redisStore()).client
 
-  const { cursor: nextCursor, keys } = await client.scan(cursor, {
+  let count = 0
+
+  for await (const key of client.scanIterator({
     MATCH: pattern,
     COUNT: 100,
-  })
+  })) {
+    if (typeof key !== 'string' || key.length === 0) {
+      continue
+    }
 
-
-  await Promise.all(keys.map(key => client.del(key)))
-
-  if (nextCursor !== '0') {
-    return keys.length + (await scanAndDelete(nextCursor, pattern))
+    await client.del(key)
+    count++
   }
 
-  return keys.length
+  return count
 }
 
 const clearCacheReferenceData = async (referenceName = '') => {
-  return await scanAndDelete(
-    '0',
-    `cache:v${CONFIG.API.VERSION}:GET./api/reference/${referenceName}*`
+  return await scanAndDelete(`cache:v${CONFIG.API.VERSION}:GET./api/reference/${referenceName}*`
   )
 }
 
