@@ -375,12 +375,14 @@
     "package.json": "finepack"
   },
   "overrides": {
+    "brace-expansion": "5.0.6",
+    "fast-uri": "3.1.2",
     "fast-xml-parser": "^5.3.5",
     "find-versions": "6.0.0",
     "meow": "14.1.0",
-    "serialize-javascript": "7.0.4",
+    "serialize-javascript": "7.0.5",
     "shell-quote": "1.8.4",
-    "tmp": "0.2.5",
+    "tmp": "0.2.7",
     "underscore": "^1.13.6"
   }
 }
