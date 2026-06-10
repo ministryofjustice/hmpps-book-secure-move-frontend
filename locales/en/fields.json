@@ -411,6 +411,9 @@
   "cancellation_reason": {
     "label": "Why are you cancelling this move request?",
     "items": {
+      "allocation_cancelled" : {
+        "label" : "Allocation was cancelled"
+      },
       "combined_with_another_request" : {
         "label" : "Efficiency: move combined with another request"
       },
