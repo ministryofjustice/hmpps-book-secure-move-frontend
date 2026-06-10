@@ -379,6 +379,7 @@
     "find-versions": "6.0.0",
     "meow": "14.1.0",
     "serialize-javascript": "7.0.4",
+    "shell-quote": "1.8.4",
     "tmp": "0.2.5",
     "underscore": "^1.13.6"
   }
