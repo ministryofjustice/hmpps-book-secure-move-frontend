@@ -22,6 +22,7 @@
   "cancelled_filter": "Cancelled",
   "cancelled_rejected": "Single request rejected",
   "description": "",
+  "description_allocation_cancelled": "Reason — $t(fields::cancellation_reason.items.allocation_cancelled.label)",
   "description_combined_with_another_request": "Reason — $t(fields::cancellation_reason.items.combined_with_another_request.label)",
   "description_operational_issues_prison": "Reason — $t(fields::cancellation_reason.items.operational_issues_prison.label)",
   "description_tornado_event": "Reason — $t(fields::cancellation_reason.items.tornado_event.label)",
