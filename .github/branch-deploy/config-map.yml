@@ -5,7 +5,7 @@ metadata:
   namespace: hmpps-book-secure-move-frontend-staging
 data:
   API_AUTH_PATH: "/oauth/token"
-  API_BASE_URL: "https://hmpps-book-secure-move-api-staging.apps.cloud-platform.service.justice.gov.uk"
+  API_BASE_URL: "https://hmpps-book-secure-move-api-uat.apps.cloud-platform.service.justice.gov.uk"
   API_HEALTHCHECK_PATH: "/ping.xml"
   API_PATH: "/api"
   API_VERSION: "2"

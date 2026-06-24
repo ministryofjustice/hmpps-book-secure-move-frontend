@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hmpps-book-secure-move-frontend-deployment-pr-{PR_NUMBER}
-  namespace: hmpps-book-secure-move-frontend-staging
+  namespace: hmpps-book-secure-move-frontend-uat
 spec:
   replicas: 1
   revisionHistoryLimit: 10
