@@ -31,7 +31,7 @@ module.exports = async (
   let html
 
   if (eventType === 'PerSuicideAndSelfHarm') {
-    source &&
+    source?.option &&
       rows.push([
         {
           heading:
@@ -42,23 +42,24 @@ module.exports = async (
         },
       ])
 
-    natureOfSelfHarm &&
+    const concernHtml = [].concat(natureOfSelfHarm)
+      .filter(obj => obj?.option)
+      .map(
+        obj =>
+          `<p class="govuk-!-font-size-16">${obj.option}${obj.details ? ` - ${obj.details}` : ''}</p>`
+      )
+      .join('')
+    concernHtml &&
       rows.push([
         {
           heading:
             '<h4 class="govuk-heading-s govuk-!-font-size-16">Concern</h4>',
         },
-        {
-          html: natureOfSelfHarm
-            .map(
-              obj =>
-                `<p class="govuk-!-font-size-16">${obj.option} - ${obj.details}</p>`
-            )
-            .join(''),
-        },
+        { html: concernHtml },
       ])
 
     historyOfSelfHarmRecency &&
+    historyOfSelfHarmRecency?.option &&
       rows.push([
         {
           heading:
@@ -71,42 +72,44 @@ module.exports = async (
 
     historyOfSelfHarmMethod &&
       historyOfSelfHarmDetails &&
+      historyOfSelfHarmMethod?.option &&
+      historyOfSelfHarmDetails?.option &&
       rows.push([
         {
           heading:
             '<h4 class="govuk-heading-s govuk-!-font-size-16">Method</h4>',
         },
         {
-          html: `<p class="govuk-!-font-size-16">${historyOfSelfHarmMethod.join(
+          html: `<p class="govuk-!-font-size-16">${[].concat(historyOfSelfHarmMethod).join(
             ', '
           )} - ${historyOfSelfHarmDetails}</p>`,
         },
       ])
 
-    actionsOfSelfHarmUndertaken &&
+    const safetyActionsHtml = [].concat(actionsOfSelfHarmUndertaken)
+      .filter(obj => obj?.option)
+      .map(
+        obj =>
+          `<p class="govuk-!-font-size-16">${obj.option}${obj.details ? ` - ${obj.details}` : ''}</p>`
+      )
+      .join('')
+    safetyActionsHtml &&
       rows.push([
         {
           heading:
             '<h4 class="govuk-heading-s govuk-!-font-size-16">Safety actions</h4>',
         },
-        {
-          html: actionsOfSelfHarmUndertaken
-            .map(
-              obj =>
-                `<p class="govuk-!-font-size-16">${obj.option} - ${obj.details}</p>`
-            )
-            .join(''),
-        },
+        { html: safetyActionsHtml },
       ])
 
-    observationLevel &&
+    observationLevel?.option &&
       rows.push([
         {
           heading:
             '<h4 class="govuk-heading-s govuk-!-font-size-16">Observation level</h4>',
         },
         {
-          html: `<p class="govuk-!-font-size-16">${observationLevel.option} - ${observationLevel.details}</p>`,
+          html: `<p class="govuk-!-font-size-16">${observationLevel.option}${observationLevel.details ? ` - ${observationLevel.details}` : ''}</p>`,
         },
       ])
 
