@@ -18,7 +18,7 @@
   "incident_vehicle": "",
   "incident_vehicle_true": "The event occurred on vehicle {{vehicle_reg}}",
   "incident_reported": "The incident occurred at {{occurred_at, formatTime}} and was reported by {{supplier_personnel_numbers, oxfordJoin}} at {{reported_at, formatTime}}",
-  "incident_reported2": "The incident occurred at {{occurred_at, formatTime}} and was reported by {{supplier_personnel_number}} <br>{{notes}}", 
+  "incident_reported2": "The incident occurred at {{occurred_at, formatTime}} and was reported by {{supplier_personnel_number}} <br>{{notes}}",
   "incident_reported_classified": "<br>$t(events::incident_reported)<br>$t(events::select_fault_classification)",
   "incident_level_details": "{{incident_level}} incident involving $t(events::person) occurred $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)",
   "select_incident_location_preposition": "$t(events::incident_location_preposition, {\"context\": \"{{vehicle_reg, exists}}\"})",
@@ -489,7 +489,7 @@
   "PersonMoveUsedForce": {
     "flag": "red",
     "heading": "Used force",
-    "description": "Use of force incident involving $t(events::person) in vehicle {{vehicle_reg}} $t(events::incident_reported_classified) <br>{{notes}}" 
+    "description": "Use of force incident involving $t(events::person) in vehicle {{vehicle_reg}} $t(events::incident_reported_classified) <br>{{notes}}"
   },
   "PersonMoveVehicleBrokeDown": {
     "heading": "Supplier vehicle breakdown",

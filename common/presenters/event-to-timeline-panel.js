@@ -59,7 +59,6 @@ module.exports = async (
       ])
 
     historyOfSelfHarmRecency &&
-    historyOfSelfHarmRecency?.option &&
       rows.push([
         {
           heading:
@@ -72,8 +71,6 @@ module.exports = async (
 
     historyOfSelfHarmMethod &&
       historyOfSelfHarmDetails &&
-      historyOfSelfHarmMethod?.option &&
-      historyOfSelfHarmDetails?.option &&
       rows.push([
         {
           heading:
