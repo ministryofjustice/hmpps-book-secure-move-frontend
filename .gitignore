@@ -87,3 +87,4 @@ report*.json
 
 #Synk
 .snyk
+dump.rdb
