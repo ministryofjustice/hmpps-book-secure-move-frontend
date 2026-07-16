@@ -10,5 +10,5 @@
     "attemptLimit": 5
   },
   "stopOnFirstFail": true,
-  "disableNativeAutomation": "true"
+  "disableNativeAutomation": "false"
 }
