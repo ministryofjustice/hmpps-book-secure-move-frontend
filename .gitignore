@@ -84,3 +84,7 @@ report*.json
 
 # Helm Chart lockfiles
 **/Chart.lock
+
+#Synk
+.snyk
+dump.rdb
