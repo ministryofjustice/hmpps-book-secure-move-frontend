@@ -19,6 +19,11 @@
           {{ mojBadge(params.status) }}
         </span>
       {% endif %}
+      {% if params.supplierBadge %}
+        <span class="app-card__badge">
+          {{ mojBadge(params.supplierBadge) }}
+        </span>
+      {% endif %}
 
       <h2 class="app-card__title">
         {% if params.href %}

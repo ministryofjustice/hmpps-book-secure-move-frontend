@@ -8,12 +8,12 @@ const {
 
 const errorMock = new Error('500')
 class DowntimeServiceMock extends DowntimeService {
-  fetchBanner(entries) {
+  fetch() {
     throw errorMock
   }
 }
 class WhatsNewServiceMock extends WhatsNewService {
-  fetchBanner(entries) {
+  fetch() {
     throw errorMock
   }
 }

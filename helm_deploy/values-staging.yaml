@@ -18,6 +18,7 @@ generic-service:
     CONTENTFUL_HOST: "preview.contentful.com"
     ENABLE_COMPONENTS_LIBRARY: "true"
     ENABLE_DEVELOPMENT_TOOLS: "true"
+    ENVIRONMENT_NAME: dev
     FEEDBACK_URL: "#"
     GOOGLE_ANALYTICS_ID: "G-3G741W4FQ2"
     MANAGE_USERS_API_URL: "https://manage-users-api-dev.hmpps.service.justice.gov.uk"
@@ -28,6 +29,8 @@ generic-service:
     FEATURE_FLAG_EXTRADITION_MOVES: "true"
     FEATURE_FLAG_SECTION_46: "true"
     FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
+    FEATURE_FLAG_SUPPLIER_USERS_VIEW_ALL_MOVES: "true"
+    FEATURE_FLAG_SHOW_SUPPLIER_BADGE: "true"
     OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT"
     DISALLOWED_DEVICES: "iPhone,Android"
     DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT"

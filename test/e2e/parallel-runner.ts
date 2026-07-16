@@ -3,7 +3,6 @@
 import fs from 'fs'
 
 import concurrently, { Command } from 'concurrently'
-import { ProcessCloseCondition } from 'concurrently/dist/src/flow-control/kill-others'
 import glob from 'glob'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers';
@@ -198,7 +197,7 @@ if (debugOnFail) {
 
 const stopOnFirstFail =
   args['fail-fast'] || E2E_FAIL_FAST ? '--stop-on-first-fail' : ''
-const killOthers: ProcessCloseCondition[] | undefined = stopOnFirstFail
+const killOthers: ('failure' | 'success')[] | undefined = stopOnFirstFail
   ? ['failure']
   : undefined
 const agent = args.headless
@@ -304,10 +303,7 @@ const runTests = async () => {
         3000 + i
       } NOMIS_ELITE2_API_URL=http://localhost:${
         3999 + i
-      } FEATURE_FLAG_ADD_LODGE_BUTTON=true
-        FEATURE_FLAG_EXTRADITION_MOVES=true
-        FEATURE_FLAG_SECTION_46=true
-        node start.js`
+      } FEATURE_FLAG_ADD_LODGE_BUTTON=true FEATURE_FLAG_EXTRADITION_MOVES=true FEATURE_FLAG_SECTION_46=true node start.js`
   )
   const authCommandStrings = testBuckets.map(
     (_, i) =>

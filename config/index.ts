@@ -56,11 +56,11 @@ export const REDIS: {
   }
 } = {}
 
-if (process.env.REDIS_URL) {
+if (process.env.REDIS_URL && process.env.REDIS_URL.trim() !== '') {
   REDIS.SESSION = {
     url: process.env.REDIS_URL,
   }
-} else if (process.env.REDIS_HOST) {
+} else if (process.env.REDIS_HOST && process.env.REDIS_HOST.trim() !== '') {
   REDIS.SESSION = {
     socket: {
       host: process.env.REDIS_HOST,
@@ -324,9 +324,17 @@ export const FEATURE_FLAGS = {
   ),
   DATE_OF_ARREST: /true/i.test(process.env.FEATURE_FLAG_DATE_OF_ARREST || ''),
   SECTION_46: /true/i.test(process.env.FEATURE_FLAG_SECTION_46 || ''),
-  FUZZY_PNC_SEARCH: /true/i.test(process.env.FEATURE_FLAG_FUZZY_PNC_SEARCH || ''),
+  FUZZY_PNC_SEARCH: /true/i.test(
+    process.env.FEATURE_FLAG_FUZZY_PNC_SEARCH || ''
+  ),
   EXTRADITION_MOVES: /true/i.test(
     process.env.FEATURE_FLAG_EXTRADITION_MOVES || ''
+  ),
+  SUPPLIER_USERS_VIEW_ALL_MOVES: /true/i.test(
+    process.env.FEATURE_FLAG_SUPPLIER_USERS_VIEW_ALL_MOVES || ''
+  ),
+  SHOW_SUPPLIER_BADGE: /true/i.test(
+    process.env.FEATURE_FLAG_SHOW_SUPPLIER_BADGE || ''
   ),
 }
 export const FRAMEWORKS = {

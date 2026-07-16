@@ -730,6 +730,7 @@ describe('Move Service', function () {
             'to_location',
             'lodgings',
             'lodgings.location',
+            'supplier',
           ],
           params: {
             meta: 'vehicle_registration,expected_time_of_arrival,expected_collection_time',
@@ -787,6 +788,7 @@ describe('Move Service', function () {
             'to_location',
             'lodgings',
             'lodgings.location',
+            'supplier',
           ],
           filter: {
             status: undefined,

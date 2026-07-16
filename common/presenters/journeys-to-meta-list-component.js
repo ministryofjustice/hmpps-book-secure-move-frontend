@@ -72,7 +72,7 @@ function _mapJourney({
   return {
     tag: {
       text: state,
-      classes: `govuk-!-font-size-14 ${tagClass}`,
+      classes: `govuk-!-font-size-16 ${tagClass}`,
       attributes: {
         style: 'padding: 2px 5px',
       },

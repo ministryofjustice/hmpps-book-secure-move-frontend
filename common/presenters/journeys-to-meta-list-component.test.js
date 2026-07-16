@@ -111,10 +111,10 @@ describe('Presenters', function () {
             'completed',
           ])
           expect(statusClasses).to.deep.equal([
-            'govuk-!-font-size-14 govuk-tag--red',
-            'govuk-!-font-size-14 ',
-            'govuk-!-font-size-14 govuk-tag--yellow',
-            'govuk-!-font-size-14 govuk-tag--green',
+            'govuk-!-font-size-16 govuk-tag--red',
+            'govuk-!-font-size-16 ',
+            'govuk-!-font-size-16 govuk-tag--yellow',
+            'govuk-!-font-size-16 govuk-tag--green',
           ])
         })
 

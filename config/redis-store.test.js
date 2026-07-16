@@ -1,181 +1,80 @@
-const bluebird = require('bluebird')
 const proxyquire = require('proxyquire')
 
 function MockRedisStore(opts = {}) {
-  this.isStore = true
-  this.init(opts)
+  this.client = opts.client
 }
 
-MockRedisStore.prototype.init = opts => this
-
-const mockClient = {
-  connect: sinon.stub(),
-}
-const mockRedisClient = {
-  createClient: sinon.stub().returns(mockClient),
-}
 const mockRedisConfig = {
   url: 'redis://defaultuser:defaultpassword@host.com/0',
 }
-const mockStoreOptions = {
-  client: mockClient,
-}
+
 const errorStub = sinon.stub()
-const retryStrategyStub = sinon.stub()
 
 describe('Redis store', function () {
-  describe('#redisStore()', function () {
-    let redisStore
+  let mockClient
+  let mockRedisClient
+  let redisStore
 
-    beforeEach(function () {
-      sinon.spy(MockRedisStore.prototype, 'init')
-      sinon.stub(bluebird, 'promisifyAll')
+  beforeEach(function () {
+    mockClient = {
+      connect: sinon.stub().resolves(),
+      on: sinon.stub(),
+    }
+
+    mockRedisClient = {
+      createClient: sinon.stub().returns(mockClient),
+    }
+
+    redisStore = proxyquire('./redis-store', {
+      redis: mockRedisClient,
+      'connect-redis': {
+        RedisStore: MockRedisStore,
+      },
+      './': {
+        REDIS: {
+          SESSION: mockRedisConfig,
+        },
+      },
+      './logger': {
+        error: errorStub,
+      },
     })
+  })
 
-    context('without options', function () {
-      let store
+  context('without options', function () {
+    it('creates and caches a redis store', async function () {
+      const store1 = await redisStore()
+      const store2 = await redisStore()
 
-      before(function () {
-        redisStore = proxyquire('./redis-store', {
-          redis: mockRedisClient,
-          'connect-redis': () => MockRedisStore,
-          'node-redis-retry-strategy': () => retryStrategyStub,
-          './': {
-            REDIS: {
-              SESSION: mockRedisConfig,
-            },
-          },
-          './logger': {
-            error: errorStub,
-          },
-        })
-      })
+      sinon.assert.calledOnce(mockRedisClient.createClient)
+      sinon.assert.calledOnce(mockClient.connect)
 
-      context('on first call', function () {
-        beforeEach(async function () {
-          store = await redisStore()
-        })
-
-        it('should create a new store with default options', function () {
-          expect(mockRedisClient.createClient).to.be.calledWithExactly({
-            ...mockRedisConfig,
-            logErrors: errorStub,
-            retry_strategy: retryStrategyStub,
-            legacyMode: true,
-          })
-          expect(bluebird.promisifyAll).to.be.calledOnceWithExactly(mockClient)
-          expect(MockRedisStore.prototype.init).to.be.calledOnceWithExactly(
-            mockStoreOptions
-          )
-        })
-
-        it('should return a new store', function () {
-          expect(store).to.be.a('object')
-          expect(store).to.deep.equal(new MockRedisStore())
-        })
-      })
-
-      context('on second call', function () {
-        beforeEach(async function () {
-          store = await redisStore()
-        })
-
-        it('should not create new client', function () {
-          expect(MockRedisStore.prototype.init).not.to.be.called
-        })
-
-        it('should return a client', function () {
-          expect(store).to.be.a('object')
-          expect(store).to.deep.equal(new MockRedisStore())
-        })
-      })
-
-      context('on further calls', function () {
-        beforeEach(async function () {
-          store = await redisStore()
-        })
-
-        it('should not create new client', function () {
-          expect(MockRedisStore.prototype.init).not.to.be.called
-        })
-
-        it('should return a client', function () {
-          expect(store).to.be.a('object')
-          expect(store).to.deep.equal(new MockRedisStore())
-        })
-      })
+      expect(store1).to.equal(store2)
+      expect(store1.client).to.equal(mockClient)
     })
+  })
 
-    context('with options', function () {
-      const mockOptions = {
-        url: 'redis://user:password@host.com/0',
-        legacyMode: true,
-      }
-      let store
+  context('with options', function () {
+    const mockOptions = {
+      url: 'redis://user:password@host.com/0',
+      socket: {
+        reconnectStrategy: () => 1000,
+      },
+    }
 
-      before(function () {
-        redisStore = proxyquire('./redis-store', {
-          redis: mockRedisClient,
-          'connect-redis': () => MockRedisStore,
-          'node-redis-retry-strategy': () => retryStrategyStub,
-          './': {
-            REDIS: {
-              SESSION: mockRedisConfig,
-            },
-          },
-          './logger': {
-            error: errorStub,
-          },
-        })
+    it('uses provided options on first call only', async function () {
+      const store1 = await redisStore(mockOptions)
+      const store2 = await redisStore({
+        url: 'redis://ignored@host.com/0',
       })
 
-      context('on first call', function () {
-        beforeEach(async function () {
-          store = await redisStore(mockOptions)
-        })
+      sinon.assert.calledOnceWithExactly(
+        mockRedisClient.createClient,
+        mockOptions
+      )
+      sinon.assert.calledOnce(mockClient.connect)
 
-        it('should create a new store with default options', function () {
-          expect(mockRedisClient.createClient).to.be.calledWithExactly(
-            mockOptions
-          )
-          expect(bluebird.promisifyAll).to.be.calledOnceWithExactly(mockClient)
-          expect(MockRedisStore.prototype.init).to.be.calledOnceWithExactly(
-            mockStoreOptions
-          )
-          expect(store).to.be.a('object')
-          expect(store).to.deep.equal(new MockRedisStore())
-        })
-      })
-
-      context('on second call', function () {
-        beforeEach(async function () {
-          store = await redisStore(mockOptions)
-        })
-
-        it('should not create new client', function () {
-          expect(MockRedisStore.prototype.init).not.to.be.called
-        })
-
-        it('should return a client', function () {
-          expect(store).to.be.a('object')
-          expect(store).to.deep.equal(new MockRedisStore())
-        })
-      })
-
-      context('on further calls', function () {
-        beforeEach(async function () {
-          store = await redisStore(mockOptions)
-        })
-
-        it('should not create new client', function () {
-          expect(MockRedisStore.prototype.init).not.to.be.called
-        })
-
-        it('should return a client', function () {
-          expect(store).to.be.a('object')
-          expect(store).to.deep.equal(new MockRedisStore())
-        })
-      })
+      expect(store1).to.equal(store2)
     })
   })
 })
