@@ -1,4 +1,4 @@
-const faker = require('faker')
+const { faker } = require('@faker-js/faker')
 
 function generateAssessmentRespones(responses) {
   return responses.map(response => {
@@ -9,19 +9,19 @@ function generateAssessmentRespones(responses) {
       if (options.length > 0) {
         value = options.includes('No')
           ? 'No'
-          : faker.random.arrayElement(options)
+          : faker.helpers.arrayElement(options)
       } else {
         value = faker.lorem.sentence()
       }
     }
 
     if (response.value_type === 'array') {
-      value = [faker.random.arrayElement(options)]
+      value = [faker.helpers.arrayElement(options)]
     }
 
     if (response.value_type === 'object::followup_comment') {
       value = {
-        option: faker.random.arrayElement(options),
+        option: faker.helpers.arrayElement(options),
         details: faker.lorem.sentence(),
       }
     }
