@@ -383,7 +383,6 @@
     "fast-uri": "3.1.2",
     "fast-xml-parser": "^5.3.5",
     "find-versions": "6.0.0",
-    "@opentelemetry/core": ">=2.8.0",
     "meow": "14.1.0",
     "serialize-javascript": "7.0.5",
     "shell-quote": "1.8.4",
