@@ -17,10 +17,12 @@
   "select_incident_vehicle": "$t(events::incident_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
   "incident_vehicle": "",
   "incident_vehicle_true": "The event occurred on vehicle {{vehicle_reg}}",
-  "incident_reported": "The incident was reported by {{supplier_personnel_numbers, oxfordJoin}} at {{reported_at, formatTime}}",
+  "incident_reported": "The incident occurred at {{occurred_at, formatTime}} and was reported by {{supplier_personnel_numbers, oxfordJoin}} at {{reported_at, formatTime}}",
+  "incident_reported2": "The incident occurred at {{occurred_at, formatTime}} and was reported by {{supplier_personnel_number}} <br>{{notes}}",
   "incident_reported_classified": "<br>$t(events::incident_reported)<br>$t(events::select_fault_classification)",
   "incident_level_details": "{{incident_level}} incident involving $t(events::person) occurred $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)",
   "select_incident_location_preposition": "$t(events::incident_location_preposition, {\"context\": \"{{vehicle_reg, exists}}\"})",
+  "suicide_and_self_harm": "{{indication_of_self_harm_or_suicide}} <br>{{nature_of_self_harm}} <br>{{history_of_self_harm}} <br>{{history_of_self_harm_recency}} <br>{{history_of_self_harm_method}} <br>{{history_of_self_harm_details}} <br>{{actions_of_self_harm_undertaken}} <br>{{observation_level}} <br>{{source}} <br>{{comments}} <br>{{reporting_officer}} <br>{{reporting_officer_signed_at}} <br>{{reception_officer}} <br>{{reception_officer_signed_at}} <br>{{police_personnel_number}} <br>{{supplier_personnel_number}}",
   "incident_location_preposition_true": "on",
   "incident_location_preposition_false": "at",
   "select_incident_location_vehicle": "$t(events::incident_location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
@@ -291,23 +293,23 @@
   },
   "PerViolentDangerous": {
     "heading": "Violent Or Dangerous",
-    "description": "{{notes}}"
+    "description": "$t(events::incident_reported2)"
   },
   "PerWeapons": {
     "heading": "Created or used weapons",
-    "description": "{{notes}}"
+    "description": "$t(events::incident_reported2)"
   },
   "PerConcealed": {
     "heading": "Concealed items",
-    "description": "{{notes}}"
+    "description": "$t(events::incident_reported2)"
   },
   "PerEscape": {
     "heading": "Escape",
-    "description": "{{notes}}"
+    "description": "$t(events::incident_reported2)"
   },
   "PerSelfHarm": {
     "heading": "Self-harm",
-    "description": "{{notes}}"
+    "description": "$t(events::incident_reported2)"
   },
   "PerHistoricSelfHarm": {
     "heading": "History of self-harm",
@@ -315,7 +317,7 @@
   },
   "PerSuicideAndSelfHarm": {
     "heading": "",
-    "description": "{{history_of_self_harm_details}}"
+    "description": "$t(events::suicide_and_self_harm) {{history_of_self_harm_details}}"
   },
   "PerMedicalDrugsAlcohol": {
     "flag": "medical",
@@ -438,7 +440,7 @@
   "PersonMoveAssault": {
     "flag": "red",
     "heading": "Assault occurred",
-    "description": "{{notes}}"
+    "description": "$t(events::incident_reported_classified) <br>{{notes}}"
   },
   "PersonMoveBookedIntoReceivingEstablishment": {
     "heading": "$t(events::person) booked for arrival at {{location.title}}",
@@ -447,47 +449,47 @@
   "PersonMoveDeathInCustody": {
     "flag": "grey",
     "heading": "Death in custody",
-    "description": "{{notes}}"
+    "description": "$t(events::incident_reported_classified) <br>{{notes}}"
   },
   "PersonMoveMajorIncidentOther": {
     "flag": "red",
     "heading": "Major incident occurred",
-    "description": "$t(events::incident_level_details, {\"incident_level\": \"Major\"})"
+    "description": "$t(events::incident_level_details, {\"incident_level\": \"Major\"}) <br>{{notes}}"
   },
   "PersonMoveMinorIncidentOther": {
     "flag": "red",
     "heading": "Minor incident occurred",
-    "description": "$t(events::incident_level_details, {\"incident_level\": \"Minor\"})"
+    "description": "$t(events::incident_level_details, {\"incident_level\": \"Minor\"}) <br>{{notes}}"
   },
   "PersonMovePersonEscapedKpi": {
     "flag": "red",
-    "heading": "KPI Escape occured",
-    "description": "$t(events::incident_escaped)"
+    "heading": "KPI Escape occurred",
+    "description": "$t(events::incident_escaped) <br>{{notes}}"
   },
   "PersonMovePersonEscaped": {
     "flag": "red",
-    "heading": "Non KPI Escape occured",
-    "description": "$t(events::incident_escaped)"
+    "heading": "Non KPI Escape occurred",
+    "description": "$t(events::incident_escaped) <br>{{notes}}"
   },
   "PersonMoveReleasedError": {
     "flag": "red",
     "heading": "Released in error",
-    "description": "$t(events::person) was released in error from {{location.title}} $t(events::incident_reported_classified)"
+    "description": "$t(events::person) was released in error from {{location.title}} $t(events::incident_reported_classified) <br>{{notes}}"
   },
   "PersonMoveRoadTrafficAccident": {
     "flag": "red",
     "heading": "Road traffic accident",
-    "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) met with road traffic accident $t(events::incident_reported_classified)"
+    "description": "Vehicle {{vehicle_reg}} transporting $t(events::person) met with road traffic accident $t(events::incident_reported_classified) <br>{{notes}}"
   },
   "PersonMoveSeriousInjury": {
     "flag": "red",
     "heading": "Serious injury sustained",
-    "description": "$t(events::person) sustained serious injury $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified)"
+    "description": "$t(events::person) sustained serious injury $t(events::select_incident_location_preposition) $t(events::select_incident_location_vehicle) $t(events::incident_reported_classified) <br>{{notes}}"
   },
   "PersonMoveUsedForce": {
     "flag": "red",
     "heading": "Used force",
-    "description": "{{notes}}"
+    "description": "Use of force incident involving $t(events::person) in vehicle {{vehicle_reg}} $t(events::incident_reported_classified) <br>{{notes}}"
   },
   "PersonMoveVehicleBrokeDown": {
     "heading": "Supplier vehicle breakdown",
