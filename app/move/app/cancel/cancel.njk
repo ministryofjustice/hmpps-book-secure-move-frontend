@@ -17,12 +17,10 @@
   {{ super() }}
 {% endblock %}
 
-{% block formActions %}
+{% block beforeFields %}
   {% if move.status != "proposed" %}
     {{ govukWarningText({
-      html: t("moves::cancel.warning", {
-        name: move.profile.person._fullname
-      }),
+      html: t("moves::cancel.warning"),
       iconFallbackText: "Warning"
     }) }}
   {% endif %}
