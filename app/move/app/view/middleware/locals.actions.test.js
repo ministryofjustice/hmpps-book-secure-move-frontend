@@ -88,6 +88,7 @@ describe('Move view app', function () {
       context('when lodging can be cancelled', function () {
         beforeEach(function () {
           req.canAccess.withArgs('move:lodging:cancel').returns(true)
+          req.move.is_lodging = true
 
           middleware(req, res, nextSpy)
         })
@@ -104,6 +105,24 @@ describe('Move view app', function () {
       context('when lodging cannot be cancelled', function () {
         beforeEach(function () {
           req.canAccess.withArgs('move:lodging:cancel').returns(false)
+          req.move.is_lodging = true
+
+          middleware(req, res, nextSpy)
+        })
+
+        it('should not add cancel lodging action', function () {
+          expect(res.locals.actions).not.to.deep.include({
+            text: 'actions::cancel_lodge',
+            classes: 'app-link--destructive',
+            url: '/move/12345/lodging/cancel',
+          })
+        })
+      })
+
+      context('when move does not have an overnight lodge', function () {
+        beforeEach(function () {
+          req.canAccess.withArgs('move:lodging:cancel').returns(true)
+          req.move.is_lodging = false
 
           middleware(req, res, nextSpy)
         })
