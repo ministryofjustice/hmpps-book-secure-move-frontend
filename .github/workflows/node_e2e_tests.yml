@@ -30,9 +30,10 @@ jobs:
         run: |
           npm install
           npm run build
-      - name: Run E2E tests
-        id: e2e-tests
-        run: npm run test-e2e -- --test "test/e2e/**/*.test.js"
+      - name: Start frontend server
+        run: |
+          PORT=3000 npm run start > /tmp/app.log 2>&1 &
+          echo $! > /tmp/app.pid
         env:
           REDIS_URL: ""
           REDIS_HOST: ""
@@ -48,10 +49,37 @@ jobs:
           AUTH_PROVIDER_URL: https://sign-in-dev.hmpps.service.justice.gov.uk
           AUTH_PROVIDER_KEY: ${{ secrets.AUTH_PROVIDER_KEY }}
           AUTH_PROVIDER_SECRET: ${{ secrets.AUTH_PROVIDER_SECRET }}
-          SERVER_HOST: localhost:3000
           NOMIS_ELITE2_API_URL: https://prison-api-dev.prison.service.justice.gov.uk
           FEEDBACK_URL: http://google.com
           PERSON_ESCORT_RECORD_FEEDBACK_URL: http://google.com
+          CONTENTFUL_HOST: preview.contentful.com
+          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
+          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+          E2E_MOCK_AUTH: "true"
+          MANAGE_USERS_API_URL: "http://127.0.0.1"
+          OFF_NETWORK_ALLOWLIST: "127.0.0.1"
+          OFF_NETWORK_ALLOWLIST_ACTIONS: ENFORCE_IF_BAD_DEVICE
+          DISALLOWED_DEVICES: iPhone,Android
+          DISALLOWED_DEVICES_ACTIONS: WARN,REPORT
+      - name: Wait for server to be ready
+        run: |
+          for i in {1..60}; do
+            if curl -fsS http://localhost:3000/ > /dev/null 2>&1; then
+              echo "✓ Frontend is ready"
+              exit 0
+            fi
+            echo "Attempt $i/60: waiting for server..."
+            sleep 2
+          done
+          echo "✗ Server failed to start within 120 seconds"
+          echo "--- App startup log ---"
+          cat /tmp/app.log || echo "(no log available)"
+          exit 1
+      - name: Run E2E tests
+        id: e2e-tests
+        run: npm run test-e2e -- --test "test/e2e/**/*.test.js" --page-request-timeout 30000
+        env:
+          SERVER_HOST: localhost:3000
           E2E_POLICE_USERNAME: ${{ secrets.E2E_POLICE_USERNAME }}
           E2E_POLICE_PASSWORD: ${{ secrets.E2E_POLICE_PASSWORD }}
           E2E_STC_USERNAME: ${{ secrets.E2E_STC_USERNAME }}
@@ -81,15 +109,11 @@ jobs:
           FEATURE_FLAG_DATE_OF_ARREST: "true"
           FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
           FEATURE_FLAG_SECTION_46: "true"
-          CONTENTFUL_HOST: preview.contentful.com
-          CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
-          CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
-          E2E_MOCK_AUTH: "true"
-          MANAGE_USERS_API_URL: "http://127.0.0.1"
-          OFF_NETWORK_ALLOWLIST: "127.0.0.1"
-          OFF_NETWORK_ALLOWLIST_ACTIONS: ENFORCE_IF_BAD_DEVICE
-          DISALLOWED_DEVICES: iPhone,Android
-          DISALLOWED_DEVICES_ACTIONS: WARN,REPORT
+      - name: Print app log on failure
+        if: failure() && steps.e2e-tests.outcome == 'failure'
+        run: |
+          echo "--- Frontend startup log ---"
+          cat /tmp/app.log || echo "(no log available)"
       - name: upload the test results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
