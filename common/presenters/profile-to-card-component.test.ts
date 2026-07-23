@@ -102,6 +102,10 @@ describe('Presenters', function () {
                   label: { text: '__translated__' },
                   text: mockProfile.person.gender?.title,
                 },
+                {
+                  label: { text: '__translated__' },
+                  text: '__translated__',
+                },
               ],
             })
           })
@@ -161,7 +165,7 @@ describe('Presenters', function () {
           })
 
           it('should translate correct number of times', function () {
-            expect(i18nStub.t).to.be.callCount(4)
+            expect(i18nStub.t).to.be.callCount(6)
           })
         })
       })
@@ -177,7 +181,7 @@ describe('Presenters', function () {
           })
 
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta.items.length).to.equal(0)
+          expect(transformedResponse.meta.items.length).to.equal(1)
         })
 
         it('should correctly remove false items', function () {
@@ -190,7 +194,7 @@ describe('Presenters', function () {
           })
 
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta.items.length).to.equal(0)
+          expect(transformedResponse.meta.items.length).to.equal(1)
         })
 
         it('should correctly remove false items', function () {
@@ -203,7 +207,7 @@ describe('Presenters', function () {
           })
 
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta.items.length).to.equal(0)
+          expect(transformedResponse.meta.items.length).to.equal(1)
         })
       })
 
@@ -224,12 +228,16 @@ describe('Presenters', function () {
 
         it('should correctly remove false items', function () {
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta?.items.length).to.equal(1)
+          expect(transformedResponse.meta?.items.length).to.equal(2)
           expect(transformedResponse.meta).to.deep.equal({
             items: [
               {
                 label: { text: '__translated__' },
                 text: mockProfile.person.gender?.title,
+              },
+              {
+                label: { text: '__translated__' },
+                text: '__translated__',
               },
             ],
           })
@@ -517,7 +525,7 @@ describe('Presenters', function () {
 
       it('should contain meta', function () {
         expect(transformedResponse).to.have.property('meta')
-        expect(transformedResponse.meta?.items.length).to.equal(2)
+        expect(transformedResponse.meta?.items.length).to.equal(3)
       })
     })
 
@@ -550,7 +558,7 @@ describe('Presenters', function () {
 
       it('should contain meta', function () {
         expect(transformedResponse).to.have.property('meta')
-        expect(transformedResponse.meta?.items.length).to.equal(2)
+        expect(transformedResponse.meta?.items.length).to.equal(3)
       })
     })
 
@@ -558,7 +566,14 @@ describe('Presenters', function () {
       href: undefined,
       classes: 'app-card--placeholder',
       title: { text: '__translated__' },
-      meta: { items: [] },
+      meta: {
+        items: [
+          {
+            label: { text: '__translated__' },
+            text: '__translated__',
+          },
+        ],
+      },
       image_path: undefined,
       image_alt: '',
     }
@@ -602,7 +617,7 @@ describe('Presenters', function () {
 
         it('should prepend existing meta', function () {
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta?.items.length).to.equal(4)
+          expect(transformedResponse.meta?.items.length).to.equal(5)
           expect(transformedResponse.meta).to.deep.equal({
             items: [
               {
@@ -620,6 +635,10 @@ describe('Presenters', function () {
               {
                 label: { text: '__translated__' },
                 text: 'Male',
+              },
+              {
+                label: { text: '__translated__' },
+                text: '__translated__',
               },
             ],
           })
@@ -662,7 +681,7 @@ describe('Presenters', function () {
 
           it('adds the correct meta items', function () {
             expect(transformedResponse).to.have.property('meta')
-            expect(transformedResponse.meta?.items.length).to.equal(3)
+            expect(transformedResponse.meta?.items.length).to.equal(4)
             expect(transformedResponse.meta).to.deep.equal({
               items: [
                 meta,
@@ -673,6 +692,10 @@ describe('Presenters', function () {
                 {
                   label: { text: '__translated__' },
                   text: 'Male',
+                },
+                {
+                  label: { text: '__translated__' },
+                  text: '__translated__',
                 },
               ],
             })
@@ -690,7 +713,7 @@ describe('Presenters', function () {
 
           it('adds the correct meta items', function () {
             expect(transformedResponse).to.have.property('meta')
-            expect(transformedResponse.meta?.items.length).to.equal(3)
+            expect(transformedResponse.meta?.items.length).to.equal(4)
             expect(transformedResponse.meta).to.deep.equal({
               items: [
                 undefinedMeta,
@@ -702,8 +725,93 @@ describe('Presenters', function () {
                   label: { text: '__translated__' },
                   text: 'Male',
                 },
+                {
+                  label: { text: '__translated__' },
+                  text: '__translated__',
+                },
               ],
             })
+          })
+        })
+      })
+    })
+
+    context('with csra', function () {
+      context('when profile.csra is populated', function () {
+        beforeEach(function () {
+          transformedResponse = profileToCardComponent()({
+            ...mockArgs,
+            profile: {
+              ...mockProfile,
+              csra: 'Standard',
+            },
+          })
+        })
+
+        it('adds a csra meta item', function () {
+          expect(transformedResponse).to.have.property('meta')
+          expect(transformedResponse.meta?.items.length).to.equal(3)
+          expect(transformedResponse.meta).to.deep.equal({
+            items: [
+              {
+                label: { text: '__translated__' },
+                html: '__translated__',
+              },
+              {
+                label: { text: '__translated__' },
+                text: 'Male',
+              },
+              {
+                label: { text: '__translated__' },
+                text: 'Standard',
+              },
+            ],
+          })
+        })
+
+        it('translates the csra label', function () {
+          expect(i18nStub.t).to.have.been.calledWithExactly(
+            'fields::csra.label'
+          )
+        })
+      })
+
+      context('when profile.csra is not set', function () {
+        beforeEach(function () {
+          transformedResponse = profileToCardComponent()(mockArgs)
+        })
+
+        it('adds a csra meta item with the empty state text', function () {
+          expect(transformedResponse.meta?.items.length).to.equal(3)
+          expect(transformedResponse.meta?.items[2]).to.deep.equal({
+            label: { text: '__translated__' },
+            text: '__translated__',
+          })
+        })
+
+        it('translates the csra empty state', function () {
+          expect(i18nStub.t).to.have.been.calledWithExactly(
+            'fields::csra.empty'
+          )
+        })
+      })
+
+      context('when profile.csra is null', function () {
+        beforeEach(function () {
+          transformedResponse = profileToCardComponent()({
+            ...mockArgs,
+            profile: {
+              ...mockProfile,
+              csra: null,
+            },
+          })
+        })
+
+        it('adds a csra meta item with the empty state text', function () {
+          expect(transformedResponse.meta?.items.length).to.equal(3)
+          expect(transformedResponse.meta?.items[2]).to.deep.equal({
+            label: { text: '__translated__' },
+            text: '__translated__',
           })
         })
       })
