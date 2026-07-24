@@ -162,7 +162,7 @@
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.6.0",
     "applicationinsights": "^2.6.0",
-    "axios": "1.18.1",
+    "axios": "1.18.0",
     "axios-debug-log": "1.0.0",
     "chrono-node": "2.9.1",
     "compression": "1.8.1",
