@@ -9,4 +9,5 @@ export interface Profile {
   youth_risk_assessment?: YouthRiskAssessment
   assessment_answers?: any
   requires_youth_risk_assessment?: boolean
+  csra?: string | null
 }

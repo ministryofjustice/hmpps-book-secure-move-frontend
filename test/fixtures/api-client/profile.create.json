@@ -4,6 +4,7 @@
     "type": "profiles",
     "attributes": {
       "requires_youth_risk_assessment": true,
+      "csra": "Standard",
       "assessment_answers": [
         {
           "title": "Violent",
