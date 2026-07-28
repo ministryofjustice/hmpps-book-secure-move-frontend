@@ -208,6 +208,10 @@ function profileToCardComponent({
           label: { text: i18n.t('fields::gender.label') },
           text: gender ? gender.title : undefined,
         },
+        {
+          label: { text: i18n.t('fields::csra.label') },
+          text: profile?.csra ? profile?.csra : i18n.t('fields::csra.empty')
+        }
       ]
 
       card.meta = {
