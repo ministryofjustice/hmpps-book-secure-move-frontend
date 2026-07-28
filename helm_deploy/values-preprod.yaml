@@ -18,7 +18,7 @@ generic-service:
     FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
     FEATURE_FLAG_SUPPLIER_USERS_VIEW_ALL_MOVES: "false"
     FEATURE_FLAG_SHOW_SUPPLIER_BADGE: "false"
-    FEEDBACK_URL: "https://eu.surveymonkey.com/r/3CKYXSC"
+    FEEDBACK_URL: "https://www.smartsurvey.co.uk/s/43EWY0/"
     FRAMEWORKS_VERSION: "3.0.0"
     GOOGLE_ANALYTICS_ID: "G-3LCJP1TWQC"
     MANAGE_USERS_API_URL: "https://manage-users-api-preprod.hmpps.service.justice.gov.uk"
