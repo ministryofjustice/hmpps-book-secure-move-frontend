@@ -11,6 +11,24 @@ function sortLocations(locations) {
   return sortBy(locations, ({ title = '' }) => title.toUpperCase())
 }
 
+// Retries transient/network failures (no status code, or 5xx) but not
+// genuine 4xx responses (eg. 404 for a supplier/location that doesn't exist)
+async function withRetry(fn, { retries = 2, delayMs = 300 } = {}) {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await fn()
+    } catch (error) {
+      const isRetryable = !error.statusCode || error.statusCode >= 500
+
+      if (!isRetryable || attempt >= retries) {
+        throw error
+      }
+
+      await new Promise(resolve => setTimeout(resolve, delayMs))
+    }
+  }
+}
+
 class ReferenceDataService extends BaseService {
   getGenders() {
     return this.apiClient.findAll('gender').then(response => response.data)
@@ -68,11 +86,13 @@ class ReferenceDataService extends BaseService {
   }
 
   getLocationByNomisAgencyId(nomisAgencyId) {
-    return this.getLocations({
-      filter: {
-        'filter[nomis_agency_id]': nomisAgencyId,
-      },
-    }).then(results => results[0])
+    return withRetry(() =>
+      this.getLocations({
+        filter: {
+          'filter[nomis_agency_id]': nomisAgencyId,
+        },
+      }).then(results => results[0])
+    )
   }
 
   getLocationsByNomisAgencyId(ids = []) {
@@ -167,7 +187,9 @@ class ReferenceDataService extends BaseService {
       return Promise.reject(new Error('No supplier key provided'))
     }
 
-    return this.apiClient.find('supplier', key).then(response => response.data)
+    return withRetry(() =>
+      this.apiClient.find('supplier', key).then(response => response.data)
+    )
   }
 
   getPrisonTransferReasons() {
