@@ -492,6 +492,49 @@ describe('Reference Data Service', function () {
     })
   })
 
+  describe('#getLocationByNomisAgencyId() retry behaviour', function () {
+    const mockAgencyId = 'PNT'
+    const mockResponse = mockLocations
+
+    context('when the lookup fails once then succeeds', function () {
+      let stub
+      let location
+
+      beforeEach(async function () {
+        stub = sinon.stub(referenceDataService, 'getLocations')
+        stub
+          .onFirstCall()
+          .rejects(Object.assign(new Error('network error'), {}))
+        stub.onSecondCall().resolves(mockResponse)
+
+        location =
+          await referenceDataService.getLocationByNomisAgencyId(mockAgencyId)
+      })
+
+      it('should retry and return the location', function () {
+        expect(stub.callCount).to.equal(2)
+        expect(location).to.deep.equal(mockResponse[0])
+      })
+    })
+
+    context('when the lookup fails with a 404', function () {
+      let stub
+
+      beforeEach(function () {
+        stub = sinon.stub(referenceDataService, 'getLocations')
+        stub.rejects(Object.assign(new Error('not found'), { statusCode: 404 }))
+      })
+
+      it('should not retry', async function () {
+        await expect(
+          referenceDataService.getLocationByNomisAgencyId(mockAgencyId)
+        ).to.be.rejected
+
+        expect(stub.callCount).to.equal(1)
+      })
+    })
+  })
+
   describe('#getLocationsByNomisAgencyId()', function () {
     const mockAgencyIds = ['GCS', 'PNT', 'AFR']
     let locations
@@ -757,6 +800,45 @@ describe('Reference Data Service', function () {
 
       it('should return supplier', function () {
         expect(response).to.deep.equal(mockResponse.data)
+      })
+    })
+
+    context('when the API fails once then succeeds', function () {
+      const mockKey = 'serco'
+      const mockResponse = {
+        data: mockSuppliers[0],
+      }
+      let stub
+      let response
+
+      beforeEach(async function () {
+        stub = sinon.stub(apiClient, 'find')
+        stub.onFirstCall().rejects(Object.assign(new Error('network error'), {}))
+        stub.onSecondCall().resolves(mockResponse)
+
+        response = await referenceDataService.getSupplierByKey(mockKey)
+      })
+
+      it('should retry and return the supplier', function () {
+        expect(stub.callCount).to.equal(2)
+        expect(response).to.deep.equal(mockResponse.data)
+      })
+    })
+
+    context('when the API returns a 404', function () {
+      const mockKey = 'unknown'
+      let stub
+
+      beforeEach(function () {
+        stub = sinon.stub(apiClient, 'find')
+        stub.rejects(Object.assign(new Error('not found'), { statusCode: 404 }))
+      })
+
+      it('should not retry', async function () {
+        await expect(referenceDataService.getSupplierByKey(mockKey)).to.be
+          .rejected
+
+        expect(stub.callCount).to.equal(1)
       })
     })
   })
