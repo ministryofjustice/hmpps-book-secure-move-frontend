@@ -1,5 +1,6 @@
 const { flattenDeep, sortBy } = require('lodash')
 
+const logger = require('../../config/logger')
 const restClient = require('../lib/api-client/rest-client')
 
 const { BaseService } = require('./base')
@@ -149,13 +150,27 @@ class ReferenceDataService extends BaseService {
       })
   }
 
-  mapLocationIdsToLocations(ids, callback) {
+  async mapLocationIdsToLocations(ids, callback) {
     const locationPromises = ids.map(id => {
-      return callback(id).catch(() => false)
+      return callback(id)
+        .then(location => {
+          if (!location) {
+            logger.error(
+              `mapLocationIdsToLocations: no location found for id "${id}"`
+            )
+          }
+          return location
+        })
+        .catch(error => {
+          logger.error(
+            `mapLocationIdsToLocations: failed to resolve location id "${id}": ${error.message}`
+          )
+          return false
+        })
     })
-    return Promise.all(locationPromises)
-      .then(locations => locations.filter(Boolean))
-      .then(locations => sortLocations(locations))
+    const locations = await Promise.all(locationPromises)
+    const locations_1 = locations.filter(Boolean)
+    return sortLocations(locations_1)
   }
 
   getSuppliers() {
