@@ -6,8 +6,8 @@
   "retryTestPages": true,
   "hostname": "localhost",
   "quarantineMode": {
-    "successThreshold": 2,
-    "attemptLimit": 5
+    "successThreshold": 1,
+    "attemptLimit": 3
   },
   "stopOnFirstFail": true,
   "disableNativeAutomation": "false"
