@@ -213,7 +213,12 @@ const video = args.video
   : ''
 
 const allTests = glob.sync('test/e2e/**/*.test.js')
-let tests: string[] = args.test || allTests
+// args.test may contain literal file paths or glob patterns (eg. CI passes
+// the pattern unexpanded) - expand each through glob so both work the same
+// way TestCafe's own glob resolution otherwise silently under-matches
+let tests: string[] = args.test
+  ? (args.test as string[]).flatMap((pattern: string) => glob.sync(pattern))
+  : allTests
 
 const envSkip = ((E2E_SKIP as string) || '').split(',')
 tests = tests.filter(test => !envSkip.includes(test))
@@ -303,7 +308,7 @@ const runTests = async () => {
         3000 + i
       } NOMIS_ELITE2_API_URL=http://localhost:${
         3999 + i
-      } FEATURE_FLAG_ADD_LODGE_BUTTON=true FEATURE_FLAG_EXTRADITION_MOVES=true FEATURE_FLAG_SECTION_46=true node start.js`
+      } FEATURE_FLAG_ADD_LODGE_BUTTON=true FEATURE_FLAG_EXTRADITION_MOVES=true FEATURE_FLAG_SECTION_46=true FEATURE_FLAG_EDITABILITY=true FEATURE_FLAG_IMAGES=true FEATURE_FLAG_PRISON_COURT_HEARINGS=true FEATURE_FLAG_PRISON_COURT_TIMETABLE=true FEATURE_FLAG_PERSON_ESCORT_RECORD=true FEATURE_FLAG_MOVE_PREVIEW=true FEATURE_FLAG_WHATS_NEW_BANNER=true FEATURE_FLAG_DATE_OF_ARREST=true FEATURE_FLAG_FUZZY_PNC_SEARCH=true node start.js`
   )
   const authCommandStrings = testBuckets.map(
     (_, i) =>

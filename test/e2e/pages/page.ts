@@ -58,7 +58,7 @@ export class Page {
       .expect(this.getCurrentUrl())
       .contains('/locations')
       .expect((this.nodes.locationsList as Selector).count)
-      .notEql(0, { timeout: 15000 })
+      .notEql(0, { timeout: 30000 })
 
     if (isUndefined(position)) {
       const count = await (this.nodes.locationsList as Selector).count
@@ -80,7 +80,7 @@ export class Page {
       .expect(this.getCurrentUrl())
       .contains('/locations')
       .expect((this.nodes.regionsList as Selector).count)
-      .notEql(0, { timeout: 15000 })
+      .notEql(0, { timeout: 30000 })
 
     const count = await (this.nodes.regionsList as Selector).count
     const randomItem = Math.floor(Math.random() * count)

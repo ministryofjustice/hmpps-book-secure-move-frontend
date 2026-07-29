@@ -590,16 +590,50 @@ describe('Reference Data Service', function () {
             )
         })
 
-        it('should attempt to map each location', function () {
+        it('should retry the whole batch rather than accept an empty result', function () {
           expect(referenceDataService.mapLocationIdsToLocations).to.be
-            .calledOnce
+            .calledThrice
           expect(
             referenceDataService.getLocationByNomisAgencyId.callCount
-          ).to.equal(mockAgencyIds.length)
+          ).to.equal(mockAgencyIds.length * 3)
         })
 
         it('should return an empty array', function () {
           expect(locations).to.be.an('array').that.is.empty
+        })
+      })
+
+      context('when the batch is empty on the first attempt but succeeds on retry', function () {
+        beforeEach(async function () {
+          sinon
+            .stub(referenceDataService, 'getLocationByNomisAgencyId')
+            .onCall(0)
+            .rejects()
+            .onCall(1)
+            .rejects()
+            .onCall(2)
+            .rejects()
+            .onCall(3)
+            .resolves({ key: 'GCS', title: 'Guildford Custody Suite' })
+            .onCall(4)
+            .resolves({ key: 'PNT', title: 'GREATER MANCHESTER HMP' })
+            .onCall(5)
+            .resolves({ key: 'AFR', title: 'Aylesbury Court' })
+
+          locations =
+            await referenceDataService.getLocationsByNomisAgencyId(
+              mockAgencyIds
+            )
+        })
+
+        it('should retry once and return the recovered locations', function () {
+          expect(referenceDataService.mapLocationIdsToLocations).to.be
+            .calledTwice
+          expect(locations).to.deep.equal([
+            { key: 'AFR', title: 'Aylesbury Court' },
+            { key: 'PNT', title: 'GREATER MANCHESTER HMP' },
+            { key: 'GCS', title: 'Guildford Custody Suite' },
+          ])
         })
       })
     })

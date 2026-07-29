@@ -1,5 +1,6 @@
 const { flattenDeep, sortBy } = require('lodash')
 
+const logger = require('../../config/logger')
 const restClient = require('../lib/api-client/rest-client')
 
 const { BaseService } = require('./base')
@@ -26,6 +27,21 @@ async function withRetry(fn, { retries = 2, delayMs = 300 } = {}) {
 
       await new Promise(resolve => setTimeout(resolve, delayMs))
     }
+  }
+}
+
+// Retries a whole batch lookup if it comes back completely empty - guards
+// against a transient blip (eg. the upstream API under load) wiping out a
+// user's entire location list, rather than each id failing independently
+async function withBatchRetry(fn, { retries = 2, delayMs = 500 } = {}) {
+  for (let attempt = 0; ; attempt++) {
+    const result = await fn()
+
+    if (result.length > 0 || attempt >= retries) {
+      return result
+    }
+
+    await new Promise(resolve => setTimeout(resolve, delayMs))
   }
 }
 
@@ -96,8 +112,14 @@ class ReferenceDataService extends BaseService {
   }
 
   getLocationsByNomisAgencyId(ids = []) {
-    return this.mapLocationIdsToLocations(ids, id =>
-      this.getLocationByNomisAgencyId(id)
+    if (!ids.length) {
+      return Promise.resolve([])
+    }
+
+    return withBatchRetry(() =>
+      this.mapLocationIdsToLocations(ids, id =>
+        this.getLocationByNomisAgencyId(id)
+      )
     )
   }
 
@@ -171,7 +193,16 @@ class ReferenceDataService extends BaseService {
 
   mapLocationIdsToLocations(ids, callback) {
     const locationPromises = ids.map(id => {
-      return callback(id).catch(() => false)
+      return callback(id).catch(error => {
+        const detail = error.statusCode
+          ? `status ${error.statusCode}`
+          : error.message
+        logger.warn(
+          `Failed to resolve location for nomis agency id ${id}: ${detail}`
+        )
+
+        return false
+      })
     })
     return Promise.all(locationPromises)
       .then(locations => locations.filter(Boolean))
