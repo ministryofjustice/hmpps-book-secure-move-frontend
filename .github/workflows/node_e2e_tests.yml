@@ -14,15 +14,14 @@ permissions:
 
 jobs:
   integration_test:
-    name: 'Run the E2E tests'
+    name: 'Run the E2E tests (shard ${{ matrix.container }})'
     runs-on: ubuntu-latest
-    # E2E tests hit the shared staging API for real reference data (locations,
-    # suppliers, etc). Running several PRs' jobs against it at once (eg. a
-    # dependabot batch) has caused those lookups to fail under load, so queue
-    # runs repo-wide instead of racing each other - deliberately no branch/ref
-    # in the group name.
+    strategy:
+      fail-fast: false
+      matrix:
+        container: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
     concurrency:
-      group: node-e2e-tests-staging
+      group: node-e2e-tests-staging-shard-${{ matrix.container }}
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -42,6 +41,8 @@ jobs:
         id: e2e-tests
         run: npm run test-e2e -- --test "test/e2e/**/*.test.js"
         env:
+          E2E_SHARD_INDEX: ${{ strategy.job-index }}
+          E2E_SHARD_TOTAL: ${{ strategy.job-total }}
           REDIS_URL: ""
           REDIS_HOST: ""
           NODE_OPTIONS: --max-old-space-size=12288
@@ -102,20 +103,20 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
-          name: e2e_test_results
+          name: e2e_test_results-${{ matrix.container }}
           path: reports/testcafe
       - name: upload the screenshots and videos
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
-          name: e2e_screen_captures
+          name: e2e_screen_captures-${{ matrix.container }}
           path: artifacts
       - name: publish test report
         if: ${{ !cancelled() && github.event.repository.visibility == 'public' }}
         uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3
         with:
-          artifact: e2e_test_results
-          name: Test Report
+          artifact: e2e_test_results-${{ matrix.container }}
+          name: Test Report (shard ${{ matrix.container }})
           path: result*.xml
           reporter: java-junit
           fail-on-empty: false

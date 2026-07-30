@@ -65,6 +65,8 @@ const E2E_SKIP = getEnvVar('E2E_SKIP')
 const E2E_FAIL_FAST = getEnvVar('E2E_FAIL_FAST')
 const E2E_BASE_URL = getEnvVar('E2E_BASE_URL')
 const E2E_VIDEO = getEnvVar('E2E_VIDEO')
+const E2E_SHARD_INDEX = getEnvVar('E2E_SHARD_INDEX') || 0
+const E2E_SHARD_TOTAL = getEnvVar('E2E_SHARD_TOTAL') || 1
 const FEATURE_FLAG_EXTRADITION_MOVES = getEnvVar(
   'FEATURE_FLAG_EXTRADITION_MOVES'
 )
@@ -178,6 +180,8 @@ E2E_FAIL_FAST:     ${E2E_FAIL_FAST}
 E2E_BASE_URL:      ${E2E_BASE_URL}
 FEATURE_FLAG_EXTRADITION_MOVES:      ${FEATURE_FLAG_EXTRADITION_MOVES}
 FEATURE_FLAG_SECTION_46:      ${FEATURE_FLAG_SECTION_46}
+E2E_SHARD_INDEX:   ${E2E_SHARD_INDEX}
+E2E_SHARD_TOTAL:   ${E2E_SHARD_TOTAL}
 `)
 
 if (args.video && args.max_processes > 8) {
@@ -226,6 +230,17 @@ tests = tests.filter(test => !envSkip.includes(test))
 if (skip) {
   tests = tests.filter(test => !skip.includes(test))
 }
+
+// Sort first so every shard's glob.sync() (run independently on its own
+// checked-out VM) partitions the same ordering - otherwise two shards could
+// overlap or a file could fall through unrun. A shardTotal of 1 (the default)
+// is a no-op here, since index % 1 is always 0.
+const shardTotal = Number(E2E_SHARD_TOTAL)
+const shardIndex = Number(E2E_SHARD_INDEX)
+tests = tests
+  .slice()
+  .sort()
+  .filter((_, index) => index % shardTotal === shardIndex)
 
 const skippedTests = allTests.filter(test => !tests.includes(test))
 
