@@ -61,6 +61,7 @@ users.forEach(user => {
       .contains(user.displayName)
       .expect((user.homeButton as Selector).exists)
       .ok()
+      .click((movesDashboardPage.nodes.pagination as any).todayLink)
       // Navigate
       .expect((page.nodes.pageHeading as Selector).innerText)
       .match(/\.*\((today|this week)\)/)
