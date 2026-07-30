@@ -289,7 +289,7 @@
     "nodemon": "3.1.14",
     "npm-check-updates": "21.0.2",
     "nyc": "15.1.0",
-    "open-cli": "8.0.0",
+    "open-cli": "9.0.0",
     "pinst": "3.0.0",
     "prettier": "3.8.3",
     "proxyquire": "2.1.3",
