@@ -17,10 +17,7 @@ class MovesDashboardPage extends Page {
       pagination: {
         // @ts-expect-error not sure why this line displeases tsc
         previousLink: Selector('.app-pagination__list-item--prev a'),
-        todayLink: Selector('.app-pagination__list-item a').withText('Today'),
-        thisWeekLink: Selector('.app-pagination__list-item a').withText(
-          'This week'
-        ),
+        todayLink: Selector('[data-pagination-action="today"] a'),
         dateSelectLink: Selector('[data-pagination-action="date-select"] a'),
         nextLink: Selector('.app-pagination__list-item--next a'),
       },
