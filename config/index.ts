@@ -16,9 +16,7 @@ require('dotenv').config()
 const API_VERSION = process.env.API_VERSION
 export const IS_DEV = process.env.NODE_ENV !== 'production'
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production'
-export const SUPPORT_URL = IS_PRODUCTION
-  ? 'https://support.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move'
-  : 'https://support-dev.hmpps.service.justice.gov.uk/feedback-and-support/book-secure-move'
+export const SUPPORT_URL = 'https://pecs-contract-guide.service.justice.gov.uk/useful-information/booking-a-secure-move-with-pecs/'
 export const SERVER_HOST = process.env.HEROKU_APP_NAME
   ? `${process.env.HEROKU_APP_NAME}.herokuapp.com`
   : process.env.SERVER_HOST
