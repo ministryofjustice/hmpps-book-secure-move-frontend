@@ -5,7 +5,7 @@ WORKDIR /home/node/app
 RUN apk add --no-cache python3 git build-base nasm zlib-dev libpng-dev autoconf automake
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
-COPY --chown=node:node package*.json ./
+COPY --chown=node:node package*.json .npmrc .allowed-scripts.mjs ./
 USER 1000
 RUN npm install typescript
 RUN npm run setup
