@@ -49,7 +49,7 @@ function getConfig(componentName) {
     'utf8'
   )
 
-  return yaml.load(file)
+  return file.trim() ? yaml.load(file) : undefined
 }
 
 function mapComponentFolder(mountpath = '') {
