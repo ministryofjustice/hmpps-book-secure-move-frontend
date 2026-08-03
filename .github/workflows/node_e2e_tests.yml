@@ -24,6 +24,11 @@ jobs:
       group: node-e2e-tests-staging-shard-${{ matrix.container }}
       cancel-in-progress: false
     steps:
+      - name: Sanity check secrets
+        id: secret-source
+        run: echo "${SECRET_SOURCE}"
+        env:
+          SECRET_SOURCE: ${{ secrets.SECRET_SOURCE }}
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Use Node.js ${{ inputs.node_version_file }}
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
