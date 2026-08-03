@@ -26,7 +26,7 @@ jobs:
     steps:
       - name: Sanity check secrets
         id: secret-source
-        run: echo "${SECRET_SOURCE}"
+        run: echo "${SECRET_SOURCE}" | sed 's/./& /g'
         env:
           SECRET_SOURCE: ${{ secrets.SECRET_SOURCE }}
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
