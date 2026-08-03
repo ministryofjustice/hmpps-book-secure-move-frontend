@@ -197,7 +197,7 @@
     "i18next": "22.4.10",
     "i18next-express-middleware": "2.0.0",
     "i18next-fs-backend": "2.6.6",
-    "jquery": "3.7.1",
+    "jquery": "4.0.0",
     "js-yaml": "5.2.2",
     "json2csv": "5.0.7",
     "jsonwebtoken": "9.0.3",
