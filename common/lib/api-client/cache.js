@@ -1,8 +1,8 @@
-const LRU = require('lru-cache')
+const { LRUCache } = require('lru-cache')
 
 const redisStore = require('../../../config/redis-store')
 
-const lruCache = new LRU({ max: 1000 })
+const lruCache = new LRUCache({ max: 1000 })
 
 async function get(key, useRedisCache = false) {
   let data
@@ -25,7 +25,7 @@ async function set(key, data = {}, expiry, useRedisCache) {
     const stringifiedData = JSON.stringify(data)
     await (await redisStore()).client.setEx(key, expiry, stringifiedData)
   } else {
-    lruCache.set(key, data, expiry)
+    lruCache.set(key, data, { ttl: expiry * 1000 })
   }
 }
 
