@@ -233,7 +233,7 @@
   "devDependencies": {
     "@babel/core": "7.29.7",
     "@babel/preset-env": "7.29.5",
-    "@commitlint/cli": "19.8.1",
+    "@commitlint/cli": "21.2.1",
     "@commitlint/config-conventional": "17.4.4",
     "@faker-js/faker": "10.4.0",
     "@ffmpeg-installer/ffmpeg": "1.1.0",
