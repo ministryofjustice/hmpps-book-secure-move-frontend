@@ -255,13 +255,21 @@ describe('Move controllers', function () {
             it('should call presenter correctly', function () {
               expect(
                 presenters.profileToCardComponent.firstCall
-              ).to.be.calledWithExactly({ locationType, showTags: false })
+              ).to.be.calledWithExactly({
+                locationType,
+                showTags: false,
+                showCsra: false,
+              })
               expect(
                 profileToCardComponentStub.firstCall
               ).to.be.calledWithExactly({ profile: { person: mockPeople[0] } })
               expect(
                 presenters.profileToCardComponent.secondCall
-              ).to.be.calledWithExactly({ locationType, showTags: false })
+              ).to.be.calledWithExactly({
+                locationType,
+                showTags: false,
+                showCsra: false,
+              })
               expect(
                 profileToCardComponentStub.secondCall
               ).to.be.calledWithExactly({ profile: { person: mockPeople[1] } })
@@ -319,7 +327,11 @@ describe('Move controllers', function () {
             it('should call presenter correctly', function () {
               expect(
                 presenters.profileToCardComponent.firstCall
-              ).to.be.calledWithExactly({ locationType, showTags: false })
+              ).to.be.calledWithExactly({
+                locationType,
+                showTags: false,
+                showCsra: false,
+              })
               expect(
                 profileToCardComponentStub.firstCall
               ).to.be.calledWithExactly({ profile: { person: mockPeople[0] } })
