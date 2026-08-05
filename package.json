@@ -305,7 +305,7 @@
     "testcafe-browser-provider-browserstack": "^1.15.2",
     "testcafe-reporter-xunit": "2.2.3",
     "timezone-mock": "1.4.3",
-    "ts-mocha": "10.0.0",
+    "ts-mocha": "11.1.0",
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
     "webpack": "5.106.2",
