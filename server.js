@@ -240,7 +240,7 @@ module.exports = async () => {
     })
   )
   app.use(setLocations)
-  app.use('.*(?<!image)$', setLocation)
+  app.use(/.*(?<!image)$/, setLocation)
   app.use((req, res, next) => {
     res.locals.cspNonce = crypto.randomBytes(16).toString('hex')
     next()

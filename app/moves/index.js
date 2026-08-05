@@ -16,6 +16,7 @@ const {
   switchPeriod,
   switchGroupBy,
 } = require('../../common/middleware/collection')
+const { toRoutePattern } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
 const setLocation = require('../../common/middleware/set-location')
 const setRequestFilters = require('../../common/middleware/set-request-filters')
@@ -51,11 +52,11 @@ router.param('locationId', setLocation)
 router.param('date', setDateRange)
 router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
 
-router.use('^([^.]+)$', saveUrl)
+router.use(/^([^.]+)$/, saveUrl)
 
 // Define routes
 viewRouter.get(
-  '/:view(requested)',
+  toRoutePattern('/:view(requested)'),
   protectRoute('moves:view:proposed'),
   setContext('single_requests'),
   setFromLocation,
@@ -71,7 +72,7 @@ viewRouter.get(
   renderAsTable
 )
 viewRouter.get(
-  '/:view(requested)/download.:extension(csv|json)',
+  toRoutePattern('/:view(requested)/download.:extension(csv|json)'),
   protectRoute('moves:download'),
   protectRoute('moves:view:proposed'),
   setFromLocation,
@@ -85,7 +86,7 @@ viewRouter.get(
 )
 viewRouter.get('/document-emailed', protectRoute('moves:download'))
 viewRouter.get(
-  '/:view(outgoing)',
+  toRoutePattern('/:view(outgoing)'),
   protectRoute('moves:view:outgoing'),
   setContext('outgoing_moves'),
   setFromLocation,
@@ -99,7 +100,7 @@ viewRouter.get(
   renderAsCards
 )
 viewRouter.get(
-  '/:view(outgoing)/download.:extension(csv|json)',
+  toRoutePattern('/:view(outgoing)/download.:extension(csv|json)'),
   protectRoute('moves:download'),
   protectRoute('moves:view:outgoing'),
   setFromLocation,
@@ -111,7 +112,7 @@ viewRouter.get(
   download
 )
 viewRouter.get(
-  '/:view(incoming)',
+  toRoutePattern('/:view(incoming)'),
   protectRoute('moves:view:incoming'),
   setContext('incoming_moves'),
   setFromLocation,
@@ -125,7 +126,7 @@ viewRouter.get(
   renderAsCards
 )
 viewRouter.get(
-  '/:view(incoming)/download.:extension(csv|json)',
+  toRoutePattern('/:view(incoming)/download.:extension(csv|json)'),
   protectRoute('moves:download'),
   protectRoute('moves:view:incoming'),
   setFromLocation,
@@ -137,17 +138,17 @@ viewRouter.get(
   download
 )
 viewRouter.get(
-  COLLECTION_VIEW_PATH + '/switch-view',
+  toRoutePattern(COLLECTION_VIEW_PATH + '/switch-view'),
   switchPeriod(DEFAULTS.TIME_PERIOD)
 )
 viewRouter.get(
-  COLLECTION_VIEW_PATH + '/switch-group-by',
+  toRoutePattern(COLLECTION_VIEW_PATH + '/switch-group-by'),
   switchGroupBy(DEFAULTS.GROUP_BY)
 )
 
 router.get('/', redirectBaseUrl)
-router.get(COLLECTION_VIEW_PATH, redirectView(DEFAULTS.TIME_PERIOD))
-router.use(COLLECTION_BASE_PATH, viewRouter)
+router.get(toRoutePattern(COLLECTION_VIEW_PATH), redirectView(DEFAULTS.TIME_PERIOD))
+router.use(toRoutePattern(COLLECTION_BASE_PATH, { end: false }), viewRouter)
 
 // Export
 module.exports = {

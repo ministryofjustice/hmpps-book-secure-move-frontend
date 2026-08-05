@@ -3,6 +3,7 @@ import path from 'path'
 
 import { Router, NextFunction, RequestHandler } from 'express'
 
+import { toRoutePattern } from '../helpers/url'
 import checkStaffNetwork from '../middleware/check-staff-network'
 import { BasmRequest } from '../types/basm_request'
 import { BasmResponse } from '../types/basm_response'
@@ -29,7 +30,10 @@ const mount = (dir: string) => {
         debug('Loading router:', name)
 
         if (subApp.mountpath) {
-          return router.use(subApp.mountpath, subApp.router)
+          return router.use(
+            toRoutePattern(subApp.mountpath, { end: false }),
+            subApp.router
+          )
         }
 
         return router.use(subApp.router)

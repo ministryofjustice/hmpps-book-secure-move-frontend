@@ -8,6 +8,7 @@ const {
   switchPeriod,
   switchGroupBy,
 } = require('../../common/middleware/collection')
+const { toRoutePattern } = require('../../common/helpers/url')
 const setLocation = require('../../common/middleware/set-location')
 const wizard = require('../../common/middleware/unique-form-wizard')
 const { DEFAULTS } = require('../moves/constants')
@@ -48,10 +49,10 @@ dailyRouter.use(
   wizard(editSteps, editFields, editConfig, 'wizardKey')
 )
 
-router.use(DAILY_PATH, dailyRouter)
+router.use(toRoutePattern(DAILY_PATH, { end: false }), dailyRouter)
 
 router.get(
-  BASE_PATH,
+  toRoutePattern(BASE_PATH),
   setContext('population'),
   setDatePagination(MOUNTPATH + BASE_PATH),
   setLocationFreeSpaces,
@@ -59,12 +60,18 @@ router.get(
   dashboard
 )
 
-router.get(BASE_PATH + '/switch-view', switchPeriod(DEFAULTS.TIME_PERIOD))
-
-router.get(BASE_PATH + '/switch-group-by', switchGroupBy(DEFAULTS.GROUP_BY))
+router.get(
+  toRoutePattern(BASE_PATH + '/switch-view'),
+  switchPeriod(DEFAULTS.TIME_PERIOD)
+)
 
 router.get(
-  WEEKLY_PATH,
+  toRoutePattern(BASE_PATH + '/switch-group-by'),
+  switchGroupBy(DEFAULTS.GROUP_BY)
+)
+
+router.get(
+  toRoutePattern(WEEKLY_PATH),
   setContext('population'),
   setDatePagination(MOUNTPATH + WEEKLY_PATH),
   setLocationFreeSpaces,
