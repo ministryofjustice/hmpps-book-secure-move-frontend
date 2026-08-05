@@ -15,7 +15,7 @@ const cache = proxyquire('./cache', {
   '../../../config/redis-store': () => ({
     client: redisClient,
   }),
-  'lru-cache': LRU,
+  'lru-cache': { LRUCache: LRU },
 })
 
 describe('API Client', function () {
@@ -133,7 +133,7 @@ describe('API Client', function () {
             expect(lruCache.set).to.be.calledOnceWithExactly(
               'cache-key',
               data,
-              100
+              { ttl: 100000 }
             )
           })
         })
