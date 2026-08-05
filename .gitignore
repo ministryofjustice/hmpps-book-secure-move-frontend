@@ -27,6 +27,10 @@ coverage
 reports
 artifacts
 
+# E2E shard timing data - populated by CI from a GitHub Actions cache
+# (node_e2e_tests.yml), never committed
+test/e2e/shard-weights.json
+
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 

@@ -266,7 +266,7 @@
     "cheerio": "1.0.0-rc.12",
     "copy-webpack-plugin": "9.1.0",
     "css-loader": "7.1.4",
-    "del-cli": "6.0.0",
+    "del-cli": "7.0.0",
     "dotenv-cli": "11.0.0",
     "eslint-formatter-junit": "9.0.1",
     "eslint-import-resolver-typescript": "4.4.4",
