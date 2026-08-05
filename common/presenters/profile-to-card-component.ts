@@ -122,12 +122,14 @@ function profileToCardComponent({
   showImage = true,
   showMeta = true,
   showTags = true,
+  showCsra = true,
 }: {
   locationType?: string
   meta?: MetaItem[]
   showImage?: boolean
   showMeta?: boolean
   showTags?: boolean
+  showCsra?: boolean
 } = {}) {
   return function item({
     profile,
@@ -208,10 +210,16 @@ function profileToCardComponent({
           label: { text: i18n.t('fields::gender.label') },
           text: gender ? gender.title : undefined,
         },
-        {
-          label: { text: i18n.t('fields::csra.label') },
-          text: profile?.csra ? profile?.csra : i18n.t('fields::csra.empty')
-        }
+        ...(showCsra
+          ? [
+              {
+                label: { text: i18n.t('fields::csra.label') },
+                text: profile?.csra
+                  ? profile?.csra
+                  : i18n.t('fields::csra.empty'),
+              },
+            ]
+          : []),
       ]
 
       card.meta = {

@@ -47,6 +47,7 @@ class PersonSearchResultsController extends PersonController {
       const card = presenters.profileToCardComponent({
         locationType,
         showTags: false,
+        showCsra: false,
       })({ profile: { person } })
 
       return {

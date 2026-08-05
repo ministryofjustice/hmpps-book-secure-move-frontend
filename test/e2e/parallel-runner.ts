@@ -216,6 +216,54 @@ const video = args.video
   ? "--video artifacts/videos --video-options failedOnly=true,pathPattern='${DATE}_${TIME}/${TEST}/${USERAGENT}/${FILE_INDEX}.mp4'"
   : ''
 
+// Recorded per-file TestCafe durations (seconds), populated by CI from the
+// previous run's xunit output (see the `restore shard weights cache` and
+// `save_shard_weights` steps in node_e2e_tests.yml, and build-shard-weights.ts).
+// Test files aren't equal weight (some run 5 users through a full journey,
+// others are a single quick case) so distributing by file count alone leaves
+// some shards/processes far heavier than others.
+// Nothing is committed to the repo: locally, and on the very first CI run
+// before any history exists, this file won't exist yet - fall back to
+// treating every file as equal weight, which reduces bucketByWeight to a
+// plain round-robin split.
+let shardWeights: Record<string, number> = {}
+try {
+  shardWeights = JSON.parse(
+    fs.readFileSync(`${__dirname}/shard-weights.json`, 'utf8')
+  )
+} catch {
+  // No recorded timings yet - equal weighting below.
+}
+const knownWeights = Object.values(shardWeights)
+const defaultWeight = knownWeights.length
+  ? knownWeights.reduce((sum, weight) => sum + weight, 0) / knownWeights.length
+  : 1
+const getWeight = (test: string) => shardWeights[test] ?? defaultWeight
+
+/**
+ * Greedy longest-processing-time-first bin packing: place the heaviest
+ * remaining file into whichever bucket currently has the least work. This is
+ * deterministic for a given `items` + weights, which matters here because
+ * each shard runs this script independently (on its own checked-out CI VM,
+ * via its own glob.sync()) and they must all agree on the same partition
+ * without coordinating with each other.
+ */
+const bucketByWeight = (items: string[], bucketCount: number): string[][] => {
+  const buckets: string[][] = Array.from({ length: bucketCount }, () => [])
+  const totals = new Array(bucketCount).fill(0)
+
+  items
+    .slice()
+    .sort((a, b) => getWeight(b) - getWeight(a) || a.localeCompare(b))
+    .forEach(item => {
+      const lightest = totals.indexOf(Math.min(...totals))
+      buckets[lightest].push(item)
+      totals[lightest] += getWeight(item)
+    })
+
+  return buckets
+}
+
 const allTests = glob.sync('test/e2e/**/*.test.js')
 // args.test may contain literal file paths or glob patterns (eg. CI passes
 // the pattern unexpanded) - expand each through glob so both work the same
@@ -231,16 +279,11 @@ if (skip) {
   tests = tests.filter(test => !skip.includes(test))
 }
 
-// Sort first so every shard's glob.sync() (run independently on its own
-// checked-out VM) partitions the same ordering - otherwise two shards could
-// overlap or a file could fall through unrun. A shardTotal of 1 (the default)
-// is a no-op here, since index % 1 is always 0.
+// A shardTotal of 1 (the default) is a no-op here, since bucketByWeight puts
+// everything in the single bucket at index 0.
 const shardTotal = Number(E2E_SHARD_TOTAL)
 const shardIndex = Number(E2E_SHARD_INDEX)
-tests = tests
-  .slice()
-  .sort()
-  .filter((_, index) => index % shardTotal === shardIndex)
+tests = bucketByWeight(tests, shardTotal)[shardIndex] ?? []
 
 const skippedTests = allTests.filter(test => !tests.includes(test))
 
@@ -256,14 +299,10 @@ ${
 }
 `)
 
-const testBuckets = tests.reduce((memo: any[], value, index) => {
-  if (index < maxProcesses) {
-    memo.push([])
-  }
-
-  memo[index % maxProcesses].push(value)
-  return memo
-}, [])
+const testBuckets = bucketByWeight(
+  tests,
+  Math.min(maxProcesses, tests.length)
+).filter(bucket => bucket.length > 0)
 
 const testcafeRuns = testBuckets.map((test, index) => {
   const name = `run-${index + 1}`
