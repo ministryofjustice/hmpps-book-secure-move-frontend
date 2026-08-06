@@ -21,6 +21,7 @@ process.on('unhandledRejection', (reason, p) => {
   process.stdout.write(
     `Unhandled Rejection at: Promise ${p}, reason: ${reason}`
   )
+  process.exit(1)
 })
 
 if (prNumber) {
@@ -265,9 +266,13 @@ const bucketByWeight = (items: string[], bucketCount: number): string[][] => {
 }
 
 const allTests = glob.sync('test/e2e/**/*.test.js')
-// args.test may contain literal file paths or glob patterns (eg. CI passes
-// the pattern unexpanded) - expand each through glob so both work the same
-// way TestCafe's own glob resolution otherwise silently under-matches
+if (allTests.length === 0) {
+  process.stderr.write(
+    'No compiled e2e test files found matching test/e2e/**/*.test.js - have you run `npm run compile`?\n'
+  )
+  process.exit(1)
+}
+
 let tests: string[] = args.test
   ? (args.test as string[]).flatMap((pattern: string) => glob.sync(pattern))
   : allTests
