@@ -2,12 +2,10 @@
 /* eslint-disable no-process-env */
 import fs from 'fs'
 
-import concurrently from 'concurrently'
+import concurrently, { Command } from 'concurrently'
 import glob from 'glob'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers';
-
-type Command = ReturnType<typeof concurrently>['commands'][number]
 
 /**
  * Allow environment variables set at the project level tp be overridden for current PR
