@@ -61,7 +61,7 @@ jobs:
         run: npm run compile
       - name: Run E2E tests
         id: e2e-tests
-        run: npm run test-e2e -- --test "test/e2e/**/*.test.js"
+        run: npm run test-e2e
         env:
           E2E_SHARD_INDEX: ${{ strategy.job-index }}
           E2E_SHARD_TOTAL: ${{ strategy.job-total }}
