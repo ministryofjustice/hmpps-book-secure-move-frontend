@@ -1,7 +1,11 @@
 # Book a secure move frontend
 
-[![CircleCI](https://circleci.com/gh/ministryofjustice/hmpps-book-secure-move-frontend.svg?style=svg)](https://circleci.com/gh/ministryofjustice/hmpps-book-secure-move-frontend)
-[![Coverage Status](https://coveralls.io/repos/github/ministryofjustice/hmpps-book-secure-move-frontend/badge.svg)](https://coveralls.io/github/ministryofjustice/hmpps-book-secure-move-frontend)
+[![Standards Icon]][Standards Link]
+
+[![Repo Standards Link]][Repo Standards Link]
+[![Docker Icon]][Docker Link]
+[![Coverage Icon]][Coverage Link]
+
 
 Book a secure move is part of the HMPPS Prisoner Escort and Custody
 Service (PECS) programme.
@@ -81,3 +85,15 @@ Unless stated otherwise, the codebase is released under the [MIT License](./LICE
 ## Contribution guidelines
 
 If you want to help us improve Book a secure move, view our [contribution guidelines](./CONTRIBUTING.md).
+
+
+[Repo Standards Link]: https://img.shields.io/badge/dynamic/json?color=blue&logo=github&label=MoJ%20Compliant&query=%24.message&url=https%3A%2F%2Foperations-engineering-reports.cloud-platform.service.justice.gov.uk%2Fapi%2Fv1%2Fcompliant_public_repositories%2Fhmpps-book-secure-move-frontend "Repo Standards Link."
+
+[Coverage Link]: https://coveralls.io/github/ministryofjustice/hmpps-book-secure-move-frontend "Coverage badge."
+[Coverage Icon]: https://coveralls.io/repos/github/ministryofjustice/hmpps-book-secure-move-frontend/badge.svg
+
+[Standards Link]: https://github-community.service.justice.gov.uk/repository-standards/hmpps-book-secure-move-frontend "Standards badge."
+[Standards Icon]: https://github-community.service.justice.gov.uk/repository-standards/api/hmpps-book-secure-move-frontend/badge
+
+[Docker Icon]: https://img.shields.io/badge/ghcr.io-repository-2496ED.svg?logo=docker
+[Docker Link]: https://ghcr.io/ministryofjustice/hmpps-book-secure-move-frontend "Docker Link."
