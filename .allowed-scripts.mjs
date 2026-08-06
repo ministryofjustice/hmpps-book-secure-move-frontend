@@ -12,7 +12,6 @@ export default configureAllowedScripts({
     'node_modules/fsevents@2.3.2': 'ALLOW',
     // Used if webpack config
     'node_modules/gifsicle@5.3.0': 'ALLOW',
-    'node_modules/hmrc-frontend@7.13.0': 'ALLOW',
     // Used if webpack config
     'node_modules/jpegtran-bin@7.0.0': 'ALLOW',
     'node_modules/pinst@3.0.0': 'ALLOW',
@@ -21,9 +20,6 @@ export default configureAllowedScripts({
     // Needed by esbuild for watching files during development
     'node_modules/@parcel/watcher@2.5.1': 'ALLOW',
     'node_modules/core-js@3.49.0': 'ALLOW',
-    // Fetches a prebuilt native binary at install time - same risk profile
-    // as sharp above, kept consistent with that FORBID rather than assumed
-    // safe just because the pattern is common
     'node_modules/unrs-resolver@1.11.1': 'FORBID',
   },
 })
