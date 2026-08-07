@@ -265,6 +265,111 @@ describe('Helpers', function () {
           })
         })
       })
+      context('when the event is PerMedicalAid', function () {
+        const buildEvent = (details: GenericEvent['details']) =>
+          GenericEventFactory.build({
+            id: 'eventId',
+            event_type: 'PerMedicalAid',
+            details,
+            supplier: { id: '12341-12312132', type: 'suppliers' },
+            occurred_at: '2020-10-10T14:00:00Z',
+          })
+
+        context('when advised_by, treated_by and location are all present', function () {
+          beforeEach(async function () {
+            mockEvent = buildEvent({
+              advised_by: 'Beaker',
+              treated_by: 'Dr. Bunsen',
+              location: LocationFactory.build(),
+            })
+            description = await getDescription('token', mockEvent)
+          })
+
+          it('does not set the context', function () {
+            expect(mockEvent.details.context).to.equal(undefined)
+          })
+        })
+
+        context('when advised_by is present', function () {
+          ;[
+            { treated_by: undefined, location: undefined },
+            { treated_by: 'Dr. Bunsen', location: undefined },
+            { treated_by: undefined, location: LocationFactory.build() },
+          ].forEach(function ({ treated_by, location }) {
+            context(
+              `and treated_by: ${treated_by ? 'present' : 'absent'}, location: ${
+                location ? 'present' : 'absent'
+              }`,
+              function () {
+                beforeEach(async function () {
+                  mockEvent = buildEvent({
+                    advised_by: 'Beaker',
+                    treated_by,
+                    location,
+                  })
+                  description = await getDescription('token', mockEvent)
+                })
+
+                it(`sets the context to 'with_advised_by'`, function () {
+                  expect(mockEvent.details.context).to.equal('with_advised_by')
+                })
+              }
+            )
+          })
+        })
+
+        context(
+          'when treated_by is present without advised_by',
+          function () {
+            ;[undefined, LocationFactory.build()].forEach(function (location) {
+              context(`and location: ${location ? 'present' : 'absent'}`, function () {
+                beforeEach(async function () {
+                  mockEvent = buildEvent({
+                    treated_by: 'Dr. Bunsen',
+                    location,
+                  })
+                  description = await getDescription('token', mockEvent)
+                })
+
+                it(`sets the context to 'with_treated_by'`, function () {
+                  expect(mockEvent.details.context).to.equal('with_treated_by')
+                })
+              })
+            })
+          }
+        )
+
+        context(
+          'when only location is present',
+          function () {
+            beforeEach(async function () {
+              mockEvent = buildEvent({
+                location: LocationFactory.build(),
+              })
+              description = await getDescription('token', mockEvent)
+            })
+
+            it(`sets the context to 'with_location'`, function () {
+              expect(mockEvent.details.context).to.equal('with_location')
+            })
+          }
+        )
+
+        context(
+          'when advised_by, treated_by and location are all absent',
+          function () {
+            beforeEach(async function () {
+              mockEvent = buildEvent({})
+              description = await getDescription('token', mockEvent)
+            })
+
+            it(`sets the context to 'without_supplier'`, function () {
+              expect(mockEvent.details.context).to.equal('without_supplier')
+            })
+          }
+        )
+      })
+
       context('when the event has no supplier', function () {
         beforeEach(async function () {
           mockEvent = GenericEventFactory.build({
