@@ -58,6 +58,20 @@ export async function getDescription(token: string, event: GenericEvent) {
 
     details.context = changedFieds.join('_and_')
   }
+  else if (eventType === 'PerMedicalAid') {
+    if (details.treated_by && details.advised_by) {
+      details.context = 'description'
+    } else if (!details.treated_by && details.advised_by) {
+      details.context = 'with_advised_by'
+    } else if (details.treated_by && !details.advised_by) {
+      details.context = 'with_treated_by'
+    }  else if (!details.treated_by && !details.advised_by && details.location) {
+      details.context = 'with_location'
+    } 
+    else {
+      details.context = 'without_supplier'
+    }
+  }
   else if (supplier === null) {
     details.context = 'without_supplier'
   }
