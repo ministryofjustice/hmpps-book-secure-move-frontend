@@ -21,6 +21,9 @@ export async function getDescription(token: string, event: GenericEvent) {
 
   details.vehicle_reg =
     details.vehicle_reg || details.journey?.vehicle?.registration
+  
+  details.supplier_personnel_number =
+    details.supplier_personnel_number ?? details.police_personnel_number
 
   if (eventType === 'PerCompletion') {
     await populatePerCompletion(token, details)

@@ -266,8 +266,6 @@ describe('Helpers', function () {
         })
       })
       context('when the event is PerMedicalAid', function () {
-        // location is a mandatory field on this event, so it's always present
-        // and is not itself a branching factor for the description context
         const buildEvent = (details: GenericEvent['details']) =>
           GenericEventFactory.build({
             id: 'eventId',
@@ -330,6 +328,33 @@ describe('Helpers', function () {
             })
           }
         )
+
+        context('when supplier_personnel_number is present', function () {
+          beforeEach(async function () {
+            mockEvent = buildEvent({
+              supplier_personnel_number: 111,
+              police_personnel_number: 222,
+            })
+            description = await getDescription('token', mockEvent)
+          })
+
+          it('keeps supplier_personnel_number as-is', function () {
+            expect(mockEvent.details.supplier_personnel_number).to.equal(111)
+          })
+        })
+
+        context('when supplier_personnel_number is missing', function () {
+          beforeEach(async function () {
+            mockEvent = buildEvent({
+              police_personnel_number: 222,
+            })
+            description = await getDescription('token', mockEvent)
+          })
+
+          it('falls back to police_personnel_number', function () {
+            expect(mockEvent.details.supplier_personnel_number).to.equal(222)
+          })
+        })
       })
 
       context('when the event has no supplier', function () {
