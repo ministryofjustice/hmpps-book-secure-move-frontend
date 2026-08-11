@@ -56,7 +56,6 @@ describe('Move controllers', function () {
         sinon.stub(controller, 'use')
         sinon.stub(middleware, 'setMoveSummary')
         sinon.stub(controller, 'setMoveLocal')
-        sinon.stub(controller, 'setCancelOptions')
 
         controller.middlewareLocals()
       })
@@ -78,14 +77,8 @@ describe('Move controllers', function () {
         )
       })
 
-      it('should call setCancelOptions middleware', function () {
-        expect(controller.use.thirdCall).to.have.been.calledWith(
-          controller.setCancelOptions
-        )
-      })
-
       it('should call correct number of middleware', function () {
-        expect(controller.use.callCount).to.equal(3)
+        expect(controller.use.callCount).to.equal(2)
       })
     })
 
