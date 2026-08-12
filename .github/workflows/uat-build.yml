@@ -18,16 +18,21 @@ jobs:
     name: Merge this branch to new-cancel-reasons branch
     runs-on: ubuntu-latest
     steps:
-      - name: Merges this
+      - name: Checkout new-cancel-reasons
+        id: new-cancel-reasons
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: new-cancel-reasons
+          fetch-depth: 0
+      - name: Merges this into new-cancel-reasons
         shell: bash
         run: |
           CURRENT_BRANCH="main"
           TARGET_BRANCH="new-cancel-reasons"
-          git fetch origin
-          git checkout "$TARGET_BRANCH"
           git merge --no-ff "origin/$CURRENT_BRANCH" -m "Merge $CURRENT_BRANCH into $TARGET_BRANCH"
   node_build_nc:
     name: node build
+    needs: add-new-cancel-reasons
     #uses: ministryofjustice/hmpps-github-actions/.github/workflows/node_build.yml@v2 # WORKFLOW_VERSION
     uses: ./.github/workflows/build.yml # this custom script can be removed when govuk_frontend_toolkit is replaced.
     secrets: inherit
