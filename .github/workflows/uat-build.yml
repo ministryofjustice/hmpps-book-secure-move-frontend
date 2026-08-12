@@ -1,4 +1,4 @@
-name: Pipeline [test -> build -> deploy]
+name: Merge new cancel reasons and build for UAT
 
 on:
   workflow_call:
