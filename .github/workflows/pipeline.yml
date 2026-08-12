@@ -94,8 +94,8 @@ jobs:
     secrets: inherit
   uat-build-and-deploy:
     if: github.ref == 'refs/heads/uat-deploy'
-    name: Build and deploy a version for UAT with new cancel reasons
-    needs: docker_build
+    name: Triggers the workflow to update the new-cancel-reasons branch from main
+#    needs: docker_build
     uses: ./.github/workflows/update_cancel_reasons_branch.yml # this custom script can be removed when new cancel reasons go live
     secrets: inherit
   deploy_uat:
