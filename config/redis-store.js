@@ -4,6 +4,7 @@ const redis = require('redis')
 
 const logger = require('./logger')
 const { REDIS } = require('./')
+const { SESSION } = require('./index')
 
 const defaultOptions = {
   socket: {
@@ -22,6 +23,14 @@ module.exports = async function redisStore(options = defaultOptions) {
   if (store) {
     return store
   }
+  options.socket = {
+      host: process.env.REDIS_HOST,
+      tls: !!process.env.REDIS_AUTH_TOKEN,
+      rejectUnauthorized: false,
+      keepAlive: SESSION.TTL / 1000, // convert nanoseconds to seconds
+    }
+    database: SESSION.DB,
+    password: process.env.REDIS_AUTH_TOKEN,}
 
   const client = redis.createClient(options)
 
