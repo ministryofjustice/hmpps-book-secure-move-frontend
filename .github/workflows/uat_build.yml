@@ -1,0 +1,152 @@
+name: Merge new cancel reasons and build for UAT
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  add-new-cancel-reasons:
+    name: Merge this branch to new-cancel-reasons branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout new-cancel-reasons
+        id: new-cancel-reasons
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: new-cancel-reasons
+          fetch-depth: 0
+      - name: Merge new-cancel-reasons into current branch
+        run: |
+          git fetch origin new-cancel-reasons
+
+          CURRENT_BRANCH="${GITHUB_REF_NAME}"
+          git checkout "$CURRENT_BRANCH"
+
+          git merge --no-edit origin/new-cancel-reasons
+  node_build_nc:
+    name: node build
+    needs: add-new-cancel-reasons
+    #uses: ministryofjustice/hmpps-github-actions/.github/workflows/node_build.yml@v2 # WORKFLOW_VERSION
+    uses: ./.github/workflows/build.yml # this custom script can be removed when govuk_frontend_toolkit is replaced.
+    secrets: inherit
+  node_unit_tests_nc:
+    name: node unit tests
+    uses: ./.github/workflows/node_unit_tests.yml
+    needs: [node_build_nc]
+    secrets: inherit
+    with:
+      artifacts_path: reports
+      test_results_path: mocha/test-results.xml
+  # generic node integration tests using wiremock - feel free to override with local tests if required
+  node_e2e_tests_nc:
+    name: node E2E tests
+    uses: ./.github/workflows/node_e2e_tests.yml
+    needs: [node_build_nc]
+    secrets: inherit
+  helm_lint_nc:
+    strategy:
+      matrix:
+        environments: ['uat']
+    name: helm lint
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/test_helm_lint.yml@v2 # WORKFLOW_VERSION
+    secrets: inherit
+    with:
+      environment: ${{ matrix.environments }}
+  update-new-cancel-reasons:
+    name: Merge current branch into new-cancel-reasons
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge branch
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sourceBranch = context.ref.replace('refs/heads/', '');
+            const targetBranch = 'new-cancel-reasons';
+
+            try {
+              const result = await github.rest.repos.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                base: targetBranch,
+                head: sourceBranch,
+                commit_message: `Merge ${sourceBranch} into ${targetBranch}`
+              });
+
+              core.info(`Merge successful: ${result.data.sha}`);
+            } catch (error) {
+              if (error.status === 409) {
+                core.setFailed(`Merge conflict between ${sourceBranch} and ${targetBranch}`);
+              } else {
+                throw error;
+              }
+            }
+  build-docker-nc:
+    name: Merge this to new-cancel-reasons branch
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
+    needs:
+      - node_e2e_tests_nc
+      - node_unit_tests_nc
+    with:
+      docker_registry: 'ghcr.io'
+      registry_org: 'ministryofjustice'
+      additional_docker_tag: 'new-cancel-reasons'
+      push: ${{ inputs.push || true }}
+      docker_multiplatform: false
+  deploy_uat:
+    name: Deploy to UAT environment
+    needs:
+      - helm_lint_nc
+      - build-docker-nc
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
+    secrets: inherit
+    with:
+      environment: 'uat'
+      app_version: '${{ needs.build-docker-nc.outputs.app_version }}'
+  sentry_uat:
+    name: Publish UAT release to Sentry
+    needs:
+      - build-docker-nc
+      - deploy_uat
+    uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
+    with:
+      sentry_project: book-a-secure-move-frontend
+      sentry_environment: 'uat'
+      sentry_create_release: 'true'
+      app_version: '${{ needs.build-docker-nc.outputs.app_version }}'
+    secrets: inherit
+  tag-build:
+    name: Tag build
+    needs:
+      - build-docker-nc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create tag
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ needs.build-docker-nc.outputs.app_version }}',
+              sha: context.sha
+            })
+  tag-latest-uat:
+    name: Tag build
+    needs:
+      - build-docker-nc
+      - deploy_uat
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create tag
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/latest-uat',
+              sha: context.sha
+            })
