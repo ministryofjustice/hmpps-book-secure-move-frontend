@@ -24,12 +24,14 @@ jobs:
         with:
           ref: new-cancel-reasons
           fetch-depth: 0
-      - name: Merges this into new-cancel-reasons
-        shell: bash
+      - name: Merge new-cancel-reasons into current branch
         run: |
-          CURRENT_BRANCH="main"
-          TARGET_BRANCH="new-cancel-reasons"
-          git merge --no-ff "origin/$CURRENT_BRANCH" -m "Merge $CURRENT_BRANCH into $TARGET_BRANCH"
+          git fetch origin new-cancel-reasons
+
+          CURRENT_BRANCH="${GITHUB_REF_NAME}"
+          git checkout "$CURRENT_BRANCH"
+
+          git merge --no-edit origin/new-cancel-reasons
   node_build_nc:
     name: node build
     needs: add-new-cancel-reasons
@@ -60,18 +62,31 @@ jobs:
     with:
       environment: ${{ matrix.environments }}
   update-new-cancel-reasons:
-    name: Merge this to new-cancel-reasons branch
-    runs-on: ubuntu-latest
-    needs:
-      - node_build_nc
-      - node_unit_tests_nc
-      - node_e2e_tests_nc
-    steps:
-      - name: Push merged branch
-        shell: bash
-        run: |
-          TARGET_BRANCH="new-cancel-reasons"
-          git push origin "$TARGET_BRANCH"
+      name: Merge current branch into develop
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const sourceBranch = context.ref.replace('refs/heads/', '');
+          const targetBranch = 'new-cancel-reasons';
+
+          try {
+            const result = await github.rest.repos.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              base: targetBranch,
+              head: sourceBranch,
+              commit_message: `Merge ${sourceBranch} into ${targetBranch}`
+            });
+
+            core.info(`Merge successful: ${result.data.sha}`);
+          } catch (error) {
+            if (error.status === 409) {
+              core.setFailed(`Merge conflict between ${sourceBranch} and ${targetBranch}`);
+            } else {
+              throw error;
+            }
+          }
   build-docker-nc:
     name: Merge this to new-cancel-reasons branch
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
