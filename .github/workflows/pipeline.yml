@@ -96,7 +96,7 @@ jobs:
     if: github.ref == 'refs/heads/uat-deploy'
     name: Build and deploy a version for UAT with new cancel reasons
     needs: docker_build
-    uses: ./.github/workflows/uat_build.yml@uat-deploy # this custom script can be removed when new cancel reasons go live
+    uses: ./.github/workflows/uat_build.yml # this custom script can be removed when new cancel reasons go live
     secrets: inherit
   deploy_preprod:
     name: Deploy to pre-production environment
