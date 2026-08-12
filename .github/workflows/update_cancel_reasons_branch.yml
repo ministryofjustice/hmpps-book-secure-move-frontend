@@ -29,6 +29,17 @@ jobs:
               });
 
               core.info(`Merge successful: ${result.data.sha}`);
+
+              core.info(`Explicitly triggering a pipeline build of ${targetBranch}`)
+
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'pipeline.yml',
+                ref: `${targetBranch}`,
+              });
+
+
             } catch (error) {
               if (error.status === 409) {
                 core.setFailed(`Merge conflict between ${sourceBranch} and ${targetBranch}`);
