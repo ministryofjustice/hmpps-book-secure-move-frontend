@@ -18,7 +18,7 @@ on:
         type: boolean
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 concurrency:
@@ -58,7 +58,7 @@ jobs:
       environment: ${{ matrix.environments }}
   docker_build:
     name: Build docker image from hmpps-github-actions
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/uat-deploy'
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
     needs:
       - node_e2e_tests
@@ -71,6 +71,7 @@ jobs:
       docker_multiplatform: false
   deploy_staging:
     name: Deploy to the staging environment
+    if: github.ref == 'refs/heads/main'
     needs:
       - docker_build
       - helm_lint
@@ -91,30 +92,14 @@ jobs:
       sentry_create_release: 'true'
       app_version: '${{ needs.docker_build.outputs.app_version }}'
     secrets: inherit
-  deploy_uat:
-    name: Deploy to UAT environment
-    needs:
-      - docker_build
-      - deploy_staging
-    uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
-    secrets: inherit
-    with:
-      environment: 'uat'
-      app_version: '${{ needs.docker_build.outputs.app_version }}'
-  sentry_uat:
-    name: Publish UAT release to Sentry
-    needs:
-      - docker_build
-      - deploy_uat
-    uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
-    with:
-      sentry_project: book-a-secure-move-frontend
-      sentry_environment: 'uat'
-      sentry_create_release: 'true'
-      app_version: '${{ needs.docker_build.outputs.app_version }}'
+  uat-build-and-deploy:
+    if: github.ref == 'refs/heads/uat-deploy'
+    name: Build and deploy a version for UAT with new cancel reasons
+    uses: ./.github/workflows/uat-build.yml # this custom script can be removed when new cancel reasons go live
     secrets: inherit
   deploy_preprod:
     name: Deploy to pre-production environment
+    if: github.ref == 'refs/heads/main'
     needs:
       - docker_build
       - deploy_staging
@@ -137,6 +122,7 @@ jobs:
     secrets: inherit
   deploy_production:
     name: Deploy to production environment
+    if: github.ref == 'refs/heads/main'
     needs:
       - docker_build
       - deploy_preprod
