@@ -145,7 +145,7 @@ jobs:
     secrets: inherit
 
   deploy_uat:
-    name: Deploy to the staging environment
+    name: Deploy to the UAT environment
     if: github.ref == 'refs/heads/new-cancel-reasons'
     needs:
       - docker_build
@@ -176,10 +176,10 @@ jobs:
             })
 
   sentry_uat:
-    name: Publish staging release to Sentry
+    name: Publish UAT release to Sentry
     needs:
       - docker_build
-      - deploy_staging
+      - deploy_uat
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
     with:
       sentry_project: book-a-secure-move-frontend
