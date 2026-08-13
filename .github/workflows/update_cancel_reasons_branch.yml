@@ -1,0 +1,52 @@
+name: Merge new cancel reasons and build for UAT
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+  packages: write
+  actions: write
+
+jobs:
+  update-new-cancel-reasons:
+    name: Merge current branch into new-cancel-reasons
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge branch
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sourceBranch = context.ref.replace('refs/heads/', '');
+            const targetBranch = 'new-cancel-reasons';
+
+            try {
+              const result = await github.rest.repos.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                base: targetBranch,
+                head: sourceBranch,
+                commit_message: `Merge ${sourceBranch} into ${targetBranch}`
+              });
+
+              core.info(`Merge successful: ${result.data.sha}`);
+
+              core.info(`Explicitly triggering a pipeline build of ${targetBranch}`)
+
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'pipeline.yml',
+                ref: `${targetBranch}`,
+              });
+
+
+            } catch (error) {
+              if (error.status === 409) {
+                core.setFailed(`Merge conflict between ${sourceBranch} and ${targetBranch}`);
+              } else {
+                throw error;
+              }
+            }
+
+

@@ -18,13 +18,14 @@ on:
         type: boolean
 
 permissions:
-  contents: read
+  contents: write
   packages: write
+  actions: write
 
 concurrency:
   # if branch is main, append commit sha to the group name, so that other jobs from main don't get cancelled
   group: ${{ github.workflow }}-${{ github.ref }}${{ (github.ref == 'refs/heads/main') && format('-{0}', github.sha) || '' }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/new-cancel-reasons' }}
 
 jobs:
   # main node build workflow
@@ -33,6 +34,7 @@ jobs:
     #uses: ministryofjustice/hmpps-github-actions/.github/workflows/node_build.yml@v2 # WORKFLOW_VERSION
     uses: ./.github/workflows/build.yml # this custom script can be removed when govuk_frontend_toolkit is replaced.
     secrets: inherit
+
   node_unit_tests:
     name: node unit tests
     uses: ./.github/workflows/node_unit_tests.yml
@@ -41,12 +43,14 @@ jobs:
     with:
       artifacts_path: reports
       test_results_path: mocha/test-results.xml
+
   # generic node integration tests using wiremock - feel free to override with local tests if required
   node_e2e_tests:
     name: node E2E tests
     uses: ./.github/workflows/node_e2e_tests.yml
     needs: [node_build]
     secrets: inherit
+
   helm_lint:
     strategy:
       matrix:
@@ -56,9 +60,10 @@ jobs:
     secrets: inherit
     with:
       environment: ${{ matrix.environments }}
+
   docker_build:
     name: Build docker image from hmpps-github-actions
-    if: github.ref == 'refs/heads/main'
+    if:  github.ref == 'refs/heads/main' || github.ref == 'refs/heads/new-cancel-reasons'
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
     needs:
       - node_e2e_tests
@@ -69,8 +74,27 @@ jobs:
       additional_docker_tag: ${{ inputs.additional_docker_tag }}
       push: ${{ inputs.push || true }}
       docker_multiplatform: false
+
+  tag-build:
+    name: Tag build
+    needs:
+      - docker_build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create tag
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ needs.docker_build.outputs.app_version }}',
+              sha: context.sha
+            })
+
   deploy_staging:
     name: Deploy to the staging environment
+    if: github.ref == 'refs/heads/main'
     needs:
       - docker_build
       - helm_lint
@@ -79,11 +103,30 @@ jobs:
     with:
       environment: 'staging'
       app_version: '${{ needs.docker_build.outputs.app_version }}'
+
+  tag_staging:
+    name: Tag code currently running in staging
+    needs:
+      - deploy_staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update latest-staging tag
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9
+        with:
+          script: |
+            github.rest.git.updateRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'tags/latest-staging',
+              sha: context.sha,
+              force: true
+            })
+
   sentry_staging:
     name: Publish staging release to Sentry
     needs:
-      - docker_build
       - deploy_staging
+      - docker_build
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
     with:
       sentry_project: book-a-secure-move-frontend
@@ -91,16 +134,44 @@ jobs:
       sentry_create_release: 'true'
       app_version: '${{ needs.docker_build.outputs.app_version }}'
     secrets: inherit
+
+  update-uat-branch: # this block can be removed when new cancel reasons go live
+    if: github.ref == 'refs/heads/main'
+    name: Triggers the workflow to update the new-cancel-reasons branch from main
+    needs: docker_build
+    uses: ./.github/workflows/update_cancel_reasons_branch.yml
+    secrets: inherit
+
   deploy_uat:
-    name: Deploy to UAT environment
+    name: Deploy to the UAT environment
+    if: github.ref == 'refs/heads/new-cancel-reasons'
     needs:
       - docker_build
-      - deploy_staging
+      - helm_lint
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
       environment: 'uat'
       app_version: '${{ needs.docker_build.outputs.app_version }}'
+
+  tag_uat:
+    name: Tag code currently running in UAT
+    needs:
+      - deploy_uat
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update latest-uat tag
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9
+        with:
+          script: |
+            github.rest.git.updateRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'tags/latest-uat',
+              sha: context.sha,
+              force: true
+            })
+
   sentry_uat:
     name: Publish UAT release to Sentry
     needs:
@@ -113,8 +184,10 @@ jobs:
       sentry_create_release: 'true'
       app_version: '${{ needs.docker_build.outputs.app_version }}'
     secrets: inherit
+
   deploy_preprod:
     name: Deploy to pre-production environment
+    if: github.ref == 'refs/heads/main'
     needs:
       - docker_build
       - deploy_staging
@@ -123,6 +196,26 @@ jobs:
     with:
       environment: 'preprod'
       app_version: '${{ needs.docker_build.outputs.app_version }}'
+
+  tag_preprod:
+    name: Tag code currently running in Preprod
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - deploy_preprod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update latest-staging tag
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9
+        with:
+          script: |
+            github.rest.git.updateRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'tags/latest-preprod',
+              sha: context.sha,
+              force: true
+            })
+
   sentry_preprod:
     name: Publish preprod release to Sentry
     needs:
@@ -135,8 +228,10 @@ jobs:
       sentry_create_release: 'true'
       app_version: '${{ needs.docker_build.outputs.app_version }}'
     secrets: inherit
+
   deploy_production:
     name: Deploy to production environment
+    if: github.ref == 'refs/heads/main'
     needs:
       - docker_build
       - deploy_preprod
@@ -145,6 +240,26 @@ jobs:
     with:
       environment: 'production'
       app_version: '${{ needs.docker_build.outputs.app_version }}'
+
+  tag_production:
+    name: Tag code currently running in Production
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - deploy_production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update latest-staging tag
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 #v9
+        with:
+          script: |
+            github.rest.git.updateRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'tags/latest-production',
+              sha: context.sha,
+              force: true
+            })
+
   sentry_production:
     name: Publish production release to Sentry
     needs:
