@@ -126,6 +126,7 @@ jobs:
     name: Publish staging release to Sentry
     needs:
       - deploy_staging
+      - docker_build
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/sentry_release_and_deploy.yml@v2
     with:
       sentry_project: book-a-secure-move-frontend
