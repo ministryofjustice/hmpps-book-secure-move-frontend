@@ -63,7 +63,7 @@ jobs:
 
   docker_build:
     name: Build docker image from hmpps-github-actions
-    if:  github.ref == 'refs/heads/main' || github.ref == 'refs/heads/uat-deploy'
+    if:  github.ref == 'refs/heads/main' || github.ref == 'refs/heads/new-cancel-reasons'
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/docker_build.yml@v2 # WORKFLOW_VERSION
     needs:
       - node_e2e_tests
@@ -138,7 +138,7 @@ jobs:
     secrets: inherit
 
   update-uat-branch: # this block can be removed when new cancel reasons go live
-    if: github.ref == 'refs/heads/uat-deploy'
+    if: github.ref == 'refs/heads/main'
     name: Triggers the workflow to update the new-cancel-reasons branch from main
     needs: docker_build
     uses: ./.github/workflows/update_cancel_reasons_branch.yml
