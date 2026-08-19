@@ -21,6 +21,9 @@ export async function getDescription(token: string, event: GenericEvent) {
 
   details.vehicle_reg =
     details.vehicle_reg || details.journey?.vehicle?.registration
+  
+  details.supplier_personnel_number =
+    details.supplier_personnel_number ?? details.police_personnel_number
 
   if (eventType === 'PerCompletion') {
     await populatePerCompletion(token, details)
@@ -57,6 +60,17 @@ export async function getDescription(token: string, event: GenericEvent) {
     }
 
     details.context = changedFieds.join('_and_')
+  }
+  else if (eventType === 'PerMedicalAid') {
+    if (details.advised_by && details.treated_by) {
+      details.context = 'with_all_fields'
+    } else if (details.advised_by) {
+      details.context = 'with_advised_by'
+    } else if (details.treated_by) {
+      details.context = 'with_treated_by'
+    } else {
+      details.context = 'with_location'
+    }
   }
   else if (supplier === null) {
     details.context = 'without_supplier'
