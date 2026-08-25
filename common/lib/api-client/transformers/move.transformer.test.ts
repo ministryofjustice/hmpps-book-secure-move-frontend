@@ -516,6 +516,102 @@ describe('API Client', function () {
           })
         })
       })
+
+      describe('Overnight and temporary lodges', function () {
+        context('with no MoveLodgingStart event', function () {
+          beforeEach(function () {
+            move = MoveFactory.build()
+            moveTransformer(move)
+          })
+
+          it('should not be marked as any kind of lodge', function () {
+            expect(move.is_lodging).to.equal(false)
+            expect(move.is_overnight_lodge).to.equal(false)
+            expect(move.is_temporary_lodge).to.equal(false)
+          })
+        })
+
+        const reasons = [
+          'overnight_lodging',
+          'lockout',
+          'operation_hmcts',
+          'court_cells',
+          'operation_tornado',
+          'operation_safeguard',
+        ]
+
+        reasons.forEach(reason => {
+          context(`with a MoveLodgingStart event with reason '${reason}'`, function () {
+            beforeEach(function () {
+              move = MoveFactory.build({
+                timeline_events: [
+                  GenericEventFactory.build({
+                    event_type: 'MoveLodgingStart',
+                    details: { reason },
+                  }),
+                ],
+              })
+              moveTransformer(move)
+            })
+
+            it('should be marked as an overnight lodge', function () {
+              expect(move.is_lodging).to.equal(true)
+              expect(move.is_overnight_lodge).to.equal(true)
+              expect(move.is_temporary_lodge).to.equal(false)
+            })
+          })
+        })
+
+        context("with a MoveLodgingStart event with reason 'other'", function () {
+          beforeEach(function () {
+            move = MoveFactory.build({
+              timeline_events: [
+                GenericEventFactory.build({
+                  event_type: 'MoveLodgingStart',
+                  details: { reason: 'other' },
+                }),
+              ],
+            })
+            moveTransformer(move)
+          })
+
+          it('should be marked as a temporary lodge', function () {
+            expect(move.is_lodging).to.equal(true)
+            expect(move.is_overnight_lodge).to.equal(false)
+            expect(move.is_temporary_lodge).to.equal(true)
+          })
+        })
+
+        context('with more than one MoveLodgingStart event', function () {
+          beforeEach(function () {
+            move = MoveFactory.build({
+              timeline_events: [
+                GenericEventFactory.build({
+                  id: 'start1',
+                  event_type: 'MoveLodgingStart',
+                  details: { reason: 'overnight_lodging' },
+                }),
+                GenericEventFactory.build({
+                  id: 'end1',
+                  event_type: 'MoveLodgingEnd',
+                  details: {},
+                }),
+                GenericEventFactory.build({
+                  id: 'start2',
+                  event_type: 'MoveLodgingStart',
+                  details: { reason: 'other' },
+                }),
+              ],
+            })
+            moveTransformer(move)
+          })
+
+          it('should use the reason from the latest MoveLodgingStart event', function () {
+            expect(move.is_overnight_lodge).to.equal(false)
+            expect(move.is_temporary_lodge).to.equal(true)
+          })
+        })
+      })
     })
   })
 })

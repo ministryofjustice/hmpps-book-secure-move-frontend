@@ -28,15 +28,11 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
     move.status !== 'cancelled' &&
     canAccess('move:lodging:create')
   ) {
-    const lodgeName = move.is_temporary_lodge
-      ? 'temporary lodge'
-      : 'overnight lodge'
-
     actions.push({
       html: componentService.getComponent('govukButton', {
         text: i18n.t('actions::add_item', {
           context: hasLodges ? 'with_items' : '',
-          name: lodgeName,
+          name: 'overnight lodge',
         }),
         href: `/move/${move.id}/lodging/new`,
         classes: 'govuk-button--primary',

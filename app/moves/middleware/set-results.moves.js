@@ -4,9 +4,7 @@ const {
   canEditAssessment,
 } = require('../../../common/helpers/move/can-edit-assessment')
 const { canEditMove } = require('../../../common/helpers/move/can-edit-move')
-const {
-  hasOvernightLodge,
-} = require('../../../common/helpers/move/has-overnight-lodge')
+const { hasLodge } = require('../../../common/helpers/move/has-lodge')
 const { isPerLocked } = require('../../../common/helpers/move/is-per-locked')
 const presenters = require('../../../common/presenters')
 
@@ -25,7 +23,7 @@ function setResultsMoves(bodyKey, locationKey) {
         move._canEdit = canEditMove(move, req.canAccess)
         move._isPerLocked = isPerLocked(move)
         move._canEditPer = canEditAssessment(move, req.canAccess)
-        move.is_lodging = hasOvernightLodge(move)
+        move.is_lodging = hasLodge(move)
       })
 
       if (groupBy === 'vehicle') {
