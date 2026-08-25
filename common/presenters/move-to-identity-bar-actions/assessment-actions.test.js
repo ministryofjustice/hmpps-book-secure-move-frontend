@@ -649,6 +649,38 @@ describe('Presenters', function () {
             ])
           })
         })
+        context(
+          "with feature flag enabled and the latest lodge's reason is 'other'",
+          function () {
+            beforeEach(function () {
+              mockMove.profile.person_escort_record = {
+                status: 'confirmed',
+                handover_occurred_at: '2020-01-01',
+              }
+              mockMove.important_events = [
+                {
+                  event_type: 'MoveLodgingStart',
+                  details: { reason: 'other' },
+                },
+              ]
+              mockMove.is_temporary_lodge = true
+              const featureFlagOnStub = { ADD_LODGE_BUTTON: true }
+              mockMove.status = 'in_transit'
+              output = presenter(
+                mockMove,
+                { canAccess: canAccessStub },
+                featureFlagOnStub
+              )
+            })
+
+            it('should show add temporary lodge button', function () {
+              expect(i18n.t).to.have.been.calledWith('actions::add_item', {
+                context: 'with_items',
+                name: 'temporary lodge',
+              })
+            })
+          }
+        )
         context('with record event access', function () {
           beforeEach(function () {
             canAccessStub.withArgs('person_escort_record:create').returns(false)

@@ -1,7 +1,7 @@
 const { isEmpty, kebabCase } = require('lodash')
 
 const i18n = require('../../../config/i18n').default
-const { hasOvernightLodge } = require('../../helpers/move/has-overnight-lodge')
+const { hasLodge } = require('../../helpers/move/has-lodge')
 const componentService = require('../../services/component')
 
 function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
@@ -19,8 +19,8 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
   const assessment = move.profile[assessmentType] || {}
   const baseUrl = `/move/${move.id}/${kebabCase(assessmentType)}`
   const context = assessmentType
-  // There's a typescript function elsewhere that does this - has-overnight-lodge.ts
-  const hasLodges = hasOvernightLodge(move)
+  // There's a typescript function elsewhere that does this - has-lodge.ts
+  const hasLodges = hasLodge(move)
 
   if (
     featureFlags.ADD_LODGE_BUTTON &&
@@ -28,11 +28,15 @@ function assessmentActions(move = {}, { canAccess } = {}, featureFlags) {
     move.status !== 'cancelled' &&
     canAccess('move:lodging:create')
   ) {
+    const lodgeName = move.is_temporary_lodge
+      ? 'temporary lodge'
+      : 'overnight lodge'
+
     actions.push({
       html: componentService.getComponent('govukButton', {
         text: i18n.t('actions::add_item', {
           context: hasLodges ? 'with_items' : '',
-          name: 'overnight lodge',
+          name: lodgeName,
         }),
         href: `/move/${move.id}/lodging/new`,
         classes: 'govuk-button--primary',
