@@ -6,7 +6,7 @@ import { LodgingFactory } from '../../../factories/lodging'
 import { MoveFactory } from '../../../factories/move'
 import { GenericEvent } from '../../types/generic_event'
 
-import { hasOvernightLodge } from './has-overnight-lodge'
+import { hasLodge } from './has-lodge'
 
 const baseMove = MoveFactory.build()
 
@@ -20,19 +20,19 @@ const mlsEvent: GenericEvent = {
 describe('Move', function () {
   context('with no events', function () {
     it('should not be marked as a lodging', function () {
-      expect(equal(hasOvernightLodge(baseMove), false))
+      expect(equal(hasLodge(baseMove), false))
     })
   })
   context('with a MoveLodgingStart event', function () {
     it('should be marked as a lodging', function () {
       baseMove.important_events = [mlsEvent]
-      expect(equal(hasOvernightLodge(baseMove), true))
+      expect(equal(hasLodge(baseMove), true))
     })
   })
   context('when the move has Lodgings', function () {
     it('should be marked as a lodging', function () {
       baseMove.lodgings = [LodgingFactory.build()]
-      expect(equal(hasOvernightLodge(baseMove), true))
+      expect(equal(hasLodge(baseMove), true))
     })
   })
 })

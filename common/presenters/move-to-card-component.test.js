@@ -7,6 +7,8 @@ const mockMove = {
   reference: 'AB12FS45',
   status: 'requested',
   is_lodging: false,
+  is_overnight_lodge: false,
+  is_temporary_lodge: false,
   is_lockout: false,
   isS46: undefined,
   profile: {
@@ -30,6 +32,8 @@ const mockLockoutMove = {
   status: 'requested',
   is_lockout: true,
   is_lodging: false,
+  is_overnight_lodge: false,
+  is_temporary_lodge: false,
   isS46: undefined,
   profile: {
     person: {
@@ -109,7 +113,8 @@ describe('Presenters', function () {
                 text: '__translated__',
               },
               isLockout: false,
-              isLodging: false,
+              isOvernightLodge: false,
+              isTemporaryLodge: false,
               isS46: undefined,
               caption: undefined,
               supplierBadge: undefined,
@@ -333,7 +338,8 @@ describe('Presenters', function () {
           status: undefined,
           caption: undefined,
           isLockout: false,
-          isLodging: false,
+          isOvernightLodge: false,
+          isTemporaryLodge: false,
           isS46: undefined,
           supplierBadge: undefined,
         })
@@ -373,7 +379,8 @@ describe('Presenters', function () {
           tags: [{ items: 'moveToImportantEventsTagListComponent' }],
           caption: undefined,
           isLockout: true,
-          isLodging: false,
+          isOvernightLodge: false,
+          isTemporaryLodge: false,
           isS46: undefined,
           supplierBadge: undefined,
         })
@@ -416,7 +423,8 @@ describe('Presenters', function () {
           status: undefined,
           caption: undefined,
           isLockout: false,
-          isLodging: false,
+          isOvernightLodge: false,
+          isTemporaryLodge: false,
           isS46: undefined,
           supplierBadge: undefined,
         })
@@ -447,7 +455,8 @@ describe('Presenters', function () {
             status: undefined,
             caption: undefined,
             isLockout: false,
-            isLodging: false,
+            isOvernightLodge: false,
+            isTemporaryLodge: false,
             isS46: undefined,
             supplierBadge: undefined,
             tags: [{ items: 'moveToImportantEventsTagListComponent' }],
@@ -486,7 +495,8 @@ describe('Presenters', function () {
             status: undefined,
             caption: undefined,
             isLockout: false,
-            isLodging: false,
+            isOvernightLodge: false,
+            isTemporaryLodge: false,
             isS46: undefined,
             supplierBadge: undefined,
           })
@@ -503,7 +513,8 @@ describe('Presenters', function () {
             ...mockPersonCardComponent,
             classes: mockClasses,
             isLockout: false,
-            isLodging: false,
+            isOvernightLodge: false,
+            isTemporaryLodge: false,
             isS46: undefined,
             status: {
               text: '__translated__',

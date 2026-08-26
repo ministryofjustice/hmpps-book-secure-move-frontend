@@ -11,7 +11,7 @@ const getPerDetails = require('./get-per-details')
 const getTabsUrls = require('./get-tabs-urls')
 const getTagLists = require('./get-tag-lists')
 const getUpdateUrls = require('./get-update-urls')
-const hasOvernightLodge = require('./has-overnight-lodge')
+const { hasLodge } = require('./has-lodge')
 const mapUpdateLink = require('./map-update-link')
 
 function getLocals(req) {
@@ -48,7 +48,7 @@ function getLocals(req) {
   const moveSummary = getMoveSummary(move, {
     updateUrls,
   })
-  const isLodging = hasOvernightLodge(move)
+  const isLodging = hasLodge(move)
 
   const updateLinks = mapValues(updateUrls, mapUpdateLink)
 
