@@ -90,7 +90,8 @@ function moveToCardComponent({
     return {
       ...personCardComponent,
       isLockout: move.is_lockout,
-      isLodging: move.is_lodging,
+      isOvernightLodge: move.is_overnight_lodge,
+      isTemporaryLodge: move.is_temporary_lodge,
       isS46: move.section_forty_six,
       status: statusBadge,
       supplierBadge,

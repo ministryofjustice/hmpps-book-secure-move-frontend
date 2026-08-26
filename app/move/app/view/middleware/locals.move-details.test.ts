@@ -119,6 +119,8 @@ describe('Move view app', function () {
             _hasLeftCustody: true,
             _hasArrived: false,
             is_lodging: false,
+            is_overnight_lodge: false,
+            is_temporary_lodge: false,
             is_lockout: false,
             section_forty_six: false,
             important_events: [
@@ -140,6 +142,7 @@ describe('Move view app', function () {
           moveIsEditable: true,
           moveIsLockout: false,
           moveIsLodging: false,
+          moveIsTemporaryLodge: false,
           moveIsS46: false,
         })
       })

@@ -1,8 +1,8 @@
 // Using get because testcafe barfs on optional chaining
-import { get } from 'lodash'
+import { findLast, get } from 'lodash'
 
 import i18n from '../../../../config/i18n'
-import { hasOvernightLodge } from '../../../helpers/move/has-overnight-lodge'
+import { hasLodge } from '../../../helpers/move/has-lodge'
 import { GenericEvent } from '../../../types/generic_event'
 import { Move } from '../../../types/move'
 
@@ -116,7 +116,16 @@ const addReasonToMoveLodgingEndEvents = (move: Move) => {
 }
 
 const setIsLodging = (move: Move) => {
-  move.is_lodging = hasOvernightLodge(move)
+  move.is_lodging = hasLodge(move)
+
+  const latestLodgingStart = findLast(
+    move.important_events || [],
+    ({ event_type: eventType }) => eventType === 'MoveLodgingStart'
+  )
+
+  move.is_temporary_lodge =
+    move.is_lodging && latestLodgingStart?.details?.reason === 'other'
+  move.is_overnight_lodge = move.is_lodging && !move.is_temporary_lodge
 }
 
 export function moveTransformer(move: Move) {

@@ -13,6 +13,7 @@ export default function localsMoveDetails(
   res.locals.moveDetails = presenters.moveToMetaListComponent(move, journeys)
   res.locals.moveIsLockout = move.is_lockout
   res.locals.moveIsLodging = move.is_lodging
+  res.locals.moveIsTemporaryLodge = move.is_temporary_lodge
   res.locals.moveIsS46 = move.section_forty_six
   res.locals.moveIsEditable = move._canEdit
   res.locals.isPerLocked = move._isPerLocked

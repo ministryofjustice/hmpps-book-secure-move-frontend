@@ -50,6 +50,8 @@ export interface Move {
   _canEditPer?: boolean
   supplier?: Supplier
   is_lodging?: boolean
+  is_overnight_lodge?: boolean
+  is_temporary_lodge?: boolean
   allocation?: Allocation
   lodgings?: Lodging[]
   extradition_flight?: ExtraditionFlight
