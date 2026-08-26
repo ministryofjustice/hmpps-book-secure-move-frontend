@@ -148,7 +148,7 @@ examples:
   - name: with isLockout param
     data:
       isLockout: true
-      isLodging: true
+      isOvernightLodge: true
   - name: complete example
     data:
       title:
