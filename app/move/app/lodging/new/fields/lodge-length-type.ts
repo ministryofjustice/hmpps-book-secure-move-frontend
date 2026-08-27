@@ -2,7 +2,6 @@ export const lodgeLengthType = {
   validate: 'required',
   component: 'govukRadios',
   name: 'lodge_length_type',
-  default: '1',
   fieldset: {
     legend: {
       text: 'fields::lodge_length_type.label',
