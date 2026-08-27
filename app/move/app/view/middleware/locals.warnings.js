@@ -60,7 +60,7 @@ async function setWarnings(req, res, next) {
     sections,
     tagList,
     importantEventsTagList,
-    personEscortRecordIsCompleted,
+    personEscortRecordIsCompleted, 
   }
 
   next()
