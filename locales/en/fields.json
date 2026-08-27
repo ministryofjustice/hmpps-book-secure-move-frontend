@@ -202,7 +202,7 @@
     }
   },
   "lodge_length_custom": {
-    "label": "Lodge length"
+    "label": "number of nights"
   },
   "lodge_cancel_reason": {
     "label": "Why are you cancelling the overnight lodge?",
