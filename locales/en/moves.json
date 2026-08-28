@@ -4,7 +4,8 @@
   "move_reference": "Reference: {{reference}}",
   "move_reference_compact": "<span class=\"govuk-visally-hidden\">Reference: </span>{{reference}}",
   "is_lockout": "Prison lockout",
-  "is_lodging": "This move includes an overnight lodge.",
+  "is_overnight_lodge": "This move includes an overnight lodge.",
+  "is_temporary_lodge": "This move includes a temporary lodge.",
   "is_section_forty_six": "This move is subject to PACE Section 46.",
   "steps": {
     "person_search": {
@@ -204,7 +205,7 @@
       }
     },
     "page_title": "Cancel move for this person",
-    "warning": "Responsibility for cancelling this move lies with the sending location. If you are cancelling a request on the day a move is due to take place, you must also inform the supplier."
+    "warning": "You must also contact the supplier to cancel the move request for {{-name}}"
   },
   "edit": {
     "page_title": "Edit this move",

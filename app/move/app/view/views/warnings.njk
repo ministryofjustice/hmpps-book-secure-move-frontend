@@ -79,6 +79,11 @@
             {% endfor %}
           </div>
         {% endif %}
+      {% elif warnings.personEscortRecordIsCompleted %}
+        {{ govukInsetText({
+          classes: "govuk-!-font-size-16 govuk-!-margin-top-0",
+          text: t("assessment::complete_no_warnings")
+        }) }}
       {% else %}
         {{ govukInsetText({
           classes: "govuk-!-font-size-16 govuk-!-margin-top-0",

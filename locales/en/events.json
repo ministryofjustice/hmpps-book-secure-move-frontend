@@ -415,8 +415,10 @@
   "PerMedicalAid": {
     "flag": "medical",
     "heading": "Medical attention",
-    "description": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} at {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} at {{treated_at, formatTime}} $t(events::PerMedicalAid.select_location)",
-    "description_without_supplier": "{{notes}}",
+    "description_with_all_fields": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} at {{advised_at, formatTime}}<br>Treatment was administered by {{treated_by}} at {{treated_at, formatTime}} <br>$t(events::PerMedicalAid.select_location) <br>{{notes}}",
+    "description_with_treated_by": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Treatment was administered by {{treated_by}} at {{treated_at, formatTime}}<br>$t(events::PerMedicalAid.select_location) <br>{{notes}}",
+    "description_with_advised_by": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>Medical advice was provided by {{advised_by}} at {{advised_at, formatTime}}<br>$t(events::PerMedicalAid.select_location) <br>{{notes}}",
+    "description_with_location": "$t(events::person) requested medical attention with {{supplier_personnel_number}}<br>$t(events::PerMedicalAid.select_location) <br>{{notes}}",
     "select_location": "$t(events::PerMedicalAid.location_vehicle, {\"context\": \"{{vehicle_reg, exists}}\"})",
     "location_vehicle": "at {{location.title}}",
     "location_vehicle_true": "inside the vehicle {{vehicle_reg}}"

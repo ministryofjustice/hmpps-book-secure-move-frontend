@@ -59,7 +59,7 @@
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-one-half">
             {{ govukWarningText({
-              text: t("moves::is_lodging"),
+              text: t("moves::is_temporary_lodge") if moveIsTemporaryLodge else t("moves::is_overnight_lodge"),
               iconFallbackText: "Warning"
             }) }}
           </div>
