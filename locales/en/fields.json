@@ -189,6 +189,7 @@
     }
   },
   "lodge_length_type": {
+    "error_message": "Select how many nights they will stay at the lodge location",
     "items": {
       "one": {
         "label": "One"
@@ -202,7 +203,7 @@
     }
   },
   "lodge_length_custom": {
-    "label": "Lodge length"
+    "label": "number of nights they will stay at the lodge location"
   },
   "lodge_cancel_reason": {
     "label": "Why are you cancelling the overnight lodge?",

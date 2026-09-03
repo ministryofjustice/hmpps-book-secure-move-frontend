@@ -9,6 +9,8 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+    cooldown:
+      default-days: 7
     ignore:
       - dependency-name: '@hmpps-book-secure-move-frameworks*'
       - dependency-name: 'webpack-cli'
@@ -20,7 +22,7 @@ updates:
     commit-message:
       prefix: 'build'
       include: 'scope'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 20
   - package-ecosystem: 'docker'
     directory: '/'
     schedule:

@@ -209,6 +209,56 @@ describe('Move view app', function () {
         })
       })
 
+      describe('personEscortRecordIsCompleted', function () {
+        context('when Person Escort Record is completed', function () {
+          beforeEach(function () {
+            req.move.profile.person_escort_record = {
+              status: 'completed',
+              flags: [],
+            }
+            middleware(req, res, nextSpy)
+          })
+
+          it('should set personEscortRecordIsCompleted to true', function () {
+            expect(res.locals.warnings).to.have.property(
+              'personEscortRecordIsCompleted',
+              true
+            )
+          })
+        })
+
+        context('when Person Escort Record is not completed', function () {
+          beforeEach(function () {
+            req.move.profile.person_escort_record = {
+              status: 'in_progress',
+              flags: [],
+            }
+            middleware(req, res, nextSpy)
+          })
+
+          it('should set personEscortRecordIsCompleted to false', function () {
+            expect(res.locals.warnings).to.have.property(
+              'personEscortRecordIsCompleted',
+              false
+            )
+          })
+        })
+
+        context('without Person Escort Record', function () {
+          beforeEach(function () {
+            req.move.profile = {}
+            middleware(req, res, nextSpy)
+          })
+
+          it('should set personEscortRecordIsCompleted to false', function () {
+            expect(res.locals.warnings).to.have.property(
+              'personEscortRecordIsCompleted',
+              false
+            )
+          })
+        })
+      })
+
       describe('importantEventsTagList', function () {
         context('when Person Escort Record is completed', function () {
           beforeEach(function () {
