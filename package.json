@@ -288,7 +288,7 @@
     "mock-fs": "5.5.0",
     "nock": "13.4.0",
     "nodemon": "3.1.14",
-    "npm-check-updates": "23.0.0",
+    "npm-check-updates": "23.1.0",
     "nyc": "15.1.0",
     "open-cli": "9.0.0",
     "pinst": "3.0.0",
