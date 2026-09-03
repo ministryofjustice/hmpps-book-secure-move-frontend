@@ -15,7 +15,7 @@ permissions:
 jobs:
   integration_test:
     name: 'Run the E2E tests (shard ${{ matrix.container }})'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-8-cores
     strategy:
       fail-fast: false
       matrix:
