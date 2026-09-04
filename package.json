@@ -157,7 +157,7 @@
     "@ministryofjustice/eslint-config-hmpps": "^1.0.3",
     "@ministryofjustice/frontend": "^9.0.0",
     "@promster/express": "15.6.0",
-    "@sentry/node": "7.120.3",
+    "@sentry/node": "10.71.0",
     "@sentry/tracing": "7.120.4",
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.6.0",
