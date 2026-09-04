@@ -221,11 +221,19 @@
   },
   "MoveNotifyPremisesOfPickupEta": {
     "heading": "Pickup location notified of expected time of arrival",
-    "description": "{{move.from_location.title}} was notified of an expected arrival time of {{expected_at, formatTime}}"
+    "description": "$t(events::MoveNotifyPremisesOfPickupEta.select_location) was notified of an expected arrival time of {{expected_at, formatTime}}",
+    "select_location": "$t(events::MoveNotifyPremisesOfPickupEta.location, {\"context\": \"{{location, exists}}\"})",
+    "location": "",
+    "location_true": "{{location.title}}",
+    "location_false": "{{move.from_location.title}}"
   },
   "MoveNotifyPremisesOfExpectedCollectionTime": {
-    "heading": "{{move.from_location.title}} notified of expected collection time",
-    "description": "Expected collection at {{expected_at, formatTime}}"
+    "heading": "$t(events::MoveNotifyPremisesOfExpectedCollectionTime.select_location) notified of expected collection time",
+    "description": "Expected collection at {{expected_at, formatTime}}",
+    "select_location": "$t(events::MoveNotifyPremisesOfExpectedCollectionTime.location, {\"context\": \"{{location, exists}}\"})",
+    "location": "",
+    "location_true": "{{location.title}}",
+    "location_false": "{{move.from_location.title}}"
   },
   "MoveNotifySupplierOfMoveRequest": {
     "heading": "{{move.supplier.name}} notified of move request",
