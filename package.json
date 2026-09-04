@@ -265,7 +265,7 @@
     "chai": "6.2.2",
     "chai-as-promised": "8.0.2",
     "cheerio": "1.2.0",
-    "copy-webpack-plugin": "9.1.0",
+    "copy-webpack-plugin": "14.0.0",
     "css-loader": "7.1.4",
     "del-cli": "7.0.0",
     "dotenv-cli": "11.0.0",
