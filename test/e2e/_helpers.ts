@@ -729,3 +729,30 @@ export async function expectStatusCode(
   await t.expect(getResponseStatus(logger, url))[expectMethod](statusCode)
   await t.removeRequestHooks(logger)
 }
+
+/**
+ * A FIFO queue for handing values (e.g. created move URLs) from one
+ * fixture's tests to another's.
+ *
+ * Plain `Array#shift()` isn't safe for this: TestCafe's quarantine mode
+ * (`-q`) re-runs a failed test's `beforeEach` hook on every retry attempt,
+ * so a single flaky test can shift more than one value off the queue and
+ * starve the tests that run after it. Caching the consumed value against
+ * `t.test.name` means repeat attempts of the same test always get back the
+ * value they got the first time, instead of shifting a fresh one.
+ */
+export function createConsumableQueue<T>() {
+  const queue: T[] = []
+  const consumed: Record<string, T> = {}
+
+  return {
+    push: (item: T) => queue.push(item),
+    consume: (t: TestController): T => {
+      const testName = t.test.name
+      if (!(testName in consumed)) {
+        consumed[testName] = queue.shift() as T
+      }
+      return consumed[testName]
+    },
+  }
+}
