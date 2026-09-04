@@ -159,7 +159,7 @@
     "@promster/express": "15.6.0",
     "@sentry/node": "7.120.3",
     "@sentry/tracing": "7.120.4",
-    "accessible-autocomplete": "2.0.4",
+    "accessible-autocomplete": "3.0.1",
     "agentkeepalive": "4.6.0",
     "applicationinsights": "^2.6.0",
     "axios": "1.18.1",
