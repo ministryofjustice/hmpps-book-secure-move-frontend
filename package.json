@@ -228,14 +228,14 @@
     "user-time": "2.0.1",
     "uuid": "14.0.2",
     "winston": "3.19.0",
-    "yargs": "18.0.0"
+    "yargs": "18.1.0"
   },
   "devDependencies": {
     "@babel/core": "7.29.7",
     "@babel/preset-env": "7.29.5",
     "@commitlint/cli": "21.2.2",
     "@commitlint/config-conventional": "21.2.2",
-    "@faker-js/faker": "10.5.0",
+    "@faker-js/faker": "10.6.0",
     "@ffmpeg-installer/ffmpeg": "1.1.0",
     "@ministryofjustice/eslint-config-hmpps": "1.0.3",
     "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.6",
@@ -265,7 +265,7 @@
     "chai": "6.2.2",
     "chai-as-promised": "8.0.2",
     "cheerio": "1.2.0",
-    "copy-webpack-plugin": "9.1.0",
+    "copy-webpack-plugin": "14.0.0",
     "css-loader": "7.1.5",
     "del-cli": "7.0.0",
     "dotenv-cli": "11.0.0",
@@ -309,9 +309,9 @@
     "ts-mocha": "11.1.0",
     "ts-node": "10.9.2",
     "typescript": "6.0.3",
-    "webpack": "5.106.2",
+    "webpack": "5.110.2",
     "webpack-assets-manifest": "6.5.2",
-    "webpack-cli": "6.0.1",
+    "webpack-cli": "7.2.3",
     "webpack-merge": "6.0.1"
   },
   "engines": {
