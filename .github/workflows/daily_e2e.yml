@@ -24,4 +24,3 @@ jobs:
     uses: ./.github/workflows/node_e2e_tests.yml
     needs: [node_build]
     secrets: inherit
-  

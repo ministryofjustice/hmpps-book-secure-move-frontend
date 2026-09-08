@@ -140,4 +140,3 @@ Adds header classes.
 |Name|Type|Required|Description|
 |---|---|---|---|
 |classes|string|No|Classes to add to the item header element.|
-

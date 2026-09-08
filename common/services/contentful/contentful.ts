@@ -221,7 +221,7 @@ export class ContentfulService {
 
     await set(
       `cache:entries:${this.contentType}`,
-      entriesToCache, 
+      entriesToCache,
       300,
       API.USE_REDIS_CACHE
     )
