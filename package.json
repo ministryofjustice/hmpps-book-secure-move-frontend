@@ -319,7 +319,7 @@
   },
   "files": [],
   "scripts": {
-    "build": "npm run clean && npm run compile && webpack --config webpack.config.js",
+    "build": "npm run compile && webpack --config webpack.config.js",
     "clean": "rm -rf dist node_modules .build",
     "clear-cache-reference-data": "node tasks/clear-cache-reference-data.js",
     "compile": "tsc --project ./",
