@@ -7,8 +7,8 @@ RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 COPY --chown=node:node package*.json .npmrc .allowed-scripts.mjs ./
 USER 1000
-RUN npm install typescript
 RUN npm run setup
+RUN npm install typescript
 
 COPY --chown=node:node webpack.config.ts .
 COPY --chown=node:node tsconfig.json .
