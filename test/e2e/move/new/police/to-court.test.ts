@@ -1,6 +1,10 @@
 import { Selector, ClientFunction } from 'testcafe'
 
-import { generatePerson, createPersonFixture } from '../../../_helpers'
+import {
+  createConsumableQueue,
+  generatePerson,
+  createPersonFixture,
+} from '../../../_helpers'
 import { policeUser } from '../../../_roles'
 import { newMove } from '../../../_routes'
 import {
@@ -10,7 +14,7 @@ import {
   cancelMovePage,
 } from '../../../pages'
 
-const createdMoves: string[] = []
+const createdMoves = createConsumableQueue<string>()
 
 const registerMoveUrl = async () => {
   const currentUrl = await page.getCurrentUrl()
@@ -160,10 +164,10 @@ test('With existing person', async t => {
 })
 
 fixture('Cancel move from Police Custody').beforeEach(async t => {
-  const createdMove = createdMoves.shift()
+  const createdMove = createdMoves.consume(t)
   await t
     .useRole(policeUser)
-    .navigateTo(createdMove!)
+    .navigateTo(createdMove)
     .click(moveDetailPage.nodes.cancelLink as Selector)
 })
 
