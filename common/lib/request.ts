@@ -9,7 +9,7 @@ const getUrl = (page: string, args: Record<string, string> = {}): string => {
   return `${page}${getQueryString(args, {})}`
 }
 
-export { 
-  getQueryString, 
-  getUrl 
+export {
+  getQueryString,
+  getUrl
 }

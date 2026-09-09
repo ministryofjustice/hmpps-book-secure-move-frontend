@@ -48,4 +48,3 @@ export function array (array: any[] = [], useOxfordComma = false): string {
 
   return useOxfordComma ? oxfordJoin(tidyArray) : nonOxfordJoin(tidyArray)
 }
-

@@ -38,10 +38,10 @@ export const addEvents = async (
             req,
             lockoutEvents,
             move,
-            journeys, 
+            journeys,
             user
         )
-    
+
         const fullName = move.profile?.person._fullname || 'Unknown'
 
         req.flash('success', {
