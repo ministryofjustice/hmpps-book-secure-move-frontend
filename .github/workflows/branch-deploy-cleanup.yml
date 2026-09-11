@@ -17,6 +17,7 @@ env:
   KUBE_NAME: ${{ secrets.KUBE_NAME }}
   KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
   DRY_RUN: "true"
+  GH_TOKEN: ${{ github.token }}
 
   GITHUB_TEAM_NAME_SLUG: book-a-secure-move
 
@@ -40,16 +41,6 @@ jobs:
 
           set -euo pipefail
 
-          echo "Getting open PRs..."
-
-          OPEN_PRS=$(
-            gh pr list \
-              --state open \
-              --limit 1000 \
-              --json number \
-              --jq '.[].number'
-          )
-
           echo "Open PRs:"
           echo "$OPEN_PRS"
 
@@ -61,10 +52,13 @@ jobs:
             PR_NUMBER="${DEPLOYMENT##*-pr-}"
             ENVIRONMENT="booksecuremove-pr-${PR_NUMBER}"
 
-            if grep -qx "$PR_NUMBER" <<< "$OPEN_PRS"; then
-              echo "Keeping branch build #${PR_NUMBER} (PR #${PR_NUMBER} is open)"
-              continue
-            fi
+            PR_STATE=$(
+            gh pr view "$PR_NUMBER" \
+            --repo "$OWNER/$REPO" \
+            --json state \
+            --jq '.state' \
+            2>/dev/null || echo "NOT_FOUND"
+            )
 
             echo "Found stale branch build #${PR_NUMBER} (PR #${PR_NUMBER} not open)"
 
