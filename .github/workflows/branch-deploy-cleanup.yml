@@ -1,11 +1,14 @@
 name: Branch Based Deploy Cleanup
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
+
+permissions:
+  contents: read
+  pull-requests: read
+  deployments: write
 
 # Environment variables available to all jobs and steps in this workflow
 env:
@@ -13,7 +16,7 @@ env:
   KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
   KUBE_NAME: ${{ secrets.KUBE_NAME }}
   KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
-  KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
+  DRY_RUN: "true"
 
   GITHUB_TEAM_NAME_SLUG: book-a-secure-move
 
@@ -24,59 +27,69 @@ jobs:
     permissions:
       deployments: write
     steps:
-      - name: Authenticate with cluster
-        run: |
-          echo -n $KUBE_CACERT | base64 -d > ./ca.crt
-          kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
-          kubectl config set-credentials circleci --token=${KUBE_TOKEN}
-          kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=circleci --namespace=${KUBE_NAMESPACE}
-          kubectl config use-context ${KUBE_CLUSTER}
-
-      - name: Delete kube configs
-        env:
-          PR_NUMBER: ${{ github.event.number }}
-        run: |
-          kubectl delete configmap hmpps-book-secure-move-frontend-configmap-pr-$PR_NUMBER
-          kubectl delete ingress hmpps-book-secure-move-frontend-ingress-pr-$PR_NUMBER
-          kubectl delete service hmpps-book-secure-move-frontend-service-pr-$PR_NUMBER
-          kubectl delete deployment hmpps-book-secure-move-frontend-deployment-pr-$PR_NUMBER
-
-      - name: Delete deployments
-        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
+      - uses: ministryofjustice/hmpps-github-shared-actions/.github/actions/build-test-and-deploy/cloud-platform-auth@fddc5f11d6a8ce9b82a06fe76268835bfd99bcd4 # v1
         with:
-          github-token: ${{ secrets.BRANCH_BASED_DEPLOY_TOKEN }}
-          script: |
-            let deployments = (
-              await github.rest.repos.listDeployments({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                environment: "booksecuremove-pr-${{ github.event.number }}",
-              })
-            ).data;
+          api: https://${{ secrets.KUBE_CLUSTER }}
+          cert: ${{ secrets.DECODED_KUBE_CACERT }}
+          cluster: ${{ secrets.KUBE_CLUSTER }}
+          namespace: ${{ secrets.KUBE_NAMESPACE }}
+          token: ${{ secrets.KUBE_TOKEN }}
 
-            deployments = (await Promise.all(
-              deployments.map(async (d) => {
-                const statuses = (
-                  await github.rest.repos.listDeploymentStatuses({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    deployment_id: d.id,
-                  })
-                ).data;
-                const lastState = statuses[0]?.state;
-                if (lastState == "inactive") return;
+      - name: Run Cleanup
+        run: |
 
-                return d;
-              })
-            )).filter(d => d);
+          set -euo pipefail
 
-            await Promise.all(
-              deployments.map(d => {
-                return github.rest.repos.createDeploymentStatus({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  deployment_id: d.id,
-                  state: "inactive",
-                });
-              })
-            );
+          echo "Getting open PRs..."
+
+          OPEN_PRS=$(
+            gh pr list \
+              --state open \
+              --limit 1000 \
+              --json number \
+              --jq '.[].number'
+          )
+
+          echo "Open PRs:"
+          echo "$OPEN_PRS"
+
+          kubectl get deployments -n "$KUBE_NAMESPACE" -o json |
+          jq -r '.items[].metadata.name' |
+          grep '^hmpps-book-secure-move-frontend-deployment-pr-' |
+          while read -r DEPLOYMENT; do
+
+            PR_NUMBER="${DEPLOYMENT##*-pr-}"
+            ENVIRONMENT="booksecuremove-pr-${PR_NUMBER}"
+
+            if grep -qx "$PR_NUMBER" <<< "$OPEN_PRS"; then
+              echo "Keeping branch build #${PR_NUMBER} (PR #${PR_NUMBER} is open)"
+              continue
+            fi
+
+            echo "Found stale branch build #${PR_NUMBER} (PR #${PR_NUMBER} not open)"
+
+            if [[ "$DRY_RUN" == "true" ]]; then
+              echo "[DRY RUN] Would delete k8s resources for PR ${PR_NUMBER}"
+              echo "[DRY RUN] Would delete environment ${ENVIRONMENT}"
+            else
+              kubectl delete all,ingress,configmap,secret \
+              -n "$KUBE_NAMESPACE" \
+              -l pull_request=${PR_NUMBER}
+
+              # The following lines will clean up branch builds that were created before the above label was added to the resources.
+              # These can be removed once all new branch builds include the label.
+              kubectl delete configmap hmpps-book-secure-move-frontend-configmap-pr-$PR_NUMBER
+              kubectl delete ingress hmpps-book-secure-move-frontend-ingress-pr-$PR_NUMBER
+              kubectl delete service hmpps-book-secure-move-frontend-service-pr-$PR_NUMBER
+              kubectl delete deployment hmpps-book-secure-move-frontend-deployment-pr-$PR_NUMBER
+
+
+              gh api \
+              --method DELETE \
+              "repos/${{ github.repository }}/environments/${ENVIRONMENT}" \
+              || echo "Environment ${ENVIRONMENT} not found"
+
+              echo "Deleted deployment and environment for PR #${PR_NUMBER}"
+            fi
+          done
+
