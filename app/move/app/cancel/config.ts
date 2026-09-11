@@ -1,4 +1,4 @@
-module.exports = function config(id) {
+export function config (id: string) {
   return {
     journeyName: `cancel-move-${id}`,
     name: `cancel-move-${id}`,
