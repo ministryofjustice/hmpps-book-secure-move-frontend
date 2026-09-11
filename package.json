@@ -274,7 +274,7 @@
     "eslint-plugin-import": "2.32.0",
     "finepack": "^2.12.20",
     "git-authors-cli": "1.0.53",
-    "glob": "8.1.0",
+    "glob": "13.0.6",
     "husky": "8.0.3",
     "image-minimizer-webpack-plugin": "5.0.0",
     "imagemin": "9.0.1",
