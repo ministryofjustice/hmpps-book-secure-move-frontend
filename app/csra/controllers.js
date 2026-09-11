@@ -30,13 +30,6 @@ async function redirectToIncomingMoves(req, res, next) {
   const permittedLocation =
     location && find(userLocations, { id: location.id })
 
-  // eslint-disable-next-line no-console
-  console.log('[csra debug]', {
-    agency,
-    location,
-    userLocations,
-  })
-
   if (!permittedLocation) {
     return next(accessError(agency))
   }
