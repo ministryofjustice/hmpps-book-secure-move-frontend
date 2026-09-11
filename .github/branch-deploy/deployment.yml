@@ -1,8 +1,11 @@
+#file: noinspection KubernetesUnknownValues
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hmpps-book-secure-move-frontend-deployment-pr-{PR_NUMBER}
   namespace: hmpps-book-secure-move-frontend-staging
+  labels:
+    pull_request: {PR_NUMBER}
 spec:
   replicas: 1
   revisionHistoryLimit: 10
