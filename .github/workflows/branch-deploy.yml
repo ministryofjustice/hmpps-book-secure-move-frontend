@@ -9,11 +9,7 @@ on:
 env:
   AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
   ECR_ENDPOINT: ${{ secrets.ECR_ENDPOINT }}
-  KUBE_CACERT: ${{ secrets.KUBE_CACERT }}
-  KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
-  KUBE_NAME: ${{ secrets.KUBE_NAME }}
-  KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
-  KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
+
 
   GITHUB_TEAM_NAME_SLUG: book-a-secure-move
 
@@ -138,7 +134,7 @@ jobs:
       - uses: ministryofjustice/hmpps-github-shared-actions/.github/actions/build-test-and-deploy/cloud-platform-auth@fddc5f11d6a8ce9b82a06fe76268835bfd99bcd4 # v1
         with:
           api: https://${{ secrets.KUBE_CLUSTER }}
-          cert: ${{ secrets.KUBE_CACERT }}
+          cert: ${{ secrets.DECODED_KUBE_CACERT }}
           cluster: ${{ secrets.KUBE_CLUSTER }}
           namespace: ${{ secrets.KUBE_NAMESPACE }}
           token: ${{ secrets.KUBE_TOKEN }}
