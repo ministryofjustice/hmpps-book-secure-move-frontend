@@ -386,7 +386,7 @@ const runTests = async () => {
 
   try {
     await concurrently(testcafeRuns, {
-      killOthers,
+      killOthersOn: stopOnFirstFail ? ['failure'] : [],
     }).result
   } catch {
     try {

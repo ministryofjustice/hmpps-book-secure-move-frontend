@@ -167,7 +167,7 @@
     "chrono-node": "2.10.1",
     "compression": "1.8.1",
     "concat-stream": "2.0.0",
-    "concurrently": "9.2.1",
+    "concurrently": "10.0.5",
     "connect-flash": "0.1.1",
     "connect-redis": "10.0.0",
     "contentful": "11.12.9",
@@ -209,7 +209,6 @@
     "morgan": "1.11.0",
     "multer": "^2.3.0",
     "netmask": "2.1.1",
-    "npm-run-all": "4.1.5",
     "nunjucks": "3.2.4",
     "nunjucks-markdown": "2.0.1",
     "ol": "7.5.2",
@@ -385,7 +384,6 @@
     "find-versions": "6.0.0",
     "meow": "14.1.0",
     "serialize-javascript": "7.0.5",
-    "shell-quote": "1.8.4",
     "tmp": "0.2.7",
     "underscore": "^1.13.6"
   }
