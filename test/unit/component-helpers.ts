@@ -1,4 +1,4 @@
-import cheerio from 'cheerio'
+import { load } from 'cheerio'
 import nunjucks from 'nunjucks'
 
 // @ts-expect-error // TODO: convert to TS
@@ -68,7 +68,7 @@ function renderComponentHtmlToCheerio(
   }
 
   const output = nunjucks.renderString(macroString, {})
-  return cheerio.load(output)
+  return load(output)
 }
 
 export {

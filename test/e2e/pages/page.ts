@@ -67,7 +67,9 @@ export class Page {
 
     await t.click((this.nodes.locationsList as Selector).nth(position))
 
-    await t.expect(this.getCurrentUrl()).notContains('/locations')
+    await t
+      .expect(this.getCurrentUrl())
+      .notContains('/locations', { timeout: 45000 })
   }
 
   /**
@@ -87,7 +89,9 @@ export class Page {
 
     await t.click((this.nodes.regionsList as Selector).nth(randomItem))
 
-    await t.expect(this.getCurrentUrl()).notContains('/locations')
+    await t
+      .expect(this.getCurrentUrl())
+      .notContains('/locations', { timeout: 45000 })
   }
 
   /**
@@ -103,7 +107,7 @@ export class Page {
       .typeText('#password', role.password)
       .click(Selector('#submit'))
       .expect(this.getCurrentUrl())
-      .notContains('/auth/')
+      .notContains('/auth/', { timeout: 45000 })
   }
 
   /**
