@@ -16,7 +16,7 @@ env:
   KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
   KUBE_NAME: ${{ secrets.KUBE_NAME }}
   KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
-  DRY_RUN: "true"
+  DRY_RUN: "false"
   GH_TOKEN: ${{ github.token }}
   GITHUB_TEAM_NAME_SLUG: book-a-secure-move
 
