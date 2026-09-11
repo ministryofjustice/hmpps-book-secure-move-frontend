@@ -300,7 +300,7 @@
     "sinon-chai": "4.0.1",
     "standard": "17.1.2",
     "standard-version": "9.5.0",
-    "svgo": "4.0.2",
+    "svgo": "4.1.0",
     "terser-webpack-plugin": "5.6.1",
     "testcafe": "3.7.6",
     "testcafe-browser-provider-browserstack": "^1.15.2",
