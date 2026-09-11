@@ -13,7 +13,7 @@ APIDocumentStorage.prototype = {
           .catch(error => {
             const code = 'API_DOCUMENT_STORAGE_FAILED'
             const multerError = new MulterError(code)
-            multerError.message = multerError.message || error.message
+            multerError.message = error.message || multerError.message
             cb(multerError)
           })
       })
