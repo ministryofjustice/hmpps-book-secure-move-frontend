@@ -8,8 +8,9 @@ export default configureAllowedScripts({
     'node_modules/@ffmpeg-installer/linux-arm@4.1.3': 'FORBID',
     'node_modules/@ffmpeg-installer/linux-arm64@4.1.4': 'FORBID',
     'node_modules/@ffmpeg-installer/linux-ia32@4.1.0': 'FORBID',
-    // Needed by jest for running tests in watch mode
-    'node_modules/fsevents@2.3.2': 'ALLOW',
+    // Needed by jest for running tests in watch mode on macOS
+    // optional darwin-only dep so FORBID elsewhere to avoid the allowscript erroring on missing folder
+    'node_modules/fsevents@2.3.2': process.platform === 'darwin' ? 'ALLOW' : 'FORBID',
     // Used if webpack config
     'node_modules/gifsicle@5.3.0': 'ALLOW',
     // Used if webpack config
