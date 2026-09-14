@@ -131,7 +131,7 @@
     "ministryofjustice"
   ],
   "dependencies": {
-    "@contentful/rich-text-html-renderer": "17.2.2",
+    "@contentful/rich-text-html-renderer": "17.2.3",
     "@hmpps-book-secure-move-frameworks/1.0.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.0.0",
     "@hmpps-book-secure-move-frameworks/1.1.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.1.0",
     "@hmpps-book-secure-move-frameworks/1.2.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.2.0",
@@ -233,7 +233,7 @@
   "devDependencies": {
     "@babel/core": "7.29.7",
     "@babel/preset-env": "7.29.5",
-    "@commitlint/cli": "21.2.1",
+    "@commitlint/cli": "21.2.2",
     "@commitlint/config-conventional": "21.2.0",
     "@faker-js/faker": "10.5.0",
     "@ffmpeg-installer/ffmpeg": "1.1.0",
