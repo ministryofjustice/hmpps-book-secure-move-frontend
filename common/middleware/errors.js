@@ -18,6 +18,8 @@ async function _getMessage(error) {
     errorLookup = 'unauthorized_bad_device'
   } else if (error.statusCode === 403 && error.cause?.includes('OFF_NETWORK')) {
     errorLookup = 'unauthorized_off_network'
+  } else if (error.statusCode === 403 && error.cause?.includes('CSRA')) {
+    errorLookup = 'csra_access_denied'
   } else if (error.statusCode === 403 || error.statusCode === 401) {
     errorLookup = 'unauthorized'
   } else if (error.statusCode === 403 || error.statusCode === 401) {

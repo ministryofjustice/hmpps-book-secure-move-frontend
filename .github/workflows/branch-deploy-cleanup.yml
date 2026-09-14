@@ -73,7 +73,7 @@ jobs:
               echo "[DRY RUN] Would delete k8s resources for PR ${PR_NUMBER}"
               echo "[DRY RUN] Would delete environment ${ENVIRONMENT}"
             else
-              kubectl delete all,ingress,configmap,secret \
+              kubectl delete ingress,configmap,service,deployment \
               -n "$KUBE_NAMESPACE" \
               -l pull_request=${PR_NUMBER}
 

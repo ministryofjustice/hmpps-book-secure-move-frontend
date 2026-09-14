@@ -4,12 +4,17 @@ on:
   pull_request:
     branches:
       - main
+      
+permissions:
+  contents: read
+  pull-requests: read
+  deployments: write
 
 # Environment variables available to all jobs and steps in this workflow
 env:
   AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
   ECR_ENDPOINT: ${{ secrets.ECR_ENDPOINT }}
-  KUBE_CACERT: ${{ secrets.KUBE_CACERT }}
+  KUBE_CACERT: ${{ secrets.DECODED_KUBE_CACERT }}
   KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
   KUBE_NAME: ${{ secrets.KUBE_NAME }}
   KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
