@@ -257,6 +257,42 @@ describe('Error middleware', function () {
       })
     })
 
+    context('with a CSRA-access 403 error status code', function () {
+      beforeEach(async function () {
+        mockError.statusCode = errorCode403
+        mockError.cause = 'CSRA_LOCATION_INACCESSIBLE'
+        await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+      })
+
+      it('should set correct status code on response', function () {
+        expect(mockRes.status).to.have.been.calledOnce
+        expect(mockRes.status).to.have.been.calledWith(errorCode403)
+      })
+
+      it('should render the error template', function () {
+        expect(mockRes.render).to.have.been.calledOnce
+        expect(mockRes.render.args[0][0]).to.equal('error')
+      })
+
+      it('should pass correct values to template', function () {
+        expect(mockRes.render.args[0][1]).to.deep.equal({
+          error: mockError,
+          statusCode: errorCode403,
+          showStackTrace: false,
+          showNomisMessage: false,
+          message: {
+            heading: 'errors::csra_access_denied.heading',
+            content: 'errors::csra_access_denied.content',
+          },
+          reference: undefined,
+        })
+      })
+
+      it('should not call next', function () {
+        expect(nextSpy).not.to.have.been.called
+      })
+    })
+
     context('with a 500 error status code', function () {
       beforeEach(function () {
         mockError.statusCode = errorCode500

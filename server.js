@@ -236,7 +236,10 @@ module.exports = async () => {
   app.use(
     ensureSelectedLocation({
       locationsMountpath: locationsApp.mountpath,
-      whitelist: config.AUTH_WHITELIST_URLS,
+      // /csra picks its own location from the `agency` query param, so it
+      // must not be bounced to the location chooser like other routes -
+      // kept separate from AUTH_WHITELIST_URLS as it still requires auth
+      whitelist: [...config.AUTH_WHITELIST_URLS, '/csra(.*)'],
     })
   )
   app.use(setLocations)
