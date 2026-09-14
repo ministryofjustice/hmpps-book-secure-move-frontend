@@ -168,6 +168,7 @@
     "compression": "1.8.1",
     "concat-stream": "2.0.0",
     "concurrently": "10.0.5",
+    "concurrently": "10.0.5",
     "connect-flash": "0.1.1",
     "connect-redis": "10.0.0",
     "contentful": "11.12.9",
@@ -379,7 +380,6 @@
     "package.json": "finepack"
   },
   "overrides": {
-    "brace-expansion": "5.0.6",
     "fast-xml-parser": "^5.3.5",
     "find-versions": "6.0.0",
     "meow": "14.1.0",
