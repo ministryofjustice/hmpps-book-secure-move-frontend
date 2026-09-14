@@ -158,7 +158,6 @@
     "@ministryofjustice/frontend": "^11.0.0",
     "@promster/express": "15.6.0",
     "@sentry/node": "10.73.0",
-    "@sentry/tracing": "7.120.4",
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.6.0",
     "applicationinsights": "^2.6.0",

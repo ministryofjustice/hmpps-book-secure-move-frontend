@@ -4,7 +4,6 @@ import { join } from 'path'
 
 import { faker } from '@faker-js/faker'
 import * as Sentry from '@sentry/node'
-import { Context } from '@sentry/types'
 import { format } from 'date-fns'
 import glob from 'glob'
 import { isArray, isNil } from 'lodash'
@@ -57,7 +56,7 @@ const {
 
 /* eslint-disable no-process-env */
 
-function errorHandler(body: Context) {
+function errorHandler(body: Record<string, unknown>) {
   return (err: Record<string, any>) => {
     Sentry.withScope(scope => {
       if (err.errors && err.errors.length > 0) {
