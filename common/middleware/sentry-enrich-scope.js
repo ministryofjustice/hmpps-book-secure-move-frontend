@@ -1,6 +1,14 @@
 const Sentry = require('@sentry/node')
 
 module.exports = function sentryEnrichScope(req, res, next) {
+  if (req.user) {
+    Sentry.setUser({
+      id: req.user.userId,
+      username: req.user.username,
+      permissions: req.user.permissions,
+    })
+  }
+
   const currentLocation = req.location || req.session.currentLocation
 
   if (currentLocation) {
