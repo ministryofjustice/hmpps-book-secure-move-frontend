@@ -10,14 +10,12 @@ export default configureAllowedScripts({
     'node_modules/@ffmpeg-installer/linux-ia32@4.1.0': 'FORBID',
     // Needed by jest for running tests in watch mode on macOS
     // optional darwin-only dep so FORBID elsewhere to avoid the allowscript erroring on missing folder
-    'node_modules/fsevents@2.3.2': process.platform === 'darwin' ? 'ALLOW' : 'FORBID',
-    // Used if webpack config
-    'node_modules/gifsicle@5.3.0': 'ALLOW',
-    // Used if webpack config
-    'node_modules/jpegtran-bin@7.0.0': 'ALLOW',
+    'node_modules/fsevents@2.3.2':
+      process.platform === 'darwin' ? 'ALLOW' : 'FORBID',
     'node_modules/pinst@3.0.0': 'ALLOW',
     'node_modules/preact@8.5.3': 'FORBID',
-    'node_modules/sharp@0.32.6': 'FORBID',
+    'node_modules/testcafe-browser-provider-browserstack/node_modules/sharp@0.32.6':
+      'FORBID',
     // Needed by esbuild for watching files during development
     'node_modules/@parcel/watcher@2.5.1': 'ALLOW',
     'node_modules/core-js@3.49.0': 'ALLOW',
