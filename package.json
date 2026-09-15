@@ -217,7 +217,7 @@
     "qs": "6.16.0",
     "redis": "6.1.0",
     "response-time": "2.3.4",
-    "retry-axios": "2.6.0",
+    "retry-axios": "4.0.3",
     "semver-sort": "1.0.0",
     "serve-favicon": "2.5.1",
     "sticky-sidebar": "3.3.1",
