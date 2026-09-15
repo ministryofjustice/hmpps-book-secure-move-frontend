@@ -4,10 +4,6 @@ const path = require('path')
 
 // NPM dependencies
 const Sentry = require('@sentry/node')
-// Tracing needs to be imported for it to work
-// Source: https://docs.sentry.io/platforms/node/performance/
-// eslint-disable-next-line no-unused-vars
-const Tracing = require('@sentry/tracing')
 const compression = require('compression')
 const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
@@ -69,46 +65,10 @@ module.exports = async () => {
   // Ensure we have a useful transaction id
   app.use(setTransactionId)
 
+  // Sentry.init() runs in ./instrument.js, required before this module so
+  // that auto-instrumentation of express/http can be set up in time
   if (config.SENTRY.DSN) {
-    Sentry.init({
-      debug: config.SENTRY.DEBUG,
-      dsn: config.SENTRY.DSN,
-      environment: config.SENTRY.ENVIRONMENT,
-      release: config.SENTRY.RELEASE,
-      integrations: [
-        // enable HTTP calls tracing
-        new Sentry.Integrations.Http({ tracing: true }),
-        // enable Express.js middleware tracing
-        new Tracing.Integrations.Express({ app }),
-      ],
-      // 10% of all requests will be used for performance sampling
-      tracesSampler: samplingContext => {
-        const transactionName =
-          samplingContext &&
-          samplingContext.transactionContext &&
-          samplingContext.transactionContext.name
-
-        if (
-          (transactionName && transactionName.includes('ping')) ||
-          transactionName.includes('/healthcheck')
-        ) {
-          return 0
-        } else {
-          return 0.01
-        }
-      },
-    })
-
-    app.use(
-      Sentry.Handlers.requestHandler({
-        // Ensure we don't include `data` to avoid sending any PPI
-        request: ['cookies', 'headers', 'method', 'query_string', 'url'],
-        user: ['id', 'username', 'permissions'],
-      })
-    )
     app.use(sentryRequestId)
-
-    app.use(Sentry.Handlers.tracingHandler())
   }
 
   // Configure prometheus to handle metrics
@@ -315,7 +275,7 @@ module.exports = async () => {
   app.use(router)
 
   // error handling
-  app.use(Sentry.Handlers.errorHandler())
+  Sentry.setupExpressErrorHandler(app)
   app.use(errorHandlers.notFound)
   app.use(errorHandlers.catchAll(config.IS_DEV))
 
