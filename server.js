@@ -53,8 +53,6 @@ module.exports = async () => {
     redisStore = await require('./config/redis-store')()
   }
 
-  require('./common/lib/azure-appinsights').initialiseAppInsights()
-
   // Global constants
   const app = express()
 
