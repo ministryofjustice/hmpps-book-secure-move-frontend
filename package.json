@@ -380,6 +380,7 @@
     "fast-uri": "3.1.7",
     "fast-xml-parser": "^5.3.5",
     "find-versions": "6.0.0",
+    "immutable": ">=4.3.9",
     "js-yaml": "5.4.1",
     "meow": "14.1.0",
     "serialize-javascript": "7.0.5",
