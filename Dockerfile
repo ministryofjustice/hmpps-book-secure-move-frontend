@@ -48,6 +48,7 @@ ARG APP_BUILD_BRANCH
 ENV APP_BUILD_BRANCH ${APP_BUILD_BRANCH}
 
 COPY --chown=node:node start.js .
+COPY --chown=node:node instrument.js .
 COPY --chown=node:node server.js .
 COPY --chown=node:node locales locales
 COPY --chown=node:node common common
