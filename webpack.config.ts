@@ -110,16 +110,31 @@ const commonConfig = {
           {
             loader: ImageMinimizerPlugin.loader,
             options: {
-              minimizer: {
-                implementation: ImageMinimizerPlugin.imageminMinify,
-                options: {
-                  plugins: [
-                    'imagemin-gifsicle',
-                    'imagemin-jpegtran',
-                    'imagemin-svgo',
-                  ],
+              minimizer: [
+                {
+                  implementation: ImageMinimizerPlugin.sharpMinify,
+                  options: {
+                    encodeOptions: {
+                      jpeg: {
+                        quality: 100,
+                      },
+                      png: {
+                        compressionLevel: 9,
+                      },
+                      gif: {},
+                    },
+                  },
                 },
-              },
+                {
+                  implementation: ImageMinimizerPlugin.svgoMinify,
+                  options: {
+                    encodeOptions: {
+                      multipass: true,
+                      plugins: ['preset-default'],
+                    },
+                  },
+                },
+              ],
             },
           },
         ],
