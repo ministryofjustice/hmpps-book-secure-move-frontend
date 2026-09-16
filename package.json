@@ -283,7 +283,7 @@
     "nock": "13.4.0",
     "nodemon": "3.1.14",
     "npm-check-updates": "23.0.0",
-    "nyc": "15.1.0",
+    "nyc": "18.0.0",
     "open-cli": "9.0.0",
     "pinst": "3.0.0",
     "prettier": "3.8.3",
@@ -374,10 +374,12 @@
     "*.js": "eslint --cache --fix",
     "package.json": "finepack"
   },
-  "overrides": {
+  "overrides": { 
+    "undici": ">=6.28.1",
     "fast-uri": "3.1.7",
     "fast-xml-parser": "^5.3.5",
     "find-versions": "6.0.0",
+    "js-yaml": "5.4.1",
     "meow": "14.1.0",
     "serialize-javascript": "7.0.5",
     "tmp": "0.2.7",
