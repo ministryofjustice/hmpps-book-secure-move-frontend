@@ -11,7 +11,7 @@ const express = require('express')
 const session = require('express-session')
 const grant = require('grant-express')
 const helmet = require('helmet')
-const i18nMiddleware = require('i18next-express-middleware')
+const i18nMiddleware = require('i18next-http-middleware')
 const morgan = require('morgan')
 const responseTime = require('response-time')
 const favicon = require('serve-favicon')
@@ -199,11 +199,11 @@ module.exports = async () => {
       // /csra picks its own location from the `agency` query param, so it
       // must not be bounced to the location chooser like other routes -
       // kept separate from AUTH_WHITELIST_URLS as it still requires auth
-      whitelist: [...config.AUTH_WHITELIST_URLS, '/csra(.*)'],
+      whitelist: [...config.AUTH_WHITELIST_URLS, '/csra{*splat}'],
     })
   )
   app.use(setLocations)
-  app.use('.*(?<!image)$', setLocation)
+  app.use(/.*(?<!image)$/, setLocation)
   app.use((req, res, next) => {
     res.locals.cspNonce = crypto.randomBytes(16).toString('hex')
     next()

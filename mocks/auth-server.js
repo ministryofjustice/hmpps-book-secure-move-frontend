@@ -105,7 +105,7 @@ app.get('/api/users/me/caseLoads', (req, res) => {
   res.json(caseLoadIds)
 })
 
-app.use('*', (req, res, next) => {
+app.use('/*splat', (req, res, next) => {
   const { url, query, body } = req
 
   res.send(`Received ${JSON.stringify({ url, query, body }, 2, null)}`)

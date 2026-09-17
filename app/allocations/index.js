@@ -12,12 +12,14 @@ const {
   switchPeriod,
   switchGroupBy,
 } = require('../../common/middleware/collection')
+const { matchParam } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
 const setLocation = require('../../common/middleware/set-location')
 
 const {
   ACTIONS,
   COLLECTION_PATH,
+  COLLECTION_PATH_GUARDS,
   DEFAULTS,
   FILTERS,
   MOUNTPATH,
@@ -35,15 +37,21 @@ router.param('locationId', setLocation)
 router.use(protectRoute('allocations:view'))
 
 router.get('/', (req, res) => res.redirect(`${MOUNTPATH}/outgoing`))
-router.get(COLLECTION_PATH + '/switch-view', switchPeriod(DEFAULTS.TIME_PERIOD))
+router.get(
+  COLLECTION_PATH + '/switch-view',
+  COLLECTION_PATH_GUARDS,
+  switchPeriod(DEFAULTS.TIME_PERIOD)
+)
 router.get(
   COLLECTION_PATH + '/switch-group-by',
+  COLLECTION_PATH_GUARDS,
   switchGroupBy(DEFAULTS.GROUP_BY)
 )
-router.get('/:view(outgoing)', redirectView(DEFAULTS.TIME_PERIOD))
+router.get('/:view', matchParam('view', 'outgoing'), redirectView(DEFAULTS.TIME_PERIOD))
 
 router.get(
   COLLECTION_PATH,
+  COLLECTION_PATH_GUARDS,
   setActions(ACTIONS),
   setContext('allocations'),
   setDatePagination(MOUNTPATH + COLLECTION_PATH),

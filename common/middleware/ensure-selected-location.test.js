@@ -54,7 +54,7 @@ describe('Ensure current location middleware', function () {
   })
 
   context('when whitelist url uses a pattern', function () {
-    const whitelist = ['/url', '/bypass-url', '/components/(.*)']
+    const whitelist = ['/url', '/bypass-url', '/components{/*splat}']
 
     beforeEach(function () {
       req.url = '/components/component-name/example'

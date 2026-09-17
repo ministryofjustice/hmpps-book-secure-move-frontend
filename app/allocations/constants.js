@@ -1,4 +1,4 @@
-const { dateRegex, uuidRegex } = require('../../common/helpers/url')
+const { matchParam } = require('../../common/helpers/url')
 
 const MOUNTPATH = '/allocations'
 
@@ -10,7 +10,14 @@ const ACTIONS = [
   },
 ]
 
-const COLLECTION_PATH = `/:period(week|day)/:date(${dateRegex})/:locationId(${uuidRegex})?/:view(outgoing)`
+const COLLECTION_PATH = '/:period/:date{/:locationId}/:view'
+
+// date and locationId are already validated by the setDateRange/setLocation
+// router.param() handlers - only period and view have no existing validator.
+const COLLECTION_PATH_GUARDS = [
+  matchParam('period', ['week', 'day']),
+  matchParam('view', ['outgoing']),
+]
 
 const DEFAULTS = {
   QUERY: {
@@ -45,6 +52,7 @@ const FILTERS = {
 module.exports = {
   ACTIONS,
   COLLECTION_PATH,
+  COLLECTION_PATH_GUARDS,
   DEFAULTS,
   FILTERS,
   MOUNTPATH,

@@ -13,7 +13,7 @@ const router = express.Router()
 router.param('lodgingId', setLodging)
 
 router.use(cancelApp.mountpath, cancelApp.router)
-router.use(editApp.mountpath, editApp.router)
+router.use(editApp.mountpath, editApp.mountGuard, editApp.router)
 router.use(newApp.mountpath, newApp.router)
 
 // Export

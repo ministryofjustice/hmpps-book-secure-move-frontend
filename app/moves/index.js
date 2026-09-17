@@ -23,7 +23,9 @@ const requestFilterFields = require('../filters/fields')
 
 const {
   COLLECTION_MIDDLEWARE,
+  COLLECTION_BASE_GUARD,
   COLLECTION_BASE_PATH,
+  COLLECTION_VIEW_GUARD,
   COLLECTION_VIEW_PATH,
   DEFAULTS,
   FILTERS,
@@ -51,11 +53,11 @@ router.param('locationId', setLocation)
 router.param('date', setDateRange)
 router.param('view', redirectDefaultQuery(DEFAULTS.QUERY))
 
-router.use('^([^.]+)$', saveUrl)
+router.use(/^[^.]+$/, saveUrl)
 
 // Define routes
 viewRouter.get(
-  '/:view(requested)',
+  '/requested',
   protectRoute('moves:view:proposed'),
   setContext('single_requests'),
   setFromLocation,
@@ -71,7 +73,7 @@ viewRouter.get(
   renderAsTable
 )
 viewRouter.get(
-  '/:view(requested)/download.:extension(csv|json)',
+  '/requested/download.:extension',
   protectRoute('moves:download'),
   protectRoute('moves:view:proposed'),
   setFromLocation,
@@ -85,7 +87,7 @@ viewRouter.get(
 )
 viewRouter.get('/document-emailed', protectRoute('moves:download'))
 viewRouter.get(
-  '/:view(outgoing)',
+  '/outgoing',
   protectRoute('moves:view:outgoing'),
   setContext('outgoing_moves'),
   setFromLocation,
@@ -99,7 +101,7 @@ viewRouter.get(
   renderAsCards
 )
 viewRouter.get(
-  '/:view(outgoing)/download.:extension(csv|json)',
+  '/outgoing/download.:extension',
   protectRoute('moves:download'),
   protectRoute('moves:view:outgoing'),
   setFromLocation,
@@ -111,7 +113,7 @@ viewRouter.get(
   download
 )
 viewRouter.get(
-  '/:view(incoming)',
+  '/incoming',
   protectRoute('moves:view:incoming'),
   setContext('incoming_moves'),
   setFromLocation,
@@ -125,7 +127,7 @@ viewRouter.get(
   renderAsCards
 )
 viewRouter.get(
-  '/:view(incoming)/download.:extension(csv|json)',
+  '/incoming/download.:extension',
   protectRoute('moves:download'),
   protectRoute('moves:view:incoming'),
   setFromLocation,
@@ -138,16 +140,18 @@ viewRouter.get(
 )
 viewRouter.get(
   COLLECTION_VIEW_PATH + '/switch-view',
+  COLLECTION_VIEW_GUARD,
   switchPeriod(DEFAULTS.TIME_PERIOD)
 )
 viewRouter.get(
   COLLECTION_VIEW_PATH + '/switch-group-by',
+  COLLECTION_VIEW_GUARD,
   switchGroupBy(DEFAULTS.GROUP_BY)
 )
 
 router.get('/', redirectBaseUrl)
-router.get(COLLECTION_VIEW_PATH, redirectView(DEFAULTS.TIME_PERIOD))
-router.use(COLLECTION_BASE_PATH, viewRouter)
+router.get(COLLECTION_VIEW_PATH, COLLECTION_VIEW_GUARD, redirectView(DEFAULTS.TIME_PERIOD))
+router.use(COLLECTION_BASE_PATH, COLLECTION_BASE_GUARD, viewRouter)
 
 // Export
 module.exports = {
