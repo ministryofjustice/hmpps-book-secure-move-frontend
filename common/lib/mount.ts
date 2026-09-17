@@ -29,9 +29,7 @@ const mount = (dir: string) => {
         debug('Loading router:', name)
 
         if (subApp.mountpath) {
-          return subApp.mountGuard
-            ? router.use(subApp.mountpath, subApp.mountGuard, subApp.router)
-            : router.use(subApp.mountpath, subApp.router)
+          return router.use(subApp.mountpath, subApp.router)
         }
 
         return router.use(subApp.router)

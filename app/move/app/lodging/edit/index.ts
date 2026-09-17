@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
 // @ts-ignore // TODO: convert to TS
-import { matchParam, uuidRegex } from '../../../../../common/helpers/url'
+import { uuidRegex } from '../../../../../common/helpers/url'
 // @ts-ignore // TODO: convert to TS
 import { protectRoute } from '../../../../../common/middleware/permissions'
 // @ts-ignore // TODO: convert to TS
@@ -13,8 +13,7 @@ import { SavedController } from './controllers'
 import steps from './steps'
 
 export const router = Router({ mergeParams: true })
-export const mountpath = '/:lodgingId/edit'
-export const mountGuard = matchParam('lodgingId', uuidRegex)
+export const mountpath = `/:lodgingId(${uuidRegex})/edit`
 
 // Define shared middleware
 router.use(protectRoute('move:lodging:update'))

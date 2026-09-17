@@ -165,9 +165,9 @@ export const AUTH_WHITELIST_URLS = [
   '/healthcheck',
   '/healthcheck/ping',
   '/components',
-  '/components{/*splat}',
+  '/components/(.*)',
   '/help',
-  '/help{/*splat}',
+  '/help/(.*)',
 ]
 export const AUTH_PROVIDERS = {
   hmpps: {

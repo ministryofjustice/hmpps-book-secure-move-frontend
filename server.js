@@ -199,11 +199,11 @@ module.exports = async () => {
       // /csra picks its own location from the `agency` query param, so it
       // must not be bounced to the location chooser like other routes -
       // kept separate from AUTH_WHITELIST_URLS as it still requires auth
-      whitelist: [...config.AUTH_WHITELIST_URLS, '/csra{*splat}'],
+      whitelist: [...config.AUTH_WHITELIST_URLS, '/csra(.*)'],
     })
   )
   app.use(setLocations)
-  app.use(/.*(?<!image)$/, setLocation)
+  app.use('.*(?<!image)$', setLocation)
   app.use((req, res, next) => {
     res.locals.cspNonce = crypto.randomBytes(16).toString('hex')
     next()

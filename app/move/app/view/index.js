@@ -1,6 +1,7 @@
 // NPM dependencies
 const router = require('express').Router({ mergeParams: true })
 
+const { uuidRegex } = require('../../../../common/helpers/url')
 const breadcrumbs = require('../../../../common/middleware/breadcrumbs')
 const {
   setMoveWithEvents,
@@ -52,5 +53,5 @@ router.get('/timeline', renderTimeline)
 // Export
 module.exports = {
   router,
-  mountpath: '/:moveId',
+  mountpath: `/:moveId(${uuidRegex})`,
 }

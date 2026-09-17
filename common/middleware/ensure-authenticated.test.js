@@ -39,7 +39,7 @@ describe('Authentication middleware', function () {
     })
 
     context('when whitelist url uses a pattern', function () {
-      const whitelist = ['/url', '/bypass-url', '/components{/*splat}']
+      const whitelist = ['/url', '/bypass-url', '/components/(.*)']
 
       beforeEach(function () {
         req.url = '/components/component-name/example'

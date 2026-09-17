@@ -8,7 +8,7 @@ import * as helpers from './url'
 
 describe('URL Helpers', function () {
   describe('#compileFromRoute()', function () {
-    const mockRoute = '/moves/:date{/:locationId}'
+    const mockRoute = '/moves/:date/:locationId?'
     const mockMatch = {
       params: {
         date: '2018-01-01',

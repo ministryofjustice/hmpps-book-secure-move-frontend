@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const moveRouter = express.Router({ mergeParams: true })
 // Local dependencies
-const { matchParam, uuidRegex } = require('../../common/helpers/url')
+const { uuidRegex } = require('../../common/helpers/url')
 const { protectRoute } = require('../../common/middleware/permissions')
 const { ENABLE_DEVELOPMENT_TOOLS } = require('../../config')
 const personEscortRecordApp = require('../person-escort-record')
@@ -31,9 +31,9 @@ const {
 } = require('./middleware')
 
 router.use(newApp.mountpath, newApp.router)
-router.use(viewApp.mountpath, matchParam('moveId', uuidRegex), viewApp.router)
+router.use(viewApp.mountpath, viewApp.router)
 
-router.use('/:moveId', matchParam('moveId', uuidRegex), moveRouter)
+router.use(`/:moveId(${uuidRegex})`, moveRouter)
 
 moveRouter.use(setMove)
 moveRouter.use(setPersonEscortRecord)
@@ -55,16 +55,8 @@ moveRouter.get(
   setJourneys,
   journeys
 )
-moveRouter.use(
-  personEscortRecordApp.mountpath,
-  personEscortRecordApp.mountGuard,
-  personEscortRecordApp.router
-)
-moveRouter.use(
-  youthRiskAssessmentApp.mountpath,
-  youthRiskAssessmentApp.mountGuard,
-  youthRiskAssessmentApp.router
-)
+moveRouter.use(personEscortRecordApp.mountpath, personEscortRecordApp.router)
+moveRouter.use(youthRiskAssessmentApp.mountpath, youthRiskAssessmentApp.router)
 moveRouter.use(policeCustodyFormApp.mountpath, policeCustodyFormApp.router)
 moveRouter.use(
   stakeholderEventFormApp.mountpath,
