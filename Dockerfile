@@ -3,6 +3,7 @@ FROM node:24-alpine3.23 as build-stage
 WORKDIR /home/node/app
 
 RUN apk add --no-cache python3 git build-base nasm zlib-dev libpng-dev autoconf automake
+RUN npm install -g npm@11.19.1
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 COPY --chown=node:node package*.json .npmrc .allowed-scripts.mjs ./
@@ -29,6 +30,7 @@ RUN NODE_ENV=production npm run build
 FROM node:24-alpine3.23
 
 WORKDIR /home/node/app
+RUN npm install -g npm@11.19.1
 USER 1000
 
 COPY --chown=node:node --from=build-stage /home/node/app /home/node/app

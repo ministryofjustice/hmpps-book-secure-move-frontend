@@ -9,8 +9,6 @@ export default configureAllowedScripts({
     'node_modules/@ffmpeg-installer/linux-arm64@4.1.4': 'FORBID',
     'node_modules/@ffmpeg-installer/linux-ia32@4.1.0': 'FORBID',
     'node_modules/preact@8.5.3': 'FORBID',
-    'node_modules/testcafe-browser-provider-browserstack/node_modules/sharp@0.32.6':
-      'FORBID',
     // Needed by esbuild for watching files during development
     'node_modules/@parcel/watcher@2.5.1': 'ALLOW',
     'node_modules/core-js@3.49.0': 'ALLOW',
