@@ -155,7 +155,7 @@
     "@hmpps-book-secure-move-frameworks/3.0.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v3.0.0",
     "@hmpps-book-secure-move-frameworks/3.1.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v3.1.0",
     "@ministryofjustice/eslint-config-hmpps": "^1.0.3",
-    "@ministryofjustice/frontend": "^11.0.0",
+    "@ministryofjustice/frontend": "^11.0.1",
     "@promster/express": "15.6.0",
     "@sentry/node": "10.73.0",
     "accessible-autocomplete": "2.0.4",
@@ -376,6 +376,9 @@
     "package.json": "finepack"
   },
   "overrides": {
+    "@ministryofjustice/frontend": {
+      "moment": "$moment"
+    },
     "undici": "6.28.1 || >=7.29.1 <8.0.0 || >=8.10.2",
     "brace-expansion": "1.1.18 || 2.1.4 || 3.0.6 || >=5.0.9",
     "nanoid": "3.3.17 || >=5.1.6",
@@ -386,7 +389,9 @@
     "js-yaml": "5.4.1",
     "meow": "14.1.0",
     "serialize-javascript": "7.0.5",
+    "sharp": "0.35.4",
     "tmp": "0.2.7",
-    "underscore": "^1.13.6"
+    "underscore": "^1.13.6",
+    "uuid": "14.0.1"
   }
 }
