@@ -169,7 +169,7 @@
     "@opentelemetry/sdk-trace-base": "2.11.0",
     "@opentelemetry/sdk-trace-node": "2.11.0",
     "@opentelemetry/semantic-conventions": "1.43.0",
-    "@opentelemetry/winston-transport": "0.31.0",
+    "@opentelemetry/winston-transport": "0.32.0",
     "@promster/express": "15.6.0",
     "@sentry/node": "10.73.0",
     "accessible-autocomplete": "2.0.4",
