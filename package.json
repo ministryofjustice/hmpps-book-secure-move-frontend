@@ -182,7 +182,7 @@
     "concurrently": "10.0.5",
     "connect-flash": "0.1.1",
     "connect-redis": "10.0.0",
-    "contentful": "11.12.9",
+    "contentful": "11.12.10",
     "convert-hrtime": "3.0.0",
     "cookie-parser": "1.4.7",
     "core-js": "3.49.0",
