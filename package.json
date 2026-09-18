@@ -302,7 +302,7 @@
     "pinst": "3.0.0",
     "prettier": "3.9.6",
     "proxyquire": "2.1.3",
-    "sass": "1.102.0",
+    "sass": "1.104.0",
     "sass-loader": "^13.2.0",
     "sharp": "0.35.4",
     "sinon": "22.1.0",
