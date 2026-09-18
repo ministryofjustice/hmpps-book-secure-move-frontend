@@ -11,7 +11,7 @@ const express = require('express')
 const session = require('express-session')
 const grant = require('grant-express')
 const helmet = require('helmet')
-const i18nMiddleware = require('i18next-express-middleware')
+const i18nMiddleware = require('i18next-http-middleware')
 const morgan = require('morgan')
 const responseTime = require('response-time')
 const favicon = require('serve-favicon')
@@ -52,8 +52,6 @@ module.exports = async () => {
   if (config.REDIS.SESSION) {
     redisStore = await require('./config/redis-store')()
   }
-
-  require('./common/lib/azure-appinsights').initialiseAppInsights()
 
   // Global constants
   const app = express()
