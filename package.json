@@ -229,7 +229,7 @@
     "prom-client": "15.1.3",
     "proxy-addr": "2.0.8",
     "qs": "6.16.0",
-    "redis": "6.1.0",
+    "redis": "6.2.1",
     "response-time": "2.3.4",
     "retry-axios": "2.6.0",
     "semver-sort": "1.0.0",
