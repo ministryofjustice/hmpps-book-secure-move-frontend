@@ -171,7 +171,7 @@
     "@opentelemetry/semantic-conventions": "1.43.0",
     "@opentelemetry/winston-transport": "0.31.0",
     "@promster/express": "15.6.0",
-    "@sentry/node": "10.73.0",
+    "@sentry/node": "10.75.0",
     "accessible-autocomplete": "2.0.4",
     "agentkeepalive": "4.6.0",
     "axios": "1.20.0",
