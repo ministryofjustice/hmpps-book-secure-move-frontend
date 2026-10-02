@@ -1,12 +1,13 @@
-const { CancelController } = require('./controllers')
+// @ts-ignore // TODO: convert to TS
+import { CancelController } from './controllers'
 
-module.exports = {
+export default {
   '/': {
     entryPoint: true,
     reset: true,
     resetJourney: true,
     skip: true,
-    next: 'reason',
+    next: 'reason'
   },
   '/reason': {
     backLink: null,
@@ -16,6 +17,6 @@ module.exports = {
     buttonText: 'actions::confirm_cancellation',
     buttonClasses: 'govuk-button--warning',
     fields: ['cancellation_reason', 'cancellation_reason_other_comment'],
-    controller: CancelController,
-  },
+    controller: CancelController
+  }
 }
