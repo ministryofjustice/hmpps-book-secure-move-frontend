@@ -1,5 +1,5 @@
 import * as chrono from 'chrono-node'
-const parseTime = require("user-time");
+const UserTime = require("user-time");
 
 const dateRegex = /^(\d{1,2})[/-](\d{1,2})(?:[/-](\d{1,4}))?$/
 
@@ -28,9 +28,12 @@ const getInternationalValue = (value: string): string => {
     return rejiggedDate
   })
 }
-export function time (value?: string): string {
+export function time (value?: string): string | undefined {
+  if (!value) {
+    return undefined
+  }
   const options = { minute: '2-digit', hour: '2-digit', hourCycle: 'h24', defaultTimeOfDay: 'pm' }
-   return parseTime(value, { timeFormat: options}).formattedTime
+  return new UserTime(value, { timeFormat: options }).formattedTime
 }
 export function date (value?: Date | string): Date | undefined {
   if (value instanceof Date) {
