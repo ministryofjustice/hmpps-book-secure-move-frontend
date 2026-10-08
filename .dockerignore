@@ -8,3 +8,5 @@ Dockerfile
 .editorconfig
 .circleci
 .build
+!.npmrc
+!.allowed-scripts.mjs
