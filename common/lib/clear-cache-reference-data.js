@@ -12,6 +12,7 @@ const scanAndDelete = async pattern => {
   })) {
 
     console.log(key)
+    console.log(`Type of key: ${typeof key}, Length of key: ${key.length}`)
     if (typeof key !== 'string' || key.length === 0) {
       console.log(`Skipping invalid key: ${key}`)
       continue
