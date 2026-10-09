@@ -3,17 +3,20 @@ const redisStore = require('../../config/redis-store.js')
 
 const scanAndDelete = async pattern => {
   const client = (await redisStore()).client
-
+  console.log(`Scanning for keys matching pattern: ${pattern}`)
   let count = 0
 
   for await (const key of client.scanIterator({
     MATCH: pattern,
     COUNT: 100,
   })) {
+
+    console.log(key)
     if (typeof key !== 'string' || key.length === 0) {
+      console.log(`Skipping invalid key: ${key}`)
       continue
     }
-
+    console.log(`Deleting key: ${key}`)
     await client.del(key)
     count++
   }
