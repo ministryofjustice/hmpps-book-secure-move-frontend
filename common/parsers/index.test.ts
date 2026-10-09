@@ -88,4 +88,27 @@ describe('Parsers', function () {
       })
     })
   })
+
+  describe('#time', function () {
+    it('should return undefined for empty values', function () {
+      expect(parsers.time(undefined)).to.be.undefined
+      expect(parsers.time('')).to.be.undefined
+    })
+
+    it('should format 24 hour times', function () {
+      expect(parsers.time('14:30')).to.equal('14:30')
+    })
+
+    it('should format 12 hour times as 24 hour', function () {
+      expect(parsers.time('2pm')).to.equal('14:00')
+    })
+
+    it('should format times without separators', function () {
+      expect(parsers.time('0930')).to.equal('09:30')
+    })
+
+    it('should return undefined for invalid times', function () {
+      expect(parsers.time('rubbish')).to.be.undefined
+    })
+  })
 })
