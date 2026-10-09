@@ -180,7 +180,7 @@
     "chrono-node": "2.10.1",
     "compression": "1.8.2",
     "concat-stream": "2.0.0",
-    "concurrently": "10.0.5",
+    "concurrently": "10.0.6",
     "connect-flash": "0.1.1",
     "connect-redis": "10.0.0",
     "contentful": "11.12.10",
