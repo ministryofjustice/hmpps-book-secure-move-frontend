@@ -19,6 +19,7 @@ async function loadUser(req, accessToken) {
   const {
     user_id: userId,
     user_name: username,
+    user_uuid: userUuid,
     authorities,
   } = decodeAccessToken(accessToken)
 
@@ -42,6 +43,7 @@ async function loadUser(req, accessToken) {
   return {
     userId,
     username,
+    userUuid,
     fullname,
     supplierId,
     displayName,

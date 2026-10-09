@@ -4,7 +4,7 @@ const IGNORED_REQUEST_PREFIXES = ['GET /healthcheck/ping', 'GET /metrics']
 
 type SessionRequest = IncomingMessage & {
   session?: {
-    user?: { username?: string }
+    user?: { username?: string, userUuid?: string }
     currentLocation?: { nomis_agency_id?: string }
   }
 }
@@ -19,9 +19,13 @@ export const shouldIgnoreIncomingRequest = (request: IncomingMessage): boolean =
 
 export const addUserDataToSpan = (span: MinimalSpan, request: SessionRequest): void => {
   const username = request.session?.user?.username
+  const userUuid = request.session?.user?.userUuid
   const activeCaseLoadId = request.session?.currentLocation?.nomis_agency_id
   if (username) {
     span.setAttribute('username', username)
+  }
+  if (userUuid) {
+    span.setAttribute('userUuid', userUuid)
   }
   if (activeCaseLoadId) {
     span.setAttribute('activeCaseLoadId', activeCaseLoadId)
