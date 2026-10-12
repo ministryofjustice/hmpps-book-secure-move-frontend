@@ -38,6 +38,7 @@ generic-service:
     OFF_NETWORK_ALLOWLIST:
       groups:
         - digital_staff_and_mojo
+        - moj_cloud_platform
         - pecs_serco
         - pecs_geoamey
 
