@@ -34,14 +34,6 @@ generic-service:
     DISALLOWED_DEVICES: ""
     DISALLOWED_DEVICES_ACTIONS: ""
 
-  allowlist_envs:
-    OFF_NETWORK_ALLOWLIST:
-      groups:
-        - digital_staff_and_mojo
-        - moj_cloud_platform
-        - pecs_serco
-        - pecs_geoamey
-
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
   #   [name of kubernetes secret]:
