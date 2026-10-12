@@ -14,6 +14,7 @@ const permissionsLibStub = {
 const accessTokenPayload = {
   user_name: 'test',
   user_id: 'id',
+  user_uuid: 'uuid',
   authorities: ['test'],
 }
 
