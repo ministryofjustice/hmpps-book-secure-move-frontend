@@ -24,6 +24,7 @@ generic-service:
     ENABLE_COMPONENTS_LIBRARY: "true"
     ENABLE_DEVELOPMENT_TOOLS: "true"
     ENVIRONMENT_NAME: dev
+    FRAMEWORKS_VERSION: "3.2.0"
     FEEDBACK_URL: "#"
     GOOGLE_ANALYTICS_ID: "G-3G741W4FQ2"
     MANAGE_USERS_API_URL: "https://manage-users-api-dev.hmpps.service.justice.gov.uk"
@@ -39,7 +40,6 @@ generic-service:
     OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT"
     DISALLOWED_DEVICES: "iPhone,Android"
     DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT"
-    FRAMEWORKS_VERSION: "3.2.0"
 
   allowlist_envs:
     OFF_NETWORK_ALLOWLIST:
