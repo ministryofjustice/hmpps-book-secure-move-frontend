@@ -90,14 +90,6 @@ class SaveController extends CreateBaseController {
 
         Sentry.setContext('Move data', {
           'Move ID': move.id,
-          'Person ID': move.person?.id,
-          'Profile ID': move.profile?.id,
-          'Profile -> Person ID': move.profile?.person?.id,
-        })
-        Sentry.setContext('Session data', {
-          'Person ID': data.person?.id,
-          'Profile ID': data.profile?.id,
-          'Profile -> Person ID': data.profile?.person?.id,
         })
         Sentry.setContext('Journey', {
           'Original name': journeyName,
@@ -190,7 +182,6 @@ class SaveController extends CreateBaseController {
 
   errorHandler(err, req, res, next) {
     const move = req.sessionModel.get('move') || {}
-    const sessionData = req.sessionModel.toJSON() || {}
     const apiErrorCode = get(err, 'errors[0].code')
 
     if (err.statusCode === 422 && apiErrorCode === 'taken') {
@@ -216,14 +207,6 @@ class SaveController extends CreateBaseController {
 
     Sentry.setContext('Move data', {
       'Move ID': move.id,
-      'Person ID': move.person?.id,
-      'Profile ID': move.profile?.id,
-      'Profile -> Person ID': move.profile?.person?.id,
-    })
-    Sentry.setContext('Session data', {
-      'Person ID': sessionData.person?.id,
-      'Profile ID': sessionData.profile?.id,
-      'Profile -> Person ID': sessionData.profile?.person?.id,
     })
 
     super.errorHandler(err, req, res, next)
