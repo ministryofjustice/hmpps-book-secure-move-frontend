@@ -7,6 +7,11 @@ generic-service:
   ingress:
     annotations:
       nginx.ingress.kubernetes.io/server-snippet: add_header X-Robots-Tag "noindex, nofollow";
+    modsecurity_enabled: true
+    modsecurity_snippet: |
+      SecAuditEngine On
+      SecRuleEngine DetectionOnly
+      SecDefaultAction "phase:2,pass,log,tag:github_team=map-developers,tag:namespace={{ .Release.Namespace }}"
     hosts:
       - hmpps-book-secure-move-frontend-uat.apps.cloud-platform.service.justice.gov.uk
 
@@ -21,14 +26,18 @@ generic-service:
     NOMIS_ELITE2_API_URL: "https://prison-api-dev.prison.service.justice.gov.uk"
     SENTRY_ENVIRONMENT: "uat"
     SERVER_HOST: "hmpps-book-secure-move-frontend-uat.apps.cloud-platform.service.justice.gov.uk"
-    OFF_NETWORK_ALLOWLIST: "*"
-    OFF_NETWORK_ALLOWLIST_ACTIONS: ""
-    DISALLOWED_DEVICES: ""
-    DISALLOWED_DEVICES_ACTIONS: ""
     FEATURE_FLAG_EXTRADITION_MOVES: "true"
     FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
     FEATURE_FLAG_SUPPLIER_USERS_VIEW_ALL_MOVES: "true"
     FEATURE_FLAG_SHOW_SUPPLIER_BADGE: "true"
+    OFF_NETWORK_ALLOWLIST_ACTIONS: "WARN,REPORT"
+    DISALLOWED_DEVICES: ""
+    DISALLOWED_DEVICES_ACTIONS: ""
+
+  allowlist_envs:
+    OFF_NETWORK_ALLOWLIST:
+      groups:
+        - digital_staff_and_mojo
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
