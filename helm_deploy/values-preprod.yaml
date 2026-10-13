@@ -35,6 +35,11 @@ generic-service:
     DISALLOWED_DEVICES: "iPhone,Android"
     DISALLOWED_DEVICES_ACTIONS: "WARN,REPORT"
 
+  allowlist_envs:
+    OFF_NETWORK_ALLOWLIST:
+      groups:
+        - digital_staff_and_mojo
+
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
   # namespace_secrets:
   #   [name of kubernetes secret]:
