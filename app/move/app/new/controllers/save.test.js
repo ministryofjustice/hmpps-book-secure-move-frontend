@@ -409,6 +409,17 @@ describe('Move controllers', function () {
           it('should send move data to sentry', function () {
             expect(Sentry.setContext).to.be.calledWithExactly('Move data', {
               'Move ID': mockMove.id,
+              'Person ID': mockMove.person.id,
+              'Profile ID': mockMove.profile.id,
+              'Profile -> Person ID': mockMove.profile.person.id,
+            })
+          })
+
+          it('should send session data to sentry', function () {
+            expect(Sentry.setContext).to.be.calledWithExactly('Session data', {
+              'Person ID': mockValuesWithoutProfile.person.id,
+              'Profile ID': mockValuesWithoutProfile.profile.id,
+              'Profile -> Person ID': undefined,
             })
           })
 
@@ -1076,6 +1087,17 @@ describe('Move controllers', function () {
             'Move data',
             {
               'Move ID': mockMove.id,
+              'Person ID': mockMove.person.id,
+              'Profile ID': mockMove.profile.id,
+              'Profile -> Person ID': mockMove.profile.person.id,
+            }
+          )
+          expect(Sentry.setContext).to.have.been.calledWithExactly(
+            'Session data',
+            {
+              'Person ID': '105e849c-b4d6-47dd-b697-779c0d7109bf',
+              'Profile ID': '4f7bca27-c34e-4c82-806b-80dc3f77ae21',
+              'Profile -> Person ID': '3b1ec8e4-74bc-4781-8e19-09964cb49334',
             }
           )
         })
@@ -1248,6 +1270,17 @@ describe('Move controllers', function () {
               'Move data',
               {
                 'Move ID': mockMove.id,
+                'Person ID': mockMove.person.id,
+                'Profile ID': mockMove.profile.id,
+                'Profile -> Person ID': mockMove.profile.person.id,
+              }
+            )
+            expect(Sentry.setContext).to.have.been.calledWithExactly(
+              'Session data',
+              {
+                'Person ID': '105e849c-b4d6-47dd-b697-779c0d7109bf',
+                'Profile ID': '4f7bca27-c34e-4c82-806b-80dc3f77ae21',
+                'Profile -> Person ID': '3b1ec8e4-74bc-4781-8e19-09964cb49334',
               }
             )
           })
@@ -1282,6 +1315,17 @@ describe('Move controllers', function () {
             'Move data',
             {
               'Move ID': undefined,
+              'Person ID': undefined,
+              'Profile ID': undefined,
+              'Profile -> Person ID': undefined,
+            }
+          )
+          expect(Sentry.setContext).to.have.been.calledWithExactly(
+            'Session data',
+            {
+              'Person ID': undefined,
+              'Profile ID': undefined,
+              'Profile -> Person ID': undefined,
 
             }
           )
