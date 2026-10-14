@@ -1326,7 +1326,6 @@ describe('Move controllers', function () {
               'Person ID': undefined,
               'Profile ID': undefined,
               'Profile -> Person ID': undefined,
-
             }
           )
         })
