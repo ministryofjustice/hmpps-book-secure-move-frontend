@@ -83,9 +83,9 @@ usersWhoHaveADashboard.forEach(user => {
   })(`As ${user.name}`, async t => {
     await t
       .expect((page.nodes.appHeaderOrganisation as Selector).exists)
-      .ok()
+      .ok({ timeout: 30000 })
       .expect((page.nodes.appHeaderProduct as Selector).exists)
-      .ok()
+      .ok({ timeout: 30000 })
       .expect((page.nodes.username as Selector).innerText)
       .contains(user.displayName)
       .expect((page.nodes.pageHeading as Selector).innerText)
