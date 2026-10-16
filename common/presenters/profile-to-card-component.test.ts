@@ -181,7 +181,7 @@ describe('Presenters', function () {
           })
 
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta.items.length).to.equal(1)
+          expect(transformedResponse.meta.items.length).to.equal(0)
         })
 
         it('should correctly remove false items', function () {
@@ -194,7 +194,7 @@ describe('Presenters', function () {
           })
 
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta.items.length).to.equal(1)
+          expect(transformedResponse.meta.items.length).to.equal(0)
         })
 
         it('should correctly remove false items', function () {
@@ -207,7 +207,7 @@ describe('Presenters', function () {
           })
 
           expect(transformedResponse).to.have.property('meta')
-          expect(transformedResponse.meta.items.length).to.equal(1)
+          expect(transformedResponse.meta.items.length).to.equal(0)
         })
       })
 
@@ -218,6 +218,7 @@ describe('Presenters', function () {
           transformedResponse = profileToCardComponent()({
             profile: {
               person: {
+                id: mockProfile.person.id,
                 date_of_birth: '',
                 gender: mockProfile.person.gender,
               },
@@ -567,12 +568,7 @@ describe('Presenters', function () {
       classes: 'app-card--placeholder',
       title: { text: '__translated__' },
       meta: {
-        items: [
-          {
-            label: { text: '__translated__' },
-            text: '__translated__',
-          },
-        ],
+        items: [],
       },
       image_path: undefined,
       image_alt: '',
@@ -813,6 +809,18 @@ describe('Presenters', function () {
             label: { text: '__translated__' },
             text: '__translated__',
           })
+        })
+      })
+
+      context('when the profile has no person', function () {
+        beforeEach(function () {
+          transformedResponse = profileToCardComponent()({
+            profile: { csra: 'Standard' } as Profile,
+          })
+        })
+
+        it('does not add a csra meta item', function () {
+          expect(transformedResponse.meta?.items).to.deep.equal([])
         })
       })
     })
