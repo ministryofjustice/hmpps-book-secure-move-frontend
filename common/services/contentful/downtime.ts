@@ -75,6 +75,13 @@ export class DowntimeContent extends ContentfulContent {
   isActive() {
     return Date.now() >= this.start.getTime() && Date.now() < this.end.getTime()
   }
+
+  getPostData() {
+    return {
+      ...super.getPostData(),
+      end: this.end,
+    }
+  }
 }
 
 export class DowntimeService extends ContentfulService {

@@ -31,6 +31,7 @@ const formattedEntriesMockResponse = {
         'govuk-!-margin-bottom-6"><img src="https://images.ctfassets.net/m5k1kmk3zqwh/4W3q8OwEoyEQxjJtdtCkbg/51b7fc' +
         '14e8d568d5f5314733e1b9aadb/image.png" alt="asset-test" /></figure>',
       date: '3 March 2025',
+      end: new Date('2025-03-03T15:00:00.000Z'),
     },
   ],
 }
@@ -232,6 +233,14 @@ describe('DowntimeContent', function () {
 
   afterEach(function () {
     unmockDate()
+  })
+
+  describe('#getPostData', function () {
+    it('includes the end date of the downtime', function () {
+      expect(content.getPostData().end).to.deep.equal(
+        new Date(2022, 4, 9, 18)
+      )
+    })
   })
 
   describe('#isCurrent', function () {
