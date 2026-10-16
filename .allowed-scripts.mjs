@@ -10,7 +10,7 @@ export default configureAllowedScripts({
     'node_modules/@ffmpeg-installer/linux-ia32@4.1.0': 'FORBID',
     'node_modules/preact@8.5.3': 'FORBID',
     // Needed by esbuild for watching files during development
-    'node_modules/@parcel/watcher@2.5.1': 'ALLOW',
+    'node_modules/@parcel/watcher@2.6.0': 'ALLOW',
     'node_modules/core-js@3.49.0': 'ALLOW',
     'node_modules/unrs-resolver@1.11.1': 'FORBID'
   },

@@ -3,6 +3,7 @@ const proxyquire = require('proxyquire')
 const sinon = require('sinon')
 
 const logger = require('../../config/logger')
+const { AUTH_BASE_URL } = require('../../config/nunjucks/globals')
 const { DowntimeService } = require('../services/contentful/downtime')
 class DowntimeServiceMock extends DowntimeService {
   fetchPosts(entries) {
@@ -531,6 +532,35 @@ describe('Error middleware', function () {
     })
 
     context('with no error status code', function () {
+      context('with an active outage', function () {
+        beforeEach(async function () {
+          sinon.stub(DowntimeServiceMock.prototype, 'fetchPosts').resolves([
+            {
+              title: '',
+              body: 'Outage body',
+              end: new Date(2026, 9, 19, 15),
+            },
+          ])
+          await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
+        })
+
+        it('should pass the outage message to the template', function () {
+          expect(mockRes.render.args[0][1].message).to.deep.equal({
+            heading: 'errors::outage.heading',
+            content: 'Outage body',
+            end: {
+              date: 'Monday, 19 October 2026',
+              time: '3pm',
+            },
+            more: 'errors::outage.more',
+            actions: 'errors::outage.actions',
+            alternative: 'errors::outage.alternative',
+            otherwise: 'errors::outage.otherwise',
+            link: AUTH_BASE_URL + '/auth',
+          })
+        })
+      })
+
       context('without location', function () {
         beforeEach(async function () {
           await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
