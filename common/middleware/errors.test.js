@@ -538,7 +538,7 @@ describe('Error middleware', function () {
             {
               title: '',
               body: 'Outage body',
-              end: new Date(2022, 4, 9, 18),
+              end: new Date(2026, 9, 19, 15),
             },
           ])
           await errors.catchAll()(mockError, mockReq, mockRes, nextSpy)
@@ -549,7 +549,7 @@ describe('Error middleware', function () {
             heading: 'errors::outage.heading',
             content: 'Outage body',
             end: {
-              date: 'Wednesday, 19 May 2026',
+              date: 'Monday, 19 October 2026',
               time: '3pm',
             },
             more: 'errors::outage.more',
