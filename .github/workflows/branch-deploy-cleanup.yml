@@ -35,7 +35,7 @@ jobs:
           namespace: ${{ secrets.KUBE_NAMESPACE }}
           token: ${{ secrets.KUBE_TOKEN }}
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Run Cleanup
         run: |
 
@@ -73,9 +73,9 @@ jobs:
               echo "[DRY RUN] Would delete k8s resources for PR ${PR_NUMBER}"
               echo "[DRY RUN] Would delete environment ${ENVIRONMENT}"
             else
-              kubectl delete ingress,configmap,service,deployment \
-              -n "$KUBE_NAMESPACE" \
-              -l pull_request=${PR_NUMBER}
+#              kubectl delete ingress,configmap,service,deployment \
+#              -n "$KUBE_NAMESPACE" \
+#              -l pull_request=${PR_NUMBER}
 
               # The following lines will clean up branch builds that were created before the above label was added to the resources.
               # These can be removed once all new branch builds include the label.
