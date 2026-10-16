@@ -210,7 +210,9 @@ function profileToCardComponent({
           label: { text: i18n.t('fields::gender.label') },
           text: gender ? gender.title : undefined,
         },
-        ...(showCsra
+        // Unfilled allocation slots have no person, so skip CSRA rather
+        // than rendering its empty state on a placeholder card
+        ...(showCsra && id
           ? [
               {
                 label: { text: i18n.t('fields::csra.label') },
