@@ -3,7 +3,7 @@ FROM node:24-alpine3.23 as build-stage
 WORKDIR /home/node/app
 
 RUN apk add --no-cache python3 git build-base nasm zlib-dev libpng-dev autoconf automake
-RUN npm install -g npm@11.19.1
+RUN npm install -g npm@11.21.1
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 COPY --chown=node:node package*.json .npmrc .allowed-scripts.mjs ./
@@ -30,12 +30,19 @@ RUN NODE_ENV=production npm run build
 FROM node:24-alpine3.23
 
 WORKDIR /home/node/app
-RUN npm install -g npm@11.19.1
+RUN apk upgrade --no-cache
 USER 1000
 
 COPY --chown=node:node --from=build-stage /home/node/app /home/node/app
 
 RUN npx tsc
+
+# Package managers aren't needed at runtime and bundle their own (often vulnerable) dependencies
+USER root
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack \
+  /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
+  /usr/local/bin/yarn /usr/local/bin/yarnpkg /opt/yarn-*
+USER 1000
 
 ARG APP_BUILD_DATE
 ENV APP_BUILD_DATE ${APP_BUILD_DATE}
