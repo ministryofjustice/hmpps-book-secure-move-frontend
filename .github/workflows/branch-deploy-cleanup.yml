@@ -80,10 +80,10 @@ jobs:
 
               # The following lines will clean up branch builds that were created before the above label was added to the resources.
               # These can be removed once all new branch builds include the label.
-              kubectl delete configmap hmpps-book-secure-move-frontend-configmap-pr-$PR_NUMBER
-              kubectl delete ingress hmpps-book-secure-move-frontend-ingress-pr-$PR_NUMBER
-              kubectl delete service hmpps-book-secure-move-frontend-service-pr-$PR_NUMBER
-              kubectl delete deployment hmpps-book-secure-move-frontend-deployment-pr-$PR_NUMBER
+              kubectl delete configmap hmpps-book-secure-move-frontend-configmap-pr-${PR_NUMBER}
+              kubectl delete ingress hmpps-book-secure-move-frontend-ingress-pr-${PR_NUMBER}
+              kubectl delete service hmpps-book-secure-move-frontend-service-pr-${PR_NUMBER}
+              kubectl delete deployment hmpps-book-secure-move-frontend-deployment-pr-${PR_NUMBER}
 
 
               gh api \
