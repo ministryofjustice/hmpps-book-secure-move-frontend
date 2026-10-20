@@ -74,9 +74,9 @@ jobs:
               echo "[DRY RUN] Would delete k8s resources for PR ${PR_NUMBER}"
               echo "[DRY RUN] Would delete environment ${ENVIRONMENT}"
             else
-#              kubectl delete ingress,configmap,service,deployment \
-#              -n "$KUBE_NAMESPACE" \
-#              -l pull_request=${PR_NUMBER}
+              # kubectl delete ingress,configmap,service,deployment \
+              # -n "$KUBE_NAMESPACE" \
+              # -l pull_request=${PR_NUMBER}
 
               # The following lines will clean up branch builds that were created before the above label was added to the resources.
               # These can be removed once all new branch builds include the label.
