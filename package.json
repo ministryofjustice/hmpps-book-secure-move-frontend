@@ -207,7 +207,7 @@
     "helmet": "8.3.0",
     "hmpo-form-wizard": "18.0.0",
     "hmrc-frontend": "7.30.0",
-    "i18next": "22.4.10",
+    "i18next": "26.4.4",
     "i18next-fs-backend": "2.6.7",
     "i18next-http-middleware": "3.9.9",
     "jquery": "4.0.0",
