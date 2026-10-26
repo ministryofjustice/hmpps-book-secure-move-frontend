@@ -1,8 +1,7 @@
-FROM node:24-alpine3.23 as build-stage
+FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine as build-stage
 
 WORKDIR /home/node/app
 
-RUN apk add --no-cache python3 git build-base nasm zlib-dev libpng-dev autoconf automake
 RUN npm install -g npm@11.21.1
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
@@ -27,15 +26,12 @@ RUN npx tsc
 RUN NODE_ENV=production npm run build
 ############### End of Build step ###############
 
-FROM node:24-alpine3.23
+FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine-runtime
 
 WORKDIR /home/node/app
-RUN apk upgrade --no-cache
 USER 1000
 
 COPY --chown=node:node --from=build-stage /home/node/app /home/node/app
-
-RUN npx tsc
 
 # Package managers aren't needed at runtime and bundle their own (often vulnerable) dependencies
 USER root
