@@ -220,7 +220,7 @@
     "markdown-it-container": "4.0.0",
     "moment": "2.31.0",
     "morgan": "1.12.1",
-    "multer": "^2.4.0",
+    "multer": "^2.5.0",
     "netmask": "2.1.1",
     "nunjucks": "3.2.4",
     "nunjucks-markdown": "2.0.1",
