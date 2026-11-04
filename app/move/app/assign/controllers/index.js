@@ -3,6 +3,7 @@ const Assessment = require('./assessment')
 const Base = require('./base')
 const PersonSearch = require('./person-search')
 const PersonSearchResults = require('./person-search-results')
+const PrisonTransferReason = require('./prison-transfer-reason')
 const Save = require('./save')
 
 module.exports = {
@@ -11,5 +12,6 @@ module.exports = {
   Base,
   PersonSearch,
   PersonSearchResults,
+  PrisonTransferReason,
   Save,
 }
