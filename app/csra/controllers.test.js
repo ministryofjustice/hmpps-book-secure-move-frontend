@@ -71,11 +71,11 @@ describe('CSRA controllers', function () {
         expect(req.session.hasSelectedLocation).to.equal(true)
       })
 
-      it('should redirect to the incoming moves page for today', function () {
+      it('should redirect to the incoming moves page for today at the resolved location', function () {
         const today = format(new Date(), DATE_FORMATS.URL_PARAM)
 
         expect(res.redirect).to.be.calledOnceWithExactly(
-          `/moves/day/${today}/incoming`
+          `/moves/day/${today}/${mockLocation.id}/incoming`
         )
       })
 

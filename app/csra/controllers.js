@@ -39,7 +39,9 @@ async function redirectToIncomingMoves(req, res, next) {
 
   const [today] = dateHelpers.getCurrentDayAsRange()
 
-  res.redirect(`${MOVES_MOUNTPATH}/day/${today}/incoming`)
+  res.redirect(
+    `${MOVES_MOUNTPATH}/day/${today}/${permittedLocation.id}/incoming`
+  )
 }
 
 module.exports = {
