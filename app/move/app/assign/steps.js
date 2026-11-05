@@ -19,6 +19,11 @@ const assignSteps = {
   '/person-lookup-results': {
     ...createSteps['/person-lookup-results'],
     controller: controllers.PersonSearchResults,
+    next: 'transfer-reason',
+  },
+  '/transfer-reason': {
+    ...createSteps['/transfer-reason'],
+    controller: controllers.PrisonTransferReason,
     next: 'agreement-status',
   },
   '/agreement-status': {
