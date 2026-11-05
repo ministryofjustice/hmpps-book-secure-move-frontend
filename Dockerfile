@@ -1,4 +1,4 @@
-FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine as build-stage
+FROM ghcr.io/ministryofjustice/hmpps-node:26-alpine as build-stage
 
 WORKDIR /home/node/app
 
@@ -26,7 +26,7 @@ RUN npx tsc
 RUN NODE_ENV=production npm run build
 ############### End of Build step ###############
 
-FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine-runtime
+FROM ghcr.io/ministryofjustice/hmpps-node:26-alpine-runtime
 
 WORKDIR /home/node/app
 USER 1000
