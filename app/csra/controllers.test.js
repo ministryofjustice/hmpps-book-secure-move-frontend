@@ -75,7 +75,7 @@ describe('CSRA controllers', function () {
         const today = format(new Date(), DATE_FORMATS.URL_PARAM)
 
         expect(res.redirect).to.be.calledOnceWithExactly(
-          `/moves/day/${today}/${mockLocation.id}/incoming`
+          `/moves/day/${today}/${mockLocation.id}/incoming?status=active`
         )
       })
 
