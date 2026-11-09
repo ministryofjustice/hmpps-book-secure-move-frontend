@@ -9,7 +9,6 @@ permissions:
   contents: read
   pull-requests: read
   deployments: write
-  actions: write
 
 # Environment variables available to all jobs and steps in this workflow
 env:
@@ -18,7 +17,7 @@ env:
   KUBE_NAME: ${{ secrets.KUBE_NAME }}
   KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
   DRY_RUN: "false"
-  GH_TOKEN: ${{ github.token }}
+  GH_TOKEN: ${{ secrets.BRANCH_DEPLOY_CLEANUP_PAT }}
   GITHUB_TEAM_NAME_SLUG: book-a-secure-move
 
 jobs:
