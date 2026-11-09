@@ -9,6 +9,7 @@ permissions:
   contents: read
   pull-requests: read
   deployments: write
+  actions: write
 
 # Environment variables available to all jobs and steps in this workflow
 env:
