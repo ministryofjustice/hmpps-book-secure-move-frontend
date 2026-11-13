@@ -131,6 +131,7 @@
     "ministryofjustice"
   ],
   "dependencies": {
+    "@azure/monitor-opentelemetry-exporter": "1.0.0-beta.45",
     "@contentful/rich-text-html-renderer": "17.2.3",
     "@hmpps-book-secure-move-frameworks/1.0.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.0.0",
     "@hmpps-book-secure-move-frameworks/1.1.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v1.1.0",
@@ -155,9 +156,9 @@
     "@hmpps-book-secure-move-frameworks/3.0.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v3.0.0",
     "@hmpps-book-secure-move-frameworks/3.1.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v3.1.0",
     "@hmpps-book-secure-move-frameworks/3.2.0": "git+https://github.com/ministryofjustice/hmpps-book-secure-move-frameworks.git#v3.2.0",
-    "@azure/monitor-opentelemetry-exporter": "1.0.0-beta.45",
     "@ministryofjustice/eslint-config-hmpps": "^1.0.3",
     "@ministryofjustice/frontend": "^11.0.1",
+    "@ministryofjustice/hmpps-audit-client": "2.0.0",
     "@opentelemetry/api": "1.9.1",
     "@opentelemetry/api-logs": "0.211.0",
     "@opentelemetry/instrumentation": "0.211.0",

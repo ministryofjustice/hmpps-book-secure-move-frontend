@@ -20,7 +20,9 @@ const favicon = require('serve-favicon')
 const healthcheckApp = require('./app/healthcheck')
 const locationsApp = require('./app/locations')
 const router = require('./app/router')
+const { createAuditService } = require('./common/lib/audit')
 const metrics = require('./common/lib/metrics')
+const auditPageView = require('./common/middleware/audit-page-view').default
 const breadcrumbs = require('./common/middleware/breadcrumbs')
 const checkSession = require('./common/middleware/check-session')
 const ensureAuthenticated = require('./common/middleware/ensure-authenticated')
@@ -189,6 +191,9 @@ module.exports = async () => {
       expiryMargin: config.AUTH_EXPIRY_MARGIN,
     })
   )
+  // after authentication so we know who the user is, but before route-level
+  // permission checks so that refused requests are still audited as attempts
+  app.use(auditPageView(createAuditService()))
   app.use(
     ensureSelectedLocation({
       locationsMountpath: locationsApp.mountpath,

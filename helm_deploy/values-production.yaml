@@ -4,12 +4,16 @@
 generic-service:
   replicaCount: 8
 
+  # IRSA service account with permission to send to the HMPPS Audit SQS queue
+  serviceAccountName: hmpps-book-secure-move-frontend-audit
+
   ingress:
     hosts:
       - bookasecuremove.service.justice.gov.uk
     tlsSecretName: hmpps-book-secure-move-frontend-production-cert
 
   env:
+    AUDIT_ENABLED: "true"
     API_BASE_URL: "https://api.bookasecuremove.service.justice.gov.uk"
     AUTH_PROVIDER_URL: "https://sign-in.hmpps.service.justice.gov.uk"
     ENVIRONMENT_NAME: production
@@ -60,3 +64,5 @@ generic-service:
     elasticache-hmpps-book-secure-move-frontend-production:
       REDIS_AUTH_TOKEN: auth_token
       REDIS_HOST: primary_endpoint_address
+    sqs-hmpps-audit-secret:
+      AUDIT_SQS_QUEUE_URL: sqs_queue_url
