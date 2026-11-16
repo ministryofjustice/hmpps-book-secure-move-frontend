@@ -15,6 +15,6 @@ export const createAuditService = (): AuditService =>
       region: AUDIT.SQS_REGION,
       serviceName: AUDIT.SERVICE_NAME,
     },
-    // winston's logger has the debug/info/warn/error methods the client uses
+    // logger has the debug/info/warn/error methods the client uses
     logger as Console
   )

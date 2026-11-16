@@ -5,7 +5,7 @@ generic-service:
   replicaCount: 8
 
   # IRSA service account with permission to send to the HMPPS Audit SQS queue
-  serviceAccountName: hmpps-book-secure-move-frontend-audit
+  serviceAccountName: book-a-secure-move-frontend
 
   ingress:
     hosts:
