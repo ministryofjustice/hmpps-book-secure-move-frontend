@@ -151,6 +151,13 @@ export const SENTRY = {
   ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || 'production',
   RELEASE: process.env.APP_GIT_COMMIT,
 }
+// HMPPS Audit: off unless explicitly enabled, so local dev and tests never try to reach SQS
+export const AUDIT = {
+  ENABLED: process.env.AUDIT_ENABLED === 'true',
+  SQS_QUEUE_URL: process.env.AUDIT_SQS_QUEUE_URL || '',
+  SQS_REGION: process.env.AUDIT_SQS_REGION || 'eu-west-2',
+  SERVICE_NAME: process.env.AUDIT_SERVICE_NAME || 'hmpps-book-secure-move-frontend',
+}
 export const PROMETHEUS = {
   MOUNTPATH: process.env.PROMETHEUS_MOUNTPATH,
 }

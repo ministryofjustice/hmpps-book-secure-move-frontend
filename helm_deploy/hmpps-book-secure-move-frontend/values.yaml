@@ -33,6 +33,11 @@ generic-service:
     API_PATH: "/api"
     API_TIMEOUT: "60000"
     API_VERSION: "2"
+    # HMPPS Audit - enabled per environment alongside the audit service account
+    # and sqs-hmpps-audit-secret, as each namespace needs Cloud Platform setup
+    AUDIT_ENABLED: "false"
+    AUDIT_SERVICE_NAME: "hmpps-book-secure-move-frontend"
+    AUDIT_SQS_REGION: "eu-west-2"
     FEATURE_FLAG_GOT: "true"
     FEATURE_FLAG_MOVE_PREVIEW: "true"
     FEATURE_FLAG_POPULATION_DASHBOARD: "true"
