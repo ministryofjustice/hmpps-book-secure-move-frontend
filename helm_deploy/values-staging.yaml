@@ -33,7 +33,6 @@ generic-service:
     PERSON_ESCORT_RECORD_FEEDBACK_URL: "#"
     SENTRY_ENVIRONMENT: "staging"
     SERVER_HOST: "hmpps-book-secure-move-frontend-staging.apps.cloud-platform.service.justice.gov.uk"
-    FEATURE_FLAG_EXTRADITION_MOVES: "true"
     FEATURE_FLAG_SECTION_46: "true"
     FEATURE_FLAG_FUZZY_PNC_SEARCH: "true"
     FEATURE_FLAG_SUPPLIER_USERS_VIEW_ALL_MOVES: "true"
