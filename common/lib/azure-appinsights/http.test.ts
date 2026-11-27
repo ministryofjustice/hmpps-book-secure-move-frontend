@@ -36,7 +36,7 @@ describe('azure-appinsights/http', function () {
       const span = { setAttribute: sinon.stub() }
       const request = {
         session: {
-          user: { username: 'jbloggs', userUuid: '1234' },
+          user: { username: 'jbloggs', userId: '485', userUuid: '1234' },
           currentLocation: { nomis_agency_id: 'MDI' },
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,6 +45,7 @@ describe('azure-appinsights/http', function () {
       addUserDataToSpan(span, request)
 
       expect(span.setAttribute).to.have.been.calledWith('username', 'jbloggs')
+      expect(span.setAttribute).to.have.been.calledWith('userId', '485')
       expect(span.setAttribute).to.have.been.calledWith('userUuid', '1234')
       expect(span.setAttribute).to.have.been.calledWith('activeCaseLoadId', 'MDI')
     })

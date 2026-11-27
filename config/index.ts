@@ -99,10 +99,17 @@ export const STATIC_ASSETS = {
 }
 export const FEEDBACK_URL = process.env.FEEDBACK_URL
 export const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL
+// The shared hmpps-github-actions docker_build workflow passes BUILD_NUMBER,
+// GIT_REF and GIT_BRANCH; the APP_* variables are still set by branch deploys
 export const APP_BUILD_DATE = process.env.APP_BUILD_DATE
-export const APP_BUILD_BRANCH = process.env.APP_BUILD_BRANCH
+export const APP_BUILD_BRANCH =
+  process.env.GIT_BRANCH || process.env.APP_BUILD_BRANCH
 export const APP_BUILD_TAG = process.env.APP_BUILD_TAG
-export const APP_GIT_SHA = process.env.APP_GIT_COMMIT
+export const APP_BUILD_NUMBER =
+  process.env.BUILD_NUMBER || process.env.APP_BUILD_TAG
+export const APP_GIT_SHA = process.env.GIT_REF || process.env.APP_GIT_COMMIT
+export const APP_NAME = 'hmpps-book-secure-move-frontend'
+export const PRODUCT_ID = process.env.PRODUCT_ID
 export const API = {
   VERSION: Number(API_VERSION),
   BASE_URL: API_BASE_URL + process.env.API_PATH,
@@ -151,6 +158,13 @@ export const SENTRY = {
   ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || 'production',
   RELEASE: process.env.APP_GIT_COMMIT,
 }
+// HMPPS Audit: off unless explicitly enabled, so local dev and tests never try to reach SQS
+export const AUDIT = {
+  ENABLED: process.env.AUDIT_ENABLED === 'true',
+  SQS_QUEUE_URL: process.env.AUDIT_SQS_QUEUE_URL || '',
+  SQS_REGION: process.env.AUDIT_SQS_REGION || 'eu-west-2',
+  SERVICE_NAME: process.env.AUDIT_SERVICE_NAME || 'hmpps-book-secure-move-frontend',
+}
 export const PROMETHEUS = {
   MOUNTPATH: process.env.PROMETHEUS_MOUNTPATH,
 }
@@ -164,6 +178,8 @@ export const AUTH_WHITELIST_URLS = [
   '/auth/sign-out',
   '/healthcheck',
   '/healthcheck/ping',
+  '/health',
+  '/info',
   '/components',
   '/components/(.*)',
   '/help',
