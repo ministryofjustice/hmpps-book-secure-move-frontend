@@ -77,6 +77,7 @@ module.exports = async () => {
   // else to ensure it will return some kind of response
   // regardless of the app failing elsewhere
   app.use(healthcheckApp.mountpath, healthcheckApp.router)
+  app.use(healthcheckApp.standardRouter)
 
   // view engine setup
   app.set('view engine', 'njk')

@@ -52,6 +52,17 @@ ENV APP_GIT_COMMIT ${APP_GIT_COMMIT}
 ARG APP_BUILD_BRANCH
 ENV APP_BUILD_BRANCH ${APP_BUILD_BRANCH}
 
+# Passed by the shared hmpps-github-actions docker_build workflow and
+# surfaced on /health and /info for the Developer Portal drift radiator
+ARG BUILD_NUMBER
+ENV BUILD_NUMBER ${BUILD_NUMBER}
+
+ARG GIT_REF
+ENV GIT_REF ${GIT_REF}
+
+ARG GIT_BRANCH
+ENV GIT_BRANCH ${GIT_BRANCH}
+
 COPY --chown=node:node start.js .
 COPY --chown=node:node instrument.js .
 COPY --chown=node:node server.js .

@@ -135,19 +135,13 @@ jobs:
       app_version: '${{ needs.docker_build.outputs.app_version }}'
     secrets: inherit
 
-  update-uat-branch: # this block can be removed when new cancel reasons go live
-    if: github.ref == 'refs/heads/main'
-    name: Triggers the workflow to update the new-cancel-reasons branch from main
-    needs: docker_build
-    uses: ./.github/workflows/update_cancel_reasons_branch.yml
-    secrets: inherit
-
   deploy_uat:
     name: Deploy to the UAT environment
-    if: github.ref == 'refs/heads/new-cancel-reasons'
+    if: github.ref == 'refs/heads/main'
     needs:
       - docker_build
       - helm_lint
+      - deploy_staging
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
     secrets: inherit
     with:
@@ -189,6 +183,7 @@ jobs:
     name: Deploy to pre-production environment
     if: github.ref == 'refs/heads/main'
     needs:
+      - helm_lint
       - docker_build
       - deploy_staging
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/deploy_env.yml@v2 # WORKFLOW_VERSION
